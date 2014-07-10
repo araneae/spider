@@ -1,0 +1,45 @@
+@(message: String)(implicit flash: Flash)
+
+@contentsSingnIn = {
+   <a href="/logout">Logout</a>
+}
+
+@contentsMain = {
+   <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+     <div class="navbar-header">
+       <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+         <li class="active"><a ui-sref="feed" data-toggle="tab">Feeds</a></li>
+         <li><a ui-sref="feed" data-target="" data-toggle="tab">Dashboard</a></li>
+         <li><a ui-sref="userSkill" data-toggle="tab">Skills</a></li>
+         <li><a ui-sref="contact" data-toggle="tab">Contacts</a></li>
+         <li><a ui-sref="adviser" data-toggle="tab">Advisers</a></li>
+         <li><a ui-sref="database" data-toggle="tab">Database</a></li>
+         <li><a ui-sref="feed" data-target="" data-toggle="tab">Messages</a></li>
+         <li><a ui-sref="feed" data-target="" data-toggle="tab">Group</a></li>
+         <li><a ui-sref="feed" data-target="" data-toggle="tab">Jobs</a></li>
+       </ul>
+      </div>
+    </div><!-- /.container-fluid -->
+  </nav><!-- /.navbar -->
+  
+  <!--   <div ng-view></div> -->
+  <div ui-view="viewMain"></div> 
+}
+
+@contentsLeft = {
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+      </div>
+    </div>
+  </nav>
+  <div ui-view="viewLeftBar"></div>
+}
+
+@contentsRight = {
+  <div ui-view="viewRightBar"></div>
+}
+
+@main("Spider Recruiter Tool")(message)(contentsSingnIn)(contentsMain)(contentsLeft)(contentsRight)
+

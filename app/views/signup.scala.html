@@ -1,0 +1,28 @@
+@* login Template File *@
+@(form: Form[(String, String, String, String)])(implicit flash: Flash)
+
+@contentSignIn={}
+
+@contentsMain =  {
+  <head>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+  </head>
+  
+   @helper.form(routes.Application.register, 'class -> "form-signin") {
+     <h2 class="form-signin-heading">Sign Up</h2>
+     @flash.get("error").map { message =>
+        <p class="error">
+            @message
+        </p>
+      }
+     <input class="form-control" type="first_name" name = "first_name" autofocus="" required="" placeholder="First Name"></input>
+     <input class="form-control" type="last_name" name = "last_name" autofocus="" required="" placeholder="Last Name"></input>
+     <input class="form-control" type="email" name = "email" autofocus="" required="" placeholder="Email address"></input>
+     <input class="form-control" type="password" name="password" required="" placeholder="Password"></input>
+     <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+   }
+}
+@contentsLeft = {}
+@contentsRight = {}
+
+@main("Spider Recruiter Tool")("Recruiter Tool")(contentSignIn)(contentsMain)(contentsLeft)(contentsRight)

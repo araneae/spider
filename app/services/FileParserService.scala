@@ -1,0 +1,27 @@
+package services
+
+import enums.FileType._
+import parsers._
+
+object FileParserService {
+ 
+   def parse(fileType: FileType, fileName:String) : Option[String] = {
+     fileType match {
+       case DOC => {
+                       val parser = new DocFileParser()
+                       Some(parser.parse(fileName))
+                    }
+       case DOCX => {
+                       val parser = new DocxFileParser()
+                       Some(parser.parse(fileName))
+                    }
+       case TXT => {
+                       val parser = new TxtFileParser()
+                       Some(parser.parse(fileName))
+                    }
+       case _ =>    { // not supported yet
+                       None
+                     }
+       }
+   }
+}

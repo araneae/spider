@@ -1,0 +1,51 @@
+<div class="row">
+    <div ng-controller="AdviserCtrl as ctrl">
+        <h1>My Advisers</h1>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <input type='text' id='txtSearch' class='form-control email' ng-model='ctrl.searchText' placeholder='Email address'>
+            <span class="input-group-btn">
+              <button type='button' id='btnSearch' class='btn btn-default' ng-click="ctrl.search()">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="row" ng-show="ctrl.showSearchResult()">
+          <div class="col-lg-10">
+            <table class="table table-striped">
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th></th>
+              </tr>
+              <tr>
+                <td class="">{{ctrl.searchResult.firstName}}</td>
+                <td>{{ctrl.searchResult.lastName}}</td>
+                <td>{{ctrl.searchResult.email}}</td>
+                <td><a href="" ng-click="ctrl.invite()">Send Invite</a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+           <div class="col-lg-10">
+              <table class="table table-striped">
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th></th>
+                </tr>
+                <tr ng-repeat="contact in ctrl.advisers">
+                  <td>{{contact.firstName}}</td>
+                  <td>{{contact.lastName}}</td>
+                  <td>{{contact.email}}</td>
+                </tr>
+              </table>
+           </div>
+        </div>
+    </div>
+</div>
+

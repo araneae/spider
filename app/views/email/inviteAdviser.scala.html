@@ -1,0 +1,14 @@
+@* inviteContact Template File *@
+@(receiver: String)(sender: String)(token: String)(applicationBaseUrl: String)
+
+<p>
+Hey <strong>@receiver</strong>,
+</p>
+<p>
+<strong>@sender</strong> wants to get connected with you, please click on the following link to accept invitation.
+</p>
+<p>
+@applicationBaseUrl@{routes.ContactController.accept(token)}
+</p>
+ 
+

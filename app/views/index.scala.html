@@ -1,0 +1,22 @@
+@(message: String)
+
+@contentsSingnIn = {
+   <form class="form-inline" method="POST" action="/login">
+     <div class="form-group">
+           <label class="sr-only" for="idInputLoginEmail">Email address</label>
+           <input type="email" name="email" class="form-control" id="idInputLoginEmail" placeholder="Enter email"></input>
+     </div>
+     <div class="form-group">
+       <label class="sr-only" for="idInputLoginPassword">Password</label>
+       <input type="password" name="password" class="form-control" id="idInputLoginPassword"  placeholder="Password">
+     </div>
+     <button type="submit" class="btn btn-primary">Log In</button>
+   </form>
+}
+
+@contentMain={}
+@contentsLeft = {}
+@contentsRight = {}
+
+@main("Spider Recruiter Tool")(message)(contentsSingnIn)(contentMain)(contentsLeft)(contentsRight)
+

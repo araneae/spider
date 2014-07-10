@@ -1,0 +1,32 @@
+<div class="row">
+    <div ng-controller="DatabaseCtrl as ctrl">
+        <div class='col-lg-12'>
+          <table class="table table-striped">
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>File Name</th>
+              <th></th>
+            </tr>
+            <tr ng-repeat="document in ctrl.documents">
+              <td>{{document.name}}</td>
+              <td>{{document.description}}</td>
+              <td>{{document.fileName}}</td>
+              <td><a href="">Share</a> / 
+                <a href="">Edit</a> / 
+                <a target="_self" href="" download="test.doc">Download</a> /
+                <a href="">X-Ray</a> / 
+                <!--  <a ui-sref="database/documentTag/({documentId:document.id})">Tag</a> -->
+                <a href="" ng-click="ctrl.goToDocumentTag(document.id)">Tag</a>
+              </td>
+            </tr>
+          </table>
+          <div>
+            <a ui-sref="database/upload">Upload File</a>
+            <span>|</span>
+            <a ui-sref="database/search">Search</a>
+          </div>
+        </div>
+    </div>
+</div>
+
