@@ -41,8 +41,8 @@ alter table `message` add constraint `fk_on_message_sender_id` foreign key(`send
 alter table `skill` add constraint `fk_skill_on_industry_id` foreign key(`industry_id`) references `industry`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_membership` add constraint `fk_on_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_membership` add constraint `fk_on_membership_id` foreign key(`membership_id`) references `membership`(`id`) on update NO ACTION on delete NO ACTION;
-alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(`skill_id`) references `skill`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_skill` add constraint `fk_on_user_skill_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(`skill_id`) references `skill`(`id`) on update NO ACTION on delete NO ACTION;
 
 # --- !Downs
 
@@ -58,8 +58,8 @@ ALTER TABLE message DROP FOREIGN KEY fk_on_message_sender_id;
 ALTER TABLE skill DROP FOREIGN KEY fk_skill_on_industry_id;
 ALTER TABLE user_membership DROP FOREIGN KEY fk_on_user_id;
 ALTER TABLE user_membership DROP FOREIGN KEY fk_on_membership_id;
-ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_skill_id;
 ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_user_id;
+ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_skill_id;
 ALTER TABLE adviser DROP PRIMARY KEY;
 drop table `adviser`;
 drop table `config`;

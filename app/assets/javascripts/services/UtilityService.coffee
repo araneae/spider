@@ -12,12 +12,12 @@ class UtilityService
     findByProperty: (list, prop, value) ->
        for obj in list
            return obj if obj[prop] is value
-       return {}
+       return
 
     isEmpty: (obj) ->
       empty = true
       if (obj)
-        for prop in obj
+        for prop, value of obj
           empty = false
       empty
       

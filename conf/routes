@@ -3,124 +3,122 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                                                       controllers.Application.index
 
-GET    /login                       controllers.AuthController.login
+GET    /login                                                   controllers.AuthController.login
 
-POST   /login                       controllers.AuthController.authenticate
+POST   /login                                                   controllers.AuthController.authenticate
 
-GET    /logout                      controllers.AuthController.logout
+GET    /logout                                                  controllers.AuthController.logout
 
-GET    /home                        controllers.Application.home
+GET    /home                                                    controllers.Application.home
 
-GET    /signup                      controllers.Application.signup
+GET    /signup                                                  controllers.Application.signup
 
-POST   /signup                      controllers.Application.register
+POST   /signup                                                  controllers.Application.register
 
 # Admin specific routes
-GET    /admin                       controllers.AdminController.admin
+GET    /admin                                                   controllers.AdminController.admin
 
 # Industry specific routes
-POST   /industry                    controllers.IndustryController.create
+POST   /industry                                                controllers.IndustryController.create
 
-GET    /industry                    controllers.IndustryController.getAll
+GET    /industry                                                controllers.IndustryController.getAll
 
-PUT    /industry/:id                controllers.IndustryController.update(id: Int)
+PUT    /industry/:id                                            controllers.IndustryController.update(id: Int)
 
-DELETE /industry/:id                controllers.IndustryController.delete(id: Int)
+DELETE /industry/:id                                            controllers.IndustryController.delete(id: Int)
 
 # Skill specific routes
-POST   /skill                       controllers.SkillController.create
+POST   /skill                                                   controllers.SkillController.create
 
-GET    /skill                       controllers.SkillController.getAll
+GET    /skill                                                   controllers.SkillController.getAll
 
-PUT    /skill/:id                   controllers.SkillController.update(id: Int)
+PUT    /skill/:id                                               controllers.SkillController.update(id: Int)
 
-DELETE /skill/:id                   controllers.SkillController.delete(id: Int)
+DELETE /skill/:id                                               controllers.SkillController.delete(id: Int)
 
 # Domain specific routes
-POST   /domain                      controllers.DomainController.create
+POST   /domain                                                  controllers.DomainController.create
 
-GET    /domain                      controllers.DomainController.getAll
+GET    /domain                                                  controllers.DomainController.getAll
 
-PUT    /domain/:id                  controllers.DomainController.update(id: Int)
+PUT    /domain/:id                                              controllers.DomainController.update(id: Int)
 
-DELETE /domain/:id                  controllers.DomainController.delete(id: Int)
+DELETE /domain/:id                                              controllers.DomainController.delete(id: Int)
 
 
 # UserSkill specific routes
-POST   /userSkill/:skillId          controllers.UserSkillController.create(skillId: Int)
+POST   /userSkill/:skillId                                      controllers.UserSkillController.create(skillId: Int)
 
-GET    /userSkill/:skillId          controllers.UserSkillController.get(skillId: Int)
+GET    /userSkill/:skillId                                      controllers.UserSkillController.get(skillId: Int)
 
-GET    /userSkill                   controllers.UserSkillController.getAll
+GET    /userSkill                                               controllers.UserSkillController.getAll
 
-PUT    /userSkill/:skillId          controllers.UserSkillController.update(skillId: Int)
+PUT    /userSkill/:skillId                                      controllers.UserSkillController.update(skillId: Int)
 
-DELETE /userSkill/:skillId          controllers.UserSkillController.delete(skillId: Int)
+DELETE /userSkill/:skillId                                      controllers.UserSkillController.delete(skillId: Int)
 
-GET    /skillLevel                  controllers.UserSkillController.getSkillLevels
+GET    /skillLevel                                              controllers.UserSkillController.getSkillLevels
 
 # Contact specific routes
-POST   /contact/:contactUserId      controllers.ContactController.create(contactUserId: Int)
+POST   /contact/:contactUserId                                  controllers.ContactController.create(contactUserId: Int)
 
-GET    /contact/:contactUserId      controllers.ContactController.get(contactUserId: Int)
+GET    /contact/:contactUserId                                  controllers.ContactController.get(contactUserId: Int)
 
-GET    /contact                     controllers.ContactController.getAll
+GET    /contact                                                 controllers.ContactController.getAll
 
-DELETE /contact/:contactUserId      controllers.ContactController.delete(contactUserId: Int)
+DELETE /contact/:contactUserId                                  controllers.ContactController.delete(contactUserId: Int)
 
-GET    /contact/search/:email       controllers.ContactController.search(email: String)
+GET    /contact/search/:email                                   controllers.ContactController.search(email: String)
 
-GET    /contact/accept/:token       controllers.ContactController.accept(token: String)
+GET    /contact/accept/:token                                   controllers.ContactController.accept(token: String)
 
 # Adviser specific routes
-POST   /adviser/:adviserUserId      controllers.AdviserController.create(adviserUserId: Int)
+POST   /adviser/:adviserUserId                                  controllers.AdviserController.create(adviserUserId: Int)
 
-GET    /adviser/:adviserUserId      controllers.AdviserController.get(adviserUserId: Int)
+GET    /adviser/:adviserUserId                                  controllers.AdviserController.get(adviserUserId: Int)
 
-GET    /adviser                     controllers.AdviserController.getAll
+GET    /adviser                                                 controllers.AdviserController.getAll
 
-DELETE /adviser/:adviserUserId      controllers.AdviserController.delete(adviserUserId: Int)
+DELETE /adviser/:adviserUserId                                  controllers.AdviserController.delete(adviserUserId: Int)
 
-GET    /adviser/search/:email       controllers.AdviserController.search(email: String)
+GET    /adviser/search/:email                                   controllers.AdviserController.search(email: String)
 
-GET    /adviser/accept/:token       controllers.AdviserController.accept(token: String)
+GET    /adviser/accept/:token                                   controllers.AdviserController.accept(token: String)
 
 # Database specific routes
-POST   /database/upload             controllers.DatabaseController.upload
+POST   /database/upload                                         controllers.DatabaseController.upload
 
-GET    /database/document/:id       controllers.DatabaseController.get(id: Int)
+GET    /database/document/:id                                   controllers.DatabaseController.get(id: Int)
 
-GET    /database/document           controllers.DatabaseController.getAll
+GET    /database/document                                       controllers.DatabaseController.getAll
 
-POST   /database/document           controllers.DatabaseController.create
+POST   /database/document                                       controllers.DatabaseController.create
 
-PUT    /database/document/:id       controllers.DatabaseController.update(id: Int)
+PUT    /database/document/:id                                   controllers.DatabaseController.update(id: Int)
 
-DELETE /database/document/:id       controllers.DatabaseController.delete(id: Int)
+DELETE /database/document/:id                                   controllers.DatabaseController.delete(id: Int)
 
-GET    /database/search/:searchText  controllers.DatabaseController.search(searchText: String)
+GET    /database/search/:searchText                             controllers.DatabaseController.search(searchText: String)
 
 # UserTag specific routes
-POST   /userTag                     controllers.UserTagController.create
+POST   /userTag                                                 controllers.UserTagController.create
 
-GET    /userTag/:id                 controllers.UserTagController.get(id: Int)
+GET    /userTag/:id                                             controllers.UserTagController.get(id: Int)
 
-GET    /userTag                     controllers.UserTagController.getAll
+GET    /userTag                                                 controllers.UserTagController.getAll
 
-PUT    /userTag/:id                 controllers.UserTagController.update(id: Int)
+PUT    /userTag/:id                                             controllers.UserTagController.update(id: Int)
 
-DELETE /userTag/:id                 controllers.UserTagController.delete(id: Int)
+DELETE /userTag/:id                                             controllers.UserTagController.delete(id: Int)
 
 # DocumentTag specific routes
-POST   /database/documentTag        controllers.DocumentTagController.create
+POST   /database/documentTag/:documentId                        controllers.DocumentTagController.create(documentId: Int)
 
-GET    /database/documentTag/:documentId/:userTagId     controllers.DocumentTagController.get(documentId: Int, userTagId: Int)
+GET    /database/documentTag/:documentId                        controllers.DocumentTagController.getAll(documentId: Int)
 
-GET    /database/documentTag/:documentId        controllers.DocumentTagController.getAll(documentId: Int)
-
-DELETE /database/documentTag/:documentId/:userTagId    controllers.DocumentTagController.delete(documentId: Int, userTagId: Int)
+DELETE /database/documentTag/:documentId                        controllers.DocumentTagController.delete(documentId: Int, userTagId: Int)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                                           controllers.Assets.at(path="/public", file)

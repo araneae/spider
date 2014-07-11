@@ -1,12 +1,12 @@
 <div class="row">
-    <div ng-controller="DatabaseTagCtrl as tagCtrl">
+    <div ng-controller="DatabaseTagCtrl as ctrl">
         <div class='col-lg-12'>
-          <div>Tags for <strong>{{tagCtrl.document.name}}</strong></div>
+          <div>Tags for <strong>{{ctrl.document.name}}</strong></div>
           <table class="table table-striped">
             <tr>
               <th>Name</th>
             </tr>
-            <tr ng-repeat="docTag in tagCtrl.docTags">
+            <tr ng-repeat="docTag in ctrl.docTags">
               <td>
               <input type="checkbox" ng-model="docTag.isTagged">
               {{docTag.name}}
@@ -15,8 +15,8 @@
           </table>
           <div class="form-group">
             <div class="col-sm-offset-4 col-sm-8 text-right">
-                <button class="btn btn-warning" id="btnCancel" ng-click="tagCtrl.cancel()">Cancel</button>
-                <button type="button" class="btn btn-success" id="btnSave" ng-click="tagCtrl.save()">Save</button>
+                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
             </div>
           </div>
         </div>
