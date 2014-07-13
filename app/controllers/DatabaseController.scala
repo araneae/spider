@@ -70,13 +70,20 @@ object DatabaseController extends Controller with Secured {
     }
   }
   
-  def getAll = IsAuthenticated{ username => implicit request =>
-    logger.info("in DatabaseController.getAll...")
-    println("in DatabaseController.getAll...")
+  def getAll(userTagId: Option[Int]) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DatabaseController.getAll(${userTagId})")
+    println(s"in DatabaseController.getAll(${userTagId})")
     
-    var list = DocumentRepository.findAll(userId)
-    val text = Json.toJson(list)
-    Ok(text).as(JSON)
+    userTagId match {
+      case Some(tagId) =>
+                  val list = DocumentTagRepository.findDocumentByUserTagId(userId, tagId)
+                  val text = Json.toJson(list)
+                  Ok(text).as(JSON)
+      case None =>  
+                  val list = DocumentRepository.findAll(userId)
+                  val text = Json.toJson(list)
+                  Ok(text).as(JSON)
+    }
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>

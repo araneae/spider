@@ -1,14 +1,14 @@
 
 class DatabaseSearchCtrl
 
-    constructor: (@$log, @DatabaseService, @Document, @$location) ->
+    constructor: (@$log, @$state, @DatabaseService, @Document, @$location) ->
         @$log.debug "constructing DatabaseSearchCtrl"
         @documents = []
         @searchText = ""
 
     cancel: () ->
         @$log.debug "DatabaseSearchCtrl.cancel()"
-        @$location.path('/database')
+        @$state.go('database')
 
     search: () ->
        @$log.debug "DatabaseSearchCtrl.search()"

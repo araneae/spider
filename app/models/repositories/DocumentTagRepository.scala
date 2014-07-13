@@ -25,6 +25,27 @@ object DocumentTagRepository {
     }
   }
   
+  def findByUserTagId(userId: Long, userTagId: Long): Seq[DocumentTag] = {
+    DB.withSession {
+      implicit session =>
+       query.filter( d => d.userId === userId &&
+                          d.userTagId === userTagId).list
+    }
+  }
+  
+  def findDocumentByUserTagId(userId: Long, userTagId: Long): Seq[Document] = {
+    DB.withSession {
+      implicit session =>
+       val q = for {
+            docTag <- query.filter( d => d.userId === userId &&
+                               d.userTagId === userTagId)
+            doc <- docTag.document
+        } yield (doc)
+         
+        q.list
+    }
+  }
+  
   def delete(userId: Long, documentId: Long, userTagId: Long) = {
     DB.withSession {
        implicit session: Session =>

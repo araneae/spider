@@ -31,6 +31,9 @@ create table `user` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name
 create unique index `idx_user_on_email_unique` on `user` (`email`);
 alter table `adviser` add constraint `fk_on_adviser_adviser_user_id` foreign key(`adviser_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `contact` add constraint `fk_on_contact_contact_user_id` foreign key(`contact_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `document_tag` add constraint `fk_on_document_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `document_tag` add constraint `fk_on_document_tag_tag_id` foreign key(`user_tag_id`) references `user_tag`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `document_tag` add constraint `fk_on_document_tag_document_id` foreign key(`document_id`) references `document`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document` add constraint `fk_document_on_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `domain` add constraint `fk_on_skill_industry_id` foreign key(`industry_id`) references `industry`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `message_box` add constraint `fk_on_message_box_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
@@ -48,6 +51,9 @@ alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(
 
 ALTER TABLE adviser DROP FOREIGN KEY fk_on_adviser_adviser_user_id;
 ALTER TABLE contact DROP FOREIGN KEY fk_on_contact_contact_user_id;
+ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_user_id;
+ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_tag_id;
+ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_document_id;
 ALTER TABLE document DROP FOREIGN KEY fk_document_on_user_id;
 ALTER TABLE domain DROP FOREIGN KEY fk_on_skill_industry_id;
 ALTER TABLE message_box DROP FOREIGN KEY fk_on_message_box_user_id;

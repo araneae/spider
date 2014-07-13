@@ -100,7 +100,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database', {
-              url: '/database',
+              url: '/database/:tagId',
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/database.html'
@@ -111,7 +111,18 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database.userTagCreate', {
-                templateUrl: '/assets/partials/userTagCreate.html'
+              templateUrl: '/assets/partials/userTagCreate.html'
+          })
+          .state('database/tag', {
+              url: '/database/tag/:userTagId',
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/database.html'
+                },
+                "viewLeftBar": {
+                    templateUrl: '/assets/partials/userTags.html'
+                }
+              }
           })
           .state('database/upload', {
               url: '/database/upload',

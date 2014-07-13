@@ -18,4 +18,9 @@ class UserTagCtrl
                 @$log.error "Unable to get tags: #{error}"
             )
 
+    goToTag: (tagId) ->
+        @$log.debug "UserTagCtrl.goToTag(#{tagId})"
+        @$location.path("/database/tag/#{tagId}")
+
+
 controllersModule.controller('UserTagCtrl', UserTagCtrl)

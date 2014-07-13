@@ -2,7 +2,7 @@
   <div class='col-lg-12'>
     <table class="table table-striped">
       <tr ng-repeat="tag in ctrl.userTags">
-        <td>{{tag.name}}</td>
+        <td><a href="" ng-click="ctrl.goToTag(tag.id)">{{tag.name}}</a></td>
       </tr>
     </table>
   </div>

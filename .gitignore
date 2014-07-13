@@ -6,3 +6,5 @@
 .classpath
 .project
 .settings
+project/project
+project/target

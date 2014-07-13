@@ -92,7 +92,7 @@ POST   /database/upload                                         controllers.Data
 
 GET    /database/document/:id                                   controllers.DatabaseController.get(id: Int)
 
-GET    /database/document                                       controllers.DatabaseController.getAll
+GET    /database/document                                       controllers.DatabaseController.getAll(userTagId: Option[Int])
 
 POST   /database/document                                       controllers.DatabaseController.create
 

@@ -76,7 +76,7 @@ class DatabaseTagCtrl
 
     cancel: () ->
       @$log.debug "DatabaseTagCtrl.cancel()"
-      @$location.path('/database')
+      @$state.go('database')
 
     save: () ->
       @$log.debug "DatabaseTagCtrl.save()"
@@ -104,7 +104,6 @@ class DatabaseTagCtrl
               (error) =>
                 @$log.error "server returned #{error}"
             )
-
-      @$location.path('/database')
+      @$state.go('database')
 
 controllersModule.controller('DatabaseTagCtrl', DatabaseTagCtrl)
