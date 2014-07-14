@@ -1,4 +1,4 @@
-@(title: String)(message: String)(contentSignin: Html)(contentMain: Html)(contentLeft: Html)(contentRight: Html)
+@(title: String)(message: String)(contentSignin: Html)(contentMain: Html)(contentRight: Html)
 
 <!DOCTYPE html>
 
@@ -80,6 +80,8 @@
         <script src='@routes.Assets.at("javascripts/services/DatabaseTagService.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/DatabaseTagCtrl.js")' type="text/javascript"></script>
         
+        <script src='@routes.Assets.at("javascripts/services/DatabaseSearchService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseSearchCtrl.js")' type="text/javascript"></script>        
     </head>
     <body>
       <div ui-view></div>
@@ -97,10 +99,7 @@
       </div><!-- /.container header -->
       <div id ="content" class="container-fluid">
         <div class="row-fluid main">
-          <div class="col-lg-2">
-            @contentLeft
-          </div> <!-- /left column -->
-          <div class="col-lg-8">
+          <div class="col-lg-10">
             @contentMain
           </div> <!-- middle section -->
           <div class="col-lg-2">

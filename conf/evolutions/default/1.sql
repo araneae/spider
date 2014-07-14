@@ -8,6 +8,7 @@ alter table `adviser` add constraint `pk_on_adviser_user_id_adviser_user_id` pri
 create table `config` (`name` VARCHAR(254) NOT NULL PRIMARY KEY,`value` VARCHAR(254) NOT NULL,`description` VARCHAR(254));
 create table `contact` (`user_id` BIGINT NOT NULL,`contact_user_id` BIGINT NOT NULL,`status` INTEGER DEFAULT 0 NOT NULL,`token` VARCHAR(254));
 alter table `contact` add constraint `pk_on_contact_user_id_contact_user_id` primary key(`user_id`,`contact_user_id`);
+create table `document_search` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`search_text` VARCHAR(254) NOT NULL);
 create table `document_tag` (`user_id` BIGINT NOT NULL,`user_tag_id` BIGINT NOT NULL,`document_id` BIGINT NOT NULL);
 alter table `document_tag` add constraint `pk_on_document_tag_userid_user_tag_id_document_id` primary key(`user_id`,`user_tag_id`,`document_id`);
 create table `document` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`document_type` INTEGER NOT NULL,`file_type` INTEGER NOT NULL,`file_name` VARCHAR(254) NOT NULL,`physical_name` VARCHAR(254) NOT NULL,`description` VARCHAR(254));
@@ -31,6 +32,7 @@ create table `user` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name
 create unique index `idx_user_on_email_unique` on `user` (`email`);
 alter table `adviser` add constraint `fk_on_adviser_adviser_user_id` foreign key(`adviser_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `contact` add constraint `fk_on_contact_contact_user_id` foreign key(`contact_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `document_search` add constraint `fk_on_document_search_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_on_document_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_on_document_tag_tag_id` foreign key(`user_tag_id`) references `user_tag`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_on_document_tag_document_id` foreign key(`document_id`) references `document`(`id`) on update NO ACTION on delete NO ACTION;
@@ -51,6 +53,7 @@ alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(
 
 ALTER TABLE adviser DROP FOREIGN KEY fk_on_adviser_adviser_user_id;
 ALTER TABLE contact DROP FOREIGN KEY fk_on_contact_contact_user_id;
+ALTER TABLE document_search DROP FOREIGN KEY fk_on_document_search_user_id;
 ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_user_id;
 ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_tag_id;
 ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_document_id;
@@ -71,6 +74,7 @@ drop table `adviser`;
 drop table `config`;
 ALTER TABLE contact DROP PRIMARY KEY;
 drop table `contact`;
+drop table `document_search`;
 ALTER TABLE document_tag DROP PRIMARY KEY;
 drop table `document_tag`;
 drop table `document`;

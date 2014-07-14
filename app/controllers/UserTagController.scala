@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 
 import models.dtos.UserTag
 import models.repositories.UserTagRepository
+import models.repositories.DocumentTagRepository
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
@@ -32,8 +33,8 @@ object UserTagController extends Controller with Secured {
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in UserTagController.create...")
-      println("in UserTagController.create...")
+      logger.info("in UserTagController.create()")
+      println("in UserTagController.create()")
       val jsonObj = request.body.asInstanceOf[JsObject]
       // merge userId with the request object
       val userIdObj = Json.obj("userId" -> userId)
@@ -49,9 +50,9 @@ object UserTagController extends Controller with Secured {
       )
   }
 
-  def update(id: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info("in UserTagController.update...")
-    println("in UserTagController.update...")
+  def update(id: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+    logger.info(s"in UserTagController.update(${id})")
+    println(s"in UserTagController.update(${id})")
     val json = request.body.asInstanceOf[JsObject]
     json.validate[UserTag].fold(
           valid = { UserTag =>
@@ -65,7 +66,12 @@ object UserTagController extends Controller with Secured {
   }
   
   def delete(id: Int) = IsAuthenticated{ username => implicit request =>
-    Ok("")
+    logger.info(s"in UserTagController.delete(${id})")
+    println(s"in UserTagController.delete(${id})")
+    // first delete all the document tags
+    DocumentTagRepository.deleteByUserTagId(userId, id)
+    UserTagRepository.delete(id)
+    Ok(HttpResponseUtil.success("Successfully deleted!"))
   }
 
 }

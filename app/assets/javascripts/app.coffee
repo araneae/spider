@@ -100,47 +100,49 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database', {
-              url: '/database/:tagId',
+              url: '/database/tag/:userTagId',
+              'abstract': true,
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/database.html'
-                },
-                "viewLeftBar": {
-                    templateUrl: '/assets/partials/userTags.html'
+                }
+              }
+          })
+          .state('database.documents', {
+              url: '',
+              views: {
+                "viewDocument": {
+                    templateUrl: '/assets/partials/databaseDocuments.html'
                 }
               }
           })
           .state('database.userTagCreate', {
-              templateUrl: '/assets/partials/userTagCreate.html'
-          })
-          .state('database/tag', {
-              url: '/database/tag/:userTagId',
               views: {
-                "viewMain": {
-                    templateUrl: '/assets/partials/database.html'
+                "viewTag": {
+                    templateUrl: '/assets/partials/userTagCreate.html'
                 },
-                "viewLeftBar": {
-                    templateUrl: '/assets/partials/userTags.html'
+                "viewDocument": {
+                    templateUrl: '/assets/partials/databaseDocuments.html'
                 }
               }
           })
-          .state('database/upload', {
-              url: '/database/upload',
+          .state('databaseUpload', {
+              url: '/database/document/upload',
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/databaseUpload.html'
                 }
               }
           })
-          .state('database/search', {
-              url: '/database/search',
+          .state('databaseSearch', {
+              url: '/database/document/search',
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/databaseSearch.html'
                 }
               }
           })
-          .state('database/documentTag/', {
+          .state('databaseDocumentTag', {
               url: '/database/documentTag/:documentId',
               views: {
                 "viewMain": {
@@ -148,55 +150,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-
-###
-angular.module('myApp.routeConfig', ['ngRoute'])
-    .config ($routeProvider) ->
-        $routeProvider
-            .when('/', {
-                templateUrl: '/assets/partials/industry.html'
-            })
-            .when('/industry', {
-                templateUrl: '/assets/partials/industry.html'
-            })
-            .when('/skill', {
-                templateUrl: '/assets/partials/skill.html'
-            })
-            .when('/domain', {
-                templateUrl: '/assets/partials/domain.html'
-            })
-            .when('/userSkillCreate', {
-                templateUrl: '/assets/partials/userSkillCreate.html'
-            })
-            .when('/userSkillEdit/:skillId', {
-                templateUrl: '/assets/partials/userSkillEdit.html'
-            })
-            .when('/userSkill', {
-                templateUrl: '/assets/partials/userSkill.html'
-            })
-            .when('/userSkillEmpty', {
-                templateUrl: '/assets/partials/userSkillEmpty.html'
-            })
-            .when('/feed', {
-                templateUrl: '/assets/partials/feed.html'
-            })
-            .when('/contact', {
-                templateUrl: '/assets/partials/contact.html'
-            })
-            .when('/adviser', {
-                templateUrl: '/assets/partials/adviser.html'
-            })
-            .when('/database', {
-                templateUrl: '/assets/partials/database.html'
-            })
-            .when('/database/upload', {
-                templateUrl: '/assets/partials/databaseUpload.html'
-            })
-            .when('/database/search', {
-                templateUrl: '/assets/partials/databaseSearch.html'
-            })
-            .otherwise({redirectTo: '/'})
-###
+          .state('userTagManagement', {
+              url: '/database/tags',
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/userTagManagement.html'
+                }
+              }
+          })
  
 @commonModule = angular.module('myApp.common', [])
 @controllersModule = angular.module('myApp.controllers', [])

@@ -1,32 +1,24 @@
 <div class="row">
-    <div ng-controller="DatabaseCtrl as ctrl">
-        <div class='col-lg-12'>
-          <table class="table table-striped">
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>File Name</th>
-              <th></th>
-            </tr>
-            <tr ng-repeat="document in ctrl.documents">
-              <td>{{document.name}}</td>
-              <td>{{document.description}}</td>
-              <td>{{document.fileName}}</td>
-              <td><a href="">Share</a> / 
-                <a href="">Edit</a> / 
-                <a target="_self" href="" download="test.doc">Download</a> /
-                <a href="">X-Ray</a> / 
-                <!--  <a ui-sref="database/documentTag/({documentId:document.id})">Tag</a> -->
-                <a href="" ng-click="ctrl.goToDocumentTag(document.id)">Tag</a>
-              </td>
-            </tr>
-          </table>
-          <div>
-            <a href="" ng-click="ctrl.goToUpload()">Upload File</a>
-            <span>|</span>
-            <a href="" ng-click="ctrl.goToSearch()">Search</a>
-          </div>
-        </div>
+  <div class="col-lg-2">
+    <div ng-controller="UserTagCtrl as ctrl">
+      <table class="table table-striped">
+        <tr ng-repeat="tag in ctrl.userTags">
+          <td><a href="" ng-click="ctrl.goToTag(tag.id)">{{tag.name}}</a></td>
+        </tr>
+      </table>
+      <hr>
+      <div>
+        <a ui-sref="userTagManagement">Manage tags</a>
+      </div>
+      <div>
+        <a ui-sref="database.userTagCreate">Create new tag</a>
+      </div>
+      <hr>
+      <div ui-view="viewTag"></div>
     </div>
+  </div>
+  <div class="col-lg-10">
+    <div ui-view="viewDocument"></div>
+  </div>
 </div>
 

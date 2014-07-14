@@ -14,6 +14,13 @@ class UtilityService
            return obj if obj[prop] is value
        return
 
+    findIndexByProperty: (list, prop, value) ->
+       index = -1
+       for obj in list
+           index = index + 1
+           return index if obj[prop] is value
+       index
+
     isEmpty: (obj) ->
       empty = true
       if (obj)

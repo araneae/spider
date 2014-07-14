@@ -1,7 +1,7 @@
 
 class DatabaseCtrl
 
-    constructor: (@$log, @DatabaseService, @$state, @$stateParams, @Document, @UtilityService, @$location) ->
+    constructor: (@$log, @$scope, @DatabaseService, @$state, @$stateParams, @Document, @UtilityService) ->
         @$log.debug "constructing DatabaseCtrl"
         @userTagId
         @userTagId = parseInt(@$stateParams.userTagId) if @$stateParams.userTagId
@@ -15,6 +15,8 @@ class DatabaseCtrl
             (data) =>
                 @$log.debug "Promise returned #{data.length} documents"
                 @documents = data
+                # update scope to refresh ui
+                #@$scope.$apply()
             ,
             (error) =>
                 @$log.error "Unable to get documents: #{error}"
@@ -24,14 +26,14 @@ class DatabaseCtrl
         @$log.debug "DatabaseCtrl.goToDocumentTag(#{documentId})"
         doc = @UtilityService.findByProperty(@documents, 'id', documentId)
         @$log.debug "found document #{doc}" if doc
-        @$location.path("database/documentTag/#{documentId}")
+        @$state.go("databaseDocumentTag", {documentId: documentId})
 
     goToUpload: () ->
         @$log.debug "DatabaseCtrl.goToUpload()"
-        @$state.go("database/upload")
+        @$state.go("databaseUpload")
 
     goToSearch: () ->
         @$log.debug "DatabaseCtrl.goToSearch()"
-        @$state.go("database/search")
+        @$state.go("databaseSearch")
 
 controllersModule.controller('DatabaseCtrl', DatabaseCtrl)

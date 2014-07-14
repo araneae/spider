@@ -1,7 +1,7 @@
 
 class DatabaseUploadCtrl
 
-    constructor: (@$log, @DatabaseService, @Document, @$upload, @$location) ->
+    constructor: (@$log, @$state, @DatabaseService, @Document, @$upload) ->
         @$log.debug "constructing DatabaseUploadCtrl"
         @flashMessage
         @document = {}
@@ -27,7 +27,7 @@ class DatabaseUploadCtrl
         @Document.save(@document).$promise.then(
             (data) =>
                 @$log.debug "Promise returned #{data} document"
-                @$location.path('/database')
+                @$state.go('database.documents')
             ,
             (error) =>
                 @$log.error "Unable to save document: #{error.data.message}"
@@ -40,7 +40,7 @@ class DatabaseUploadCtrl
 
     cancel: () ->
         @$log.debug "DatabaseUploadCtrl.cancel()"
-        @$location.path('/database')
+        @$state.go('database.documents')
 
     getName: (fileName) ->
       index = fileName.lastIndexOf('.')

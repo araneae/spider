@@ -10,13 +10,12 @@ class UserTagCreateCtrl
         userTag = new @UserTag(@userTag);
         userTag.$save().then( (data) =>
             @$log.debug "server returned #{data} UserTag"
-            parent = @$scope.ctrl
-            parent.listUserTags() if parent
-            @$state.go('^', @$stateParams)
+            @$state.go('database.documents')
         )
 
     cancel: () ->
         @$log.debug "UserTagCreateCtrl.cancel()"
-        @$state.go('^', @$stateParams)
+        #@$state.go('^', @$stateParams)
+        @$state.go('database.documents', @$stateParams)
 
 controllersModule.controller('UserTagCreateCtrl', UserTagCreateCtrl)
