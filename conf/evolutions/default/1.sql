@@ -27,7 +27,6 @@ create table `user_membership` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 create table `user_skill` (`user_id` BIGINT NOT NULL,`skill_id` BIGINT NOT NULL,`skill_level` INTEGER NOT NULL,`description_short` VARCHAR(254),`description_long` VARCHAR(254));
 alter table `user_skill` add constraint `pk_on_user_skill_user_id_skill_id` primary key(`user_id`,`skill_id`);
 create table `user_tag` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL);
-alter table `user_tag` add constraint `pk_on_user_tag_id_user_id` primary key(`id`,`user_id`);
 create table `user` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(254) NOT NULL,`last_name` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`password` VARCHAR(254) NOT NULL);
 create unique index `idx_user_on_email_unique` on `user` (`email`);
 alter table `adviser` add constraint `fk_on_adviser_adviser_user_id` foreign key(`adviser_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
@@ -48,6 +47,7 @@ alter table `user_membership` add constraint `fk_on_user_id` foreign key(`user_i
 alter table `user_membership` add constraint `fk_on_membership_id` foreign key(`membership_id`) references `membership`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_skill` add constraint `fk_on_user_skill_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(`skill_id`) references `skill`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `user_tag` add constraint `fk_on_user_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 
 # --- !Downs
 
@@ -69,6 +69,7 @@ ALTER TABLE user_membership DROP FOREIGN KEY fk_on_user_id;
 ALTER TABLE user_membership DROP FOREIGN KEY fk_on_membership_id;
 ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_user_id;
 ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_skill_id;
+ALTER TABLE user_tag DROP FOREIGN KEY fk_on_user_tag_user_id;
 ALTER TABLE adviser DROP PRIMARY KEY;
 drop table `adviser`;
 drop table `config`;
@@ -89,7 +90,6 @@ drop table `skill`;
 drop table `user_membership`;
 ALTER TABLE user_skill DROP PRIMARY KEY;
 drop table `user_skill`;
-ALTER TABLE user_tag DROP PRIMARY KEY;
 drop table `user_tag`;
 drop table `user`;
 

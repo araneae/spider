@@ -35,5 +35,5 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
   // foreign keys and indexes
   def owner = foreignKey("fk_document_on_user_id", userId, TableQuery[Users])(_.id)
   
-  //def uniqueCode = index("idx_document_on_user_doc_filename_unique", (userId, documentType, fileName), unique = true)
+  //def uniqueFileName = index("idx_document_on_user_doc_filename_unique", (userId, documentType, fileName), unique = true)
 }

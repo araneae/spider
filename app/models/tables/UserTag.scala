@@ -25,6 +25,6 @@ class UserTags(tag: Tag) extends Table[UserTag](tag, "user_tag") {
   override def * = (id.?, userId, name) <> (UserTag.tupled, UserTag.unapply)
   
   // foreign keys and indexes
-  def pk = primaryKey("pk_on_user_tag_id_user_id", (id, userId))
+  def user = foreignKey("fk_on_user_tag_user_id", userId, TableQuery[Users])(_.id)
 
 }
