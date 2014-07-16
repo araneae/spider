@@ -8,10 +8,10 @@
       </table>
       <hr>
       <div>
-        <a ui-sref="userTagManagement">Manage tags</a>
+        <a href="" ng-show="ctrl.showUserTagManagement()"  ng-click="ctrl.goToUserTagManagement()">Manage tags</a>
       </div>
       <div>
-        <a ui-sref="database.userTagCreate">Create new tag</a>
+        <a href="" ng-click="ctrl.goToUserTagCreate()">Create new tag</a>
       </div>
       <hr>
       <div ui-view="viewTag"></div>

@@ -23,6 +23,18 @@ class UserTagCtrl
         @$log.debug "UserTagCtrl.goToTag(#{userTagId})"
         @$state.go("database.documents", {userTagId: userTagId})
 
+    goToUserTagManagement: () ->
+        @$log.debug "DatabaseCtrl.goToUserTagCreate()"
+        @$state.go("userTagManagement")
+
+    goToUserTagCreate: () ->
+        @$log.debug "DatabaseCtrl.goToUserTagCreate()"
+        @$state.go("database.userTagCreate")
+
+    showUserTagManagement: () ->
+        @$log.debug "DatabaseCtrl.showUserTagManagement()"
+        @userTags.length > 0
+
     cancel: () ->
         @$log.debug "UserTagCtrl.cancel()"
         @$state.go("database.documents")
@@ -52,5 +64,6 @@ class UserTagCtrl
               (error) =>
                   @$log.error "Unable to update tag: #{error}!"
             )
+        @$state.go("database.documents")
 
 controllersModule.controller('UserTagCtrl', UserTagCtrl)

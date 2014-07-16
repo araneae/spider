@@ -4,7 +4,6 @@ class UtilityService
 
     @headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
     @defaultConfig = { headers: @headers }
-    @data = {}
 
     constructor: (@$log) ->
         @$log.debug "constructing UtilityService"

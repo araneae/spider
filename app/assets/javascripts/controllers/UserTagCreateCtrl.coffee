@@ -10,7 +10,7 @@ class UserTagCreateCtrl
         userTag = new @UserTag(@userTag);
         userTag.$save().then( (data) =>
             @$log.debug "server returned #{data} UserTag"
-            @$state.go('database.documents')
+            @$state.go('database.documents', @$stateParams, {reload: true})
         )
 
     cancel: () ->

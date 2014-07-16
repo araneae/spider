@@ -1,5 +1,13 @@
 <div ng-controller="DatabaseCtrl as ctrl">
     <div class='col-lg-12'>
+      <div class="form-group pull-right">
+          <form ng-submit="ctrl.search()">
+            <div class="input-group">
+             <span class="input-group-addon glyphicon glyphicon-search"></span>
+            <input type="search" class='form-control' name='searchBox' id='searchBox' ng-model='ctrl.searchText'>
+            </div>
+          </form>
+      </div>
       <table class="table table-striped">
         <tr>
           <th>Name</th>

@@ -6,6 +6,7 @@ class DatabaseCtrl
         @userTagId
         @userTagId = parseInt(@$stateParams.userTagId) if @$stateParams.userTagId
         @documents = []
+        @searchText
         # load list of documents from server
         @listDocuments()
     
@@ -35,5 +36,8 @@ class DatabaseCtrl
     goToSearch: () ->
         @$log.debug "DatabaseCtrl.goToSearch()"
         @$state.go("databaseSearch")
+
+    search: () ->
+        @$log.debug "DatabaseCtrl.search()"
 
 controllersModule.controller('DatabaseCtrl', DatabaseCtrl)
