@@ -142,11 +142,19 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('databaseDocumentTag', {
-              url: '/database/documentTag/:documentId',
+          .state('database.documents.documentTag', {
+              url: '/documentTag/:documentId',
               views: {
-                "viewMain": {
+                '': {
                     templateUrl: '/assets/partials/databaseTag.html'
+                }
+              }
+          })
+          .state('database.documents.documentEdit', {
+              url: '/documentEdit/:documentId',
+              views: {
+                '': {
+                    templateUrl: '/assets/partials/databaseEdit.html'
                 }
               }
           })

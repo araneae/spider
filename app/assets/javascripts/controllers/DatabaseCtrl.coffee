@@ -27,7 +27,13 @@ class DatabaseCtrl
         @$log.debug "DatabaseCtrl.goToDocumentTag(#{documentId})"
         doc = @UtilityService.findByProperty(@documents, 'id', documentId)
         @$log.debug "found document #{doc}" if doc
-        @$state.go("databaseDocumentTag", {documentId: documentId})
+        @$state.go("database.documents.documentTag", {documentId: documentId})
+
+    goToDocumentEdit: (documentId) ->
+        @$log.debug "DatabaseCtrl.goToDocumentEdit(#{documentId})"
+        doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        @$log.debug "found document #{doc}" if doc
+        @$state.go("database.documents.documentEdit", {documentId: documentId})
 
     goToUpload: () ->
         @$log.debug "DatabaseCtrl.goToUpload()"
@@ -39,5 +45,17 @@ class DatabaseCtrl
 
     search: () ->
         @$log.debug "DatabaseCtrl.search()"
+        if (@searchText)
+          @documents = []
+          @DatabaseService.search(@searchText).then(
+            (data) =>
+                @$log.debug "Successfully returned search result #{data.length}"
+                @documents = data
+            ,
+            (error) =>
+                @$log.error "Unable to search #{@searchText}"
+            )
+        else
+          @listDocuments()
 
 controllersModule.controller('DatabaseCtrl', DatabaseCtrl)

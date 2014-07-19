@@ -20,18 +20,20 @@
           <td>{{document.description}}</td>
           <td>{{document.fileName}}</td>
           <td><a href="">Share</a> / 
-            <a href="">Edit</a> / 
+            <a href="" ng-click="ctrl.goToDocumentEdit(document.id)">Edit</a> / 
             <a target="_self" href="" download="test.doc">Download</a> /
             <a href="">X-Ray</a> / 
             <a href="" ng-click="ctrl.goToDocumentTag(document.id)">Tag</a>
           </td>
         </tr>
       </table>
+      <hr>
       <div>
         <a href="" ng-click="ctrl.goToUpload()">Upload File</a>
         <span>|</span>
-        <a href="" ng-click="ctrl.goToSearch()">Search</a>
+        <a href="" ng-click="ctrl.goToSearch()">Advanced Search</a>
       </div>
     </div>
+    <div ui-view></div>
 </div>
 
