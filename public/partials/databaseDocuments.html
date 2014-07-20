@@ -14,18 +14,16 @@
         <tr>
           <th>Name</th>
           <th>Description</th>
-          <th>File Name</th>
-          <th></th>
+          <th class="col-md-2"></th>
         </tr>
         <tr ng-repeat="document in ctrl.documents">
-          <td>{{document.name}}</td>
+          <td><a href="" ng-click="ctrl.goToDocumentEdit(document.id)">{{document.name}}</a></td>
           <td>{{document.description}}</td>
-          <td>{{document.fileName}}</td>
-          <td><a href="">Share</a> / 
-            <a href="" ng-click="ctrl.goToDocumentEdit(document.id)">Edit</a> / 
-            <a target="_self" href="" download="test.doc">Download</a> /
-            <a href="">X-Ray</a> / 
-            <a href="" ng-click="ctrl.goToDocumentTag(document.id)">Tag</a>
+          <td> 
+            <a href="" class="glyphicon glyphicon-share"></a>
+            <a href="" class="glyphicon glyphicon-download"></a>
+            <a href="" class="glyphicon glyphicon-eye-open"></a> 
+            <a href="" class="glyphicon glyphicon-tags" ng-click="ctrl.goToDocumentTag(document.id)"></a>
           </td>
         </tr>
       </table>

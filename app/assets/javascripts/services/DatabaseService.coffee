@@ -9,7 +9,7 @@ class DatabaseService
         @$log.debug "constructing DatabaseService"
 
     upload: (selectedFile, successFn, errFn, progressFn) ->
-        @$log.debug "DatabaseService.upload()"
+        @$log.debug "DatabaseService.upload(#{selectedFile})"
         @$upload.upload({
             url: '/database/upload',
             method: 'POST',

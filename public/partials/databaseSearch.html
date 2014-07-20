@@ -24,19 +24,11 @@
         <tr>
           <th>Name</th>
           <th>Description</th>
-          <th>File Name</th>
           <th></th>
         </tr>
         <tr ng-repeat="document in ctrl.searchResults">
           <td>{{document.name}}</td>
           <td>{{document.description}}</td>
-          <td>{{document.fileName}}</td>
-          <td><a href="">Share</a> / 
-            <a href="">Edit</a> / 
-            <a target="_self" href="http://example.com/uploads/asd4a4d5a.pdf" download="test.doc">Download</a> /
-            <a href="">X-Ray</a> / 
-            <a href="">Tag</a>
-          </td>
         </tr>
       </table>
       <form class="form-inline">
