@@ -13,15 +13,8 @@ object UserRepository {
   def findByEmail(email : String) : Option[User] = {
     DB.withSession {
       implicit session =>
-        val userList = findAll()
-        userList.foreach(u => {
-            if (u.email == email) {
-              return Some(u)
-            }
-          }
-        )
+         query.filter(u => u.email.toLowerCase === email.toLowerCase).firstOption
     }
-    None
   }
   
   def find(id: Long): Option[User] = {

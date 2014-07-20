@@ -1,5 +1,5 @@
 <div ng-controller="DatabaseTagCtrl as ctrl">
-  <div>Tags for <strong>{{ctrl.document.name}}</strong></div>
+  <h3>Tags for <span class="label label-default">{{ctrl.document.name}}</span></h3>
   <table class="table table-striped">
     <tr>
       <th>Name</th>
@@ -11,11 +11,10 @@
       </td>
     </tr>
   </table>
-  <div class="form-group">
+  <div class="form-group clearfix">
     <div class="col-sm-offset-4 col-sm-8 text-right">
-        <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
+      <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+      <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
     </div>
   </div>
 </div>
-

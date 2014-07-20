@@ -7,8 +7,7 @@ class DatabaseTagCtrl
         @documentTags = []
         @userTags = []
         @document = {}
-        @promiseDocumentTags = {}
-        @promiseUserTags = {}
+        @promises = []
         @docTags = []
         # load objects from server
         @loadDocument(@documentId)
@@ -19,8 +18,9 @@ class DatabaseTagCtrl
     listDocumentTags: (documentId) ->
         @$log.debug "DatabaseTagCtrl.listDocumentTags()"
         delay = @$q.defer()
-        @promiseDocumentTags = @DocumentTag.query({documentId: documentId}).$promise
-        @promiseDocumentTags.then(
+        docTags = @DocumentTag.query({documentId: documentId}).$promise
+        @promises.push(docTags)
+        docTags.then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} document tags"
                 @documentTags = data
@@ -44,8 +44,9 @@ class DatabaseTagCtrl
     loadUserTags: () ->
         @$log.debug "DatabaseTagCtrl.loadUserTags()"
         delay = @$q.defer()
-        @promiseUserTags = @UserTag.query().$promise
-        @promiseUserTags.then(
+        userTags = @UserTag.query().$promise
+        @promises.push(userTags)
+        userTags.then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} tags"
                 @userTags = data
@@ -56,7 +57,8 @@ class DatabaseTagCtrl
 
     joinAll: () ->
         @$log.debug "DatabaseTagCtrl.joinAll()"
-        Promise.all([@promiseDocumentTags, @promiseUserTags]).then(
+        #Promise.all(@promises).then(
+        @$q.all(@promises).then(
             () =>
                  @$log.debug "returned by all promises"
                  for tag in @userTags
@@ -68,7 +70,7 @@ class DatabaseTagCtrl
                       obj["isTagged"] = isTagged
                       @docTags.push(obj)
                  # update scope to refresh ui
-                 @$scope.$apply()
+                 #@$scope.$apply()
            ,
            () =>
                 @$log.debug "one of the promise failed"

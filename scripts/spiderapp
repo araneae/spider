@@ -1,0 +1,65 @@
+#!/bin/sh
+### BEGIN INIT INFO
+## END INIT INFO
+ 
+# Path to play install folder
+PLAY_HOME=/usr/lib/play-2.2.3
+PLAY=$PLAY_HOME/play
+ 
+# Path to the JVM
+JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+export JAVA_HOME
+ 
+# User running the Play process
+USER=www-data
+ 
+# Path to the application
+APPLICATION_PATH=/usr/lib/spider-app
+ 
+. /lib/lsb/init-functions
+ 
+case "$1" in
+    start)
+        echo -n "Starting Play service: "
+        rm -f ${APPLICATION_PATH}/server.pid    
+        #su $USER -c "${PLAY} start ${APPLICATION_PATH} --%production >/dev/null"
+        cd ${APPLICATION_PATH}
+        su $USER -c "${PLAY} start --%production >/dev/null"
+        RETVAL=$?
+ 
+        # You may want to start more applications as follows
+        # [ $RETVAL -eq 0 ] && su $USER -c "${PLAY} start application2"
+        # RETVAL=$?
+ 
+        if [ $RETVAL -eq 0 ]; then
+            log_end_msg 0
+        else
+            log_end_msg 1
+        fi  
+        ;;  
+    stop)
+        echo -n "Shutting down Play service: "
+        #${PLAY} stop ${APPLICATION_PATH} > /dev/null
+        cd ${APPLICATION_PATH}
+        ${PLAY} stop > /dev/null
+        # ${PLAY} stop application2 > /dev/null
+ 
+        RETVAL=$?
+ 
+        if [ $RETVAL -eq 0 ]; then
+            log_end_msg 0
+        else
+            log_end_msg 1
+        fi
+        ;;
+    status)
+        ${PLAY} status ${APPLICATION_PATH}
+        RETVAL=$?
+        ;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|status}" >&2
+        exit 1
+        ;;
+esac
+ 
+exit 0
