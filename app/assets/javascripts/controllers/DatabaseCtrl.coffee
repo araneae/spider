@@ -25,15 +25,21 @@ class DatabaseCtrl
 
     goToDocumentTag: (documentId) ->
         @$log.debug "DatabaseCtrl.goToDocumentTag(#{documentId})"
-        doc = @UtilityService.findByProperty(@documents, 'id', documentId)
-        @$log.debug "found document #{doc}" if doc
+        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentTag", {documentId: documentId})
 
     goToDocumentEdit: (documentId) ->
         @$log.debug "DatabaseCtrl.goToDocumentEdit(#{documentId})"
-        doc = @UtilityService.findByProperty(@documents, 'id', documentId)
-        @$log.debug "found document #{doc}" if doc
+        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentEdit", {documentId: documentId})
+
+    goToXRay: (documentId) ->
+        @$log.debug "DatabaseCtrl.goToXRay(#{documentId})"
+        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #@$log.debug "found document #{doc}" if doc
+        @$state.go("database.documents.documentXRay", {documentId: documentId})
 
     goToUpload: () ->
         @$log.debug "DatabaseCtrl.goToUpload()"
@@ -57,5 +63,6 @@ class DatabaseCtrl
             )
         else
           @listDocuments()
+
 
 controllersModule.controller('DatabaseCtrl', DatabaseCtrl)

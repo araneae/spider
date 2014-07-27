@@ -102,6 +102,8 @@ DELETE /database/document/:id                                   controllers.Data
 
 GET    /database/search/:searchText                             controllers.DatabaseController.search(searchText: String)
 
+GET    /database/document/:id/search/:searchText                controllers.DatabaseController.searchDocument(id: Long, searchText: String)
+
 # UserTag specific routes
 POST   /userTag                                                 controllers.UserTagController.create
 

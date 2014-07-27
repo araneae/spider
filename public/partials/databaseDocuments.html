@@ -4,8 +4,8 @@
         <div class="form-group">
           <form ng-submit="ctrl.search()">
             <div class="input-group">
-             <span class="input-group-addon glyphicon glyphicon-search"></span>
-            <input type="search" class='form-control' name='searchBox' id='searchBox' ng-model='ctrl.searchText'>
+             <span class="input-group-addon glyphicon glyphicon-search" data-placement="left" title="Search"></span>
+             <input type="search" class='form-control' name='searchBox' id='searchBox' ng-model='ctrl.searchText'>
             </div>
           </form>
        </div>
@@ -17,21 +17,21 @@
           <th class="col-md-2"></th>
         </tr>
         <tr ng-repeat="document in ctrl.documents">
-          <td><a href="" ng-click="ctrl.goToDocumentEdit(document.id)">{{document.name}}</a></td>
+          <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToDocumentEdit(document.id)">{{document.name}}</a></td>
           <td>{{document.description}}</td>
           <td> 
-            <a href="" class="glyphicon glyphicon-share"></a>
-            <a href="" class="glyphicon glyphicon-download"></a>
-            <a href="" class="glyphicon glyphicon-eye-open"></a> 
-            <a href="" class="glyphicon glyphicon-tags" ng-click="ctrl.goToDocumentTag(document.id)"></a>
+            <a href="" class="glyphicon glyphicon-share" data-placement="left" title="Share"></a>
+            <a href="" class="glyphicon glyphicon-download" data-placement="left" title="Download"></a>
+            <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.id)"></a> 
+            <a href="" class="glyphicon glyphicon-tags" data-placement="left" title="Tag" ng-click="ctrl.goToDocumentTag(document.id)"></a>
           </td>
         </tr>
       </table>
       <hr>
       <div>
-        <a href="" ng-click="ctrl.goToUpload()">Upload File</a>
+        <a href="" ng-click="ctrl.goToUpload()" data-placement="left" title="Upload File">Upload File</a>
         <span>|</span>
-        <a href="" ng-click="ctrl.goToSearch()">Advanced Search</a>
+        <a href="" ng-click="ctrl.goToSearch()" data-placement="left" title="Advanced Search">Advanced Search</a>
       </div>
       <hr>
     </div>

@@ -22,6 +22,7 @@ libraryDependencies ++= Seq(
   "org.apache.lucene" % "lucene-queryparser" % "4.7.0",
   "org.apache.lucene" % "lucene-analyzers-common" % "4.7.0",
   "org.apache.lucene" % "lucene-facet" % "4.7.0",
+  "org.apache.lucene" % "lucene-highlighter" % "4.7.0",
   "com.typesafe.akka" %% "akka-testkit" % "2.1.0",
   "junit" % "junit" % "4.8.1" % "test"
 )

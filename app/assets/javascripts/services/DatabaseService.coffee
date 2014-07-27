@@ -53,6 +53,21 @@ class DatabaseService
             )
         deferred.promise
 
+    searchDocument: (id, searchText) ->
+        @$log.debug "DatabaseService.search #{id} #{searchText}"
+        deferred = @$q.defer()
+
+        @$http.get("/database/document/#{id}/search/#{searchText}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully searched - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to search - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
 servicesModule.service('DatabaseService', DatabaseService)
 
 # define the factories

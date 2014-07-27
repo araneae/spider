@@ -30,6 +30,7 @@ object DatabaseController extends Controller with Secured {
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   // create one lucene actor
+  val MESSAGE_TIMEOUT_IN_MILLIS = 5000
   val indexWriterActor = Akka.system.actorOf(Props[IndexWriterActor])
   val indexSearcherActor = Akka.system.actorOf(Props[IndexSearcherActor])
   
@@ -142,19 +143,50 @@ object DatabaseController extends Controller with Secured {
   }
 
   def search(searchText: String) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DatabaseController.search(${searchText})...")
-    println(s"in DatabaseController.search(${searchText})...")
+    logger.info(s"in DatabaseController.search(${searchText})")
+    println(s"in DatabaseController.search(${searchText})")
     
     if (searchText.length() > 0){
       AsyncResult {
-          implicit val timeout = Timeout(5000)
+          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS)
           // send message to index searcher
           val f = ask(indexSearcherActor, MessageSearch(userId, searchText)).mapTo[MessageSearchResult]
           f.map{
-               case result : MessageSearchResult => {
-                    result.documents match {
+               case MessageSearchResult(userId, documents) => {
+                    documents match {
                       case Some(list) =>
                           val text = Json.toJson(list)
+                          Ok(text).as(JSON)
+                      case None => 
+                          Ok("").as(JSON)
+                    }
+                }
+//                case Failure(failure) =>
+//                        println(s"Failrure ${failure}")
+//                        Ok("")
+          }
+      }
+    }
+    else {
+      Ok("")
+    }
+  }
+  
+  def searchDocument(id: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DatabaseController.search(${id}, ${searchText})")
+    println(s"in DatabaseController.search(${id}, ${searchText})")
+    
+    if (searchText.length() > 0){
+      AsyncResult {
+          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS)
+          // send message to index searcher
+          val f = ask(indexSearcherActor, MessageSearchWithHighlighter(userId, id, searchText)).mapTo[MessageSearchResultWithHighlighter]
+          f.map{
+               case MessageSearchResultWithHighlighter(userId, documentId, results) => {
+                    results match {
+                      case Some(list) =>
+                          val text = Json.toJson(list)
+                          println(text)
                           Ok(text).as(JSON)
                       case None => 
                           Ok("").as(JSON)

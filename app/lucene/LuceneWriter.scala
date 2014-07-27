@@ -19,6 +19,13 @@ class LuceneWriter(indexDir: String) {
   
   var writer : Option[IndexWriter] = None 
   val analyzer = new StopAnalyzer(Version.LUCENE_47)
+  val highlighterType = new FieldType()
+  highlighterType.setIndexed(true)
+  highlighterType.setOmitNorms(false)
+  highlighterType.setStored(true)
+  highlighterType.setStoreTermVectors(true)
+  highlighterType.setStoreTermVectorPositions(true)
+  highlighterType.setStoreTermVectorOffsets(true)
 
   def create() = {
     writer match {
@@ -63,7 +70,7 @@ class LuceneWriter(indexDir: String) {
                       luceneDocument.add(new StringField("fileName", doc.fileName, Field.Store.YES))
                       luceneDocument.add(new StringField("physicalName", doc.physicalName, Field.Store.YES))
                       luceneDocument.add(new StringField("description", doc.description, Field.Store.YES))
-                      luceneDocument.add(new TextField("resume", resume, Field.Store.NO))
+                      luceneDocument.add(new Field("resume", resume, highlighterType))
 
                       wr.updateDocument(new Term("id", id.toString), luceneDocument)
                       wr.commit()
@@ -73,4 +80,5 @@ class LuceneWriter(indexDir: String) {
       case None => 
     }
   }
+  
 }

@@ -2,6 +2,7 @@
 dependencies = [
 #    'ngRoute',
     'ngResource',
+    'ngSanitize',
     'ui.bootstrap',
     'ui.router',
     'angularFileUpload',
@@ -143,7 +144,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database.documents.documentTag', {
-              url: '/documentTag/:documentId',
+              url: '/document/tag/:documentId',
               views: {
                 '': {
                     templateUrl: '/assets/partials/databaseTag.html'
@@ -151,10 +152,18 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database.documents.documentEdit', {
-              url: '/documentEdit/:documentId',
+              url: '/document/edit/:documentId',
               views: {
                 '': {
                     templateUrl: '/assets/partials/databaseEdit.html'
+                }
+              }
+          })
+          .state('database.documents.documentXRay', {
+              url: '/document/xray/:documentId',
+              views: {
+                '': {
+                    templateUrl: '/assets/partials/databaseXRay.html'
                 }
               }
           })

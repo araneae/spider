@@ -10,14 +10,25 @@ import services._
 class IndexSearcherActor extends Actor {
   
   def receive = {
-      case msgSearch: MessageSearch => {
+      case MessageSearch(userId, searchText) => {
               try {
-                val userId = msgSearch.userId
-                val searchText = msgSearch.searchText
                 val searcher = getSearcher
-                val list = searcher.searchResume(userId, searchText)
+                val documents = searcher.searchInDocuments(userId, searchText)
                 searcher.close
-                sender ! MessageSearchResult(userId, list)
+                sender ! MessageSearchResult(userId, documents)
+              } catch {
+                case e: Exception =>
+                  sender ! akka.actor.Status.Failure(e)
+                  throw e
+              }
+            }
+
+      case MessageSearchWithHighlighter(userId, documentId, searchText) => {
+              try {
+                val searcher = getSearcher
+                val results = searcher.searchInDocumentWithHighlighter(userId, documentId, searchText)
+                searcher.close
+                sender ! MessageSearchResultWithHighlighter(userId, documentId, results)
               } catch {
                 case e: Exception =>
                   sender ! akka.actor.Status.Failure(e)
