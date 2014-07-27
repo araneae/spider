@@ -186,7 +186,7 @@ object DatabaseController extends Controller with Secured {
                     results match {
                       case Some(list) =>
                           val text = Json.toJson(list)
-                          println(text)
+                          //println(text)
                           Ok(text).as(JSON)
                       case None => 
                           Ok("").as(JSON)
