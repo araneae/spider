@@ -81,4 +81,14 @@ class LuceneWriter(indexDir: String) {
     }
   }
   
+  def deleteDocument(userId: Long, id: Long) = {
+    writer match {
+      case Some(wr) => {
+                  wr.deleteDocuments(new Term("id", id.toString))
+                  wr.commit()
+               }
+      case None => 
+    }
+  }
+  
 }

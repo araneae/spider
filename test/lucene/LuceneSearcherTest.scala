@@ -7,7 +7,7 @@ class LuceneSearcherTest {
 
   @Test def testFindDocuments() {
       val searcher = new LuceneSearcher("/tmp/lucene")
-      searcher.searchResume(10, "arjun")
+      searcher.searchInDocuments(10, "arjun")
       searcher.close
   }
 }

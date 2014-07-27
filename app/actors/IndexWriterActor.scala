@@ -10,15 +10,14 @@ import services._
 class IndexWriterActor extends Actor {
   
   def receive = {
-      case msgDoc: MessageDocument => {
-            val doc = msgDoc.document
-            doc.id match {
+      case MessageAddDocument(userId, document) => {
+            document.id match {
               case Some(id) => {
-                      val filePath =  Configuration.uploadFilePath(msgDoc.userId, doc.physicalName)
-                      val textData = FileParserService.parse(doc.fileType, filePath)
+                      val filePath =  Configuration.uploadFilePath(document.userId, document.physicalName)
+                      val textData = FileParserService.parse(document.fileType, filePath)
                       textData match {
                             case Some(resume) =>  val writer = getWriter
-                                                  writer.addOrUpdateDocument(doc.userId, doc, resume)
+                                                  writer.addOrUpdateDocument(document.userId, document, resume)
                                                   writer.close
                             case None =>
                           }
@@ -26,6 +25,13 @@ class IndexWriterActor extends Actor {
               case None =>
             }
           }
+      
+      case MessageDeleteDocument(userId, id) => {
+                      val writer = getWriter
+                      writer.deleteDocument(userId, id)
+                      writer.close
+          }
+      
       case _ => 
     }
   

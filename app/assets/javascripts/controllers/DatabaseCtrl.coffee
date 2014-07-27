@@ -6,6 +6,8 @@ class DatabaseCtrl
         @userTagId
         @userTagId = parseInt(@$stateParams.userTagId) if @$stateParams.userTagId
         @documents = []
+        @removeId
+        @removeAlert = false
         @searchText
         # load list of documents from server
         @listDocuments()
@@ -48,6 +50,28 @@ class DatabaseCtrl
     goToSearch: () ->
         @$log.debug "DatabaseCtrl.goToSearch()"
         @$state.go("databaseSearch")
+
+    showRemoveAlert: (id) ->
+        @$log.debug "DatabaseCtrl.showRemoveAlert(#{id})"
+        @removeId = id
+        @removeAlert = true
+
+    cancelRemove: () ->
+        @$log.debug "DatabaseCtrl.cancelRemove()"
+        @removeAlert = false
+        @removeId
+
+    remove: () ->
+        @$log.debug "DatabaseCtrl.remove()"
+        @removeAlert = false
+        @Document.remove({id: @removeId}).$promise.then(
+            (data) =>
+                @$log.debug "Successfully deleted document!"
+                @listDocuments()
+            ,
+            (error) =>
+                @$log.error "Unable to delete document: #{error}!"
+            )
 
     search: () ->
         @$log.debug "DatabaseCtrl.search()"

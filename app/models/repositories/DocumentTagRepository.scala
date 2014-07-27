@@ -62,5 +62,13 @@ object DocumentTagRepository {
                              d.userTagId === userTagId).delete
     }
   }
+  
+  def deleteByDocumentId(userId: Long, documentId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+          query.filter( d => d.userId === userId &&
+                             d.documentId === documentId).delete
+    }
+  }
 }
 

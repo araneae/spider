@@ -32,9 +32,9 @@ create unique index `idx_user_on_email_unique` on `user` (`email`);
 alter table `adviser` add constraint `fk_on_adviser_adviser_user_id` foreign key(`adviser_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `contact` add constraint `fk_on_contact_contact_user_id` foreign key(`contact_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document_search` add constraint `fk_on_document_search_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
-alter table `document_tag` add constraint `fk_on_document_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_on_document_tag_tag_id` foreign key(`user_tag_id`) references `user_tag`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_on_document_tag_document_id` foreign key(`document_id`) references `document`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `document_tag` add constraint `fk_on_document_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `document` add constraint `fk_document_on_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `domain` add constraint `fk_on_skill_industry_id` foreign key(`industry_id`) references `industry`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `message_box` add constraint `fk_on_message_box_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
@@ -45,8 +45,8 @@ alter table `message` add constraint `fk_on_message_sender_id` foreign key(`send
 alter table `skill` add constraint `fk_skill_on_industry_id` foreign key(`industry_id`) references `industry`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_membership` add constraint `fk_on_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_membership` add constraint `fk_on_membership_id` foreign key(`membership_id`) references `membership`(`id`) on update NO ACTION on delete NO ACTION;
-alter table `user_skill` add constraint `fk_on_user_skill_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(`skill_id`) references `skill`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `user_skill` add constraint `fk_on_user_skill_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_tag` add constraint `fk_on_user_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 
 # --- !Downs
@@ -54,9 +54,9 @@ alter table `user_tag` add constraint `fk_on_user_tag_user_id` foreign key(`user
 ALTER TABLE adviser DROP FOREIGN KEY fk_on_adviser_adviser_user_id;
 ALTER TABLE contact DROP FOREIGN KEY fk_on_contact_contact_user_id;
 ALTER TABLE document_search DROP FOREIGN KEY fk_on_document_search_user_id;
-ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_user_id;
 ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_tag_id;
 ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_document_id;
+ALTER TABLE document_tag DROP FOREIGN KEY fk_on_document_tag_user_id;
 ALTER TABLE document DROP FOREIGN KEY fk_document_on_user_id;
 ALTER TABLE domain DROP FOREIGN KEY fk_on_skill_industry_id;
 ALTER TABLE message_box DROP FOREIGN KEY fk_on_message_box_user_id;
@@ -67,8 +67,8 @@ ALTER TABLE message DROP FOREIGN KEY fk_on_message_sender_id;
 ALTER TABLE skill DROP FOREIGN KEY fk_skill_on_industry_id;
 ALTER TABLE user_membership DROP FOREIGN KEY fk_on_user_id;
 ALTER TABLE user_membership DROP FOREIGN KEY fk_on_membership_id;
-ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_user_id;
 ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_skill_id;
+ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_user_id;
 ALTER TABLE user_tag DROP FOREIGN KEY fk_on_user_tag_user_id;
 ALTER TABLE adviser DROP PRIMARY KEY;
 drop table `adviser`;

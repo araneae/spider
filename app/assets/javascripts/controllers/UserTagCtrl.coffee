@@ -24,15 +24,15 @@ class UserTagCtrl
         @$state.go("database.documents", {userTagId: userTagId})
 
     goToUserTagManagement: () ->
-        @$log.debug "DatabaseCtrl.goToUserTagCreate()"
+        @$log.debug "UserTagCtrl.goToUserTagCreate()"
         @$state.go("userTagManagement")
 
     goToUserTagCreate: () ->
-        @$log.debug "DatabaseCtrl.goToUserTagCreate()"
+        @$log.debug "UserTagCtrl.goToUserTagCreate()"
         @$state.go("database.userTagCreate")
 
     showUserTagManagement: () ->
-        @$log.debug "DatabaseCtrl.showUserTagManagement()"
+        @$log.debug "UserTagCtrl.showUserTagManagement()"
         @userTags.length > 0
 
     cancel: () ->

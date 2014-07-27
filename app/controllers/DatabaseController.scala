@@ -112,7 +112,7 @@ object DatabaseController extends Controller with Secured {
                       val savedDocument = DocumentRepository.find(id)
                       // add the document in the lucene index
                       savedDocument match {
-                        case Some(doc) => indexWriterActor ! MessageDocument(userId, doc)
+                        case Some(doc) => indexWriterActor ! MessageAddDocument(userId, doc)
                         case None =>
                       }
                       Ok(HttpResponseUtil.success()).as(JSON)
@@ -204,6 +204,28 @@ object DatabaseController extends Controller with Secured {
   }
   
   def delete(id: Long) = IsAuthenticated{ username => implicit request =>
-    Ok("")
+    logger.info(s"in DatabaseController.delete(${id})")
+    println(s"in DatabaseController.delete(${id})")
+    // find document object from database
+    val document = DocumentRepository.find(id)
+    document match {
+      case Some(doc) =>
+                    // delete the file from disk
+                    val filePath = Configuration.uploadFilePath(userId, doc.physicalName)
+                    FileUtil.delete(filePath)
+                    
+                    //delete from the index
+                    indexWriterActor ! MessageDeleteDocument(userId, id)
+                    
+                    // delete all the tags
+                    DocumentTagRepository.deleteByDocumentId(userId, id)
+                    
+                    // delete the database entry
+                    DocumentRepository.delete(id)
+                    
+                    Ok(HttpResponseUtil.success("Successfully deleted!"))
+      case None => 
+                    BadRequest(HttpResponseUtil.error("Unable to find document!"))
+    }
   }
 }
