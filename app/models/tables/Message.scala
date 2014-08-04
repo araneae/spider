@@ -10,20 +10,22 @@ import models.dtos._
 
 class Messages(tag: Tag) extends Table[Message](tag, "message") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def messageId = column[Long]("message_id", O.PrimaryKey, O.AutoInc)
   
-  def messageId = column[Long]("message_id", O.Nullable)
+  def parentMessageId = column[Long]("parent_message_id", O.Nullable)
   
-  def senderId = column[Long]("sender_id", O.Nullable)
+  def senderUserId = column[Long]("sender_user_id", O.NotNull)
   
-  def subject = column[String]("subject", O.Nullable)
+  def editable = column[Boolean]("editable", O.NotNull, O.Default(true))
+  
+  def subject = column[String]("subject", O.NotNull)
   
   def body = column[String]("body", O.Nullable)
   
-  override def * = (id.?, messageId.?, senderId.?, subject.?, body.?) <> (Message.tupled, Message.unapply)
+  override def * = (messageId.?, parentMessageId.?, senderUserId, editable, subject, body.?) <> (Message.tupled, Message.unapply)
   
   // foreign keys and indexes
-  def sender = foreignKey("fk_on_message_sender_id", senderId, TableQuery[Users])(_.id)
+  def sender = foreignKey("fk_on_message_sender_user_id", senderUserId, TableQuery[Users])(_.id)
   
-  def message = foreignKey("fk_on_message_message_id", senderId, TableQuery[Messages])(_.id)
+  def parentMessage = foreignKey("fk_on_message_message_id", parentMessageId, TableQuery[Messages])(_.messageId)
 }

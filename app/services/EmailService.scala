@@ -17,7 +17,7 @@ object EmailService {
        mail.setSubject(s"Hello ${receiver.firstName}")
        mail.addRecipient(receiver.email)
        mail.addFrom("Spider App <noreply@spider.com>")
-       mail.sendHtml(content.body)
+//       mail.sendHtml(content.body)
      }
      
      def inviteAdviser(receiver: User, senderName:String, token: String, applicationBaseUrl: String) = {
@@ -27,6 +27,6 @@ object EmailService {
        mail.setSubject(s"Hello ${receiver.firstName}")
        mail.addRecipient(receiver.email)
        mail.addFrom("Spider App <noreply@spider.com>")
-       mail.sendHtml(content.body)
+//       mail.sendHtml(content.body)
      }
 }

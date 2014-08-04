@@ -131,5 +131,10 @@ PUT    /database/documentSearch/:id                             controllers.Docu
 
 DELETE /database/documentSearch/:id                             controllers.DocumentSearchController.delete(id: Int)
 
+# Share related routes
+GET   /connection/inNetwork                                     controllers.ConnectionController.getInNetwrokConnections
+
+POST  /connection/inNetwork/:documentId                         controllers.ConnectionController.shareInNetwrokConnections(documentId: Int)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                           controllers.Assets.at(path="/public", file)

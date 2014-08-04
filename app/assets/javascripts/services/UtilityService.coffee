@@ -26,5 +26,11 @@ class UtilityService
         for prop, value of obj
           empty = false
       empty
-      
+  
+    isArrayEmpty: (obj) ->
+      empty = true
+      if (obj)
+          empty = obj.length is 0
+      empty
+
 servicesModule.service('UtilityService', UtilityService)

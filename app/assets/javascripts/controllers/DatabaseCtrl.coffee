@@ -43,6 +43,12 @@ class DatabaseCtrl
         #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentXRay", {documentId: documentId})
 
+    goToShare: (documentId) ->
+        @$log.debug "DatabaseCtrl.goToShare(#{documentId})"
+        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #@$log.debug "found document #{doc}" if doc
+        @$state.go("database.documents.documentShare", {documentId: documentId})
+
     goToUpload: () ->
         @$log.debug "DatabaseCtrl.goToUpload()"
         @$state.go("databaseUpload")

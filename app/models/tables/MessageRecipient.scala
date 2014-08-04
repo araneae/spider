@@ -14,13 +14,15 @@ class MessageRecipients(tag: Tag) extends Table[MessageRecipient](tag, "message_
   
   def messageId = column[Long]("message_id", O.NotNull)
   
-  override def * = (userId, messageId) <> (MessageRecipient.tupled, MessageRecipient.unapply)
+  def read = column[Boolean]("read", O.NotNull)
+  
+  override def * = (userId, messageId, read) <> (MessageRecipient.tupled, MessageRecipient.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_message_recipient", (userId, messageId))
   
   def recipient = foreignKey("fk_on_message_recipient_user_id", userId, TableQuery[Users])(_.id)
   
-  def message = foreignKey("fk_on_message_recipient_message_id", messageId, TableQuery[Messages])(_.id)
+  def message = foreignKey("fk_on_message_recipient_message_id", messageId, TableQuery[Messages])(_.messageId)
   
 }

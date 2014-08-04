@@ -22,5 +22,5 @@ class Contacts(tag: Tag) extends Table[Contact](tag, "contact") {
   // foreign keys and indexes
   def pk = primaryKey("pk_on_contact_user_id_contact_user_id", (userId, contactUserId))
   
-  def adviser = foreignKey("fk_on_contact_contact_user_id", contactUserId, TableQuery[Users])(_.id)
+  def contact = foreignKey("fk_on_contact_contact_user_id", contactUserId, TableQuery[Users])(_.id)
 }

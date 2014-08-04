@@ -14,5 +14,7 @@ object Configuration {
   
   def uploadFilePath(userId: Long, fileName: String) = s"${basePath}/${userId}/${fileName}"
   
+  def uploadPath(userId: Long) = s"${basePath}/${userId}"
+  
   def luceneIndexPath = lucenePath
 }

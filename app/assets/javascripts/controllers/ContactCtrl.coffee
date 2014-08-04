@@ -34,7 +34,14 @@ class ContactCtrl
 
     invite: () ->
       @$log.debug "ContactCtrl.invite()"
-      @Contact.save({contactUserId: @searchResult.id})
+      @Contact.save({contactUserId: @searchResult.id}).$promise.then(
+          (data) =>
+            @$log.debug "Successfully invited #{data}"
+            @listContacts()
+         ,
+         (error) =>
+            @$log.error "Unable to invite #{@searchText}"
+      )
 
     showSearchResult: () ->
         @searchResult.id

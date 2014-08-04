@@ -45,17 +45,17 @@ object ContactController extends Controller with Secured {
             { // update token
                 ContactRepository.updateToken(userId, contactUserId, token)
                 EmailService.inviteContact(contactUser, name, token, Configuration.applicationBaseUrl)
-                Ok("Updated")
+                Ok(HttpResponseUtil.success("Successfully invited!"))
             }
             else
-              Ok("Ignored")
+              Ok(HttpResponseUtil.success("Ignored, already in connection!"))
         }
         .getOrElse{
             val myNewContact = Contact(userId, contactUserId, ContactStatus.PENDING, Some(token))
             ContactRepository.create(myNewContact)
             // send invitation email (should be used Actor)
             EmailService.inviteContact(contactUser, name, token, Configuration.applicationBaseUrl)
-            Ok("Created")
+            Ok(HttpResponseUtil.success("Successfully invited!"))
         }
       }
       .getOrElse(NotFound)
@@ -65,7 +65,7 @@ object ContactController extends Controller with Secured {
       logger.info("in ContactController.delete...")
       println("in ContactController.delete...")
       ContactRepository.delete(userId, contactUserId);
-      Ok("Deleted")
+      Ok(HttpResponseUtil.success("Successfully deleted!"))
   }
   
   def search(email: String) = IsAuthenticated{ username => implicit request =>

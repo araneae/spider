@@ -30,7 +30,7 @@ object ContactRepository {
       implicit session =>
         val q = for {
             c <- query.filter(_.userId === userId)
-            a <- c.adviser
+            a <- c.contact
         } yield (c.userId, c.contactUserId, a.firstName, a.lastName, a.email)
          
         q.list.map{case (userId, contactUserId, firstName, lastName, email) 

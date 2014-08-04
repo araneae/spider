@@ -68,6 +68,34 @@ class DatabaseService
             )
         deferred.promise
 
+    getInNetworkConnections: () ->
+        @$log.debug "DatabaseService.getInNetworkConnections"
+        deferred = @$q.defer()
+        @$http.get("/connection/inNetwork")
+        .success((data, status, headers) =>
+                @$log.info("Successfully fetched in-network connections - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to fetch in-network connections - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
+    shareInNetworkConnections: (documentId, share) ->
+        @$log.debug "DatabaseService.shareInNetworkConnections"
+        deferred = @$q.defer()
+        @$http.post("/connection/inNetwork/#{documentId}", share)
+        .success((data, status, headers) =>
+                @$log.info("Successfully shared in-network connections - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to share in-network connections - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
 servicesModule.service('DatabaseService', DatabaseService)
 
 # define the factories

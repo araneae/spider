@@ -5,6 +5,7 @@ dependencies = [
     'ngSanitize',
     'ui.bootstrap',
     'ui.router',
+    'ui.select2',
     'angularFileUpload',
     'myApp.filters',
     'myApp.services',
@@ -164,6 +165,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 '': {
                     templateUrl: '/assets/partials/databaseXRay.html'
+                }
+              }
+          })
+          .state('database.documents.documentShare', {
+              url: '/document/share/:documentId',
+              views: {
+                '': {
+                    templateUrl: '/assets/partials/databaseShare.html'
                 }
               }
           })

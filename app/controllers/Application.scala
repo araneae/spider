@@ -14,6 +14,7 @@ import play.api.mvc.Controller
 import models.repositories.UserRepository
 import traits.Secured
 import play.api.mvc.Flash
+import models.repositories._
 
 object Application extends Controller with Secured {
   
@@ -67,7 +68,9 @@ object Application extends Controller with Secured {
                   case None => {
                       val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                       val user = User(None, first_name, last_name, email, encryptedPassword)
-                      UserRepository create user
+                      val userId = UserRepository create user
+                      // create default message boxes
+                      MessageBoxRepository.createDefaults(userId)
                       Redirect(routes.AuthController.login)
                   }
                 }
