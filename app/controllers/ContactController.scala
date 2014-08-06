@@ -15,6 +15,7 @@ import models.dtos._
 object ContactController extends Controller with Secured {
   
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  private final val BLANK = ""
   
   def getAll = IsAuthenticated{ username => implicit request =>
       logger.info("in ContactController.get...")
@@ -72,7 +73,15 @@ object ContactController extends Controller with Secured {
       logger.info("in ContactController.search...")
       println("in ContactController.search...")
       val user = UserRepository.findByEmail(email);
-      Ok(Json.toJson(user)).as(JSON)
+      user match {
+        case Some(u) =>
+                  val safeUser = User(Some(u.id.get), u.firstName, u.lastName, u.email, BLANK)
+                  val list = List(safeUser)
+                  val text = Json.toJson(list)
+                  Ok(text).as(JSON)
+        case None => // empty result
+                 Ok(BLANK)
+      }
   }
   
   def accept(token: String) = IsAuthenticated{ username => implicit request =>

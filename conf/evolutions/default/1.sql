@@ -22,7 +22,7 @@ create unique index `idx_unique_on_message_box_type` on `message_box` (`user_id`
 create table `message_recipient` (`user_id` BIGINT NOT NULL,`message_id` BIGINT NOT NULL,`read` BOOLEAN NOT NULL);
 alter table `message_recipient` add constraint `pk_on_message_recipient` primary key(`user_id`,`message_id`);
 create table `message` (`message_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`parent_message_id` BIGINT,`sender_user_id` BIGINT NOT NULL,`editable` BOOLEAN DEFAULT true NOT NULL,`subject` VARCHAR(254) NOT NULL,`body` VARCHAR(254));
-create table `shared_document` (`user_id` BIGINT NOT NULL,`document_id` BIGINT NOT NULL,`can_copy` BOOLEAN DEFAULT false NOT NULL);
+create table `shared_document` (`user_id` BIGINT NOT NULL,`document_id` BIGINT NOT NULL,`shared_user_id` BIGINT NOT NULL,`can_copy` BOOLEAN DEFAULT false NOT NULL);
 alter table `shared_document` add constraint `pk_on_shared_document` primary key(`user_id`,`document_id`);
 create table `skill` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`industry_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`code` VARCHAR(254) NOT NULL,`description` VARCHAR(254));
 create unique index `idx_skill_on_code_unique` on `skill` (`code`);
@@ -48,6 +48,7 @@ alter table `message_recipient` add constraint `fk_on_message_recipient_user_id`
 alter table `message` add constraint `fk_on_message_sender_user_id` foreign key(`sender_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `message` add constraint `fk_on_message_message_id` foreign key(`parent_message_id`) references `message`(`message_id`) on update NO ACTION on delete NO ACTION;
 alter table `shared_document` add constraint `fk_shared_document_on_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `shared_document` add constraint `fk_shared_document_on_shared_user_id` foreign key(`shared_user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `shared_document` add constraint `fk_shared_document_on_document_id` foreign key(`document_id`) references `document`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `skill` add constraint `fk_skill_on_industry_id` foreign key(`industry_id`) references `industry`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_membership` add constraint `fk_on_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
@@ -55,8 +56,8 @@ alter table `user_membership` add constraint `fk_on_membership_id` foreign key(`
 alter table `user_message` add constraint `fk_on_user_message_message_id` foreign key(`message_id`) references `message`(`message_id`) on update NO ACTION on delete NO ACTION;
 alter table `user_message` add constraint `fk_on_user_message_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_message` add constraint `fk_on_user_message_message_box_id` foreign key(`message_box_id`) references `message_box`(`message_box_id`) on update NO ACTION on delete NO ACTION;
-alter table `user_skill` add constraint `fk_on_user_skill_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_skill` add constraint `fk_on_user_skill_skill_id` foreign key(`skill_id`) references `skill`(`id`) on update NO ACTION on delete NO ACTION;
+alter table `user_skill` add constraint `fk_on_user_skill_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 alter table `user_tag` add constraint `fk_on_user_tag_user_id` foreign key(`user_id`) references `user`(`id`) on update NO ACTION on delete NO ACTION;
 
 # --- !Downs
@@ -75,6 +76,7 @@ ALTER TABLE message_recipient DROP FOREIGN KEY fk_on_message_recipient_user_id;
 ALTER TABLE message DROP FOREIGN KEY fk_on_message_sender_user_id;
 ALTER TABLE message DROP FOREIGN KEY fk_on_message_message_id;
 ALTER TABLE shared_document DROP FOREIGN KEY fk_shared_document_on_user_id;
+ALTER TABLE shared_document DROP FOREIGN KEY fk_shared_document_on_shared_user_id;
 ALTER TABLE shared_document DROP FOREIGN KEY fk_shared_document_on_document_id;
 ALTER TABLE skill DROP FOREIGN KEY fk_skill_on_industry_id;
 ALTER TABLE user_membership DROP FOREIGN KEY fk_on_user_id;
@@ -82,8 +84,8 @@ ALTER TABLE user_membership DROP FOREIGN KEY fk_on_membership_id;
 ALTER TABLE user_message DROP FOREIGN KEY fk_on_user_message_message_id;
 ALTER TABLE user_message DROP FOREIGN KEY fk_on_user_message_user_id;
 ALTER TABLE user_message DROP FOREIGN KEY fk_on_user_message_message_box_id;
-ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_user_id;
 ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_skill_id;
+ALTER TABLE user_skill DROP FOREIGN KEY fk_on_user_skill_user_id;
 ALTER TABLE user_tag DROP FOREIGN KEY fk_on_user_tag_user_id;
 ALTER TABLE adviser DROP PRIMARY KEY;
 drop table `adviser`;

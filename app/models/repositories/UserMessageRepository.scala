@@ -17,10 +17,17 @@ object UserMessageRepository {
     }
   }
   
-  def findAll(userId: Long): Seq[UserMessage] = {
+  def findAll(userId: Long): Seq[UserMessageFull] = {
     DB.withSession {
       implicit session =>
-       query.filter(_.userId === userId).list
+        val q = for {
+            um <- query.filter(a => a.userId ===  userId)
+            m <- um.message
+            s <- m.sender
+         } yield (um.messageId, um.messageBoxId, m.subject, m.body, s.firstName, um.read, um.important, um.star)
+        
+         q.list.map{case (messageId, messageBoxId, subject, body, firstName, read, important, star) 
+                => UserMessageFull(messageId, messageBoxId, subject, body, firstName, read, important, star)}
     }
   }
   
@@ -28,6 +35,34 @@ object UserMessageRepository {
     DB.withSession {
        implicit session: Session =>
          query filter(m => m.userId === userMessage.userId && m.messageId === userMessage.messageId) update userMessage 
+    }
+  }
+  
+  def markStar(messageId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(m => m.messageId === messageId) map(m => m.star) update(true) 
+    }
+  }
+  
+  def removeStar(messageId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(m => m.messageId === messageId) map(m => m.star) update(false) 
+    }
+  }
+  
+  def markImportant(messageId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(m => m.messageId === messageId) map(m => m.important) update(true) 
+    }
+  }
+  
+  def removeImportant(messageId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(m => m.messageId === messageId) map(m => m.important) update(false) 
     }
   }
   

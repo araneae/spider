@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <div ng-controller="SharedDatabaseCtrl as ctrl">
+      <table class="table table-striped">
+        <tr>
+          <th>Name</th>
+          <th>Shared By</th>
+          <th class="col-md-2"></th>
+        </tr>
+        <tr ng-repeat="document in ctrl.documents">
+          <td>{{document.name}}</td>
+          <td>{{document.sharedBy}}</td>
+          <td> 
+            <a href="" class="glyphicon glyphicon-share" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.id)"></a>
+            <a href="" class="glyphicon glyphicon-save" data-placement="left" title="Copy" ng-click="ctrl.makeCopy(document.id)"></a>
+            <a href="" class="glyphicon glyphicon-remove-circle" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(document.id)"></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+

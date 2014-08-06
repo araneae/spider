@@ -136,5 +136,25 @@ GET   /connection/inNetwork                                     controllers.Conn
 
 POST  /connection/inNetwork/:documentId                         controllers.ConnectionController.shareInNetwrokConnections(documentId: Int)
 
+# Shared Database specific routes
+GET   /database/shared/document                                controllers.SharedDatabaseController.getAll
+
+# UserTag specific routes
+POST   /message                                                 controllers.MessageController.create
+
+GET    /message/:messageId                                      controllers.MessageController.get(messageId: Int)
+
+GET    /message                                                 controllers.MessageController.getAll
+
+DELETE /message/:messageId                                      controllers.MessageController.delete(messageId: Int)
+
+GET    /message/star/mark/:messageId                            controllers.MessageController.markStar(messageId: Int)
+
+GET    /message/star/remove/:messageId                          controllers.MessageController.removeStar(messageId: Int)
+
+GET    /message/important/mark/:messageId                       controllers.MessageController.markImportant(messageId: Int)
+
+GET    /message/important/remove/:messageId                     controllers.MessageController.removeImportant(messageId: Int)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                           controllers.Assets.at(path="/public", file)

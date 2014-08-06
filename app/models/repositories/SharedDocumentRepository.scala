@@ -18,6 +18,21 @@ object SharedDocumentRepository {
     }
   }
   
+  def findAll(userId: Long): Seq[SharedDocumentFull] = {
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+              sd <- query.filter(_.userId === userId)
+              d  <- sd.document
+              u  <- sd.sharedBy
+          } 
+          yield (sd.documentId, d.name, u.firstName, sd.canCopy)
+         
+          q.list.map{case (documentId, name, sharedBy, canCopy) 
+                 => SharedDocumentFull(documentId, name, sharedBy, canCopy)}
+    }
+  }
+  
   def udate(sharedDocument: SharedDocument) = {
     DB.withSession {
        implicit session: Session =>

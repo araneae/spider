@@ -16,7 +16,8 @@ import models.dtos._
 object AdviserController extends Controller with Secured {
   
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
-  
+  private final val BLANK = ""
+    
   val applicationBaseUrl = Play.current.configuration.getString("application.baseUrl").getOrElse("http://localhost:9000")
   
   def getAll = IsAuthenticated{ username => implicit request =>
@@ -75,7 +76,15 @@ object AdviserController extends Controller with Secured {
       logger.info("in search...")
       println("in search...")
       val user = UserRepository.findByEmail(email);
-      Ok(Json.toJson(user)).as(JSON)
+      user match {
+        case Some(u) =>
+                  val safeUser = User(Some(u.id.get), u.firstName, u.lastName, u.email, BLANK)
+                  val list = List(safeUser)
+                  val text = Json.toJson(list)
+                  Ok(text).as(JSON)
+        case None => // empty result
+                 Ok(BLANK)
+      }
   }
   
   def accept(token: String) = IsAuthenticated{ username => implicit request =>

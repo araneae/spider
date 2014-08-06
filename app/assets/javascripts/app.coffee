@@ -111,10 +111,19 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database.documents', {
+             # child of 'database' state
               url: '',
               views: {
                 "viewDocument": {
                     templateUrl: '/assets/partials/databaseDocuments.html'
+                }
+              }
+          })
+          .state('sharedDatabase', {
+              url: '/database/shared',
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/sharedDatabase.html'
                 }
               }
           })
@@ -181,6 +190,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/userTagManagement.html'
+                }
+              }
+          })
+          .state('messages', {
+              url: '/message',
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/message.html'
                 }
               }
           })

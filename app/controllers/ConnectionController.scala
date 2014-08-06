@@ -75,7 +75,7 @@ object ConnectionController extends Controller with Secured {
                                                       UserMessageRepository.create(userMessage)
                                                       
                                                       // create shared link
-                                                      val sharedDoc = SharedDocument(connection.id, documentId, share.canEdit)
+                                                      val sharedDoc = SharedDocument(connection.id, documentId, userId, share.canEdit)
                                                       SharedDocumentRepository.create(sharedDoc)
 //                                                      // copy the document
 //                                                      // find the document
