@@ -33,6 +33,14 @@ object SharedDocumentRepository {
     }
   }
   
+  
+  def find(userId: Long, documentId: Long): Option[SharedDocument] = {
+    DB.withSession {
+       implicit session: Session =>
+          query.filter(d => d.userId === userId && d.documentId === documentId).firstOption
+    }
+  }
+  
   def udate(sharedDocument: SharedDocument) = {
     DB.withSession {
        implicit session: Session =>

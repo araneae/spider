@@ -13,7 +13,7 @@ servicesModule.service('SharedDatabaseService', SharedDatabaseService)
 # define the factories
 #
 servicesModule.factory('SharedDocument', ['$resource', ($resource) -> 
-              $resource('/database/shared/document/:id', {id: '@id'}, 
+              $resource('/database/shared/document/:documentId', {documentId: '@documentId'}, 
                         { 
                           'update': {method: 'PUT'}
                         }
