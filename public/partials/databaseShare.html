@@ -18,11 +18,20 @@
         <div class="col-sm-4">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="ctrl.share.canEdit"> Can Edit
+              <input type="checkbox" ng-model="ctrl.share.canCopy"> Can Copy
             </label>
           </div>
         </div>
-      </div> 
+      </div>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="ctrl.share.canShare"> Can Share
+            </label>
+          </div>
+        </div>
+      </div>
       <pre>{{ ctrl.share | json }}</pre>
       <div class="form-group">
           <div class="col-sm-offset-4 col-sm-8 text-right">

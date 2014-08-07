@@ -19,10 +19,10 @@ object MessageBoxRepository {
   }
   
   def createDefaults(userId: Long) = {
-    MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Inbox"))
+    MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Messages"))
     MessageBoxRepository.create(MessageBox(None, userId, DRAFT, "Draft"))
     MessageBoxRepository.create(MessageBox(None, userId, OUTBOX, "Outbox"))
-    MessageBoxRepository.create(MessageBox(None, userId, SENTITEMS, "Sent Items")) 
+    MessageBoxRepository.create(MessageBox(None, userId, SENTITEMS, "Sent")) 
     MessageBoxRepository.create(MessageBox(None, userId, TRASH, "Trash")) 
   }
   
@@ -57,6 +57,13 @@ object MessageBoxRepository {
     DB.withSession {
       implicit session =>
        query.filter(_.messageBoxId === messageBoxId) firstOption
+    }
+  }
+  
+  def findAll(userId: Long): Seq[MessageBox] = {
+    DB.withSession {
+      implicit session =>
+       query.filter(_.userId === userId) list
     }
   }
   

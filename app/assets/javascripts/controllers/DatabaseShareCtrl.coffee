@@ -6,7 +6,8 @@ class DatabaseShareCtrl
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
         @share = {}
-        @share.canEdit = false
+        @share.canCopy = true
+        @share.canShare = true
         @connections = []
         @select2Options = {
            data : @connections,

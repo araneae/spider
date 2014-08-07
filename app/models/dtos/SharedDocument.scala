@@ -13,22 +13,25 @@ case class SharedDocument(
                    userId: Long,
                    documentId: Long,
                    sharedUserId: Long,
-                   canCopy: Boolean
+                   canCopy: Boolean,
+                   canShare: Boolean
                    )
 
-object SharedDocument extends Function4[Long, Long, Long, Boolean, SharedDocument]
+object SharedDocument extends Function5[Long, Long, Long, Boolean, Boolean, SharedDocument]
 {
     implicit val documentWrites : Writes[SharedDocument] = (
             (JsPath \ "userId").write[Long] and
             (JsPath \ "documentId").write[Long] and
             (JsPath \ "sharedUserId").write[Long] and
-            (JsPath \ "canCopy").write[Boolean]
+            (JsPath \ "canCopy").write[Boolean] and
+            (JsPath \ "canShare").write[Boolean]
     )(unlift(SharedDocument.unapply))
 
     implicit val documentReads : Reads[SharedDocument] = (
           (JsPath \ "userId").read[Long] and
           (JsPath \ "documentId").read[Long] and
           (JsPath \ "sharedUserId").read[Long] and
-          (JsPath \ "canCopy").read[Boolean]
+          (JsPath \ "canCopy").read[Boolean] and
+          (JsPath \ "canShare").read[Boolean]
     )(SharedDocument)
 }

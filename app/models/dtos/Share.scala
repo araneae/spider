@@ -10,21 +10,24 @@ import enums.FileType._
  * 
  */
 case class Share(message: String,
-                 canEdit: Boolean,
+                 canCopy: Boolean,
+                 canShare: Boolean,
                  receivers: List[Connection]
                  )
 
-object Share extends Function3[String, Boolean, List[Connection], Share]
+object Share extends Function4[String, Boolean, Boolean, List[Connection], Share]
 {
     implicit val shareWrites : Writes[Share] = (
             (JsPath \ "message").write[String] and
-            (JsPath \ "canEdit").write[Boolean] and
+            (JsPath \ "canCopy").write[Boolean] and
+            (JsPath \ "canShare").write[Boolean] and
             (JsPath \ "receivers").write[List[Connection]]
     )(unlift(Share.unapply))
 
     implicit val shareReads : Reads[Share] = (
           (JsPath \ "message").read[String] and
-          (JsPath \ "canEdit").read[Boolean] and
+          (JsPath \ "canCopy").read[Boolean] and
+          (JsPath \ "canShare").read[Boolean] and
           (JsPath \ "receivers").read[List[Connection]]
     )(Share)
 }
