@@ -3,6 +3,8 @@ package utils
 import scala.util.parsing.json.JSONObject
 
 object HttpResponseUtil {
+  private final val EMPTY_OBJ = "{}"
+  private final val EMPTY_LIST = "[]"
 
   def success(message: String = "OK", data: String = "[]") = {
     reponseSuccess(message, data)
@@ -20,4 +22,11 @@ object HttpResponseUtil {
     s"""{"message":"${message}"}"""
   }
 
+  def reponseEmptyObject() = {
+    EMPTY_OBJ
+  }
+  
+  def reponseEmptyList() = {
+    EMPTY_LIST
+  }
 }

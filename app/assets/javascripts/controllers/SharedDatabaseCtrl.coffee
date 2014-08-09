@@ -21,11 +21,19 @@ class SharedDatabaseCtrl
             )
 
     goToShare: (documentId) ->
-        @$log.debug "SharedDatabaseCtrl.goToShare()"
-    
-    
-    makeCopy: (documentId) ->
-        @$log.debug "SharedDatabaseCtrl.makeCopy()"
+        @$log.debug "SharedDatabaseCtrl.goToShare(#{documentId})"
+        @$state.go("sharedDatabase.documentShare", {documentId: documentId})
+
+    copyDocument: (documentId) ->
+        @$log.debug "SharedDatabaseCtrl.copyDocument(#{documentId})"
+        @SharedDatabaseService.copyDocument(documentId).then(
+            (data) =>
+                # show status
+                @$log.debug "Successfully copied document"
+            ,
+            (error) =>
+                @$log.error "Unable to copy document: #{error}"
+            )
 
     showRemoveAlert: (documentId) ->
         @$log.debug "SharedDatabaseCtrl.showRemoveAlert(#{documentId})"

@@ -38,6 +38,20 @@ object SharedDatabaseController extends Controller with Secured {
     Ok(text).as(JSON)
   }
  
+  def get(documentId: Long) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in SharedDatabaseController.get(${documentId})")
+    println(s"in SharedDatabaseController.get(${documentId})")
+    // find document object from database
+    val document = SharedDocumentRepository.find(userId, documentId)
+    document match {
+      case Some(doc) =>
+                    val json = Json.toJson(doc)
+                    Ok(json).as(JSON)
+      case None => 
+                    Ok(HttpResponseUtil.reponseEmptyObject)
+    }
+  }
+  
   def delete(documentId: Long) = IsAuthenticated{ username => implicit request =>
     logger.info(s"in SharedDatabaseController.delete(${documentId})")
     println(s"in SharedDatabaseController.delete(${documentId})")

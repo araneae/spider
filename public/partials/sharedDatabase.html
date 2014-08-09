@@ -20,12 +20,13 @@
           <td>{{document.sharedBy}}</td>
           <td> 
             <a href="" class="glyphicon glyphicon-share" ng-show="document.canShare" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
-            <a href="" class="glyphicon glyphicon-save" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.makeCopy(document.documentId)"></a>
+            <a href="" class="glyphicon glyphicon-save" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>
             <a href="" class="glyphicon glyphicon-remove-circle" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(document.documentId)"></a>
           </td>
         </tr>
       </table>
     </div>
+    <div ui-view></div>
   </div>
 </div>
 

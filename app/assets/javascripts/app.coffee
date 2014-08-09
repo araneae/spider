@@ -127,6 +127,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
+          .state('sharedDatabase.documentShare', {
+              url: '/share/:documentId',
+              views: {
+                '': {
+                    templateUrl: '/assets/partials/sharedDatabaseShare.html'
+                }
+              }
+          })
           .state('database.userTagCreate', {
               views: {
                 "viewTag": {

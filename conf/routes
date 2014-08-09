@@ -132,12 +132,16 @@ PUT    /database/documentSearch/:documentSearchId               controllers.Docu
 DELETE /database/documentSearch/:documentSearchId               controllers.DocumentSearchController.delete(documentSearchId: Int)
 
 # Share document related routes
-GET   /connection/inNetwork                                     controllers.ConnectionController.getInNetwrokConnections
+GET   /connection                                               controllers.ConnectionController.getAll
 
-POST  /connection/inNetwork/:documentId                         controllers.ConnectionController.shareInNetwrokConnections(documentId: Int)
+POST  /connection/share/document/:documentId                    controllers.ConnectionController.share(documentId: Int)
+
+GET   /connection/copy/document/:documentId                     controllers.ConnectionController.copy(documentId: Int)
 
 # Shared Database specific routes
 GET   /database/shared/document                                 controllers.SharedDatabaseController.getAll
+
+GET   /database/shared/document/:documentId                     controllers.SharedDatabaseController.get(documentId: Int)
 
 DELETE /database/shared/document/:documentId                    controllers.SharedDatabaseController.delete(documentId: Int)
 

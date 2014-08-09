@@ -34,18 +34,18 @@ object ConnectionController extends Controller with Secured {
   val MESSAGE_TIMEOUT_IN_MILLIS = 5000
   val indexWriterActor = Akka.system.actorOf(Props[IndexWriterActor])
   
-  def getInNetwrokConnections = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in ConnectionController.getInNetwrokConnections()")
-    println(s"in ConnectionController.getInNetwrokConnections()")
+  def getAll = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in ConnectionController.getAll()")
+    println(s"in ConnectionController.getAll()")
     
     val list = ConnectionRepository.findAll(userId)
     val text = Json.toJson(list)
     Ok(text).as(JSON)
   }
   
-  def shareInNetwrokConnections(documentId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in ConnectionController.shareInNetwrokConnections(${documentId})")
-    println(s"in ConnectionController.shareInNetwrokConnections(${documentId})")
+  def share(documentId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+    logger.info(s"in ConnectionController.share(${documentId})")
+    println(s"in ConnectionController.share(${documentId})")
     
     val jsonObj = request.body.asInstanceOf[JsObject]
     jsonObj.validate[Share].fold(
@@ -77,37 +77,6 @@ object ConnectionController extends Controller with Secured {
                                                       // create shared link
                                                       val sharedDoc = SharedDocument(connection.id, documentId, userId, share.canCopy, share.canShare)
                                                       SharedDocumentRepository.create(sharedDoc)
-//                                                      // copy the document
-//                                                      // find the document
-//                                                      val document = DocumentRepository.find(documentId)
-//                                                      // copy the document
-//                                                      document match {
-//                                                        case Some(doc) =>
-//                                                              val srcUploadPath = Configuration.uploadFilePath(userId, doc.physicalName)
-//                                                              val physicalName = TokenGenerator.token
-//                                                              val tgtFilePath = Configuration.uploadFilePath(connection.id, physicalName)
-//                                                              FileUtil.createPath(Configuration.uploadPath(userId))
-//                                                              FileUtil.copy(srcUploadPath, tgtFilePath)
-//                                                              
-//                                                              val newDocument = Document(None, 
-//                                                                                        connection.id,
-//                                                                                        doc.name,
-//                                                                                        doc.documentType,
-//                                                                                        doc.fileType,
-//                                                                                        doc.fileName,
-//                                                                                        physicalName,
-//                                                                                        doc.name)
-//                                                              val docId = DocumentRepository.create(newDocument)
-//                                                              // find the saved document
-//                                                              val savedDocument = DocumentRepository.find(docId)
-//                                                              // add the document in the lucene index
-//                                                              savedDocument match {
-//                                                                case Some(doc) => indexWriterActor ! MessageAddDocument(userId, doc)
-//                                                                case None =>
-//                                                              }
-//                                                        case None =>
-//                                                      }
-                                                      
                                             case None => 
                                                         // ignore the recipient
                                           }
@@ -134,5 +103,49 @@ object ConnectionController extends Controller with Secured {
                 errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
             }
       )
+  }
+  
+  def copy(documentId: Int) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in ConnectionController.copy(${documentId})")
+    println(s"in ConnectionController.copy(${documentId})")
+    
+    val document = DocumentRepository.find(documentId)
+    val sharedDocument = SharedDocumentRepository.find(userId, documentId)
+    // copy the document
+    document match {
+      case Some(doc) =>
+            sharedDocument match {
+              case Some(sharedDoc) =>
+                  val sourceUploadPath = Configuration.uploadFilePath(sharedDoc.sharedUserId, doc.physicalName)
+                  val physicalName = TokenGenerator.token
+                  val trgetFilePath = Configuration.uploadFilePath(userId, physicalName)
+                  FileUtil.createPath(Configuration.uploadPath(userId))
+                  FileUtil.copy(sourceUploadPath, trgetFilePath)
+                  
+                  val newDocument = Document(None,
+                                            userId,
+                                            doc.name,
+                                            doc.documentType,
+                                            doc.fileType,
+                                            doc.fileName,
+                                            physicalName,
+                                            doc.name)
+                  val docId = DocumentRepository.create(newDocument)
+                  // find the saved document
+                  val savedDocument = DocumentRepository.find(docId)
+                  // add the document in the lucene index
+                  savedDocument match {
+                    case Some(doc) => 
+                         indexWriterActor ! MessageAddDocument(userId, doc)
+                         Ok(HttpResponseUtil.success("Successfully copied the shared document"))
+                    case None =>
+                          Ok(HttpResponseUtil.error("Unable to copy the shared document"))
+                  }
+              case None =>
+                 Ok(HttpResponseUtil.error("Unable to find the shared document"))
+            }
+      case None =>
+             Ok(HttpResponseUtil.error("Unable to find the document"))
+    }
   }
 }

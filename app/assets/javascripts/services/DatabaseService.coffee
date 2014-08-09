@@ -68,10 +68,10 @@ class DatabaseService
             )
         deferred.promise
 
-    getInNetworkConnections: () ->
-        @$log.debug "DatabaseService.getInNetworkConnections"
+    getConnections: () ->
+        @$log.debug "DatabaseService.getConnections()"
         deferred = @$q.defer()
-        @$http.get("/connection/inNetwork")
+        @$http.get("/connection")
         .success((data, status, headers) =>
                 @$log.info("Successfully fetched in-network connections - status #{status}")
                 deferred.resolve(data)
@@ -82,10 +82,10 @@ class DatabaseService
             )
         deferred.promise
 
-    shareInNetworkConnections: (documentId, share) ->
-        @$log.debug "DatabaseService.shareInNetworkConnections"
+    share: (documentId, share) ->
+        @$log.debug "DatabaseService.share(#{documentId}, #{share})"
         deferred = @$q.defer()
-        @$http.post("/connection/inNetwork/#{documentId}", share)
+        @$http.post("/connection/share/document/#{documentId}", share)
         .success((data, status, headers) =>
                 @$log.info("Successfully shared in-network connections - status #{status}")
                 deferred.resolve(data)

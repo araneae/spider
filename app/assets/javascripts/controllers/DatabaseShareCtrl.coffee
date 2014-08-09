@@ -31,7 +31,7 @@ class DatabaseShareCtrl
 
     loadConnections: () ->
         @$log.debug "DatabaseShareCtrl.loadConnections()"
-        @DatabaseService.getInNetworkConnections().then(
+        @DatabaseService.getConnections().then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               for obj in data
@@ -41,12 +41,12 @@ class DatabaseShareCtrl
               @$log.error "Unable to get connections: #{error}"
         )
 
-    disableSend: () ->
+    disableShare: () ->
       @UtilityService.isArrayEmpty(@share.receivers)
-    
-    send: () ->
-      @$log.debug "DatabaseShareCtrl.done()"
-      @DatabaseService.shareInNetworkConnections(@documentId, @share).then(
+
+    sendShare: () ->
+      @$log.debug "DatabaseShareCtrl.sendShare()"
+      @DatabaseService.share(@documentId, @share).then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               @$state.go('database.documents')
