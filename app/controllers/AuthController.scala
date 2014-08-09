@@ -54,7 +54,7 @@ object AuthController extends Controller with Secured {
                 user => {
                   if (BCrypt.checkpw(password, user.password)) {
                     userName = user.email
-                    userId = user.id.get.toString
+                    userId = user.userId.get.toString
                     firstName = user.firstName
                     success = true
                   }

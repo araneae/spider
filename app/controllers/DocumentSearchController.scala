@@ -43,9 +43,9 @@ object DocumentSearchController extends Controller with Secured {
     )
   }
   
-  def update(id: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in DocumentSearchController.update(${id})")
-    println(s"in DocumentSearchController.update(${id})")
+  def update(documentSearchId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+    logger.info(s"in DocumentSearchController.update(${documentSearchId})")
+    println(s"in DocumentSearchController.update(${documentSearchId})")
     val json = request.body.asInstanceOf[JsObject]
     json.validate[DocumentSearch].fold(
           valid = { DocumentSearch =>
@@ -58,10 +58,10 @@ object DocumentSearchController extends Controller with Secured {
     )
   }
 
-  def delete(id: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DocumentSearchController.delete(${id})")
-    println(s"in DocumentSearchController.delete(${id})")
-    DocumentSearchRepository.delete(id)
+  def delete(documentSearchId: Int) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DocumentSearchController.delete(${documentSearchId})")
+    println(s"in DocumentSearchController.delete(${documentSearchId})")
+    DocumentSearchRepository.delete(documentSearchId)
     Ok(HttpResponseUtil.success("Successfully deleted search text!"))
   }
 

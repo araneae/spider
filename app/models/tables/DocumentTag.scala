@@ -22,11 +22,11 @@ class DocumentTags(tag: Tag) extends Table[DocumentTag](tag, "document_tag") {
   
   override def * = (userId, userTagId, documentId) <> (DocumentTag.tupled, DocumentTag.unapply)
   
-  def user = foreignKey("fk_on_document_tag_user_id", userId, TableQuery[Users])(_.id)
+  def user = foreignKey("fk_on_document_tag_user_id", userId, TableQuery[Users])(_.userId)
   
-  def userTag = foreignKey("fk_on_document_tag_tag_id", userTagId, TableQuery[UserTags])(_.id)
+  def userTag = foreignKey("fk_on_document_tag_tag_id", userTagId, TableQuery[UserTags])(_.userTagId)
   
-  def document = foreignKey("fk_on_document_tag_document_id", documentId, TableQuery[Documents])(_.id)
+  def document = foreignKey("fk_on_document_tag_document_id", documentId, TableQuery[Documents])(_.documentId)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_document_tag_userid_user_tag_id_document_id", (userId, userTagId, documentId))

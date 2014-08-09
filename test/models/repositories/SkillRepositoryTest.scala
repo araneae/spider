@@ -29,7 +29,7 @@ class SkillRepositoryTest extends Specification {
               skillOpt.map(_.name) must beSome(skill.name)
               skillOpt.map(_.code) must beSome(skill.code)
               skillOpt.map(_.description) must beSome(skill.description)
-              skillOpt.map(_.id) must not be_=== None
+              skillOpt.map(_.skillId) must not be_=== None
               
               session.rollback
             }

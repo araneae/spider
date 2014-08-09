@@ -14,14 +14,14 @@ object DocumentRepository {
   def create(document: Document) = {
     DB.withSession {
        implicit session: Session =>
-         query returning query.map(_.id) += document
+         query returning query.map(_.documentId) += document
     }
   }
   
-  def find(id: Long): Option[Document] = {
+  def find(documentId: Long): Option[Document] = {
     DB.withSession {
       implicit session =>
-        query.filter(d => d.id === id).firstOption
+        query.filter(d => d.documentId === documentId).firstOption
     }
   }
   
@@ -42,14 +42,14 @@ object DocumentRepository {
   def udate(document: Document) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.id === document.id) update document 
+         query filter(_.documentId === document.documentId) update document 
     }
   }
   
-  def delete(id: Long) = {
+  def delete(documentId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter( u => u.id === id).delete
+          query.filter( u => u.documentId === documentId).delete
     }
   }
 }

@@ -53,11 +53,11 @@ class DatabaseService
             )
         deferred.promise
 
-    searchDocument: (id, searchText) ->
-        @$log.debug "DatabaseService.search #{id} #{searchText}"
+    searchDocument: (documentId, searchText) ->
+        @$log.debug "DatabaseService.search #{documentId} #{searchText}"
         deferred = @$q.defer()
 
-        @$http.get("/database/document/#{id}/search/#{searchText}")
+        @$http.get("/database/document/#{documentId}/search/#{searchText}")
         .success((data, status, headers) =>
                 @$log.info("Successfully searched - status #{status}")
                 deferred.resolve(data)
@@ -101,7 +101,7 @@ servicesModule.service('DatabaseService', DatabaseService)
 # define the factories
 #
 servicesModule.factory('Document', ['$resource', ($resource) -> 
-              $resource('/database/document/:id', {id: '@id'}, 
+              $resource('/database/document/:documentId', {documentId: '@documentId'}, 
                         { 
                           'update': {method: 'PUT'}
                         }

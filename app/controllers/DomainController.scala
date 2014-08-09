@@ -29,9 +29,9 @@ object DomainController extends Controller with Secured {
       )
   }
   
-  def update(id: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(domainId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
       logger.info("in DomainController.update...")
-      println(s"in DomainController.update($id)...")
+      println(s"in DomainController.update($domainId)...")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Domain].fold(
             valid = { domain =>
@@ -44,10 +44,10 @@ object DomainController extends Controller with Secured {
       )
   }
   
-  def delete(id: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(domainId: Int) = IsAuthenticated{ username => implicit request =>
       logger.info("in DomainController.delete...")
       println("in DomainController.delete...")
-      DomainRepository.delete(id);
+      DomainRepository.delete(domainId);
       Ok("Deleted")
   }
   

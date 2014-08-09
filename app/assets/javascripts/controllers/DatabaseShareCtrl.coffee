@@ -20,7 +20,7 @@ class DatabaseShareCtrl
     loadDocument: (documentId) ->
         @$log.debug "DatabaseShareCtrl.loadDocument(#{documentId})"
         #delay = @$q.defer()
-        @Document.get({id: documentId}).$promise.then(
+        @Document.get({documentId: documentId}).$promise.then(
           (data) =>
               @$log.debug "Promise returned #{data} document"
               @document = data

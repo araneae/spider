@@ -3,7 +3,7 @@ package models.dtos
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class DomainFull(id: Long,
+case class DomainFull(domainId: Long,
                    industryId: Long,
                    name: String,
                    code: String,
@@ -13,7 +13,7 @@ case class DomainFull(id: Long,
 object DomainFull extends Function6[Long, Long, String, String, String, String, DomainFull]
 {
     implicit val skillWrites : Writes[DomainFull] = (
-            (JsPath \ "id").write[Long] and
+            (JsPath \ "domainId").write[Long] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "code").write[String] and
@@ -22,7 +22,7 @@ object DomainFull extends Function6[Long, Long, String, String, String, String, 
     )(unlift(DomainFull.unapply))
       
     implicit val skillReads : Reads[DomainFull] = (
-          (JsPath \ "id").read[Long] and
+          (JsPath \ "domainId").read[Long] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "code").read[String] and

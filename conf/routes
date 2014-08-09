@@ -25,27 +25,27 @@ POST   /industry                                                controllers.Indu
 
 GET    /industry                                                controllers.IndustryController.getAll
 
-PUT    /industry/:id                                            controllers.IndustryController.update(id: Int)
+PUT    /industry/:industryId                                    controllers.IndustryController.update(industryId: Int)
 
-DELETE /industry/:id                                            controllers.IndustryController.delete(id: Int)
+DELETE /industry/:industryId                                    controllers.IndustryController.delete(industryId: Int)
 
 # Skill specific routes
 POST   /skill                                                   controllers.SkillController.create
 
 GET    /skill                                                   controllers.SkillController.getAll
 
-PUT    /skill/:id                                               controllers.SkillController.update(id: Int)
+PUT    /skill/:skillId                                          controllers.SkillController.update(skillId: Int)
 
-DELETE /skill/:id                                               controllers.SkillController.delete(id: Int)
+DELETE /skill/:skillId                                          controllers.SkillController.delete(skillId: Int)
 
 # Domain specific routes
 POST   /domain                                                  controllers.DomainController.create
 
 GET    /domain                                                  controllers.DomainController.getAll
 
-PUT    /domain/:id                                              controllers.DomainController.update(id: Int)
+PUT    /domain/:domainId                                        controllers.DomainController.update(domainId: Int)
 
-DELETE /domain/:id                                              controllers.DomainController.delete(id: Int)
+DELETE /domain/:domainId                                        controllers.DomainController.delete(domainId: Int)
 
 
 # UserSkill specific routes
@@ -90,30 +90,30 @@ GET    /adviser/accept/:token                                   controllers.Advi
 # Database specific routes
 POST   /database/upload                                         controllers.DatabaseController.upload
 
-GET    /database/document/:id                                   controllers.DatabaseController.get(id: Int)
+GET    /database/document/:documentId                           controllers.DatabaseController.get(documentId: Int)
 
 GET    /database/document                                       controllers.DatabaseController.getAll(userTagId: Option[Int])
 
 POST   /database/document                                       controllers.DatabaseController.create
 
-PUT    /database/document/:id                                   controllers.DatabaseController.update(id: Int)
+PUT    /database/document/:documentId                           controllers.DatabaseController.update(documentId: Int)
 
-DELETE /database/document/:id                                   controllers.DatabaseController.delete(id: Int)
+DELETE /database/document/:documentId                           controllers.DatabaseController.delete(documentId: Int)
 
 GET    /database/search/:searchText                             controllers.DatabaseController.search(searchText: String)
 
-GET    /database/document/:id/search/:searchText                controllers.DatabaseController.searchDocument(id: Long, searchText: String)
+GET    /database/document/:documentId/search/:searchText        controllers.DatabaseController.searchDocument(documentId: Long, searchText: String)
 
 # UserTag specific routes
 POST   /userTag                                                 controllers.UserTagController.create
 
-GET    /userTag/:id                                             controllers.UserTagController.get(id: Int)
+GET    /userTag/:userTagId                                      controllers.UserTagController.get(userTagId: Int)
 
 GET    /userTag                                                 controllers.UserTagController.getAll
 
-PUT    /userTag/:id                                             controllers.UserTagController.update(id: Int)
+PUT    /userTag/:userTagId                                      controllers.UserTagController.update(userTagId: Int)
 
-DELETE /userTag/:id                                             controllers.UserTagController.delete(id: Int)
+DELETE /userTag/:userTagId                                      controllers.UserTagController.delete(userTagId: Int)
 
 # DocumentTag specific routes
 POST   /database/documentTag/:documentId                        controllers.DocumentTagController.create(documentId: Int)
@@ -127,9 +127,9 @@ GET    /database/documentSearch                                 controllers.Docu
 
 POST   /database/documentSearch                                 controllers.DocumentSearchController.create
 
-PUT    /database/documentSearch/:id                             controllers.DocumentSearchController.update(id: Int)
+PUT    /database/documentSearch/:documentSearchId               controllers.DocumentSearchController.update(documentSearchId: Int)
 
-DELETE /database/documentSearch/:id                             controllers.DocumentSearchController.delete(id: Int)
+DELETE /database/documentSearch/:documentSearchId               controllers.DocumentSearchController.delete(documentSearchId: Int)
 
 # Share document related routes
 GET   /connection/inNetwork                                     controllers.ConnectionController.getInNetwrokConnections

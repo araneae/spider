@@ -16,15 +16,15 @@ import models.dtos._
 
 class UserTags(tag: Tag) extends Table[UserTag](tag, "user_tag") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def userTagId = column[Long]("user_tag_Id", O.PrimaryKey, O.AutoInc)
   
   def userId = column[Long]("user_id", O.NotNull)
   
   def name = column[String]("name", O.NotNull)
   
-  override def * = (id.?, userId, name) <> (UserTag.tupled, UserTag.unapply)
+  override def * = (userTagId.?, userId, name) <> (UserTag.tupled, UserTag.unapply)
   
   // foreign keys and indexes
-  def user = foreignKey("fk_on_user_tag_user_id", userId, TableQuery[Users])(_.id)
+  def user = foreignKey("fk_on_user_tag_user_id", userId, TableQuery[Users])(_.userId)
 
 }

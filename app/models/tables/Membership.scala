@@ -13,13 +13,13 @@ import models.dtos._
 
 class Memberships(tag: Tag) extends Table[Membership](tag, "membership") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def membershipId = column[Long]("membership_id", O.PrimaryKey, O.AutoInc)
   
   def name = column[String]("name", O.NotNull)
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (id.?, name, description) <> (Membership.tupled, Membership.unapply)
+  override def * = (membershipId.?, name, description) <> (Membership.tupled, Membership.unapply)
   
   // foreign keys and indexes
 }

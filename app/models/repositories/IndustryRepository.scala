@@ -13,7 +13,7 @@ object IndustryRepository {
   def create(industry: Industry) : Long = {
     DB.withSession {
        implicit session: Session =>
-         query returning query.map(_.id) += industry
+         query returning query.map(_.industryId) += industry
          
     }
   }
@@ -21,14 +21,14 @@ object IndustryRepository {
   def udate(industry: Industry) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.id === industry.id) update industry 
+         query filter(_.industryId === industry.industryId) update industry 
     }
   }
 
-  def find(id: Long): Option[Industry] = {
+  def find(industryId: Long): Option[Industry] = {
     DB.withSession {
        implicit session: Session =>
-          query filter(_.id === id) firstOption
+          query filter(_.industryId === industryId) firstOption
     }
   }
   
@@ -46,10 +46,10 @@ object IndustryRepository {
     }
   }
   
-  def delete(id: Long) = {
+  def delete(industryId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query filter(_.id === id) delete
+          query filter(_.industryId === industryId) delete
     }
   }
 }

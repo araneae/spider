@@ -13,20 +13,20 @@ object DomainRepository {
   def create(domain: Domain) = {
     DB.withSession {
        implicit session: Session =>
-         query returning query.map(_.id) += domain
+         query returning query.map(_.domainId) += domain
     }
   }
   
   def udate(domain: Domain) = {
     DB.withSession {
        implicit session: Session =>
-         query.filter(_.id === domain.id).update(domain)
+         query.filter(_.domainId === domain.domainId).update(domain)
     }
   }
-  def find(id: Long): Option[Domain] = {
+  def find(domainId: Long): Option[Domain] = {
     DB.withSession {
        implicit session: Session =>
-          query filter(_.id === id) firstOption
+          query filter(_.domainId === domainId) firstOption
     }
   }
   
@@ -43,16 +43,16 @@ object DomainRepository {
          val q = for {
              s <- query
              i <- s.industry
-           } yield (s.id, s.industryId, s.name, s.code, s.description, i.name)
+           } yield (s.domainId, s.industryId, s.name, s.code, s.description, i.name)
            
-           q.list.map{case (id, industryId, name, code, description, industryName) => DomainFull(id, industryId, name, code, description, industryName)}
+           q.list.map{case (domainId, industryId, name, code, description, industryName) => DomainFull(domainId, industryId, name, code, description, industryName)}
     }
   }
   
-  def delete(id: Long) = {
+  def delete(domainId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(_.id === id).delete
+          query.filter(_.domainId === domainId).delete
     }
   }
 }

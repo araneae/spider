@@ -28,7 +28,7 @@ class UserMemberships(tag: Tag) extends Table[UserMembership](tag, "user_members
   override def * = (id.?, userId, membershipId, startDate, endDate, active, description) <> (UserMembership.tupled, UserMembership.unapply)
   
   // foreign keys and indexes
-  def user = foreignKey("fk_on_user_id", userId, TableQuery[Users])(_.id)
+  def user = foreignKey("fk_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def membership = foreignKey("fk_on_membership_id", membershipId, TableQuery[Memberships])(_.id)
+  def membership = foreignKey("fk_on_membership_id", membershipId, TableQuery[Memberships])(_.membershipId)
 }

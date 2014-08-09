@@ -11,7 +11,7 @@ import models.dtos._
 
 class Domains(tag: Tag) extends Table[Domain](tag, "domain") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def domainId = column[Long]("domain_id", O.PrimaryKey, O.AutoInc)
   
   def industryId = column[Long]("industry_id", O.NotNull)
   
@@ -21,10 +21,10 @@ class Domains(tag: Tag) extends Table[Domain](tag, "domain") {
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (id.?, industryId, name, code, description) <> (Domain.tupled, Domain.unapply)
+  override def * = (domainId.?, industryId, name, code, description) <> (Domain.tupled, Domain.unapply)
   
     // foreign keys and indexes
-  def industry = foreignKey("fk_on_skill_industry_id", industryId, TableQuery[Industries])(_.id)
+  def industry = foreignKey("fk_on_skill_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
   def uniqueCode = index("idx_unique_on_skill_code", code, unique = true)
 }

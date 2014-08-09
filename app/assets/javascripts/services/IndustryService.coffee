@@ -52,14 +52,14 @@ class IndustryService
             )
         deferred.promise
 
-    deleteIndustry: (id) ->
-        @$log.debug "IndustryService.delete #{id}"
-        @$http.delete("/industry/#{id}")
+    deleteIndustry: (industryId) ->
+        @$log.debug "IndustryService.delete #{industryId}"
+        @$http.delete("/industry/#{industryId}")
 
 
 servicesModule.factory('Industry', ['$resource',  
             ($resource) ->
-                $resource('/industry/:id', {id: '@id'})
+                $resource('/industry/:industryId', {industryId: '@industryId'})
 ])
 
 servicesModule.factory('MultiIndustryLoader', ['Industry', '$q', 

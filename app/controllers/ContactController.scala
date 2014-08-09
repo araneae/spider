@@ -75,7 +75,7 @@ object ContactController extends Controller with Secured {
       val user = UserRepository.findByEmail(email);
       user match {
         case Some(u) =>
-                  val safeUser = User(Some(u.id.get), u.firstName, u.lastName, u.email, BLANK)
+                  val safeUser = User(Some(u.userId.get), u.firstName, u.lastName, u.email, BLANK)
                   val list = List(safeUser)
                   val text = Json.toJson(list)
                   Ok(text).as(JSON)
@@ -91,7 +91,7 @@ object ContactController extends Controller with Secured {
       ContactRepository.findByToken(token).map{ contact =>
         // verify the logged in user
         UserRepository.find(contact.contactUserId).map{ contactUser =>
-            contactUser.id.map{ myUserId =>
+            contactUser.userId.map{ myUserId =>
               if (myUserId == userId){
                 // update contact entry
                 ContactRepository.updateStatus(contact.userId, myUserId, ContactStatus.CONNECTED, None)

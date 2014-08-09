@@ -14,7 +14,7 @@ import models.dtos._
 
 class DocumentSearches(tag: Tag) extends Table[DocumentSearch](tag, "document_search") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def documentSearchId = column[Long]("document_search_id", O.PrimaryKey, O.AutoInc)
   
   def userId = column[Long]("user_id", O.NotNull)
   
@@ -22,9 +22,9 @@ class DocumentSearches(tag: Tag) extends Table[DocumentSearch](tag, "document_se
   
   def searchText = column[String]("search_text", O.NotNull)
   
-  override def * = (id.?, userId, name, searchText) <> (DocumentSearch.tupled, DocumentSearch.unapply)
+  override def * = (documentSearchId.?, userId, name, searchText) <> (DocumentSearch.tupled, DocumentSearch.unapply)
   
-  def user = foreignKey("fk_on_document_search_user_id", userId, TableQuery[Users])(_.id)
+  def user = foreignKey("fk_on_document_search_user_id", userId, TableQuery[Users])(_.userId)
   
   // foreign keys and indexes
 

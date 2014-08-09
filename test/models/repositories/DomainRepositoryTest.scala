@@ -28,7 +28,7 @@ class DomainRepositoryTest extends Specification {
               domainOpt.map(_.name) must beSome(domain.name)
               domainOpt.map(_.code) must beSome(domain.code)
               domainOpt.map(_.description) must beSome(domain.description)
-              domainOpt.map(_.id) must not be_=== None
+              domainOpt.map(_.domainId) must not be_=== None
               
               session.rollback
             }

@@ -11,7 +11,7 @@ import models.dtos._
 
 class Skills(tag: Tag) extends Table[Skill](tag, "skill") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def skillId = column[Long]("skill_id", O.PrimaryKey, O.AutoInc)
   
   def industryId = column[Long]("industry_id", O.NotNull)
   
@@ -21,10 +21,10 @@ class Skills(tag: Tag) extends Table[Skill](tag, "skill") {
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (id.?, industryId, name, code, description) <> (Skill.tupled, Skill.unapply)
+  override def * = (skillId.?, industryId, name, code, description) <> (Skill.tupled, Skill.unapply)
   
   // foreign keys and indexes
-  def industry = foreignKey("fk_skill_on_industry_id", industryId, TableQuery[Industries])(_.id)
+  def industry = foreignKey("fk_skill_on_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
   def uniqueCode = index("idx_skill_on_code_unique", code, unique = true)
 }

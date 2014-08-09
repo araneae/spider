@@ -12,12 +12,12 @@
              <td></td>
           </tr>
           <tr ng-repeat="skill in ctrl.skills">
-            <td>{{skill.id}}</td>
+            <td>{{skill.skillId}}</td>
             <td>{{skill.industryName}}</td> 
-	          <td><a href="/#/view/{{skill.id}}">{{skill.name}}</a></td>
+	          <td><a href="/#/view/{{skill.skillId}}">{{skill.name}}</a></td>
 	          <td>{{skill.code}}</td>
 	          <td>{{skill.description}}</td>
-	          <td><a href="" ng-click="ctrl.deleteSkill($index)">Remove</a><span> / </span><a href="" ng-click="ctrl.editSkill($index)">Edit</a></td>
+	          <td><a href="" ng-click="ctrl.deleteSkill(skill.skillId)">Remove</a><span> / </span><a href="" ng-click="ctrl.editSkill(skill.skillId)">Edit</a></td>
           </tr>
         </table>
 

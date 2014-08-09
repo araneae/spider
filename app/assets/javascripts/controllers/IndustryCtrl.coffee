@@ -63,7 +63,7 @@ class IndustryCtrl
         @$log.debug "IndustryCtrl.deleteIndustry(#{index})"
         item = @industries[index]
         @editMode = false
-        @IndustryService.deleteIndustry(item.id)
+        @IndustryService.deleteIndustry(item.industryId)
         .then( (data) =>
             @$log.debug "server returned #{data} Industry"
             @listIndustries()

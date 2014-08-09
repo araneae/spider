@@ -7,7 +7,7 @@ case class MessageAddDocument(userId: Long, document: Document)
 
 case class MessageSearch(userId: Long, searchText: String)
 
-case class MessageDeleteDocument(userId: Long, id: Long)
+case class MessageDeleteDocument(userId: Long, documentId: Long)
 
 case class MessageSearchWithHighlighter(userId: Long, documentId: Long, searchText: String)
 

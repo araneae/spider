@@ -8,16 +8,16 @@ import play.api.libs.json._
  * etc. in Software Industry. Similarly "Carpentry", "Wielding", "Plumbing" etc. in Construction Industry.
  * An skill will fall under an Industry.
  */
-case class Skill(id: Option[Long],
-                   industryId: Long,
-                   name: String,
-                   code: String,
-                   description: String)
+case class Skill(skillId: Option[Long],
+                 industryId: Long,
+                 name: String,
+                 code: String,
+                 description: String)
 
 object Skill extends Function5[Option[Long], Long, String, String, String, Skill]
 {
     implicit val skillWrites : Writes[Skill] = (
-            (JsPath \ "id").write[Option[Long]] and
+            (JsPath \ "skillId").write[Option[Long]] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "code").write[String] and
@@ -25,7 +25,7 @@ object Skill extends Function5[Option[Long], Long, String, String, String, Skill
     )(unlift(Skill.unapply))
       
     implicit val skillReads : Reads[Skill] = (
-          (JsPath \ "id").readNullable[Long] and
+          (JsPath \ "skillId").readNullable[Long] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "code").read[String] and

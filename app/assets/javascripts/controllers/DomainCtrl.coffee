@@ -35,7 +35,7 @@ class DomainCtrl
     create: () ->
         @$log.debug "DomainCtrl.createDomain()"
         @editMode = false
-        @domain.industryId = @industry.id
+        @domain.industryId = @industry.industryId
         domain = new @Domain(@domain);
         domain.$save().then( (data) =>
             @$log.debug "server returned #{data} Domain"
@@ -45,7 +45,7 @@ class DomainCtrl
     update: () ->
         @$log.debug "DomainCtrl.updateDomain()"
         @editMode = false
-        @domain.industryId = @industry.id
+        @domain.industryId = @industry.industryId
         domain = new @Domain(@domain);
         domain.$update().then( (data) =>
             @$log.debug "server returned #{data} Domain"
@@ -67,14 +67,14 @@ class DomainCtrl
         @$log.debug "DomainCtrl.deleteDomain(#{index})"
         item = @domains[index]
         @editMode = false
-        @Domain.remove({id: item['id']})
+        @Domain.remove({domainId: item['domainId']})
         @listDomains()
 
     edit: (index) ->
         @$log.debug "DomainCtrl.editDomain(#{index})"
         item = @domains[index]
         @domain = item
-        @industry = @UtilityService.findByProperty(@industries, 'id', item['industryId'])
+        @industry = @UtilityService.findByProperty(@industries, 'industryId', item['industryId'])
         @editMode = true
     
     getCreateLabel: () ->

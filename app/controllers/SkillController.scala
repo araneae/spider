@@ -30,9 +30,9 @@ object SkillController extends Controller with Secured {
       )
   }
   
-  def update(id: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in SkillController.update...")
-      println("in SkillController.update...")
+  def update(skillId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+      logger.info("in SkillController.update(${skillId})")
+      println("in SkillController.update(${skillId})")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Skill].fold(
             valid = { skill =>
@@ -45,10 +45,10 @@ object SkillController extends Controller with Secured {
       )
   }
   
-  def delete(id: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.delete...")
-      println("in SkillController.delete...")
-      SkillRepository.delete(id);
+  def delete(skillId: Int) = IsAuthenticated{ username => implicit request =>
+      logger.info("in SkillController.delete(${skillId})")
+      println("in SkillController.delete(${skillId})")
+      SkillRepository.delete(skillId);
       Ok("Deleted")
   }
   

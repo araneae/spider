@@ -17,12 +17,12 @@ object ConnectionRepository {
          val q1 = for {
             u <- advisers.filter(a => a.userId ===  userId)
             a <- u.adviser
-         } yield (a.id, a.email)
+         } yield (a.userId, a.email)
         
          val q2 = for {
             u <- contacts.filter(a => a.userId ===  userId)
             c <- u.contact
-         } yield (c.id, c.email)
+         } yield (c.userId, c.email)
         
          val unionQuery = q1 union q2
          unionQuery.list.map{case (userId, email) => Connection(userId, email)}

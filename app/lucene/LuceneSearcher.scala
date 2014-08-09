@@ -59,7 +59,7 @@ class LuceneSearcher(indexDir: String) {
             var list = new ListBuffer[models.dtos.Document]()
             hits.map{ doc => 
                       val document = searcher.doc(doc.doc)
-                        list += models.dtos.Document(Some(document.get("id").toLong),
+                        list += models.dtos.Document(Some(document.get("documentId").toLong),
                                           document.get("userId").toLong,
                                           document.get("name"),
                                           DocumentType(document.get("documentType").toInt),
@@ -88,7 +88,7 @@ class LuceneSearcher(indexDir: String) {
             println(s"query : ${query}")
             // userId and document filter
             val booleanQuery = new BooleanQuery();
-            booleanQuery.add(new TermQuery(new Term("id", documentId.toString)), BooleanClause.Occur.MUST)
+            booleanQuery.add(new TermQuery(new Term("documentId", documentId.toString)), BooleanClause.Occur.MUST)
             booleanQuery.add(new TermQuery(new Term("userId", userId.toString)), BooleanClause.Occur.MUST)
 
             val filter = new QueryWrapperFilter(booleanQuery);

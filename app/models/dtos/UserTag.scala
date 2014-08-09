@@ -11,20 +11,20 @@ import enums.FileType._
  *    2) contacts
  * 
  */
-case class UserTag(id: Option[Long],
+case class UserTag(userTagId: Option[Long],
                    userId: Long,
                    name: String)
 
 object UserTag extends Function3[Option[Long], Long, String, UserTag]
 {
     implicit val userTagWrites : Writes[UserTag] = (
-            (JsPath \ "id").write[Option[Long]] and
+            (JsPath \ "userTagId").write[Option[Long]] and
             (JsPath \ "userId").write[Long] and
             (JsPath \ "name").write[String]
     )(unlift(UserTag.unapply))
 
     implicit val userTagReads : Reads[UserTag] = (
-          (JsPath \ "id").readNullable[Long] and
+          (JsPath \ "userTagId").readNullable[Long] and
           (JsPath \ "userId").read[Long] and
           (JsPath \ "name").read[String]
     )(UserTag)

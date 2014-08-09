@@ -29,9 +29,9 @@ class SharedDocuments(tag: Tag) extends Table[SharedDocument](tag, "shared_docum
   // foreign keys and indexes
   def pk = primaryKey("pk_on_shared_document", (userId, documentId))
   
-  def owner = foreignKey("fk_shared_document_on_user_id", userId, TableQuery[Users])(_.id)
+  def owner = foreignKey("fk_shared_document_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def sharedBy = foreignKey("fk_shared_document_on_shared_user_id", sharedByUserId, TableQuery[Users])(_.id)
+  def sharedBy = foreignKey("fk_shared_document_on_shared_user_id", sharedByUserId, TableQuery[Users])(_.userId)
   
-  def document = foreignKey("fk_shared_document_on_document_id", documentId, TableQuery[Documents])(_.id)
+  def document = foreignKey("fk_shared_document_on_document_id", documentId, TableQuery[Documents])(_.documentId)
 }

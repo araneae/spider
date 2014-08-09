@@ -3,7 +3,7 @@ package models.dtos
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class SkillFull(id: Long,
+case class SkillFull(skillId: Long,
                    industryId: Long,
                    name: String,
                    code: String,
@@ -13,7 +13,7 @@ case class SkillFull(id: Long,
 object SkillFull extends Function6[Long, Long, String, String, String, String, SkillFull]
 {
     implicit val skillWrites : Writes[SkillFull] = (
-            (JsPath \ "id").write[Long] and
+            (JsPath \ "skillId").write[Long] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "code").write[String] and
@@ -22,7 +22,7 @@ object SkillFull extends Function6[Long, Long, String, String, String, String, S
     )(unlift(SkillFull.unapply))
       
     implicit val skillReads : Reads[SkillFull] = (
-          (JsPath \ "id").read[Long] and
+          (JsPath \ "skillId").read[Long] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "code").read[String] and

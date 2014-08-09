@@ -14,7 +14,7 @@ import models.dtos._
 
 class Documents(tag: Tag) extends Table[Document](tag, "document") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def documentId = column[Long]("document_id", O.PrimaryKey, O.AutoInc)
   
   def userId = column[Long]("user_id", O.NotNull)
   
@@ -30,10 +30,10 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (id.?, userId, name, documentType, fileType, fileName, physicalName, description) <> (Document.tupled, Document.unapply)
+  override def * = (documentId.?, userId, name, documentType, fileType, fileName, physicalName, description) <> (Document.tupled, Document.unapply)
   
   // foreign keys and indexes
-  def owner = foreignKey("fk_document_on_user_id", userId, TableQuery[Users])(_.id)
+  def owner = foreignKey("fk_document_on_user_id", userId, TableQuery[Users])(_.userId)
   
   //def uniqueFileName = index("idx_document_on_user_doc_filename_unique", (userId, documentType, fileName), unique = true)
 }

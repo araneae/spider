@@ -22,5 +22,5 @@ class Advisers(tag: Tag) extends Table[Adviser](tag, "adviser") {
   // foreign keys and indexes
   def pk = primaryKey("pk_on_adviser_user_id_adviser_user_id", (userId, adviserUserId))
   
-  def adviser = foreignKey("fk_on_adviser_adviser_user_id", adviserUserId, TableQuery[Users])(_.id)
+  def adviser = foreignKey("fk_on_adviser_adviser_user_id", adviserUserId, TableQuery[Users])(_.userId)
 }

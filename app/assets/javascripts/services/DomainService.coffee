@@ -13,4 +13,4 @@ servicesModule.service('DomainService', DomainService)
 # define the factories
 #
 servicesModule.factory('Domain', ['$resource', ($resource) -> 
-              $resource('/domain/:id', {id: '@id'}, {'update': {method: 'PUT'}})])
+              $resource('/domain/:domainId', {domainId: '@domainId'}, {'update': {method: 'PUT'}})])

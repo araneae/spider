@@ -5,7 +5,7 @@ import models.dtos._
 
 class Users(tag: Tag) extends Table[User](tag, "user") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def userId = column[Long]("user_id", O.PrimaryKey, O.AutoInc)
   
   def firstName = column[String]("first_name", O.NotNull)
   
@@ -15,7 +15,7 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def password = column[String]("password", O.NotNull)
   
-  override def * = (id.?, firstName, lastName, email, password) <> (User.tupled, User.unapply)
+  override def * = (userId.?, firstName, lastName, email, password) <> (User.tupled, User.unapply)
   
   // foreign keys and indexes
   def uniqueEmail = index("idx_user_on_email_unique", email, unique = true)

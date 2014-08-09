@@ -17,17 +17,17 @@ object UserRepository {
     }
   }
   
-  def find(id: Long): Option[User] = {
+  def find(userId: Long): Option[User] = {
     DB.withSession {
        implicit session: Session =>
-          query filter(_.id === id) firstOption
+          query filter(_.userId === userId) firstOption
     }
   }
   
   def findUserId(email : String) : Option[Long] = {
     val user = findByEmail(email)
     user match {
-      case Some(u) => u.id
+      case Some(u) => u.userId
       case None => None 
     }
   }
@@ -35,7 +35,7 @@ object UserRepository {
   def create(user: User) :Long = {
     DB.withSession {
       implicit session =>
-        query returning query.map(_.id) += user
+        query returning query.map(_.userId) += user
     }
   }
   

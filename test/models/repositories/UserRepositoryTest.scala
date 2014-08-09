@@ -24,7 +24,7 @@ class UserRepositoryTest extends Specification {
               userOpt.map(_.email) must beSome(user.email)
               userOpt.map(_.firstName) must beSome(user.firstName)
               userOpt.map(_.lastName) must beSome(user.lastName)
-              userOpt.map(_.id) must not be_=== None
+              userOpt.map(_.userId) must not be_=== None
               
               session.rollback
             }

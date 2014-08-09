@@ -11,8 +11,8 @@
              <td></td>
           </tr>
           <tr ng-repeat="industry in ctrl.industries">
-            <td>{{industry.id}}</td> 
-	          <td><a href="/#/view/{{industry.id}}">{{industry.name}}</a></td>
+            <td>{{industry.industryId}}</td> 
+	          <td><a href="/#/view/{{industry.industryId}}">{{industry.name}}</a></td>
 	          <td>{{industry.code}}</td>
 	          <td>{{industry.description}}</td>
 	          <td><a href="" ng-click="ctrl.deleteIndustry($index)">Remove</a><span> / </span><a href="" ng-click="ctrl.editIndustry($index)">Edit</a></td>

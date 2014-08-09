@@ -9,7 +9,7 @@ import enums.FileType._
  * User can upload multiple resumes.
  * 
  */
-case class Document(id: Option[Long],
+case class Document(documentId: Option[Long],
                    userId: Long,
                    name: String,
                    documentType: DocumentType,
@@ -21,7 +21,7 @@ case class Document(id: Option[Long],
 object Document extends Function8[Option[Long], Long, String, DocumentType, FileType, String, String, String, Document]
 {
     implicit val documentWrites : Writes[Document] = (
-            (JsPath \ "id").write[Option[Long]] and
+            (JsPath \ "documentId").write[Option[Long]] and
             (JsPath \ "userId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "documentType").write[DocumentType] and
@@ -32,7 +32,7 @@ object Document extends Function8[Option[Long], Long, String, DocumentType, File
     )(unlift(Document.unapply))
 
     implicit val documentReads : Reads[Document] = (
-          (JsPath \ "id").readNullable[Long] and
+          (JsPath \ "documentId").readNullable[Long] and
           (JsPath \ "userId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "documentType").read[DocumentType] and

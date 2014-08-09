@@ -78,7 +78,7 @@ object AdviserController extends Controller with Secured {
       val user = UserRepository.findByEmail(email);
       user match {
         case Some(u) =>
-                  val safeUser = User(Some(u.id.get), u.firstName, u.lastName, u.email, BLANK)
+                  val safeUser = User(Some(u.userId.get), u.firstName, u.lastName, u.email, BLANK)
                   val list = List(safeUser)
                   val text = Json.toJson(list)
                   Ok(text).as(JSON)
@@ -94,7 +94,7 @@ object AdviserController extends Controller with Secured {
       AdviserRepository.findByToken(token).map{ adviser =>
         // verify the logged in user
         UserRepository.find(adviser.adviserUserId).map{ adviserUser =>
-            adviserUser.id.map{ myUserId =>
+            adviserUser.userId.map{ myUserId =>
               if (myUserId == userId){
                 // update adviser entry
                 AdviserRepository.updateStatus(adviser.userId, myUserId, ContactStatus.CONNECTED, None)

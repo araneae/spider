@@ -20,7 +20,7 @@ object DocumentSearchRepository {
    def udate(documentSearch: DocumentSearch) = {
     DB.withSession {
        implicit session: Session =>
-         query.filter(_.id === documentSearch.id).update(documentSearch)
+         query.filter(_.documentSearchId === documentSearch.documentSearchId).update(documentSearch)
     }
   }
   
@@ -31,10 +31,10 @@ object DocumentSearchRepository {
     }
   }
   
-  def delete(id: Long) = {
+  def delete(documentSearchId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter( d => d.id === id).delete
+          query.filter( d => d.documentSearchId === documentSearchId).delete
     }
   }
 }

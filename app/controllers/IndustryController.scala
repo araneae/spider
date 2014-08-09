@@ -29,7 +29,7 @@ object IndustryController extends Controller with Secured {
       )
   }
   
-  def update(id: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(industryId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
       logger.info("in IndustryController.update...")
       println("in IndustryController.update...")
       val json = request.body.asInstanceOf[JsObject]
@@ -44,10 +44,10 @@ object IndustryController extends Controller with Secured {
       )
   }
   
-  def delete(id: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(industryId: Int) = IsAuthenticated{ username => implicit request =>
       logger.info("in IndustryController.delete...")
       println("in IndustryController.delete...")
-      IndustryRepository.delete(id);
+      IndustryRepository.delete(industryId);
       Ok("Deleted")
   }
   

@@ -14,8 +14,8 @@ servicesModule.service('DatabaseSearchService', DatabaseSearchService)
 # define the factories
 #
 servicesModule.factory('DatabaseSearch', ['$resource', ($resource) -> 
-              $resource('/database/documentSearch/:id', 
-                        {id: '@id'},
+              $resource('/database/documentSearch/:documentSearchId', 
+                        {documentSearchId: '@documentSearchId'},
                         { 
                           'update': {method: 'PUT'}
                         })])

@@ -14,7 +14,7 @@ class DatabaseXRayCtrl
     loadDocument: (documentId) ->
         @$log.debug "DatabaseXRayCtrl.loadDocument(#{documentId})"
         #delay = @$q.defer()
-        @Document.get({id: documentId}).$promise.then(
+        @Document.get({documentId: documentId}).$promise.then(
           (data) =>
               @$log.debug "Promise returned #{data} document"
               @document = data

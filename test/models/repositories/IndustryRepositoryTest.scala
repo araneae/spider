@@ -25,7 +25,7 @@ class IndustryRepositoryTest extends Specification {
               industryOpt.map(_.name) must beSome(industry.name)
               industryOpt.map(_.code) must beSome(industry.code)
               industryOpt.map(_.description) must beSome(industry.description)
-              industryOpt.map(_.id) must not be_=== None
+              industryOpt.map(_.industryId) must not be_=== None
               
               session.rollback
             }

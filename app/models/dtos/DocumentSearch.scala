@@ -9,7 +9,7 @@ import enums.FileType._
  * User's document saved search texts.
  * 
  */
-case class DocumentSearch(id: Option[Long],
+case class DocumentSearch(documentSearchId: Option[Long],
                           userId: Long,
                           name: String,
                           searchText: String)
@@ -17,14 +17,14 @@ case class DocumentSearch(id: Option[Long],
 object DocumentSearch extends Function4[Option[Long], Long, String, String, DocumentSearch]
 {
     implicit val documentSearchWrites : Writes[DocumentSearch] = (
-            (JsPath \ "id").write[Option[Long]] and
+            (JsPath \ "documentSearchId").write[Option[Long]] and
             (JsPath \ "userId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "searchText").write[String]
     )(unlift(DocumentSearch.unapply))
 
     implicit val documentSearchReads : Reads[DocumentSearch] = (
-          (JsPath \ "id").readNullable[Long] and
+          (JsPath \ "documentSearchId").readNullable[Long] and
           (JsPath \ "userId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "searchText").read[String]

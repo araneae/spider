@@ -11,8 +11,8 @@ class IndexWriterActor extends Actor {
   
   def receive = {
       case MessageAddDocument(userId, document) => {
-            document.id match {
-              case Some(id) => {
+            document.documentId match {
+              case Some(docId) => {
                       val filePath =  Configuration.uploadFilePath(document.userId, document.physicalName)
                       val textData = FileParserService.parse(document.fileType, filePath)
                       textData match {
@@ -26,9 +26,9 @@ class IndexWriterActor extends Actor {
             }
           }
       
-      case MessageDeleteDocument(userId, id) => {
+      case MessageDeleteDocument(userId, documentId) => {
                       val writer = getWriter
-                      writer.deleteDocument(userId, id)
+                      writer.deleteDocument(userId, documentId)
                       writer.close
           }
       

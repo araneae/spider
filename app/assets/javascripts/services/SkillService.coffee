@@ -52,13 +52,13 @@ class SkillService
             )
         deferred.promise
 
-    deleteSkill: (id) ->
-        @$log.debug "SkillService.delete #{id}"
-        @$http.delete("/skill/#{id}")
+    deleteSkill: (skillId) ->
+        @$log.debug "SkillService.delete #{skillId}"
+        @$http.delete("/skill/#{skillId}")
 
 servicesModule.service('SkillService', SkillService)
 
 # define the factories
 #
 servicesModule.factory('Skill', ['$resource', ($resource) -> 
-              $resource('/skill/:id', {id: '@id'}, {'update': {method: 'PUT'}})])
+              $resource('/skill/:skillId', {skillId: '@skillId'}, {'update': {method: 'PUT'}})])

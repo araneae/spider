@@ -8,7 +8,7 @@ import play.api.libs.json._
  * etc. in Software Industry. An user can one or more or none experience in domains. A domain will fall
  * under an Industry.
  */
-case class Domain(id: Option[Long],
+case class Domain(domainId: Option[Long],
                    industryId: Long,
                    name: String,
                    code: String,
@@ -17,7 +17,7 @@ case class Domain(id: Option[Long],
 object Domain extends Function5[Option[Long], Long, String, String, String, Domain]
 {
     implicit val domainWrites : Writes[Domain] = (
-            (JsPath \ "id").write[Option[Long]] and
+            (JsPath \ "domainId").write[Option[Long]] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "code").write[String] and
@@ -25,7 +25,7 @@ object Domain extends Function5[Option[Long], Long, String, String, String, Doma
     )(unlift(Domain.unapply))
       
     implicit val domainReads : Reads[Domain] = (
-          (JsPath \ "id").readNullable[Long] and
+          (JsPath \ "domainId").readNullable[Long] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "code").read[String] and

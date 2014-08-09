@@ -25,5 +25,5 @@ class MessageBoxes(tag: Tag) extends Table[MessageBox](tag, "message_box") {
   // foreign keys and indexes
   def uniqueBoxType = index("idx_unique_on_message_box_type", (userId, messageBoxType), unique = true)
   
-  def owner = foreignKey("fk_on_message_box_user_id", userId, TableQuery[Users])(_.id)
+  def owner = foreignKey("fk_on_message_box_user_id", userId, TableQuery[Users])(_.userId)
 }

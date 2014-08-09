@@ -13,7 +13,7 @@ object UserTagRepository {
   def create(userTag: UserTag) = {
     DB.withSession {
        implicit session: Session =>
-         query returning query.map(_.id) += userTag
+         query returning query.map(_.userTagId) += userTag
     }
   }
   
@@ -27,14 +27,14 @@ object UserTagRepository {
   def udate(userTag: UserTag) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.id === userTag.id) update userTag 
+         query filter(_.userTagId === userTag.userTagId) update userTag 
     }
   }
   
-  def delete(id: Long) = {
+  def delete(userTagId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter( u => u.id === id).delete
+          query.filter( u => u.userTagId === userTagId).delete
     }
   }
 }

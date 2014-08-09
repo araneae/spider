@@ -21,7 +21,7 @@ class MessageRecipients(tag: Tag) extends Table[MessageRecipient](tag, "message_
   // foreign keys and indexes
   def pk = primaryKey("pk_on_message_recipient", (userId, messageId))
   
-  def recipient = foreignKey("fk_on_message_recipient_user_id", userId, TableQuery[Users])(_.id)
+  def recipient = foreignKey("fk_on_message_recipient_user_id", userId, TableQuery[Users])(_.userId)
   
   def message = foreignKey("fk_on_message_recipient_message_id", messageId, TableQuery[Messages])(_.messageId)
   

@@ -10,7 +10,7 @@ import models.dtos._
 
 class Industries(tag: Tag) extends Table[Industry](tag, "industry") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def industryId = column[Long]("industry_id", O.PrimaryKey, O.AutoInc)
   
   def code = column[String]("code", O.NotNull)
   
@@ -18,7 +18,7 @@ class Industries(tag: Tag) extends Table[Industry](tag, "industry") {
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (id.?, code, name, description) <> (Industry.tupled, Industry.unapply)
+  override def * = (industryId.?, code, name, description) <> (Industry.tupled, Industry.unapply)
   
   // foreign keys and indexes
   def uniqueCode = index("idx_unique_on_industry_code", code, unique = true)

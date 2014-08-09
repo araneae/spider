@@ -27,7 +27,7 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_message", (userId, messageId, messageBoxId))
   
-  def owner = foreignKey("fk_on_user_message_user_id",  userId, TableQuery[Users])(_.id)
+  def owner = foreignKey("fk_on_user_message_user_id",  userId, TableQuery[Users])(_.userId)
   
   def message = foreignKey("fk_on_user_message_message_id", messageId, TableQuery[Messages])(_.messageId)
   

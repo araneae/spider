@@ -59,10 +59,10 @@ class LuceneWriter(indexDir: String) {
   def addOrUpdateDocument(userId: Long, doc: models.dtos.Document, resume: String) = {
     writer match {
       case Some(wr) => {
-                doc.id match {
-                  case Some(id) =>
+                doc.documentId match {
+                  case Some(docId) =>
                       var luceneDocument = new Document()
-                      luceneDocument.add(new StringField("id", id.toString, Field.Store.YES))
+                      luceneDocument.add(new StringField("documentId", docId.toString, Field.Store.YES))
                       luceneDocument.add(new StringField("userId", doc.userId.toString, Field.Store.YES))
                       luceneDocument.add(new StringField("name", doc.name, Field.Store.YES))
                       luceneDocument.add(new StringField("documentType", doc.documentType.id.toString, Field.Store.YES))
@@ -72,7 +72,7 @@ class LuceneWriter(indexDir: String) {
                       luceneDocument.add(new StringField("description", doc.description, Field.Store.YES))
                       luceneDocument.add(new Field("resume", resume, highlighterType))
 
-                      wr.updateDocument(new Term("id", id.toString), luceneDocument)
+                      wr.updateDocument(new Term("documentId", docId.toString), luceneDocument)
                       wr.commit()
                   case None =>
                   }
@@ -81,10 +81,10 @@ class LuceneWriter(indexDir: String) {
     }
   }
   
-  def deleteDocument(userId: Long, id: Long) = {
+  def deleteDocument(userId: Long, documentId: Long) = {
     writer match {
       case Some(wr) => {
-                  wr.deleteDocuments(new Term("id", id.toString))
+                  wr.deleteDocuments(new Term("documentId", documentId.toString))
                   wr.commit()
                }
       case None => 

@@ -25,7 +25,7 @@ class Messages(tag: Tag) extends Table[Message](tag, "message") {
   override def * = (messageId.?, parentMessageId.?, senderUserId, editable, subject, body.?) <> (Message.tupled, Message.unapply)
   
   // foreign keys and indexes
-  def sender = foreignKey("fk_on_message_sender_user_id", senderUserId, TableQuery[Users])(_.id)
+  def sender = foreignKey("fk_on_message_sender_user_id", senderUserId, TableQuery[Users])(_.userId)
   
   def parentMessage = foreignKey("fk_on_message_message_id", parentMessageId, TableQuery[Messages])(_.messageId)
 }

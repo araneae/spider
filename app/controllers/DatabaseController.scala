@@ -59,11 +59,11 @@ object DatabaseController extends Controller with Secured {
       }
   }
   
-  def get(id: Long) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DatabaseController.get(${id})")
-    println(s"in DatabaseController.get(${id})")
+  def get(documentId: Long) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DatabaseController.get(${documentId})")
+    println(s"in DatabaseController.get(${documentId})")
     
-    val document = DocumentRepository.find(id)
+    val document = DocumentRepository.find(documentId)
     document match {
         case Some(doc) => val json = Json.toJson(doc)
                           Ok(json).as(JSON)
@@ -107,9 +107,9 @@ object DatabaseController extends Controller with Secured {
                       val newFilePath = Configuration.uploadFilePath(userId, physicalName)
                       // rename the filename
                       FileUtil.move(filePath, newFilePath)
-                      val id = DocumentRepository.create(document)
+                      val documentId = DocumentRepository.create(document)
                       // find the saved document
-                      val savedDocument = DocumentRepository.find(id)
+                      val savedDocument = DocumentRepository.find(documentId)
                       // add the document in the lucene index
                       savedDocument match {
                         case Some(doc) => indexWriterActor ! MessageAddDocument(userId, doc)
@@ -127,7 +127,7 @@ object DatabaseController extends Controller with Secured {
    }
   }
 
-  def update(id: Int) = IsAuthenticated{ username => implicit request =>
+  def update(documentId: Int) = IsAuthenticated{ username => implicit request =>
     logger.info("in DatabaseController.update...")
     println("in DatabaseController.update...")
     val json = request.body.asInstanceOf[JsObject]
@@ -172,15 +172,15 @@ object DatabaseController extends Controller with Secured {
     }
   }
   
-  def searchDocument(id: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DatabaseController.search(${id}, ${searchText})")
-    println(s"in DatabaseController.search(${id}, ${searchText})")
+  def searchDocument(documentId: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DatabaseController.search(${documentId}, ${searchText})")
+    println(s"in DatabaseController.search(${documentId}, ${searchText})")
     
     if (searchText.length() > 0){
       AsyncResult {
           implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS)
           // send message to index searcher
-          val f = ask(indexSearcherActor, MessageSearchWithHighlighter(userId, id, searchText)).mapTo[MessageSearchResultWithHighlighter]
+          val f = ask(indexSearcherActor, MessageSearchWithHighlighter(userId, documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
           f.map{
                case MessageSearchResultWithHighlighter(userId, documentId, results) => {
                     results match {
@@ -203,11 +203,11 @@ object DatabaseController extends Controller with Secured {
     }
   }
   
-  def delete(id: Long) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DatabaseController.delete(${id})")
-    println(s"in DatabaseController.delete(${id})")
+  def delete(documentId: Long) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DatabaseController.delete(${documentId})")
+    println(s"in DatabaseController.delete(${documentId})")
     // find document object from database
-    val document = DocumentRepository.find(id)
+    val document = DocumentRepository.find(documentId)
     document match {
       case Some(doc) =>
                     // delete the file from disk
@@ -215,13 +215,13 @@ object DatabaseController extends Controller with Secured {
                     FileUtil.delete(filePath)
                     
                     //delete from the index
-                    indexWriterActor ! MessageDeleteDocument(userId, id)
+                    indexWriterActor ! MessageDeleteDocument(userId, documentId)
                     
                     // delete all the tags
-                    DocumentTagRepository.deleteByDocumentId(userId, id)
+                    DocumentTagRepository.deleteByDocumentId(userId, documentId)
                     
                     // delete the database entry
-                    DocumentRepository.delete(id)
+                    DocumentRepository.delete(documentId)
                     
                     Ok(HttpResponseUtil.success("Successfully deleted!"))
       case None => 

@@ -27,25 +27,25 @@ class DatabaseCtrl
 
     goToDocumentTag: (documentId) ->
         @$log.debug "DatabaseCtrl.goToDocumentTag(#{documentId})"
-        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentTag", {documentId: documentId})
 
     goToDocumentEdit: (documentId) ->
         @$log.debug "DatabaseCtrl.goToDocumentEdit(#{documentId})"
-        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentEdit", {documentId: documentId})
 
     goToXRay: (documentId) ->
         @$log.debug "DatabaseCtrl.goToXRay(#{documentId})"
-        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentXRay", {documentId: documentId})
 
     goToShare: (documentId) ->
         @$log.debug "DatabaseCtrl.goToShare(#{documentId})"
-        #doc = @UtilityService.findByProperty(@documents, 'id', documentId)
+        #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
         @$state.go("database.documents.documentShare", {documentId: documentId})
 
@@ -57,9 +57,9 @@ class DatabaseCtrl
         @$log.debug "DatabaseCtrl.goToSearch()"
         @$state.go("databaseSearch")
 
-    showRemoveAlert: (id) ->
-        @$log.debug "DatabaseCtrl.showRemoveAlert(#{id})"
-        @removeId = id
+    showRemoveAlert: (documentId) ->
+        @$log.debug "DatabaseCtrl.showRemoveAlert(#{documentId})"
+        @removeId = documentId
         @removeAlert = true
 
     cancelRemove: () ->
@@ -70,7 +70,7 @@ class DatabaseCtrl
     remove: () ->
         @$log.debug "DatabaseCtrl.remove()"
         @removeAlert = false
-        @Document.remove({id: @removeId}).$promise.then(
+        @Document.remove({documentId: @removeId}).$promise.then(
             (data) =>
                 @$log.debug "Successfully deleted document!"
                 @listDocuments()

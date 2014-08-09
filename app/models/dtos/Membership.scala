@@ -8,6 +8,6 @@ package models.dtos
  *          Hiring Manager     -  ??
  */
 
-case class Membership(id: Option[Long], 
+case class Membership(membershipId: Option[Long], 
                        name: String,
                        description: String)
