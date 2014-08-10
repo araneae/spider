@@ -17,6 +17,11 @@ GET    /signup                                                  controllers.Appl
 
 POST   /signup                                                  controllers.Application.register
 
+# Settings
+
+GET   /settings                                                 controllers.SettingsController.settings
+
+
 # Admin specific routes
 GET    /admin                                                   controllers.AdminController.admin
 

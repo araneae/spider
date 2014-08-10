@@ -1,31 +1,27 @@
 <div class="row">
-  <div class="col-lg-2">
-  </div>
-  <div class="col-lg-10">
-    <div ng-controller="MessageCtrl as ctrl">
-       <div class="raw">
-          <div class="col-md-3">
-            <table class="table table-striped">
-              <tr ng-repeat="mbox in ctrl.messageBoxes">
-                <td><a href="" ng-click="ctrl.filterMessage(mbox.messageBoxId)">{{mbox.name}}</a></td>
-              </tr>
-            </table>
-          </div>
-          <div class="col-md-9">
-            <table class="table table-striped">
-              <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}">
-                <td class="col-md-1"> 
-                  <a href="" class="glyphicon glyphicon-star-empty" ng-hide="message.star" data-placement="left" title="Not starred" ng-click="ctrl.markStar(message)"></a>
-                  <a href="" class="glyphicon glyphicon-star" ng-show="message.star" data-placement="left" title="Starred" ng-click="ctrl.removeStar(message)"></a>
-                  <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="ctrl.markImportant(message)"></a>
-                  <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="ctrl.removeImportant(message)"></a>
-                </td>
-                <td class="col-md-2">{{message.sentBy}}</td>
-                <td>{{message.subject}}</td>
-              </tr>
-            </table>
-          </div>
-      </div>
+  <div ng-controller="MessageCtrl as ctrl">
+     <div class="raw">
+        <div class="col-md-3">
+          <table class="table table-striped">
+            <tr ng-repeat="mbox in ctrl.messageBoxes">
+              <td><a href="" ng-click="ctrl.filterMessage(mbox.messageBoxId)">{{mbox.name}}</a></td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-9">
+          <table class="table table-striped">
+            <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}">
+              <td class="col-md-1"> 
+                <a href="" class="glyphicon glyphicon-star-empty" ng-hide="message.star" data-placement="left" title="Not starred" ng-click="ctrl.markStar(message)"></a>
+                <a href="" class="glyphicon glyphicon-star" ng-show="message.star" data-placement="left" title="Starred" ng-click="ctrl.removeStar(message)"></a>
+                <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="ctrl.markImportant(message)"></a>
+                <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="ctrl.removeImportant(message)"></a>
+              </td>
+              <td class="col-md-2">{{message.sentBy}}</td>
+              <td>{{message.subject}}</td>
+            </tr>
+          </table>
+        </div>
     </div>
   </div>
 </div>

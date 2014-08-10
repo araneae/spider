@@ -1,23 +1,19 @@
 <div class="row">
-  <div class="col-lg-2">
-  </div>
-  <div class="col-lg-10">
-    <div ng-controller="UserTagCtrl as ctrl">
-      <table class="table table-striped">
-        <tr ng-repeat="tag in ctrl.userTags">
-          <td><input type="text" ng-model="tag.name"></td>
-          <td><a href="" ng-click="ctrl.remove(tag.id)">Remove</a></td>
-        </tr>
-      </table>
-      <hr>
-      <div class="form-group clearfix">
-        <div class="col-sm-offset-4 col-sm-8 text-right">
-          <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-          <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
-        </div>
+  <div ng-controller="UserTagCtrl as ctrl">
+    <table class="table table-striped">
+      <tr ng-repeat="tag in ctrl.userTags">
+        <td><input type="text" ng-model="tag.name"></td>
+        <td><a href="" ng-click="ctrl.remove(tag.id)">Remove</a></td>
+      </tr>
+    </table>
+    <hr>
+    <div class="form-group clearfix">
+      <div class="col-sm-offset-4 col-sm-8 text-right">
+        <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
       </div>
-      <hr>
     </div>
+    <hr>
   </div>
 </div>
 

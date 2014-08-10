@@ -2,6 +2,7 @@
 @(form: Form[(String, String)])(implicit flash: Flash)
 
 @contentSignin={}
+@contentsLeft = {}
 @contentMain={
    <head>
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
@@ -41,4 +42,4 @@
 }
 @contentsRight = {}
 
-@main("Spider Recruiter Tool")("")(contentSignin)(contentMain)(contentsRight)
+@main("Spider Recruiter Tool")("")(contentSignin)(contentsLeft)(contentMain)(contentsRight)

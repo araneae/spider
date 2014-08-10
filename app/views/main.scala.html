@@ -1,4 +1,4 @@
-@(title: String)(message: String)(contentSignin: Html)(contentMain: Html)(contentRight: Html)
+@(title: String)(message: String)(contentSignin: Html)(contentLeft: Html)(contentMain: Html)(contentRight: Html)
 
 <!DOCTYPE html>
 
@@ -116,7 +116,10 @@
       </div><!-- /.container header -->
       <div id ="content" class="container-fluid">
         <div class="row-fluid main">
-          <div class="col-lg-10">
+          <div class="col-lg-2">
+            @contentLeft
+          </div> <!-- middle section -->
+          <div class="col-lg-8">
             @contentMain
           </div> <!-- middle section -->
           <div class="col-lg-2">
