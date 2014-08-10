@@ -11,7 +11,7 @@ import models.dtos._
 
 class UserMemberships(tag: Tag) extends Table[UserMembership](tag, "user_membership") {
 
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def userMembershipId = column[Long]("user_membership_id", O.PrimaryKey, O.AutoInc)
   
   def userId = column[Long]("user_id", O.NotNull)
   
@@ -25,7 +25,7 @@ class UserMemberships(tag: Tag) extends Table[UserMembership](tag, "user_members
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (id.?, userId, membershipId, startDate, endDate, active, description) <> (UserMembership.tupled, UserMembership.unapply)
+  override def * = (userMembershipId.?, userId, membershipId, startDate, endDate, active, description) <> (UserMembership.tupled, UserMembership.unapply)
   
   // foreign keys and indexes
   def user = foreignKey("fk_on_user_id", userId, TableQuery[Users])(_.userId)
