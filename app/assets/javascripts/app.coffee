@@ -18,8 +18,20 @@ dependencies = [
 app = angular.module('myApp', dependencies)
 
 angular.module('myApp.routeConfig', ['ui.router'])
-    .config ($stateProvider, $urlRouterProvider) ->
-       $urlRouterProvider.otherwise('/');
+    .config ($stateProvider, $urlRouterProvider, $httpProvider) ->
+       $httpProvider.interceptors.push(['$log', '$rootScope', '$q', ($log, $rootScope, $q) ->
+              {
+                responseError: (rejection) =>
+                    $log.error("Intercepted response error")
+                    if (rejection.status is 401)
+                      $q.reject(rejection)
+                      window.location.href = '/logout'
+                      
+                    # otherwise, default behavior
+                    $q.reject(rejection)
+              }
+       ])
+       $urlRouterProvider.otherwise('/')
        $stateProvider
           .state('industry', {
               url: '/industry',
@@ -208,6 +220,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     templateUrl: '/assets/partials/message.html'
                 }
               }
+          })
+          .state('groups', {
+            url: '/login'
           })
  
 @commonModule = angular.module('myApp.common', [])

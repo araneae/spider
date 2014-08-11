@@ -14,37 +14,86 @@ import play.api.mvc.Security
 import play.api.mvc.SimpleResult
 import play.api.mvc.Session
 import play.api.mvc.Flash
+import java.util.{Date, Locale}
+import utils._
 
 trait Secured {
+  
+  private final val PARAM_USER_TIME = "userTime"
+  private final val PARAM_USER_ID = "userId"
+  private final val PARAM_NAME = "name"
+  private final val PARAM_PATH = "path"
+  private final val EMPTY = ""
+  private final val INVALID_USER_ID = "0"
 
-  def username(request: RequestHeader) = request.session.get(Security.username)
+  //def username(request: RequestHeader) = request.session.get(Security.username)
+  def username(request: RequestHeader) : Option[String] = {
+     val optValue = request.session.get(Security.username)
+     optValue match {
+       case Some(value) =>
+               // see if the session is expired
+               val optUserTime = request.session.get(PARAM_USER_TIME);
+               optUserTime match {
+                   case Some(userTime) =>
+                       val userTicks = userTime.toLong 
+                       val currentTicks = new Date().getTime()
+                       val sessionTimeOut = Configuration.sessionTimeoutInMillis
+                       val diff = currentTicks - userTicks
+                       if (diff > sessionTimeOut) {
+                          return None
+                       }
+                   case None =>
+               }
+               optValue
+       case None => None
+     }
+  }
   
   def userId(implicit request : RequestHeader) = {
-      val id : String = request.session.get("userId").getOrElse("0");
+      val id : String = request.session.get(PARAM_USER_ID).getOrElse(INVALID_USER_ID);
       id.toInt
   }
   
   def name(implicit request : RequestHeader) = {
-      request.session.get("name").getOrElse("")
+      request.session.get(PARAM_NAME).getOrElse(EMPTY)
   }
   
   def path(implicit request : RequestHeader) = {
-      request.session.get("path").getOrElse("")
+      request.session.get(PARAM_PATH).getOrElse(EMPTY)
   }
 
   def onUnauthorized(request: RequestHeader) = {
-    Results.Redirect(routes.AuthController.login).withSession("path" -> request.path)
+    // check if the session has userId
+    val id = request.session.get(PARAM_USER_ID)
+    id match {
+      case Some(value) =>
+        // user have timeout, send unauthorized response
+        Results.Unauthorized
+      case None =>
+        // user hasn't logged in, redirect to login page
+        Results.Redirect(routes.AuthController.login).withSession(PARAM_PATH -> request.path)
+    } 
   }
 
   def IsAuthenticated(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) { 
-        user => Action(request => f(user)(request))
+        user => Action(request => {
+                            // update time in session
+                            val currentTicks = new Date().getTime()
+                            f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString)) 
+                          }
+                       )
      }
   }
   
   def IsAuthenticated(b: BodyParser[Any]) (f: => String => Request[Any] => Result) = {
     Security.Authenticated(username, onUnauthorized) { 
-      user => Action(b)(request => f(user)(request))
+      user => Action(b)(request => {
+                            // update time in session
+                            val currentTicks = new Date().getTime()
+                            f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString))
+                          }
+                        )
     }
   }
   
