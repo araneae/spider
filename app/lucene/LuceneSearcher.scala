@@ -13,6 +13,7 @@ import org.apache.lucene.document._
 import org.apache.lucene.search._
 import org.apache.lucene.index._
 import org.apache.lucene.util._
+import org.joda.time.DateTime
 import models.dtos._
 import enums._
 import utils._
@@ -59,15 +60,22 @@ class LuceneSearcher(indexDir: String) {
             var list = new ListBuffer[models.dtos.Document]()
             hits.map{ doc => 
                       val document = searcher.doc(doc.doc)
-                        list += models.dtos.Document(Some(document.get("documentId").toLong),
-                                          document.get("userId").toLong,
-                                          document.get("name"),
-                                          DocumentType(document.get("documentType").toInt),
-                                          FileType(document.get("fileType").toInt),
-                                          document.get("fileName"),
-                                          document.get("physicalName"),
-                                          document.get("description")
-                                          )
+                      val updatedUserId = document.get("updatedUserId")
+                      val updatedAt = document.get("updatedAt")
+                                          
+                      list += models.dtos.Document(Some(document.get("documentId").toLong),
+                                        document.get("userId").toLong,
+                                        document.get("name"),
+                                        DocumentType(document.get("documentType").toInt),
+                                        FileType(document.get("fileType").toInt),
+                                        document.get("fileName"),
+                                        document.get("physicalName"),
+                                        document.get("description"),
+                                        document.get("createdUserId").toLong,
+                                        new DateTime(document.get("createdAt")),
+                                        if (updatedUserId == null) None else Some(updatedUserId.toLong),
+                                        if (updatedAt == null) None else Some(new DateTime(updatedAt))
+                                     )
                     }
             Some(list.toList)
 

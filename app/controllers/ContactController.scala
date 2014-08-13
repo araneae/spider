@@ -52,7 +52,7 @@ object ContactController extends Controller with Secured {
               Ok(HttpResponseUtil.success("Ignored, already in connection!"))
         }
         .getOrElse{
-            val myNewContact = Contact(userId, contactUserId, ContactStatus.PENDING, Some(token))
+            val myNewContact = Contact(userId, contactUserId, ContactStatus.PENDING, Some(token), userId)
             ContactRepository.create(myNewContact)
             // send invitation email (should be used Actor)
             EmailService.inviteContact(contactUser, name, token, Configuration.applicationBaseUrl)
@@ -94,13 +94,13 @@ object ContactController extends Controller with Secured {
             contactUser.userId.map{ myUserId =>
               if (myUserId == userId){
                 // update contact entry
-                ContactRepository.updateStatus(contact.userId, myUserId, ContactStatus.CONNECTED, None)
+                ContactRepository.updateStatus(contact.userId, userId, ContactStatus.CONNECTED, None)
                 AdviserRepository.find(userId, contact.userId).map{ adviser =>
                   // already connected
                   Redirect(routes.Application.home)
                 }.getOrElse{
                   // create adviser entry
-                  val myAdviser = Adviser(userId, contact.userId, ContactStatus.CONNECTED, None)
+                  val myAdviser = Adviser(userId, contact.userId, ContactStatus.CONNECTED, None, userId)
                   AdviserRepository.create(myAdviser)
                   Redirect(routes.Application.home)
                 }

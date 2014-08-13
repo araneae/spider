@@ -2,6 +2,8 @@ package models.tables
 
 import play.api.db.slick.Config.driver.simple._
 import models.dtos._
+import utils.JodaToSqlMapper._
+import org.joda.time.DateTime
 
 class Users(tag: Tag) extends Table[User](tag, "user") {
 
@@ -15,7 +17,11 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def password = column[String]("password", O.NotNull)
   
-  override def * = (userId.?, firstName, lastName, email, password) <> (User.tupled, User.unapply)
+  def createdAt = column[DateTime]("created_at", O.NotNull)
+  
+  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  
+  override def * = (userId.?, firstName, lastName, email, password, createdAt, updatedAt.?) <> (User.tupled, User.unapply)
   
   // foreign keys and indexes
   def uniqueEmail = index("idx_user_on_email_unique", email, unique = true)

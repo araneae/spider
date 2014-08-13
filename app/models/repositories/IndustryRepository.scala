@@ -21,7 +21,7 @@ object IndustryRepository {
   def udate(industry: Industry) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.industryId === industry.industryId) update industry 
+         query filter(_.industryId === industry.industryId.get) update industry 
     }
   }
 

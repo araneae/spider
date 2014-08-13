@@ -42,7 +42,7 @@ object DocumentRepository {
   def udate(document: Document) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.documentId === document.documentId) update document 
+         query filter(_.documentId === document.documentId.get) update document 
     }
   }
   

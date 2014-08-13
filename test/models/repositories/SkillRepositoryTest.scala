@@ -17,10 +17,10 @@ class SkillRepositoryTest extends Specification {
       DB.withSession {
           implicit session: Session =>
             session.withTransaction{
-              val industry = Industry(None, "Software", "-software-", "This is for Software Industry")
+              val industry = Industry(None, "Software", "-software-", "This is for Software Industry", 1)
               val industryId = IndustryRepository.create(industry)
               
-              val skill = Skill(None, industryId, "Software", "-software-", "This is for Software Industry")
+              val skill = Skill(None, industryId, "Software", "-software-", "This is for Software Industry", 1)
               
               val skillId = SkillRepository.create(skill)
               val skillOpt = SkillRepository find skillId

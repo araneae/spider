@@ -22,6 +22,7 @@ import utils._
 import play.api.mvc.AsyncResult
 import scala.util.Success
 import scala.util.Failure
+import org.joda.time.DateTime
 import play.api.libs.concurrent.Execution.Implicits._
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
 
@@ -99,7 +100,8 @@ object DatabaseController extends Controller with Secured {
       val fileType = FileType.withName(fileExtension.toUpperCase()) 
       val physicalName = TokenGenerator.token
       val documentObj = Json.obj("userId" -> userId) ++ Json.obj("documentType" -> DocumentType.TEXT) ++
-                          Json.obj("fileType" -> fileType) ++ Json.obj("physicalName" -> physicalName) ++ jsonObj
+                          Json.obj("fileType" -> fileType) ++ Json.obj("physicalName" -> physicalName) ++ 
+                          Json.obj("createdUserId" -> userId) ++ Json.obj("createdAt" -> new DateTime()) ++ jsonObj
       documentObj.validate[Document].fold(
               valid = { document =>
                       // rename the file
@@ -118,7 +120,7 @@ object DatabaseController extends Controller with Secured {
                       Ok(HttpResponseUtil.success()).as(JSON)
               },
               invalid = {
-                  errors => BadRequest(HttpResponseUtil.error("Something is wrong, please try again!"))
+                  errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
               }
         )
    } catch {

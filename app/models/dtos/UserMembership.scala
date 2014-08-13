@@ -12,4 +12,8 @@ case class UserMembership(userMembershipId: Option[Long],
                           startDate: DateTime,
                           endDate: DateTime,
                           active: Boolean,
-                          description: String)
+                          description: String,
+                          createdUserId: Long,
+                          createdAt: DateTime = new DateTime(),
+                          updatedUserId: Option[Long] = None,
+                          updatedAt: Option[DateTime] = None)

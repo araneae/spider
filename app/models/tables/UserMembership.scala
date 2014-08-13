@@ -25,10 +25,22 @@ class UserMemberships(tag: Tag) extends Table[UserMembership](tag, "user_members
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (userMembershipId.?, userId, membershipId, startDate, endDate, active, description) <> (UserMembership.tupled, UserMembership.unapply)
+  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  
+  def createdAt = column[DateTime]("created_at", O.NotNull)
+  
+  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  
+  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  
+  override def * = (userMembershipId.?, userId, membershipId, startDate, endDate, active, description, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserMembership.tupled, UserMembership.unapply)
   
   // foreign keys and indexes
   def user = foreignKey("fk_on_user_id", userId, TableQuery[Users])(_.userId)
   
   def membership = foreignKey("fk_on_membership_id", membershipId, TableQuery[Memberships])(_.membershipId)
+  
+  def createdBy = foreignKey("fk_on_user_membership_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  
+  def updatedBy = foreignKey("fk_on_user_membership_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

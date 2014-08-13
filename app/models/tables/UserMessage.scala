@@ -2,6 +2,8 @@ package models.tables
 
 import play.api.db.slick.Config.driver.simple._
 import models.dtos._
+import utils.JodaToSqlMapper._
+import org.joda.time.DateTime
 
 /**
  * For storing user messages
@@ -22,7 +24,15 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   
   def star = column[Boolean]("star", O.NotNull, O.Default(false))
   
-  override def * = (userId, messageId, messageBoxId, read, important, star) <> (UserMessage.tupled, UserMessage.unapply)
+  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  
+  def createdAt = column[DateTime]("created_at", O.NotNull)
+  
+  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  
+  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  
+  override def * = (userId, messageId, messageBoxId, read, important, star, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserMessage.tupled, UserMessage.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_message", (userId, messageId, messageBoxId))
@@ -32,4 +42,8 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   def message = foreignKey("fk_on_user_message_message_id", messageId, TableQuery[Messages])(_.messageId)
   
   def messageBox = foreignKey("fk_on_user_message_message_box_id", messageBoxId, TableQuery[MessageBoxes])(_.messageBoxId)
+  
+  def createdBy = foreignKey("fk_on_user_message_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  
+  def updatedBy = foreignKey("fk_on_user_message_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

@@ -11,6 +11,7 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Controller
 import traits.Secured
 import utils.HttpResponseUtil
+import org.joda.time.DateTime
 
 object DocumentTagController extends Controller with Secured {
   
@@ -30,8 +31,8 @@ object DocumentTagController extends Controller with Secured {
     println(s"in DocumentTagController.create(${documentId})")
     val jsonObj = request.body.asInstanceOf[JsObject]
     // merge userId with the request object
-    val userIdObj = Json.obj("userId" -> userId)
-    val userTagObj = userIdObj ++ jsonObj
+    val userTagObj = Json.obj("userId" -> userId) ++ Json.obj("createdUserId" -> userId) ++
+                     Json.obj("createdAt" -> new DateTime()) ++ jsonObj
     userTagObj.validate[DocumentTag].fold(
           valid = { documentTag =>
                   DocumentTagRepository.create(documentTag)

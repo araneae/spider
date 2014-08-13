@@ -51,7 +51,7 @@ object ConnectionController extends Controller with Secured {
     jsonObj.validate[Share].fold(
             valid = { share =>
                     // create a message
-                    val message = Message(None, None, userId, false, DEFAULT_SUBJECT, Some(share.message))
+                    val message = Message(None, None, userId, false, DEFAULT_SUBJECT, Some(share.message), userId)
                     val messageId = MessageRepository.create(message)
                     
                     // iterate through the recipients
@@ -62,7 +62,7 @@ object ConnectionController extends Controller with Secured {
                                           inbox match {
                                             case Some(box) =>
                                                       // add the recipient
-                                                      val recipient = MessageRecipient(connection.id, messageId, false)
+                                                      val recipient = MessageRecipient(connection.id, messageId, false, userId)
                                                       MessageRecipientRepository.create(recipient)
                                                       
                                                       // add the message intorecipient's inbox
@@ -71,11 +71,12 @@ object ConnectionController extends Controller with Secured {
                                                                                     box.messageBoxId.get,
                                                                                     false,
                                                                                     false,
-                                                                                    false)
+                                                                                    false,
+                                                                                    userId)
                                                       UserMessageRepository.create(userMessage)
                                                       
                                                       // create shared link
-                                                      val sharedDoc = SharedDocument(connection.id, documentId, userId, share.canCopy, share.canShare)
+                                                      val sharedDoc = SharedDocument(connection.id, documentId, userId, share.canCopy, share.canShare, userId)
                                                       SharedDocumentRepository.create(sharedDoc)
                                             case None => 
                                                         // ignore the recipient
@@ -92,7 +93,8 @@ object ConnectionController extends Controller with Secured {
                                                                   box.messageBoxId.get,
                                                                   true,
                                                                   false,
-                                                                  false)
+                                                                  false,
+                                                                  userId)
                                     UserMessageRepository.create(userMessage)
                       case None => 
                                     // error - ignore for now
@@ -129,7 +131,8 @@ object ConnectionController extends Controller with Secured {
                                             doc.fileType,
                                             doc.fileName,
                                             physicalName,
-                                            doc.name)
+                                            doc.name,
+                                            userId)
                   val docId = DocumentRepository.create(newDocument)
                   // find the saved document
                   val savedDocument = DocumentRepository.find(docId)

@@ -6,6 +6,8 @@ import play.api.libs.json._
 import models.tables._
 import enums.ContactStatus._
 import models.dtos._
+import utils.JodaToSqlMapper._
+import org.joda.time.DateTime
 
 class Contacts(tag: Tag) extends Table[Contact](tag, "contact") {
 
@@ -17,10 +19,22 @@ class Contacts(tag: Tag) extends Table[Contact](tag, "contact") {
   
   def token = column[String]("token", O.Nullable)
   
-  override def * = (userId, contactUserId, status, token.?) <> (Contact.tupled, Contact.unapply)
+  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  
+  def createdAt = column[DateTime]("created_at", O.NotNull)
+  
+  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  
+  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  
+  override def * = (userId, contactUserId, status, token.?, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Contact.tupled, Contact.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_contact_user_id_contact_user_id", (userId, contactUserId))
   
   def contact = foreignKey("fk_on_contact_contact_user_id", contactUserId, TableQuery[Users])(_.userId)
+  
+  def createdBy = foreignKey("fk_on_contact_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  
+  def updatedBy = foreignKey("fk_on_contact_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

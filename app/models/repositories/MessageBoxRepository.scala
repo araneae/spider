@@ -18,12 +18,12 @@ object MessageBoxRepository {
     }
   }
   
-  def createDefaults(userId: Long) = {
-    MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Messages"))
-    MessageBoxRepository.create(MessageBox(None, userId, DRAFT, "Draft"))
-    MessageBoxRepository.create(MessageBox(None, userId, OUTBOX, "Outbox"))
-    MessageBoxRepository.create(MessageBox(None, userId, SENTITEMS, "Sent")) 
-    MessageBoxRepository.create(MessageBox(None, userId, TRASH, "Trash")) 
+  def createDefaults(userId: Long, createdUserId: Long) = {
+    MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Messages", createdUserId))
+    MessageBoxRepository.create(MessageBox(None, userId, DRAFT, "Draft", createdUserId))
+    MessageBoxRepository.create(MessageBox(None, userId, OUTBOX, "Outbox", createdUserId))
+    MessageBoxRepository.create(MessageBox(None, userId, SENTITEMS, "Sent", createdUserId)) 
+    MessageBoxRepository.create(MessageBox(None, userId, TRASH, "Trash", createdUserId)) 
   }
   
   def findByType(userId: Long, messageBoxType: MessageBoxType): Option[MessageBox] = {
@@ -70,7 +70,7 @@ object MessageBoxRepository {
   def udate(messageBox: MessageBox) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(m => m.messageBoxId === messageBox.messageBoxId) update messageBox 
+         query filter(m => m.messageBoxId === messageBox.messageBoxId.get) update messageBox 
     }
   }
   

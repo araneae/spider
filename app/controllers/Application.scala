@@ -70,7 +70,7 @@ object Application extends Controller with Secured {
                       val user = User(None, first_name, last_name, email, encryptedPassword)
                       val userId = UserRepository create user
                       // create default message boxes
-                      MessageBoxRepository.createDefaults(userId)
+                      MessageBoxRepository.createDefaults(userId, userId)
                       Redirect(routes.AuthController.login)
                   }
                 }

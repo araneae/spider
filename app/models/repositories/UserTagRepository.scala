@@ -5,6 +5,7 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import models.tables._
 import models.dtos._
+import org.joda.time.DateTime
 
 object UserTagRepository {
   
@@ -24,10 +25,14 @@ object UserTagRepository {
     }
   }
   
-  def udate(userTag: UserTag) = {
+  def udate(userTag: UserTag, userId: Long) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.userTagId === userTag.userTagId) update userTag 
+         val q = for { 
+           ut <-  query filter(_.userTagId === userTag.userTagId)
+         } yield (ut.name, ut.updatedUserId, ut.updatedAt)
+         
+         q.update((userTag.name, userId, new DateTime())) 
     }
   }
   

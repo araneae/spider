@@ -2,6 +2,8 @@ package models.tables
 
 import play.api.db.slick.Config.driver.simple._
 import models.dtos._
+import utils.JodaToSqlMapper._
+import org.joda.time.DateTime
 
 /**
  * A domain is a somewhat broader definition of expertise area, like "Telecom", "Retail", "Insurance"
@@ -21,10 +23,22 @@ class Domains(tag: Tag) extends Table[Domain](tag, "domain") {
   
   def description = column[String]("description", O.Nullable)
   
-  override def * = (domainId.?, industryId, name, code, description) <> (Domain.tupled, Domain.unapply)
+  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  
+  def createdAt = column[DateTime]("created_at", O.NotNull)
+  
+  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  
+  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  
+  override def * = (domainId.?, industryId, name, code, description, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Domain.tupled, Domain.unapply)
   
     // foreign keys and indexes
   def industry = foreignKey("fk_on_skill_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
   def uniqueCode = index("idx_unique_on_skill_code", code, unique = true)
+  
+  def createdBy = foreignKey("fk_on_domain_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  
+  def updatedBy = foreignKey("fk_on_domain_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

@@ -6,6 +6,7 @@ import play.api.Play.current
 import models.tables._
 import models.dtos._
 import enums.ContactStatus._
+import org.joda.time.DateTime
 
 object ContactRepository {
   
@@ -48,16 +49,21 @@ object ContactRepository {
   def updateToken(userId: Long, contactUserId: Long, token: String) = {
     DB.withSession {
        implicit session: Session =>
-         val q = for { u <- query if u.userId === userId && u.contactUserId === contactUserId } yield u.token
-         q.update(token)
+         val q = for { 
+                     cu <- query.filter (u => u.userId === userId && u.contactUserId === contactUserId)
+                 } yield (cu.token, cu.updatedUserId, cu.updatedAt)
+                 
+         q.update((token, userId, new DateTime()))
     }
   }
   
   def updateStatus(userId: Long, contactUserId: Long, status: ContactStatus, token: Option[String]) = {
     DB.withSession {
        implicit session: Session =>
-         val q = for { u <- query if u.userId === userId && u.contactUserId === contactUserId } yield (u.status, u.token)
-         q.update((status, token.getOrElse(null)))
+         val q = for { 
+                     u <- query if u.userId === userId && u.contactUserId === contactUserId 
+                  } yield (u.status, u.token, u.updatedUserId, u.updatedAt)
+         q.update((status, token.getOrElse(null), contactUserId, new DateTime()))
     }
   }
   

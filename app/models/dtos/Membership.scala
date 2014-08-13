@@ -1,5 +1,7 @@
 package models.dtos
 
+import org.joda.time.DateTime
+
 /**
  * This class represents various membership levels available in the system.
  * Available Memberships are:
@@ -10,4 +12,8 @@ package models.dtos
 
 case class Membership(membershipId: Option[Long], 
                        name: String,
-                       description: String)
+                       description: String,
+                       createdUserId: Long,
+                       createdAt: DateTime = new DateTime(),
+                       updatedUserId: Option[Long] = None,
+                       updatedAt: Option[DateTime] = None)

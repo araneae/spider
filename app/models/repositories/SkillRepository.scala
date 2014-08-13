@@ -20,7 +20,7 @@ object SkillRepository {
   def udate(skill: Skill) = {
     DB.withSession {
        implicit session: Session =>
-         query.filter(_.skillId === skill.skillId).update(skill)
+         query.filter(_.skillId === skill.skillId.get).update(skill)
     }
   }
   

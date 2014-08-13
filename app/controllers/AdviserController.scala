@@ -55,7 +55,7 @@ object AdviserController extends Controller with Secured {
               Ok("Ignored")
         }
         .getOrElse{
-            val myNewAdviser = Adviser(userId, adviserUserId, ContactStatus.PENDING, Some(token))
+            val myNewAdviser = Adviser(userId, adviserUserId, ContactStatus.PENDING, Some(token), userId)
             AdviserRepository.create(myNewAdviser)
             // send invitation email (should be used Actor)
             EmailService.inviteAdviser(adviserUser, name, token, applicationBaseUrl)
@@ -97,13 +97,13 @@ object AdviserController extends Controller with Secured {
             adviserUser.userId.map{ myUserId =>
               if (myUserId == userId){
                 // update adviser entry
-                AdviserRepository.updateStatus(adviser.userId, myUserId, ContactStatus.CONNECTED, None)
+                AdviserRepository.updateStatus(adviser.userId, userId, ContactStatus.CONNECTED, None)
                 AdviserRepository.find(userId, adviser.userId).map{ adviser =>
                   // already exists
                   Ok("Already connected")
                 }.getOrElse{
                   // create adviser entry
-                   val myAdviser = Adviser(userId, adviser.userId, ContactStatus.CONNECTED, None)
+                   val myAdviser = Adviser(userId, adviser.userId, ContactStatus.CONNECTED, None, userId)
                    AdviserRepository.create(myAdviser)
                    Ok("Ok")
                 }

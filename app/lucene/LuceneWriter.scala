@@ -70,6 +70,18 @@ class LuceneWriter(indexDir: String) {
                       luceneDocument.add(new StringField("fileName", doc.fileName, Field.Store.YES))
                       luceneDocument.add(new StringField("physicalName", doc.physicalName, Field.Store.YES))
                       luceneDocument.add(new StringField("description", doc.description, Field.Store.YES))
+                      luceneDocument.add(new StringField("createdUserId", doc.createdUserId.toString, Field.Store.YES))
+                      luceneDocument.add(new StringField("createdAt", doc.createdAt.toString, Field.Store.YES))
+                      doc.updatedUserId match {
+                        case Some(id) =>
+                             luceneDocument.add(new StringField("updatedUserId", id.toString, Field.Store.YES))
+                        case None =>
+                      }
+                      doc.updatedAt match {
+                        case Some(date) =>
+                             luceneDocument.add(new StringField("updatedAt", date.toString, Field.Store.YES))
+                        case None =>
+                      }
                       luceneDocument.add(new Field("resume", resume, highlighterType))
 
                       wr.updateDocument(new Term("documentId", docId.toString), luceneDocument)

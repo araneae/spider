@@ -16,10 +16,10 @@ class DomainRepositoryTest extends Specification {
       DB.withSession{
           implicit session: Session =>
             session.withTransaction{
-              val industry = Industry(None, "Software", "-software-", "This is for Software Industry")
+              val industry = Industry(None, "Software", "-software-", "This is for Software Industry", 1)
               val industryId = IndustryRepository.create(industry)
               
-              val domain = Domain(None, industryId, "Software", "-software-", "This is for Software Industry")
+              val domain = Domain(None, industryId, "Software", "-software-", "This is for Software Industry", 1)
               
               val domainId = DomainRepository.create(domain)
               val domainOpt = DomainRepository find domainId

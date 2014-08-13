@@ -27,7 +27,7 @@ object MessageRepository {
   def udate(message: Message) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(m => m.messageId === message.messageId) update message 
+         query filter(m => m.messageId === message.messageId.get) update message 
     }
   }
   
