@@ -95,6 +95,8 @@ GET    /adviser/accept/:token                                   controllers.Advi
 # Database specific routes
 POST   /database/upload                                         controllers.DatabaseController.upload
 
+GET    /database/download/:documentId                           controllers.DatabaseController.download(documentId: Int)
+
 GET    /database/document/:documentId                           controllers.DatabaseController.get(documentId: Int)
 
 GET    /database/document                                       controllers.DatabaseController.getAll(userTagId: Option[Int])

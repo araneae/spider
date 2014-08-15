@@ -62,6 +62,10 @@ class DatabaseCtrl
         @removeId = documentId
         @removeAlert = true
 
+    getUrl: (documentId) ->
+        @$log.debug "DatabaseCtrl.getUrl(#{documentId})"
+        "/database/download/#{documentId}"
+
     cancelRemove: () ->
         @$log.debug "DatabaseCtrl.cancelRemove()"
         @removeAlert = false

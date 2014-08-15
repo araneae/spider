@@ -60,6 +60,20 @@ object DatabaseController extends Controller with Secured {
       }
   }
   
+  def download(documentId: Int) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in DatabaseController.download(${documentId})")
+    println(s"in DatabaseController.download(${documentId})")
+    
+    val document = DocumentRepository.find(documentId)
+    document match {
+      case Some(doc) =>
+          val filePath = Configuration.uploadFilePath(userId, doc.physicalName)
+          Ok.sendFile(new File(filePath), fileName = _ => doc.fileName)
+      case None =>
+          NotFound
+    }
+  }
+  
   def get(documentId: Long) = IsAuthenticated{ username => implicit request =>
     logger.info(s"in DatabaseController.get(${documentId})")
     println(s"in DatabaseController.get(${documentId})")
