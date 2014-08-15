@@ -32,6 +32,8 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
   
   def description = column[String]("description", O.Nullable)
   
+  def signature = column[String]("signature", O.NotNull)
+  
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
@@ -40,7 +42,7 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
   
   def updatedAt = column[DateTime]("updated_at", O.Nullable)
   
-  override def * = (documentId.?, userId, name, documentType, fileType, fileName, physicalName, description, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Document.tupled, Document.unapply)
+  override def * = (documentId.?, userId, name, documentType, fileType, fileName, physicalName, description, signature, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Document.tupled, Document.unapply)
   
   // foreign keys and indexes
   def owner = foreignKey("fk_document_on_user_id", userId, TableQuery[Users])(_.userId)

@@ -71,6 +71,7 @@ class LuceneSearcher(indexDir: String) {
                                         document.get("fileName"),
                                         document.get("physicalName"),
                                         document.get("description"),
+                                        document.get("signature"),
                                         document.get("createdUserId").toLong,
                                         new DateTime(document.get("createdAt")),
                                         if (updatedUserId == null) None else Some(updatedUserId.toLong),

@@ -12,7 +12,7 @@ class LuceneWriterTest {
       val reader = new TxtFileParser()
       val text = reader.parse("test/lucene/SampleResume.txt")
       var doc =Document(Some(1), 10, "Arjun", DocumentType.TEXT,
-                FileType.TXT, "SampleResume.txt", "SampleResume.txt", "This is my first resume", 2)
+                FileType.TXT, "SampleResume.txt", "SampleResume.txt", "signature", "This is my first resume", 2)
       writer.addOrUpdateDocument(10, doc, text)
       writer.close()
   }

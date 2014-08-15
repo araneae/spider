@@ -112,16 +112,17 @@ object DatabaseController extends Controller with Secured {
       // inject userId and documentType
       val fileExtension = FileUtil.fileExtension(sanitizedFileName)
       val fileType = FileType.withName(fileExtension.toUpperCase()) 
+      val filePath = Configuration.uploadFilePath(userId, sanitizedFileName)
       val physicalName = TokenGenerator.token
+      val signature = FileUtil.getMD5Hash(filePath)
       val documentObj = Json.obj("userId" -> userId) ++ Json.obj("documentType" -> DocumentType.TEXT) ++
                           Json.obj("fileType" -> fileType) ++ Json.obj("physicalName" -> physicalName) ++ 
-                          Json.obj("createdUserId" -> userId) ++ Json.obj("createdAt" -> new DateTime()) ++ jsonObj
+                          Json.obj("signature" -> signature) ++ Json.obj("createdUserId" -> userId) ++ 
+                          Json.obj("createdAt" -> new DateTime()) ++ jsonObj
       documentObj.validate[Document].fold(
               valid = { document =>
-                      // rename the file
-                      val filePath = Configuration.uploadFilePath(userId, sanitizedFileName)
-                      val newFilePath = Configuration.uploadFilePath(userId, physicalName)
                       // rename the filename
+                      val newFilePath = Configuration.uploadFilePath(userId, physicalName)
                       FileUtil.move(filePath, newFilePath)
                       val documentId = DocumentRepository.create(document)
                       // find the saved document

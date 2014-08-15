@@ -10,11 +10,13 @@
       <tr>
         <th>Name</th>
         <th>Shared By</th>
+        <th>Signature</th>
         <th class="col-md-2"></th>
       </tr>
       <tr ng-repeat="document in ctrl.documents">
         <td>{{document.name}}</td>
         <td>{{document.sharedBy}}</td>
+        <td>{{document.signature}}</td>
         <td> 
           <a href="" class="glyphicon glyphicon-share" ng-show="document.canShare" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
           <a href="" class="glyphicon glyphicon-save" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>

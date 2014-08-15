@@ -132,6 +132,7 @@ object ConnectionController extends Controller with Secured {
                                             doc.fileName,
                                             physicalName,
                                             doc.name,
+                                            doc.signature,
                                             userId)
                   val docId = DocumentRepository.create(newDocument)
                   // find the saved document

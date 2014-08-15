@@ -70,6 +70,7 @@ class LuceneWriter(indexDir: String) {
                       luceneDocument.add(new StringField("fileName", doc.fileName, Field.Store.YES))
                       luceneDocument.add(new StringField("physicalName", doc.physicalName, Field.Store.YES))
                       luceneDocument.add(new StringField("description", doc.description, Field.Store.YES))
+                      luceneDocument.add(new StringField("signature", doc.signature, Field.Store.YES))
                       luceneDocument.add(new StringField("createdUserId", doc.createdUserId.toString, Field.Store.YES))
                       luceneDocument.add(new StringField("createdAt", doc.createdAt.toString, Field.Store.YES))
                       doc.updatedUserId match {

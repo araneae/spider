@@ -21,11 +21,13 @@
         <tr>
           <th>Name</th>
           <th>Description</th>
+          <th>Signature</th>
           <th class="col-md-2"></th>
         </tr>
         <tr ng-repeat="document in ctrl.documents">
           <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToDocumentEdit(document.documentId)">{{document.name}}</a></td>
           <td>{{document.description}}</td>
+          <td>{{document.signature}}</td>
           <td> 
             <a href="" class="glyphicon glyphicon-share" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
             <a class="glyphicon glyphicon-download" file-download url="ctrl.getUrl({{document.documentId}})" data-placement="left" title="Download"></a>

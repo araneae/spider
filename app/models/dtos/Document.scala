@@ -18,12 +18,13 @@ case class Document(documentId: Option[Long],
                    fileName: String,
                    physicalName: String,
                    description: String,
+                   signature: String,
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object Document extends Function12[Option[Long], Long, String, DocumentType, FileType, String, String, String, Long, DateTime, Option[Long], Option[DateTime], Document]
+object Document extends Function13[Option[Long], Long, String, DocumentType, FileType, String, String, String, String, Long, DateTime, Option[Long], Option[DateTime], Document]
 {
     implicit val documentWrites : Writes[Document] = (
             (JsPath \ "documentId").write[Option[Long]] and
@@ -34,6 +35,7 @@ object Document extends Function12[Option[Long], Long, String, DocumentType, Fil
             (JsPath \ "fileName").write[String] and
             (JsPath \ "physicalName").write[String] and
             (JsPath \ "description").write[String] and
+            (JsPath \ "signature").write[String] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -49,6 +51,7 @@ object Document extends Function12[Option[Long], Long, String, DocumentType, Fil
           (JsPath \ "fileName").read[String] and
           (JsPath \ "physicalName").read[String] and
           (JsPath \ "description").read[String] and
+          (JsPath \ "signature").read[String] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
