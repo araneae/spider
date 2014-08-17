@@ -1,7 +1,7 @@
 
 class MessageCtrl
 
-    constructor: (@$log, @$scope, @MessageService, @$state, @$stateParams, @Message, @UtilityService) ->
+    constructor: (@$log, @$scope, @MessageService, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
         @$log.debug "constructing MessageCtrl"
         @messageBoxes = []
         @messages = []
@@ -19,6 +19,7 @@ class MessageCtrl
             ,
             (error) =>
                 @$log.error "Unable to get messages: #{error}"
+                @ErrorService.error("Unable to fetch messages from server!")
             )
 
     listMessageBoxes: () ->
@@ -32,6 +33,7 @@ class MessageCtrl
             ,
             (error) =>
                 @$log.error "Unable to get messages: #{error}"
+                @ErrorService.error("Unable to fetch message box information from server!")
             )
 
     filterMessage: (messageBoxId) ->

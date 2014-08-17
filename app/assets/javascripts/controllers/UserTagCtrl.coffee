@@ -1,7 +1,7 @@
 
 class UserTagCtrl
 
-    constructor: (@$log, @$state, @UserTagService, @UtilityService, @UserTag) ->
+    constructor: (@$log, @$state, @UserTagService, @UtilityService, @UserTag, @ErrorService) ->
         @$log.debug "constructing UserTagCtrl"
         @userTags = []
         @removedIds = []
@@ -17,6 +17,7 @@ class UserTagCtrl
             ,
             (error) =>
                 @$log.error "Unable to get tags: #{error}"
+                @ErrorService.error("Unable to fetch tags from server!")
             )
 
     goToTag: (userTagId) ->

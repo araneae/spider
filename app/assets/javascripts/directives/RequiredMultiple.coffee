@@ -1,3 +1,7 @@
+# Validates for required element on a multi-valued element
+#
+# Usage example: <div required-multiple ng-model="model"></div>
+#
 
 directivesModule.directive('requiredMultiple', () ->
     {

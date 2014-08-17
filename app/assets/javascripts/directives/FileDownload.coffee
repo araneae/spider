@@ -1,3 +1,7 @@
+# Directive for downloading a file
+#
+# Usage example: <a file-multiple url="ctrl.getUrl(id)" draggable></a>
+#
 
 class DownloadDirective
   

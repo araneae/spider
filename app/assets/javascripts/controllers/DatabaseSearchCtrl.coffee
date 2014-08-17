@@ -1,7 +1,8 @@
 
 class DatabaseSearchCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @DatabaseSearch, @Document, @UtilityService, @$location) ->
+    constructor: (@$log, @$state, @DatabaseService, @DatabaseSearch, @Document, 
+                              @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseSearchCtrl"
         @savedSearchTexts = []
         @searchResults = []
@@ -34,6 +35,7 @@ class DatabaseSearchCtrl
           ,
           (error) =>
             @$log.error "Unable to search #{@searchText}"
+            @ErrorService.error("Unable to get search results from server!")
         )
 
     saveQuery: () ->
@@ -50,6 +52,7 @@ class DatabaseSearchCtrl
               ,
               (error) =>
                       @$log.debug "Unable to save search #{error}"
+                      @ErrorService.error("Unable to update query!")
             )
           else
             # save a new search  
@@ -60,6 +63,7 @@ class DatabaseSearchCtrl
               ,
               (error) =>
                       @$log.debug "Unable to save search #{error}"
+                      @ErrorService.error("Unable to save query!")
             )
 
 controllersModule.controller('DatabaseSearchCtrl', DatabaseSearchCtrl)

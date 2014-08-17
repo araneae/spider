@@ -1,7 +1,8 @@
 
 class DatabaseXRayCtrl
 
-    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, @DatabaseService, @UtilityService, @$location) ->
+    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, 
+                            @DatabaseService, @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseXRayCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
@@ -21,6 +22,7 @@ class DatabaseXRayCtrl
           ,
           (error) =>
               @$log.error "Unable to get document: #{error}"
+              @ErrorService.error("Unable to fetch data from server!")
           )
 
     searchDocument: (documentId) ->
@@ -33,6 +35,7 @@ class DatabaseXRayCtrl
           ,
           (error) =>
               @$log.error "Unable to search document: #{error}"
+              @ErrorService.error("Unable to fetch data from server!")
           )
 
     done: () ->

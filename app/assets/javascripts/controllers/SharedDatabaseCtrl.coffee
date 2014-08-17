@@ -1,7 +1,7 @@
 
 class SharedDatabaseCtrl
 
-    constructor: (@$log, @$scope, @SharedDatabaseService, @$state, @$stateParams, @SharedDocument, @UtilityService) ->
+    constructor: (@$log, @$scope, @SharedDatabaseService, @$state, @$stateParams, @SharedDocument, @UtilityService, @ErrorService) ->
         @$log.debug "constructing SharedDatabaseCtrl"
         @documents = []
         @removeId
@@ -33,6 +33,7 @@ class SharedDatabaseCtrl
             ,
             (error) =>
                 @$log.error "Unable to copy document: #{error}"
+                @ErrorService.error
             )
 
     showRemoveAlert: (documentId) ->

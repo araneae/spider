@@ -1,7 +1,8 @@
 
 class DatabaseShareCtrl
 
-    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, @DatabaseService, @UtilityService, @$location) ->
+    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, 
+                              @DatabaseService, @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseShareCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
@@ -27,6 +28,7 @@ class DatabaseShareCtrl
           ,
           (error) =>
               @$log.error "Unable to get document: #{error}"
+              @ErrorService.error("Unable to fetch data from server!")
           )
 
     loadConnections: () ->
@@ -39,6 +41,7 @@ class DatabaseShareCtrl
             ,
             (error) =>
               @$log.error "Unable to get connections: #{error}"
+              @ErrorService.error("Unable to fetch contacts from server!")
         )
 
     disableShare: () ->
@@ -49,10 +52,12 @@ class DatabaseShareCtrl
       @DatabaseService.share(@documentId, @share).then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
+              @ErrorService.success("Successfully shared document!")
               @$state.go('database.documents')
             ,
             (error) =>
               @$log.error "Unable to share connections: #{error}"
+              @ErrorService.error("Unable to share document!")
       )
 
     cancel: () ->

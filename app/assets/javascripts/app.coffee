@@ -24,9 +24,11 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 responseError: (rejection) =>
                     $log.error("Intercepted response error")
                     if (rejection.status is 401)
-                      $q.reject(rejection)
-                      window.location.href = '/logout'
-                      
+                        $q.reject(rejection)
+                        window.location.href = '/logout'
+                        #$rootScope.$broadcast('event:loginRequired');
+                    else if response.status >= 400 and response.status < 500
+                        ErrorService.setError('Server was unable to find what you were looking for... Sorry!!')
                     # otherwise, default behavior
                     $q.reject(rejection)
               }

@@ -27,6 +27,7 @@ class DatabaseTagCtrl
             ,
             (error) =>
                 @$log.error "Unable to get document tags: #{error}"
+                @ErrorService.error("Unable to fetch tags from server!")
             )
 
     loadDocument: (documentId) ->
@@ -39,6 +40,7 @@ class DatabaseTagCtrl
           ,
           (error) =>
               @$log.error "Unable to get document: #{error}"
+              @ErrorService.error("Unable to fetch data from server!")
           )
 
     loadUserTags: () ->
@@ -53,6 +55,7 @@ class DatabaseTagCtrl
             ,
             (error) =>
                 @$log.error "Unable to get tags: #{error}"
+                @ErrorService.error("Unable to fetch tags from server!")
             )
 
     joinAll: () ->

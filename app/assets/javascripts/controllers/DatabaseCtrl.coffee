@@ -1,7 +1,7 @@
 
 class DatabaseCtrl
 
-    constructor: (@$log, @$scope, @DatabaseService, @$state, @$stateParams, @Document, @UtilityService) ->
+    constructor: (@$log, @$scope, @DatabaseService, @$state, @$stateParams, @Document, @UtilityService, @ErrorService) ->
         @$log.debug "constructing DatabaseCtrl"
         @userTagId
         @userTagId = parseInt(@$stateParams.userTagId) if @$stateParams.userTagId

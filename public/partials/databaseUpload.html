@@ -1,13 +1,5 @@
 <div class="row">
   <div ng-controller="DatabaseUploadCtrl as ctrl">
-      <div class="alert alert-warning alert-dismissible" role="alert" ng-show="ctrl.showFlashMessage()">
-        
-        <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span>
-          <span class="sr-only">Close</span></button>
-          <strong>Warning!  </strong>{{ctrl.flashMessage}}
-      </div>
-        
       <form id="DatabaseUploadForm" name="DatabaseUploadForm" class="form-horizontal" role="form">
           <legend class="sm-col-12">Resume upload</legend>
           <div class="form-group">

@@ -1,9 +1,8 @@
 
 class DatabaseUploadCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @Document, @$upload) ->
+    constructor: (@$log, @$state, @DatabaseService, @Document, @$upload, @ErrorService) ->
         @$log.debug "constructing DatabaseUploadCtrl"
-        @flashMessage
         @document = {}
         @fileUpload = {}
         @selectedFile
@@ -27,16 +26,17 @@ class DatabaseUploadCtrl
         @Document.save(@document).$promise.then(
             (data) =>
                 @$log.debug "Promise returned #{data} document"
+                @ErrorService.success("Successfully uploaded document!")
                 @$state.go('database.documents')
             ,
             (error) =>
                 @$log.error "Unable to save document: #{error.data.message}"
-                @flashMessage = error.data.message
+                @ErrorService.error("Failed to upload document!")
             )
 
     onUploadError : (error) =>
       @$log.debug "DatabaseUploadCtrl.onUploadError(#{error.message})"
-      @flashMessage = error.message
+      @ErrorService.error("Failed to upload document!")
 
     cancel: () ->
         @$log.debug "DatabaseUploadCtrl.cancel()"
@@ -48,8 +48,5 @@ class DatabaseUploadCtrl
         fileName.substring(0, index)
       else
         fileName
-
-    showFlashMessage: () ->
-       @flashMessage && @flashMessage.length > 0
 
 controllersModule.controller('DatabaseUploadCtrl', DatabaseUploadCtrl)
