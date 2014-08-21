@@ -29,24 +29,26 @@ trait Secured {
   //def username(request: RequestHeader) = request.session.get(Security.username)
   def username(request: RequestHeader) : Option[String] = {
      val optValue = request.session.get(Security.username)
-     optValue match {
-       case Some(value) =>
-               // see if the session is expired
-               val optUserTime = request.session.get(PARAM_USER_TIME);
-               optUserTime match {
-                   case Some(userTime) =>
-                       val userTicks = userTime.toLong 
-                       val currentTicks = new Date().getTime()
-                       val sessionTimeOut = Configuration.sessionTimeoutInMillis
-                       val diff = currentTicks - userTicks
-                       if (diff > sessionTimeOut) {
-                          return None
-                       }
-                   case None =>
-               }
-               optValue
-       case None => None
-     }
+     optValue
+//  commenting out the session timeout - might be useful later on some different ways
+//     optValue match {
+//       case Some(value) =>
+//               // see if the session is expired
+//               val optUserTime = request.session.get(PARAM_USER_TIME);
+//               optUserTime match {
+//                   case Some(userTime) =>
+//                       val userTicks = userTime.toLong 
+//                       val currentTicks = new Date().getTime()
+//                       val sessionTimeOut = Configuration.sessionTimeoutInMillis
+//                       val diff = currentTicks - userTicks
+//                       if (diff > sessionTimeOut) {
+//                          return None
+//                       }
+//                   case None =>
+//               }
+//               optValue
+//       case None => None
+//     }
   }
   
   def userId(implicit request : RequestHeader) = {

@@ -1,0 +1,41 @@
+<div class="row">
+ <span class="col-md-2">
+  <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Trash" ng-click="trash()"></a>
+  <a href="" class="glyphicon glyphicon-star-empty" ng-hide="message.star" data-placement="left" title="Not starred" ng-click="markStar()"></a>
+  <a href="" class="glyphicon glyphicon-star" ng-show="message.star" data-placement="left" title="Starred" ng-click="removeStar()"></a>
+  <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="markImportant()"></a>
+  <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="removeImportant()"></a>
+ </span>
+ <div class="clickable col-md-10">
+  <a href="#" ng-click="toggleDetail()"></a>
+  <span ng-show="message.read">
+    <span class="col-md-3">{{message.sentBy}}</span>
+    <span class="col-md-5">{{message.subject}}</span>
+    {{message.createdAt | date : 'short'}}
+  </span>
+  <strong ng-show="!message.read">
+    <span class="col-md-3">{{message.sentBy}}</span>
+    <span class="col-md-5">{{message.subject}}</span>
+    {{message.createdAt | date : 'short'}}
+  </strong>
+ </div>
+ <div class="panel-body" ng-show="isShowingDetail()">
+  <hr/>
+  <div class="panel panel-default">
+    <div class="panel-heading text-right">
+      <a href="" class="glyphicon glyphicon-share-alt" data-placement="left" title="Reply" ng-click="reply()"></a>
+    </div>
+    <div class="panel-body" ng-bind-html="message.body | Newline2BR">
+    </div>
+  </div>
+  <div class="panel panel-default" ng-show="isShowingReply">
+    <div class="panel-heading text-right">
+      <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="discard()"></a>
+      <a href="" class="glyphicon glyphicon-send" data-placement="left" title="Send" ng-click="send()"></a>
+    </div>
+    <div class="panel-body">
+      <textarea class="col-sm-12" rows="6" ng-model="replyBody"></textarea>
+    </div>
+  </div>
+ </div>
+</div>

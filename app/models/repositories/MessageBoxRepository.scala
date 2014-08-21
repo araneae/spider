@@ -20,8 +20,6 @@ object MessageBoxRepository {
   
   def createDefaults(userId: Long, createdUserId: Long) = {
     MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Messages", createdUserId))
-    MessageBoxRepository.create(MessageBox(None, userId, DRAFT, "Draft", createdUserId))
-    MessageBoxRepository.create(MessageBox(None, userId, OUTBOX, "Outbox", createdUserId))
     MessageBoxRepository.create(MessageBox(None, userId, SENTITEMS, "Sent", createdUserId)) 
     MessageBoxRepository.create(MessageBox(None, userId, TRASH, "Trash", createdUserId)) 
   }
@@ -35,14 +33,6 @@ object MessageBoxRepository {
   
   def findInbox(userId: Long): Option[MessageBox] = {
     findByType(userId, INBOX)
-  }
-  
-  def findDraft(userId: Long): Option[MessageBox] = {
-    findByType(userId, DRAFT)
-  }
-  
-  def findOutbox(userId: Long): Option[MessageBox] = {
-    findByType(userId, OUTBOX)
   }
   
   def findSentItems(userId: Long): Option[MessageBox] = {

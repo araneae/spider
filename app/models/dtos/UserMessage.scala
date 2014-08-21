@@ -13,6 +13,7 @@ case class UserMessage(userId: Long,
                    messageId: Long,
                    messageBoxId : Long,
                    read: Boolean,
+                   replied: Boolean,
                    important: Boolean,
                    star: Boolean,
                    createdUserId: Long,
@@ -20,13 +21,14 @@ case class UserMessage(userId: Long,
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object UserMessage extends Function10[Long, Long, Long, Boolean, Boolean, Boolean, Long, DateTime, Option[Long], Option[DateTime], UserMessage]
+object UserMessage extends Function11[Long, Long, Long, Boolean, Boolean, Boolean, Boolean, Long, DateTime, Option[Long], Option[DateTime], UserMessage]
 {
     implicit val jsonWrites : Writes[UserMessage] = (
             (JsPath \ "userId").write[Long] and
             (JsPath \ "messageId").write[Long] and
             (JsPath \ "messageBoxId").write[Long] and
             (JsPath \ "read").write[Boolean] and
+            (JsPath \ "replied").write[Boolean] and
             (JsPath \ "important").write[Boolean] and
             (JsPath \ "star").write[Boolean] and
             (JsPath \ "createdUserId").write[Long] and
@@ -40,6 +42,7 @@ object UserMessage extends Function10[Long, Long, Long, Boolean, Boolean, Boolea
           (JsPath \ "messageId").read[Long] and
           (JsPath \ "messageBoxId").read[Long] and
           (JsPath \ "read").read[Boolean] and
+          (JsPath \ "replied").read[Boolean] and
           (JsPath \ "important").read[Boolean] and
           (JsPath \ "star").read[Boolean] and
           (JsPath \ "createdUserId").read[Long] and

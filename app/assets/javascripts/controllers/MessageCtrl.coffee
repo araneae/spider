@@ -40,20 +40,4 @@ class MessageCtrl
       @$log.debug "MessageCtrl.filterMessage(#{messageBoxId})"
       @filterMessageBoxId = messageBoxId
 
-    markStar: (message) ->
-       message.star = true
-       @MessageService.markStar(message.messageId)
-    
-    removeStar: (message) ->
-      message.star = false
-      @MessageService.removeStar(message.messageId)
-    
-    markImportant: (message) ->
-      message.important = true
-      @MessageService.markImportant(message.messageId)
-    
-    removeImportant: (message) ->
-      message.important = false
-      @MessageService.removeImportant(message.messageId)
-
 controllersModule.controller('MessageCtrl', MessageCtrl)

@@ -2,7 +2,6 @@ package services
 
 import play._
 import play.mvc._
-import java.util._
 import com.typesafe.plugin._
 import play.api.Play.current
 import models.tables._

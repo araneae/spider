@@ -9,15 +9,18 @@ import enums.FileType._
  * Used by document share POST action
  * 
  */
-case class Share(message: String,
+case class Share(
+                 subject: String,
+                 message: String,
                  canCopy: Boolean,
                  canShare: Boolean,
                  receivers: List[Connection]
                  )
 
-object Share extends Function4[String, Boolean, Boolean, List[Connection], Share]
+object Share extends Function5[String, String, Boolean, Boolean, List[Connection], Share]
 {
     implicit val shareWrites : Writes[Share] = (
+            (JsPath \ "subject").write[String] and
             (JsPath \ "message").write[String] and
             (JsPath \ "canCopy").write[Boolean] and
             (JsPath \ "canShare").write[Boolean] and
@@ -25,6 +28,7 @@ object Share extends Function4[String, Boolean, Boolean, List[Connection], Share
     )(unlift(Share.unapply))
 
     implicit val shareReads : Reads[Share] = (
+          (JsPath \ "subject").read[String] and
           (JsPath \ "message").read[String] and
           (JsPath \ "canCopy").read[Boolean] and
           (JsPath \ "canShare").read[Boolean] and

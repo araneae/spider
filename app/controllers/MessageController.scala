@@ -12,6 +12,9 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Controller
 import traits.Secured
 import utils.HttpResponseUtil
+import models.dtos._
+import models.repositories._ 
+import services._
 
 object MessageController extends Controller with Secured {
   
@@ -50,7 +53,7 @@ object MessageController extends Controller with Secured {
     logger.info(s"in MessageController.markStar(${messageId})")
     println(s"in MessageController.markStar(${messageId})")
     
-    UserMessageRepository.markStar(messageId)
+    UserMessageRepository.markStar(messageId, userId)
     Ok(HttpResponseUtil.success("Successfully marked star!"))
   }
 
@@ -58,7 +61,7 @@ object MessageController extends Controller with Secured {
     logger.info(s"in MessageController.removeStar(${messageId})")
     println(s"in MessageController.removeStar(${messageId})")
     
-    UserMessageRepository.removeStar(messageId)
+    UserMessageRepository.removeStar(messageId, userId)
     Ok(HttpResponseUtil.success("Successfully remove star!"))
   }
 
@@ -66,7 +69,7 @@ object MessageController extends Controller with Secured {
     logger.info(s"in MessageController.markImportant(${messageId})")
     println(s"in MessageController.markImportant(${messageId})")
     
-    UserMessageRepository.markImportant(messageId)
+    UserMessageRepository.markImportant(messageId, userId)
     Ok(HttpResponseUtil.success("Successfully marked important!"))
   }
 
@@ -74,7 +77,50 @@ object MessageController extends Controller with Secured {
     logger.info(s"in MessageController.removeImportant(${messageId})")
     println(s"in MessageController.removeImportant(${messageId})")
     
-    UserMessageRepository.removeImportant(messageId)
+    UserMessageRepository.removeImportant(messageId, userId)
     Ok(HttpResponseUtil.success("Successfully removed important!"))
+  }
+  
+  def markRead(messageId: Int) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in MessageController.markRead(${messageId})")
+    println(s"in MessageController.markRead(${messageId})")
+    
+    UserMessageRepository.markRead(messageId, userId)
+    Ok(HttpResponseUtil.success("Successfully marked read!"))
+  }
+  
+  def reply(messageId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+    logger.info(s"in MessageController.reply(${messageId})")
+    println(s"in MessageController.reply(${messageId})")
+    
+    val jsonObj = request.body.asInstanceOf[JsObject]
+    val optBody = (jsonObj \ "body").asOpt[String]
+    optBody match {
+      case Some(body) =>
+            val optMessage = MessageRepository.find(messageId)
+            optMessage match {
+                case Some(orgMessage) =>
+                      // create the reply message
+                      MessageService.send(userId, orgMessage.messageId, orgMessage.subject, body, List(orgMessage.senderUserId))
+                      Ok(HttpResponseUtil.success("Successfully replied message!"))
+                case None =>  
+                      Ok(HttpResponseUtil.success("Not found message!"))
+            }
+      case None =>
+            Ok(HttpResponseUtil.success("Unable to parse payload!"))
+    }
+  }
+  
+  def trash(messageId: Int) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in MessageController.trash(${messageId})")
+    println(s"in MessageController.trash(${messageId})")
+    val optTrash = MessageBoxRepository.findTrash(userId)
+    optTrash match {
+           case Some(trash) =>
+              UserMessageRepository.moveMessageBox(messageId, trash.messageBoxId.get, userId)
+              Ok(HttpResponseUtil.success("Successfully trashed message!"))
+           case None =>
+              Ok(HttpResponseUtil.success("Unable to find trash!"))
+    }
   }
 }

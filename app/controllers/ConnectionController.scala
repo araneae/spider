@@ -19,16 +19,15 @@ import play.api.mvc.Controller
 import play.api.mvc.MultipartFormData._
 import traits.Secured
 import utils._
+import services._
 import play.api.mvc.AsyncResult
 import scala.util.Success
 import scala.util.Failure
 import play.api.libs.concurrent.Execution.Implicits._
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
 
 object ConnectionController extends Controller with Secured {
   
   private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
-  private final val DEFAULT_SUBJECT = "Shared a document"
   
   // create one lucene actor
   val MESSAGE_TIMEOUT_IN_MILLIS = 5000
@@ -50,55 +49,14 @@ object ConnectionController extends Controller with Secured {
     val jsonObj = request.body.asInstanceOf[JsObject]
     jsonObj.validate[Share].fold(
             valid = { share =>
-                    // create a message
-                    val message = Message(None, None, userId, false, DEFAULT_SUBJECT, Some(share.message), userId)
-                    val messageId = MessageRepository.create(message)
-                    
-                    // iterate through the recipients
-                    share.receivers.map{ connection =>
-                                          // send message to recipient
-                                          // find recipient's inbox
-                                          val inbox = MessageBoxRepository.findInbox(connection.id)
-                                          inbox match {
-                                            case Some(box) =>
-                                                      // add the recipient
-                                                      val recipient = MessageRecipient(connection.id, messageId, false, userId)
-                                                      MessageRecipientRepository.create(recipient)
+                    val recipientUserIds = share.receivers.map(r => r.id)
+                    MessageService.send(userId, None, share.subject, share.message, recipientUserIds)
                                                       
-                                                      // add the message intorecipient's inbox
-                                                      val userMessage = UserMessage(connection.id, 
-                                                                                    messageId,
-                                                                                    box.messageBoxId.get,
-                                                                                    false,
-                                                                                    false,
-                                                                                    false,
-                                                                                    userId)
-                                                      UserMessageRepository.create(userMessage)
-                                                      
-                                                      // create shared link
-                                                      val sharedDoc = SharedDocument(connection.id, documentId, userId, share.canCopy, share.canShare, userId)
-                                                      SharedDocumentRepository.create(sharedDoc)
-                                            case None => 
-                                                        // ignore the recipient
-                                          }
-                    }
-                    
-                    // add the message in the user's sentitems 
-                    val sentItem = MessageBoxRepository.findSentItems(userId)
-                    sentItem match {
-                      case Some(box) => 
-                                    // add the message intorecipient's inbox
-                                    val userMessage = UserMessage(userId, 
-                                                                  messageId,
-                                                                  box.messageBoxId.get,
-                                                                  true,
-                                                                  false,
-                                                                  false,
-                                                                  userId)
-                                    UserMessageRepository.create(userMessage)
-                      case None => 
-                                    // error - ignore for now
-                    }
+                    // create shared link
+                    share.receivers.map(r => {
+                                        val sharedDoc = SharedDocument(r.id, documentId, userId, share.canCopy, share.canShare, userId)
+                                        SharedDocumentRepository.create(sharedDoc)
+                                    })
                     Ok(HttpResponseUtil.success("Successfully shared!"))
             },
             invalid = {

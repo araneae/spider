@@ -20,6 +20,8 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   
   def read = column[Boolean]("read", O.NotNull, O.Default(false))
   
+  def replied = column[Boolean]("replied", O.NotNull, O.Default(false))
+  
   def important = column[Boolean]("important", O.NotNull, O.Default(false))
   
   def star = column[Boolean]("star", O.NotNull, O.Default(false))
@@ -32,7 +34,7 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   
   def updatedAt = column[DateTime]("updated_at", O.Nullable)
   
-  override def * = (userId, messageId, messageBoxId, read, important, star, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserMessage.tupled, UserMessage.unapply)
+  override def * = (userId, messageId, messageBoxId, read, replied, important, star, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserMessage.tupled, UserMessage.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_message", (userId, messageId, messageBoxId))

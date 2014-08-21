@@ -11,14 +11,9 @@
         <div class="col-md-9">
           <table class="table table-striped">
             <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}">
-              <td class="col-md-1"> 
-                <a href="" class="glyphicon glyphicon-star-empty" ng-hide="message.star" data-placement="left" title="Not starred" ng-click="ctrl.markStar(message)"></a>
-                <a href="" class="glyphicon glyphicon-star" ng-show="message.star" data-placement="left" title="Starred" ng-click="ctrl.removeStar(message)"></a>
-                <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="ctrl.markImportant(message)"></a>
-                <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="ctrl.removeImportant(message)"></a>
+              <td>
+                <message-bar ng-model="message"></message-bar>
               </td>
-              <td class="col-md-2">{{message.sentBy}}</td>
-              <td>{{message.subject}}</td>
             </tr>
           </table>
         </div>

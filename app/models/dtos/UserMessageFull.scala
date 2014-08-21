@@ -2,6 +2,7 @@ package models.dtos
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import org.joda.time.DateTime
 
 /**
  * For storing user messages
@@ -15,11 +16,13 @@ case class UserMessageFull(
                    body: String,
                    sentBy: String,
                    read: Boolean,
+                   replied: Boolean,
                    important: Boolean,
-                   star: Boolean
+                   star: Boolean,
+                   createdAt: DateTime
                    )
 
-object UserMessageFull extends Function8[Long, Long, String, String, String, Boolean, Boolean, Boolean, UserMessageFull]
+object UserMessageFull extends Function10[Long, Long, String, String, String, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageFull]
 {
     implicit val jsonWrites : Writes[UserMessageFull] = (
             (JsPath \ "messageId").write[Long] and
@@ -28,8 +31,10 @@ object UserMessageFull extends Function8[Long, Long, String, String, String, Boo
             (JsPath \ "body").write[String] and
             (JsPath \ "sentBy").write[String] and
             (JsPath \ "read").write[Boolean] and
+            (JsPath \ "replied").write[Boolean] and
             (JsPath \ "important").write[Boolean] and
-            (JsPath \ "star").write[Boolean]
+            (JsPath \ "star").write[Boolean] and
+            (JsPath \ "createdAt").write[DateTime]
     )(unlift(UserMessageFull.unapply))
       
     implicit val jsonReads : Reads[UserMessageFull] = (
@@ -39,8 +44,10 @@ object UserMessageFull extends Function8[Long, Long, String, String, String, Boo
             (JsPath \ "body").read[String] and
           (JsPath \ "sentBy").read[String] and
           (JsPath \ "read").read[Boolean] and
+          (JsPath \ "replied").read[Boolean] and
           (JsPath \ "important").read[Boolean] and
-          (JsPath \ "star").read[Boolean] 
+          (JsPath \ "star").read[Boolean] and
+          (JsPath \ "createdAt").read[DateTime]
     )(UserMessageFull)
 }
 

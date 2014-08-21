@@ -27,6 +27,7 @@ class SharedDatabaseShareCtrl
           (data) =>
               @$log.debug "Promise returned #{data} shared document"
               @document = data
+              @share.subject = "Shared a document \"#{@document.name}\""
           ,
           (error) =>
               @$log.error "Unable to get shared document: #{error}"

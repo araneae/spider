@@ -39,6 +39,18 @@ class MessageService
       @$log.debug "MessageService.removeImportant(#{messageId})"
       @$http.get("/message/important/remove/#{messageId}")
 
+    markRead: (messageId) ->
+      @$log.debug "MessageService.markRead(#{messageId})"
+      @$http.get("/message/read/mark/#{messageId}")
+
+    reply: (messageId, body) ->
+      @$log.debug "MessageService.reply(#{messageId}, #{body})"
+      @$http.post("/message/reply/#{messageId}", {body: body})
+
+    trash: (messageId) ->
+      @$log.debug "MessageService.trash(#{messageId})"
+      @$http.get("/message/trash/#{messageId}")
+
 servicesModule.service('MessageService', MessageService)
 
 # define the factories

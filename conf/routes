@@ -169,6 +169,12 @@ GET    /message/important/mark/:messageId                       controllers.Mess
 
 GET    /message/important/remove/:messageId                     controllers.MessageController.removeImportant(messageId: Int)
 
+GET    /message/read/mark/:messageId                            controllers.MessageController.markRead(messageId: Int)
+
+POST   /message/reply/:messageId                                controllers.MessageController.reply(messageId: Int)
+
+GET    /message/trash/:messageId                                controllers.MessageController.trash(messageId: Int)
+
 # message box specific routes
 GET    /messagebox                                              controllers.MessageBoxController.getAll
 
