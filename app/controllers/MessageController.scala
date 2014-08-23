@@ -38,13 +38,35 @@ object MessageController extends Controller with Secured {
   def create = IsAuthenticated(parse.json){ username => implicit request =>
       logger.info("in MessageController.create()")
       println("in MessageController.create()")
+      val jsonObj = request.body.asInstanceOf[JsObject]
+      val optSubject = (jsonObj \ "subject").asOpt[String]
+      val optBody = (jsonObj \ "body").asOpt[String]
+      val optReceivers = (jsonObj \ "receivers").asOpt[List[Connection]]
       
-      Ok(HttpResponseUtil.success("Successfully created message!"))
+      optSubject match {
+        case Some(subject) =>
+            optBody match {
+              case Some(body) =>
+                  optReceivers match {
+                    case Some(receivers) =>
+                          MessageService.send(userId, None, subject, body, receivers.map(r => r.id))
+                          Ok(HttpResponseUtil.success("Successfully sent message!"))
+                    case None =>
+                          Ok(HttpResponseUtil.error("Not found receivers list!"))
+                  }
+              case None =>
+                  Ok(HttpResponseUtil.error("Not found message body!"))
+            }
+        case None =>
+            Ok(HttpResponseUtil.error("Not found message subject!"))
+      }
   }
 
   def delete(messageId: Int) = IsAuthenticated{ username => implicit request =>
     logger.info(s"in MessageController.delete(${messageId})")
     println(s"in MessageController.delete(${messageId})")
+    
+    UserMessageRepository.delete(messageId, userId)
     
     Ok(HttpResponseUtil.success("Successfully deleted!"))
   }

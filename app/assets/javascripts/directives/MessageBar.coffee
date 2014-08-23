@@ -5,7 +5,7 @@
 
 class MessageBarDirective
   
-  constructor: (@$log, @MessageService, @UtilityService) ->
+  constructor: (@$log, @$rootScope, @Message, @MessageService, @UtilityService) ->
 
   restrict: 'E'
   
@@ -32,6 +32,8 @@ class MessageBarDirective
       if !scope.message.read
          @MessageService.markRead(scope.message.messageId)
          scope.message.read = true
+      if scope.isShowingBody
+         @$rootScope.$broadcast('clickedOnMessage', {messageId: scope.message.messageId})
 
     scope.isShowingDetail = () =>
       scope.isShowingBody
@@ -43,11 +45,32 @@ class MessageBarDirective
     scope.discard = () =>
       scope.replyBody=""
       scope.isShowingReply=false
+    
+    scope.isInTrash = () =>
+      scope.message.messageBoxType == 'TRASH'
+    
+    scope.isInSentItems = () =>
+      scope.message.messageBoxType == 'SENTITEMS'
+    
+    scope.$on('clickedOnMessage', (event, data) =>
+                                    @$log.debug "received message clickedOnMessage(#{data.messageId})"
+                                    if data.messageId != scope.message.messageId
+                                        scope.isShowingBody=false
+                                        scope.isShowingReply=false
+                                        scope.replyBody=""
+              )
 
     scope.send = () =>
       if !@UtilityService.isEmpty(scope.replyBody)
         scope.isShowingReply=false
-        @MessageService.reply(scope.message.messageId, scope.replyBody)
+        @MessageService.reply(scope.message.messageId, scope.replyBody).then(
+            (data) =>
+                @$log.debug "Successfully trashed message!"
+                scope.$emit('messageReplied', {messageId: scope.message.messageId})
+            ,
+            (error) =>
+                @$log.error "Unable to trash message: #{error}!"
+            )
 
     scope.markStar = () =>
        scope.message.star = true
@@ -66,8 +89,26 @@ class MessageBarDirective
       @MessageService.removeImportant(scope.message.messageId)
 
     scope.trash = () =>
-      @MessageService.trash(scope.message.messageId)
-      
-directivesModule.directive('messageBar', ['$log', 'MessageService', 'UtilityService', ($log, MessageService, UtilityService) ->
-                                          new MessageBarDirective($log, MessageService, UtilityService)
+      @MessageService.trash(scope.message.messageId).then(
+            (data) =>
+                @$log.debug "Successfully trashed message!"
+                scope.$emit('messageTrashed', {messageId: scope.message.messageId})
+            ,
+            (error) =>
+                @$log.error "Unable to trash message: #{error}!"
+            )
+    
+    scope.remove = () =>
+      @Message.remove({messageId: scope.message.messageId}).$promise.then(
+            (data) =>
+                @$log.debug "Successfully deleted message!"
+                scope.$emit('messageRemoved', {messageId: scope.message.messageId})
+            ,
+            (error) =>
+                @$log.error "Unable to delete message: #{error}!"
+            )
+
+directivesModule.directive('messageBar', ['$log', '$rootScope', 'Message', 'MessageService', 'UtilityService', 
+                                                  ($log, $rootScope, Message, MessageService, UtilityService) ->
+                                                    new MessageBarDirective($log, $rootScope, Message, MessageService, UtilityService)
                                         ])

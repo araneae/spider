@@ -25,10 +25,11 @@ object UserMessageRepository {
             um <- query.filter(a => a.userId ===  userId)
             m <- um.message
             s <- m.sender
-         } yield (um.messageId, um.messageBoxId, m.subject, m.body, s.firstName, um.read, um.replied, um.important, um.star, um.createdAt)
+            mb <- um.messageBox
+         } yield (um.messageId, um.messageBoxId, mb.messageBoxType, m.subject, m.body, s.firstName, um.read, um.replied, um.important, um.star, um.createdAt)
         
-         q.list.map{case (messageId, messageBoxId, subject, body, firstName, read, replied, important, star, createdAt) 
-                => UserMessageFull(messageId, messageBoxId, subject, body, firstName, read, replied, important, star, createdAt)}
+         q.list.map{case (messageId, messageBoxId, messageBoxType, subject, body, firstName, read, replied, important, star, createdAt) 
+                => UserMessageFull(messageId, messageBoxId, messageBoxType, subject, body, firstName, read, replied, important, star, createdAt)}
     }
   }
   
@@ -43,6 +44,13 @@ object UserMessageRepository {
     DB.withSession {
        implicit session: Session =>
          query filter(m => m.userId === userMessage.userId && m.messageId === userMessage.messageId) update userMessage 
+    }
+  }
+  
+   def delete(messageId: Long, userId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(m => m.userId === userId && m.messageId === messageId) delete 
     }
   }
   

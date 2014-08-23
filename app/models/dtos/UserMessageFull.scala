@@ -3,6 +3,7 @@ package models.dtos
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import org.joda.time.DateTime
+import enums.MessageBoxType._
 
 /**
  * For storing user messages
@@ -12,6 +13,7 @@ import org.joda.time.DateTime
 case class UserMessageFull(
                    messageId: Long,
                    messageBoxId: Long,
+                   messageBoxType: MessageBoxType,
                    subject: String,
                    body: String,
                    sentBy: String,
@@ -22,11 +24,12 @@ case class UserMessageFull(
                    createdAt: DateTime
                    )
 
-object UserMessageFull extends Function10[Long, Long, String, String, String, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageFull]
+object UserMessageFull extends Function11[Long, Long, MessageBoxType, String, String, String, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageFull]
 {
     implicit val jsonWrites : Writes[UserMessageFull] = (
             (JsPath \ "messageId").write[Long] and
             (JsPath \ "messageBoxId").write[Long] and
+            (JsPath \ "messageBoxType").write[MessageBoxType] and
             (JsPath \ "subject").write[String] and
             (JsPath \ "body").write[String] and
             (JsPath \ "sentBy").write[String] and
@@ -40,6 +43,7 @@ object UserMessageFull extends Function10[Long, Long, String, String, String, Bo
     implicit val jsonReads : Reads[UserMessageFull] = (
           (JsPath \ "messageId").read[Long] and
           (JsPath \ "messageBoxId").read[Long] and
+          (JsPath \ "messageBoxType").read[MessageBoxType] and
           (JsPath \ "subject").read[String] and
             (JsPath \ "body").read[String] and
           (JsPath \ "sentBy").read[String] and
