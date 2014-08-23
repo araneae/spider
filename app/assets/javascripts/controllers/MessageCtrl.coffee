@@ -31,6 +31,10 @@ class MessageCtrl
                                     @$log.debug "received message messageReplied(#{data.messageId})"
                                     @listMessages()
                 )
+        @$scope.$on('messageMoved', (event, data) =>
+                                    @$log.debug "received message messageMoved(#{data.messageId}, #{data.messageBoxId})"
+                                    @listMessages()
+                )
     
     listMessages: () ->
         @$log.debug "MessageCtrl.listMessages()"
@@ -69,6 +73,10 @@ class MessageCtrl
                 @messageBoxes = []
                 for box in data
                    @messageBoxes.push(box) if box.messageBoxType == 'CUSTOM'
+                # sort the message boxes
+                @messageBoxes.sort((a, b) =>
+                                        a.name > b.name
+                )
             ,
             (error) =>
                 @$log.error "Unable to get messages: #{error}"
@@ -82,15 +90,15 @@ class MessageCtrl
 
     discard: () ->
         @$log.debug "MessageCtrl.discard()"
-        delete @newMessage
+        delete @newMessage if @newMessage 
     
     send: () ->
         @$log.debug "MessageCtrl.send()"
         @Message.save(@newMessage).$promise.then(
               (data) =>
                   @$log.debug "Successfully sent message!"
-                  delete @newMessage
                   @listMessages()
+                  @discard()
               ,
               (error) =>
                   @$log.error "Unable to send message: #{error}"
@@ -99,5 +107,10 @@ class MessageCtrl
     filterMessage: (messageBoxId) ->
       @$log.debug "MessageCtrl.filterMessage(#{messageBoxId})"
       @filterMessageBoxId = messageBoxId
+      @discard()
+
+    goToLabelCreate: () ->
+      @$log.debug "MessageCtrl.goToLabelCreate()"
+      @$state.go("messages.createMessageBox")
 
 controllersModule.controller('MessageCtrl', MessageCtrl)

@@ -145,4 +145,11 @@ object MessageController extends Controller with Secured {
               Ok(HttpResponseUtil.success("Unable to find trash!"))
     }
   }
+  
+  def move(messageId: Int, messageBoxId: Int) = IsAuthenticated{ username => implicit request =>
+    logger.info(s"in MessageController.move(${messageId}, ${messageBoxId})")
+    println(s"in MessageController.move(${messageId}, ${messageBoxId})")
+    UserMessageRepository.moveMessageBox(messageId, messageBoxId, userId)
+    Ok(HttpResponseUtil.success("Successfully moved message!"))
+  }
 }

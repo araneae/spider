@@ -6,6 +6,16 @@
   <a href="" class="glyphicon glyphicon-star" ng-show="message.star" data-placement="left" title="Starred" ng-click="removeStar()"></a>
   <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="markImportant()"></a>
   <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="removeImportant()"></a>
+  <span class="dropdown" data-placement="left" title="Move to">
+    <a href="#" class="dropdown-toggle glyphicon glyphicon-briefcase" type="button" id="dropdownMenu1" data-toggle="dropdown"></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <li role="presentation" class="dropdown-header">Move to:</li>
+      <li role="presentation" class="divider"></li>
+      <li ng-repeat="mbox in ctrl.messageBoxes">
+        <a role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="moveTo(mbox.messageBoxId)">{{mbox.name}}</a>
+      </li>
+    </ul>
+  </span>
  </span>
  <div class="clickable col-md-10">
    <a href="#" ng-click="toggleDetail()"></a>
@@ -19,6 +29,8 @@
       <span class="col-md-6">{{message.subject}}</span>
       {{message.createdAt | date : 'short'}}
     </strong>
+    <span class="glyphicon glyphicon-log-in" ng-hide="message.outBound"></span>
+    <span class="glyphicon glyphicon-log-out" ng-show="message.outBound"></span>
  </div>
  <div class="panel-body" ng-show="isShowingDetail()">
   <hr/>

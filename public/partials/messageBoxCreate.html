@@ -1,0 +1,17 @@
+<div ng-controller="MessageBoxCreateCtrl as ctrl">
+  <form id="CreateMessageBoxForm" name="CreateMessageBoxForm" class="form-horizontal" role="form">
+     <div class="form-group">
+       <div class="col-sm-8">
+           <input type="text" class="form-control" name="name" id="txtName" placeholder="enter label name"
+                  ng-model="ctrl.messageBox.name">
+       </div>
+     </div>
+     <div class="form-group">
+       <div class="text-left">
+           <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+           <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.create()">Save</button>
+       </div>
+     </div>
+   </form>
+</div>
+

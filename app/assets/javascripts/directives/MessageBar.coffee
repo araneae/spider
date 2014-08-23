@@ -108,6 +108,17 @@ class MessageBarDirective
                 @$log.error "Unable to delete message: #{error}!"
             )
 
+    scope.moveTo = (messageBoxId) =>
+      @MessageService.move(scope.message.messageId, messageBoxId).then(
+            (data) =>
+                @$log.debug "Successfully move message!"
+                scope.$emit('messageMoved', {messageId: scope.message.messageId, messageBoxId: messageBoxId})
+            ,
+            (error) =>
+                @$log.error "Unable to move message: #{error}!"
+            )
+      
+
 directivesModule.directive('messageBar', ['$log', '$rootScope', 'Message', 'MessageService', 'UtilityService', 
                                                   ($log, $rootScope, Message, MessageService, UtilityService) ->
                                                     new MessageBarDirective($log, $rootScope, Message, MessageService, UtilityService)

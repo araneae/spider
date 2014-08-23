@@ -120,6 +120,20 @@ class MessageService
             )
       deferred.promise
 
+    move: (messageId, messageBoxId) ->
+      @$log.debug "MessageService.move(#{messageId}, #{messageBoxId})"
+      deferred = @$q.defer()
+      @$http.get("/message/#{messageId}/move/#{messageBoxId}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully moved message - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Unable to move message - status #{status}")
+                deferred.reject(data);
+            )
+      deferred.promise
+
 servicesModule.service('MessageService', MessageService)
 
 # define the factories

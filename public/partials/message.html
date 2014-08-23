@@ -25,6 +25,15 @@
               </td>
             </tr>
           </table>
+          <hr>
+          <div>
+            <a href="" ng-show="ctrl.showUserTagManagement()"  ng-click="ctrl.goToUserTagManagement()">Manage labels</a>
+          </div>
+          <div>
+            <a href="" ng-click="ctrl.goToLabelCreate()">Create new label</a>
+          </div>
+          <hr>
+          <div ui-view="viewLabel"></div>
         </div>
         <div class="col-md-9">
           <form id="NewMessageForm" name="NewMessageForm" class="form-horizontal" role="form" ng-submit="ctrl.send()">

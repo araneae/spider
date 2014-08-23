@@ -223,6 +223,13 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
+           .state('messages.createMessageBox', {
+              views: {
+                "viewLabel": {
+                    templateUrl: '/assets/partials/messageBoxCreate.html'
+                }
+              }
+          })
           .state('groups', {
             url: '/login'
           })

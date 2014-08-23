@@ -21,10 +21,11 @@ case class UserMessageFull(
                    replied: Boolean,
                    important: Boolean,
                    star: Boolean,
+                   outBound: Boolean,
                    createdAt: DateTime
                    )
 
-object UserMessageFull extends Function11[Long, Long, MessageBoxType, String, String, String, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageFull]
+object UserMessageFull extends Function12[Long, Long, MessageBoxType, String, String, String, Boolean, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageFull]
 {
     implicit val jsonWrites : Writes[UserMessageFull] = (
             (JsPath \ "messageId").write[Long] and
@@ -37,6 +38,7 @@ object UserMessageFull extends Function11[Long, Long, MessageBoxType, String, St
             (JsPath \ "replied").write[Boolean] and
             (JsPath \ "important").write[Boolean] and
             (JsPath \ "star").write[Boolean] and
+            (JsPath \ "outBound").write[Boolean] and
             (JsPath \ "createdAt").write[DateTime]
     )(unlift(UserMessageFull.unapply))
       
@@ -51,6 +53,7 @@ object UserMessageFull extends Function11[Long, Long, MessageBoxType, String, St
           (JsPath \ "replied").read[Boolean] and
           (JsPath \ "important").read[Boolean] and
           (JsPath \ "star").read[Boolean] and
+          (JsPath \ "outBound").read[Boolean] and
           (JsPath \ "createdAt").read[DateTime]
     )(UserMessageFull)
 }
