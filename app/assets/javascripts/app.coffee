@@ -207,26 +207,48 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('userTagManagement', {
+          .state('database.userTagManagement', {
               url: '/database/tags',
               views: {
-                "viewMain": {
+                "viewDocument": {
                     templateUrl: '/assets/partials/userTagManagement.html'
                 }
               }
           })
           .state('messages', {
               url: '/message',
+              'abstract': true,
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/message.html'
                 }
               }
           })
-           .state('messages.createMessageBox', {
+          .state('messages.messageList', {
+              # child of 'message' state
+              url: '',
+              views: {
+                "viewMessageList": {
+                  templateUrl: '/assets/partials/messageList.html'
+                }
+              }
+          })
+          .state('messages.createMessageBox', {
+              url: '/create',
               views: {
                 "viewLabel": {
                     templateUrl: '/assets/partials/messageBoxCreate.html'
+                },
+                "viewMessageList": {
+                    templateUrl: '/assets/partials/messageList.html'
+                }
+              }
+          })
+          .state('messages.manageMessageBox', {
+              url: '/manage',
+              views: {
+                "viewMessageList": {
+                  templateUrl: '/assets/partials/messageBoxManagement.html'
                 }
               }
           })

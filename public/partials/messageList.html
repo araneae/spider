@@ -1,0 +1,37 @@
+<form id="idNewMessageForm" name="NewMessageForm" class="form-horizontal" role="form" ng-submit="ctrl.send()">
+  <div class="panel panel-default" ng-show="ctrl.newMessage">
+    <div class="panel-heading text-right">
+      <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="ctrl.discard()"></a>
+      <button type="submit" class="glyphicon glyphicon-send btn-link" data-placement="left" title="Send"></button>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <div class="col-md-12">
+          <div ui-select2="ctrl.select2Options" class="form-control" name="receiver" id="idReceiver" placeholder="Select receivers"
+              ng-model="ctrl.newMessage.receivers" required-multiple="true"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12">
+          <input type="text" class="form-control" rows="5" name="subject" id="idSubject" placeholder="Message subject"
+               ng-model="ctrl.newMessage.subject" ng-required="true" ng-maxlength="253"></input>
+          <span class="error" ng-show="NewMessageForm.subject.$error.maxlength">Subject is too long!</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12">
+          <textarea class="form-control" rows="5" name="body" id="idNote" placeholder="Add a share message"
+             ng-model="ctrl.newMessage.body" ng-required="true" ng-maxlength="1023"></textarea>
+          <span class="error" ng-show="NewMessageForm.body.$error.maxlength">Message is too long!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<table class="table table-striped">
+  <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}">
+    <td>
+      <message-bar ng-model="message" message-box="ctrl.messageBoxes"></message-bar>
+    </td>
+  </tr>
+</table>

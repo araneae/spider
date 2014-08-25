@@ -1,7 +1,7 @@
 
 class DatabaseTagCtrl
 
-    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @DatabaseTagService, @Document, @UserTag, @DocumentTag, @UtilityService, @$location) ->
+    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @DatabaseTagService, @Document, @UserTag, @DocumentTag, @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseTagCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @documentTags = []
@@ -65,11 +65,11 @@ class DatabaseTagCtrl
             () =>
                  @$log.debug "returned by all promises"
                  for tag in @userTags
-                      tagId = @UtilityService.findByProperty(@documentTags, 'userTagId', tag.id)
+                      tagId = @UtilityService.findByProperty(@documentTags, 'userTagId', tag.userTagId)
                       isTagged = !@UtilityService.isEmpty(tagId)
                       obj = new Object()
                       obj["name"] = tag.name
-                      obj["userTagId"] = tag.id
+                      obj["userTagId"] = tag.userTagId
                       obj["isTagged"] = isTagged
                       @docTags.push(obj)
                  # update scope to refresh ui
@@ -88,27 +88,27 @@ class DatabaseTagCtrl
       #tagged = @docTags.filter((element, index, array) =>
       #               element.isTagged == true
       #)
+      promises=[]
       for newTag in @docTags
         oldTagId = @UtilityService.findByProperty(@documentTags, 'userTagId', newTag.userTagId)
         if (newTag.isTagged && !oldTagId)
             # create documentTag
             docTag = new @DocumentTag({documentId: @documentId, userTagId: newTag.userTagId})
-            docTag.$save().then( 
-              (data) =>
-                @$log.debug "server returned #{data}"
-              ,
-              (error) =>
-                @$log.error "server returned #{error}"
-            )
+            promise = docTag.$save().$promise
         else if (!newTag.isTagged && oldTagId)
             # delete documentTag
-            @DocumentTag.remove({documentId: @documentId, userTagId: oldTagId.userTagId}).$promise.then( 
-              (data) =>
-                @$log.debug "server returned #{data}"
-              ,
-              (error) =>
-                @$log.error "server returned #{error}"
-            )
-      @$state.go('database.documents')
+            promise = @DocumentTag.remove({documentId: @documentId, userTagId: oldTagId.userTagId}).$promise
+      # wait for all the promises to complete
+      @$q.all(promises).then(
+            () =>
+                 @$log.debug "returned by all promises"
+                 @ErrorService.success("Successfully updated tag!")
+                 @$state.go('database.documents')
+           ,
+           () =>
+                @$log.debug "one of the promise failed"
+                @ErrorService.error("Unable to update tag!")
+        )
+      
 
 controllersModule.controller('DatabaseTagCtrl', DatabaseTagCtrl)

@@ -5,7 +5,6 @@ import play.api.libs.json._
 import enums.DocumentType._
 import enums.FileType._
 import org.joda.time.DateTime
-import org.joda.time.DateTime
 
 /**
  * User's document saved search texts.

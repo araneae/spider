@@ -1,7 +1,7 @@
 
 class MessageCtrl
 
-    constructor: (@$log, @$scope, @DatabaseService, @MessageService, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @DatabaseService, @MessageService, @MessageBox, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
         @$log.debug "constructing MessageCtrl"
         @messageBoxes = []
         @inbox={}
@@ -63,7 +63,7 @@ class MessageCtrl
 
     listMessageBoxes: () ->
         @$log.debug "MessageCtrl.listMessageBoxes()"
-        @MessageService.listMessageBoxes().then(
+        @MessageBox.query().$promise.then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} messages"
                 @inbox = @UtilityService.findByProperty(data, 'messageBoxType', 'INBOX')
@@ -72,7 +72,7 @@ class MessageCtrl
                 @filterMessageBoxId = @inbox.messageBoxId if @inbox
                 @messageBoxes = []
                 for box in data
-                   @messageBoxes.push(box) if box.messageBoxType == 'CUSTOM'
+                   @messageBoxes.push(box)
                 # sort the message boxes
                 @messageBoxes.sort((a, b) =>
                                         a.name > b.name
@@ -112,5 +112,12 @@ class MessageCtrl
     goToLabelCreate: () ->
       @$log.debug "MessageCtrl.goToLabelCreate()"
       @$state.go("messages.createMessageBox")
+      
+    showMessageBoxManagement: () ->
+      @messageBoxes.length > 0
+      
+    goToMessageBoxManagement: () ->
+      @$log.debug "MessageCtrl.goToMessageBoxManagement()"
+      @$state.go("messages.manageMessageBox")
 
 controllersModule.controller('MessageCtrl', MessageCtrl)

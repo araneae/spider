@@ -1,5 +1,10 @@
 <div class="row">
   <div ng-controller="MessageCtrl as ctrl">
+     <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+        </div>
+     </div>
      <div class="raw">
         <div class="col-md-3">
           <table class="table table-striped">
@@ -19,7 +24,7 @@
                   <a href="" ng-click="ctrl.filterMessage(ctrl.trash.messageBoxId)">{{ctrl.trash.name}}</a>
               </td>
             </tr>
-            <tr ng-repeat="mbox in ctrl.messageBoxes">
+            <tr ng-repeat="mbox in ctrl.messageBoxes | filter: {messageBoxType: 'CUSTOM'}">
               <td>
                   <a href="" ng-click="ctrl.filterMessage(mbox.messageBoxId)">{{mbox.name}}</a>
               </td>
@@ -27,7 +32,7 @@
           </table>
           <hr>
           <div>
-            <a href="" ng-show="ctrl.showUserTagManagement()"  ng-click="ctrl.goToUserTagManagement()">Manage labels</a>
+            <a href="" ng-show="ctrl.showMessageBoxManagement()"  ng-click="ctrl.goToMessageBoxManagement()">Manage labels</a>
           </div>
           <div>
             <a href="" ng-click="ctrl.goToLabelCreate()">Create new label</a>
@@ -36,41 +41,7 @@
           <div ui-view="viewLabel"></div>
         </div>
         <div class="col-md-9">
-          <form id="NewMessageForm" name="NewMessageForm" class="form-horizontal" role="form" ng-submit="ctrl.send()">
-            <div class="panel panel-default" ng-show="ctrl.newMessage">
-              <div class="panel-heading text-right">
-                <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="ctrl.discard()"></a>
-                <button type="submit" href="" class="glyphicon glyphicon-send btn-link" data-placement="left" title="Send"></button>
-              </div>
-              <div class="panel-body">
-                <div class="form-group">
-                  <div class="col-md-12">
-                    <div ui-select2="ctrl.select2Options" class="form-control" name="receiver" id="idReceiver" placeholder="Select receivers"
-                        ng-model="ctrl.newMessage.receivers" required-multiple="true"></div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-12">
-                    <input type="text" class="form-control" rows="5" name="subject" id="idSubject" placeholder="Message subject"
-                         ng-model="ctrl.newMessage.subject" ng-required="true"></input>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-12">
-                    <textarea class="form-control" rows="5" name="note" id="idNote" placeholder="Add a share message"
-                       ng-model="ctrl.newMessage.body" ng-required="true"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-          <table class="table table-striped">
-            <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}">
-              <td>
-                <message-bar ng-model="message"></message-bar>
-              </td>
-            </tr>
-          </table>
+          <div ui-view="viewMessageList"></div>
         </div>
     </div>
   </div>

@@ -1,9 +1,7 @@
-<div class="row">
-  <div ng-controller="UserTagCtrl as ctrl">
     <table class="table table-striped">
       <tr ng-repeat="tag in ctrl.userTags">
         <td><input type="text" ng-model="tag.name"></td>
-        <td><a href="" ng-click="ctrl.remove(tag.id)">Remove</a></td>
+        <td><a href="" ng-click="ctrl.remove(tag.userTagId)">Remove</a></td>
       </tr>
     </table>
     <hr>
@@ -14,6 +12,4 @@
       </div>
     </div>
     <hr>
-  </div>
-</div>
 

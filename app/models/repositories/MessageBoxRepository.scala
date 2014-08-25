@@ -9,12 +9,13 @@ import enums.MessageBoxType._
 
 object MessageBoxRepository {
   
-  val query = TableQuery[MessageBoxes]
+  val queryMessageBoxes = TableQuery[MessageBoxes]
+  val queryUserMessages = TableQuery[UserMessages]
   
   def create(messageBox: MessageBox): Long = {
     DB.withSession {
        implicit session: Session =>
-         query returning query.map(_.messageBoxId) += messageBox
+         queryMessageBoxes returning queryMessageBoxes.map(_.messageBoxId) += messageBox
     }
   }
   
@@ -27,7 +28,7 @@ object MessageBoxRepository {
   def findByType(userId: Long, messageBoxType: MessageBoxType): Option[MessageBox] = {
     DB.withSession {
       implicit session =>
-       query.filter(b => b.userId === userId && b.messageBoxType === messageBoxType) firstOption
+       queryMessageBoxes.filter(b => b.userId === userId && b.messageBoxType === messageBoxType) firstOption
     }
   }
   
@@ -46,21 +47,33 @@ object MessageBoxRepository {
   def find(messageBoxId: Long): Option[MessageBox] = {
     DB.withSession {
       implicit session =>
-       query.filter(_.messageBoxId === messageBoxId) firstOption
+       queryMessageBoxes.filter(_.messageBoxId === messageBoxId) firstOption
     }
   }
   
-  def findAll(userId: Long): Seq[MessageBox] = {
+  def findAll(userId: Long): Seq[MessageBoxFull] = {
     DB.withSession {
       implicit session =>
-       query.filter(_.userId === userId) list
+        val q = for {
+          (mb, um) <- queryMessageBoxes leftJoin queryUserMessages on (_.messageBoxId === _.messageBoxId) if mb.userId === userId
+        } yield (mb, um)
+        
+        val q2 = q.groupBy(_._1)
+        val q3 = q2.map{
+             case(um, group) 
+                    => (um.messageBoxId, um.messageBoxType, um.name, um.createdAt, group.map(u => u._2.messageId).length)}
+        
+        q3.list.map {
+                case(messageBoxId, messageBoxType, name, createdAt, messageCount) 
+                          => MessageBoxFull(messageBoxId, messageBoxType, name, createdAt, messageCount)
+                }
     }
   }
   
   def udate(messageBox: MessageBox) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(m => m.messageBoxId === messageBox.messageBoxId.get) update messageBox 
+         queryMessageBoxes filter(m => m.messageBoxId === messageBox.messageBoxId.get) update messageBox 
     }
   }
   
