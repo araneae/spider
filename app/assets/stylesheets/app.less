@@ -122,4 +122,19 @@ div.clickable a {
     filter: alpha(opacity=1); /*workaround to make clickable in IE */
 }
 
+.table {
+  table-layout:fixed;
+}
 
+.table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: inherit;
+}

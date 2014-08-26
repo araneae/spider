@@ -6,6 +6,7 @@ import play.api.Play.current
 import models.tables._
 import models.dtos._
 import enums.MessageBoxType._
+import org.joda.time.DateTime
 
 object MessageBoxRepository {
   
@@ -70,12 +71,15 @@ object MessageBoxRepository {
     }
   }
   
-  def udate(messageBox: MessageBox) = {
+  def rename(messageBoxId: Long, name: String, userId: Long) = {
     DB.withSession {
        implicit session: Session =>
-         queryMessageBoxes filter(m => m.messageBoxId === messageBox.messageBoxId.get) update messageBox 
+         val q = for {
+           mb <- queryMessageBoxes filter(m => m.messageBoxId === messageBoxId)
+         } yield(mb.name, mb.updatedUserId, mb.updatedAt)
+         
+         q.update((name, userId, new DateTime()))
     }
   }
-  
 }
 

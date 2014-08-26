@@ -20,13 +20,13 @@
  <div class="clickable col-md-10">
    <a href="#" ng-click="toggleDetail()"></a>
     <span ng-show="message.read">
-      <span class="col-md-3">{{message.sentBy}}</span>
-      <span class="col-md-6">{{message.subject}}</span>
+      <span class="col-md-3 ellipsis">{{message.sentBy}}</span>
+      <span class="col-md-6 ellipsis">{{message.subject}}</span>
       {{message.createdAt | date : 'short'}}
     </span>
     <strong ng-show="!message.read">
-      <span class="col-md-3">{{message.sentBy}}</span>
-      <span class="col-md-6">{{message.subject}}</span>
+      <span class="col-md-3 ellipsis">{{message.sentBy}}</span>
+      <span class="col-md-6 ellipsis">{{message.subject}}</span>
       {{message.createdAt | date : 'short'}}
     </strong>
     <span class="glyphicon glyphicon-log-in" ng-hide="message.outBound"></span>
