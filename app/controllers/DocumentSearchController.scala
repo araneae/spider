@@ -11,6 +11,7 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Controller
 import traits.Secured
 import utils.HttpResponseUtil
+import org.joda.time.DateTime
 
 object DocumentSearchController extends Controller with Secured {
   
@@ -29,9 +30,8 @@ object DocumentSearchController extends Controller with Secured {
     logger.info(s"in DocumentSearchController.create()")
     println(s"in DocumentSearchController.create()")
     val jsonObj = request.body.asInstanceOf[JsObject]
-    // merge userId with the request object
-    val userIdObj = Json.obj("userId" -> userId)
-    val documentSearchObj = userIdObj ++ jsonObj
+    val documentSearchObj = Json.obj("userId" -> userId) ++ Json.obj("createdUserId" -> userId) ++ 
+                            Json.obj("createdAt" -> new DateTime()) ++ jsonObj
     documentSearchObj.validate[DocumentSearch].fold(
           valid = { documentSearch =>
                   DocumentSearchRepository.create(documentSearch)

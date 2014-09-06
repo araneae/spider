@@ -1,7 +1,7 @@
 
 class UserTagCtrl
 
-    constructor: (@$log, @$state, @UserTagService, @UtilityService, @UserTag, @ErrorService) ->
+    constructor: (@$log, @$q, @$scope, @$state, @UserTagService, @UtilityService, @UserTag, @ErrorService) ->
         @$log.debug "constructing UserTagCtrl"
         @userTags = []
         @removedIds = []
@@ -26,7 +26,7 @@ class UserTagCtrl
 
     goToUserTagManagement: () ->
         @$log.debug "UserTagCtrl.goToUserTagCreate()"
-        @$state.go("userTagManagement")
+        @$state.go("database.userTagManagement")
 
     goToUserTagCreate: () ->
         @$log.debug "UserTagCtrl.goToUserTagCreate()"
@@ -40,31 +40,34 @@ class UserTagCtrl
         @$log.debug "UserTagCtrl.cancel()"
         @$state.go("database.documents")
 
-    remove: (id) ->
-        @$log.debug "UserTagCtrl.remove(#{id})"
-        @removedIds.push(id)
-        index = @UtilityService.findIndexByProperty(@userTags, 'id', id)
+    remove: (userTagId) ->
+        @$log.debug "UserTagCtrl.remove(#{userTagId})"
+        @removedIds.push(userTagId)
+        index = @UtilityService.findIndexByProperty(@userTags, 'userTagId', userTagId)
         @userTags.splice(index, 1)
 
     save: () ->
         @$log.debug "UserTagCtrl.save()"
-        for id in @removedIds
-            @UserTag.remove({id: id}).$promise.then(
-              (data) =>
-                  @$log.debug "Successfully deleted tag!"
-              ,
-              (error) =>
-                  @$log.error "Unable to delete tag: #{error}!"
-            )
+        promises = []
+        for userTagId in @removedIds
+            promise = @UserTag.remove({userTagId: userTagId}).$promise
+            promises.push(promise)
         
+        # TBD: only update the dirty ones
         for tag in @userTags
-            @UserTag.update(tag).$promise.then(
-              (data) =>
-                  @$log.debug "Successfully updated tag!"
-              ,
-              (error) =>
-                  @$log.error "Unable to update tag: #{error}!"
-            )
-        @$state.go("database.documents")
+            promise = @UserTag.update(tag).$promise
+            promises.push(promise)
+        # wait for all the promises to complete
+        @$q.all(promises).then(
+            () =>
+                 @$log.debug "Successfully updated all the tags!"
+                 @listUserTags()
+                 @$state.go('database.documents')
+           ,
+           () =>
+                @$log.debug "one of the promise failed"
+                @listUserTags()
+                @ErrorService.error("Unable to update tag!")
+        )
 
 controllersModule.controller('UserTagCtrl', UserTagCtrl)

@@ -14,4 +14,4 @@ servicesModule.service('UserTagService', UserTagService)
 # define the factories
 #
 servicesModule.factory('UserTag', ['$resource', ($resource) -> 
-              $resource('/userTag/:id', {id: '@id'}, {'update': {method: 'PUT'}})])
+              $resource('/userTag/:userTagId', {userTagId: '@userTagId'}, {'update': {method: 'PUT'}})])

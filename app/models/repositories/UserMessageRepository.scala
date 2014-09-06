@@ -26,10 +26,10 @@ object UserMessageRepository {
             m <- um.message
             s <- m.sender
             mb <- um.messageBox
-         } yield (um.messageId, um.messageBoxId, mb.messageBoxType, m.subject, m.body, s.firstName, um.read, um.replied, um.important, um.star, um.createdAt)
+         } yield (um.messageId, um.messageBoxId, mb.messageBoxType, m.subject, m.body, s.firstName, um.read, um.replied, um.important, um.star, m.senderUserId === userId, um.createdAt)
         
-         q.list.map{case (messageId, messageBoxId, messageBoxType, subject, body, firstName, read, replied, important, star, createdAt) 
-                => UserMessageFull(messageId, messageBoxId, messageBoxType, subject, body, firstName, read, replied, important, star, createdAt)}
+         q.list.map{case (messageId, messageBoxId, messageBoxType, subject, body, firstName, read, replied, important, star, outBound, createdAt) 
+                => UserMessageFull(messageId, messageBoxId, messageBoxType, subject, body, firstName, read, replied, important, star, outBound, createdAt)}
     }
   }
   

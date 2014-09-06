@@ -1,6 +1,6 @@
 # Directive for showing a message
 #
-# Usage example: <message-bar ng-model="myMessageVar"></message-bar>
+# Usage example: <message-bar ng-model="myMessageVar" message-box="myMessageBoxes"></message-bar>
 #
 
 class MessageBarDirective
@@ -15,15 +15,44 @@ class MessageBarDirective
 
   link: (scope, element, attrs) =>
     modelAttr = attrs.ngModel
+    modelBoxAttr = attrs.messageBox
     scope.message
+    scope.messageBoxes
+    scope.allMessageBoxes
     scope.isShowingBody=false
     scope.isShowingReply=false
     scope.replyBody=""
+    
     # watch model variable for change
     scope.$watch(modelAttr, (newVal) =>
                             scope.message = newVal
+                            scope.updateMessageBox()
                 )
 
+    scope.$watch(modelBoxAttr, (newVal) =>
+                            scope.allMessageBoxes = newVal
+                            scope.updateMessageBox()
+                )
+    
+    scope.updateMessageBox = () =>
+      if scope.message and scope.allMessageBoxes
+        scope.messageBoxes = []
+        for box in scope.allMessageBoxes
+          if scope.message.messageBoxType is 'TRASH'
+            if (box.messageBoxType is 'CUSTOM') or (box.messageBoxType is 'INBOX')
+                  scope.messageBoxes.push(box)
+          if scope.message.messageBoxType is 'CUSTOM'
+            if (box.messageBoxType is 'INBOX') or (box.messageBoxType is 'TRASH')
+                  scope.messageBoxes.push(box)
+            if (box.messageBoxType is 'CUSTOM') and (scope.message.messageBoxId isnt box.messageBoxId)
+                  scope.messageBoxes.push(box)
+          if scope.message.messageBoxType is 'SENTITEMS'
+            if (box.messageBoxType is 'CUSTOM') or (box.messageBoxType is 'TRASH')
+                  scope.messageBoxes.push(box)
+          if scope.message.messageBoxType is 'INBOX'
+            if (box.messageBoxType is 'CUSTOM') or (box.messageBoxType is 'TRASH')
+                  scope.messageBoxes.push(box)
+    
     scope.toggleDetail = () =>
       @$log.debug "scope.showDetail()"
       scope.isShowingBody = !scope.isShowingBody
@@ -107,6 +136,17 @@ class MessageBarDirective
             (error) =>
                 @$log.error "Unable to delete message: #{error}!"
             )
+
+    scope.moveTo = (messageBoxId) =>
+      @MessageService.move(scope.message.messageId, messageBoxId).then(
+            (data) =>
+                @$log.debug "Successfully move message!"
+                scope.$emit('messageMoved', {messageId: scope.message.messageId, messageBoxId: messageBoxId})
+            ,
+            (error) =>
+                @$log.error "Unable to move message: #{error}!"
+            )
+      
 
 directivesModule.directive('messageBar', ['$log', '$rootScope', 'Message', 'MessageService', 'UtilityService', 
                                                   ($log, $rootScope, Message, MessageService, UtilityService) ->

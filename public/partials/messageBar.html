@@ -6,19 +6,31 @@
   <a href="" class="glyphicon glyphicon-star" ng-show="message.star" data-placement="left" title="Starred" ng-click="removeStar()"></a>
   <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="markImportant()"></a>
   <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="removeImportant()"></a>
+  <span class="dropdown" data-placement="left" title="Move to">
+    <a href="#" class="dropdown-toggle glyphicon glyphicon-briefcase" type="button" id="dropdownMenu" data-toggle="dropdown"></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+      <li role="presentation" class="dropdown-header">Move to:</li>
+      <li role="presentation" class="divider"></li>
+      <li ng-repeat="mbox in messageBoxes">
+        <a role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="moveTo(mbox.messageBoxId)">{{mbox.name}}</a>
+      </li>
+    </ul>
+  </span>
  </span>
  <div class="clickable col-md-10">
    <a href="#" ng-click="toggleDetail()"></a>
     <span ng-show="message.read">
-      <span class="col-md-3">{{message.sentBy}}</span>
-      <span class="col-md-6">{{message.subject}}</span>
+      <span class="col-md-3 ellipsis">{{message.sentBy}}</span>
+      <span class="col-md-6 ellipsis">{{message.subject}}</span>
       {{message.createdAt | date : 'short'}}
     </span>
     <strong ng-show="!message.read">
-      <span class="col-md-3">{{message.sentBy}}</span>
-      <span class="col-md-6">{{message.subject}}</span>
+      <span class="col-md-3 ellipsis">{{message.sentBy}}</span>
+      <span class="col-md-6 ellipsis">{{message.subject}}</span>
       {{message.createdAt | date : 'short'}}
     </strong>
+    <span class="glyphicon glyphicon-log-in" ng-hide="message.outBound"></span>
+    <span class="glyphicon glyphicon-log-out" ng-show="message.outBound"></span>
  </div>
  <div class="panel-body" ng-show="isShowingDetail()">
   <hr/>
@@ -30,13 +42,16 @@
     </div>
   </div>
   <div class="panel panel-default" ng-show="isShowingReply">
-    <div class="panel-heading text-right">
-      <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="discard()"></a>
-      <a href="" class="glyphicon glyphicon-send" data-placement="left" title="Send" ng-click="send()"></a>
-    </div>
-    <div class="panel-body">
-      <textarea class="col-md-12" rows="6" ng-model="replyBody"></textarea>
-    </div>
+   <form id="idReplyMessageForm" name="ReplyMessageForm" class="form-horizontal" role="form" ng-submit="send()">
+      <div class="panel-heading text-right">
+        <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="discard()"></a>
+        <button type="submit" class="glyphicon glyphicon-send btn-link" data-placement="left" title="Send"></button>
+      </div>
+      <div class="panel-body">
+        <textarea class="col-md-12" rows="6" name="body" id="textReplyBody" ng-model="replyBody" ng-required="true" ng-maxlength="1023" ></textarea>
+        <span class="error" ng-show="ReplyMessageForm.body.$error.maxlength">Message is too long!</span>
+      </div>
+    </form>
   </div>
  </div>
 </div>

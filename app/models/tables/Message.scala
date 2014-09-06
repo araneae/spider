@@ -22,7 +22,7 @@ class Messages(tag: Tag) extends Table[Message](tag, "message") {
   
   def subject = column[String]("subject", O.NotNull)
   
-  def body = column[String]("body", O.Nullable)
+  def body = column[String]("body", O.Nullable, O.DBType("VARCHAR(1024)"))
   
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   

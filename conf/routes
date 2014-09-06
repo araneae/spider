@@ -175,8 +175,14 @@ POST   /message/reply/:messageId                                controllers.Mess
 
 GET    /message/trash/:messageId                                controllers.MessageController.trash(messageId: Int)
 
+GET    /message/:messageId/move/:messageBoxId                   controllers.MessageController.move(messageId: Int, messageBoxId: Int)
+
 # message box specific routes
 GET    /messagebox                                              controllers.MessageBoxController.getAll
+
+PUT    /messagebox/:messageBoxId                                controllers.MessageBoxController.rename(messageBoxId: Int)
+
+POST   /messagebox                                              controllers.MessageBoxController.create
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                           controllers.Assets.at(path="/public", file)

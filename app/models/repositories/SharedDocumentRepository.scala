@@ -26,10 +26,10 @@ object SharedDocumentRepository {
               d  <- sd.document
               u  <- sd.sharedBy
           } 
-          yield (sd.documentId, d.name, u.firstName, d.signature, sd.canCopy, sd.canShare)
+          yield (sd.documentId, d.name, u.firstName, d.signature, sd.canCopy, sd.canShare, sd.createdAt)
          
-          q.list.map{case (documentId, name, sharedBy, signature, canCopy, canShare) 
-                 => SharedDocumentFull(documentId, name, sharedBy, signature, canCopy, canShare)}
+          q.list.map{case (documentId, name, sharedBy, signature, canCopy, canShare, createdAt) 
+                 => SharedDocumentFull(documentId, name, sharedBy, signature, canCopy, canShare, createdAt)}
     }
   }
   

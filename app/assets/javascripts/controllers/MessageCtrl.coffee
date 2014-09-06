@@ -1,7 +1,7 @@
 
 class MessageCtrl
 
-    constructor: (@$log, @$scope, @DatabaseService, @MessageService, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @DatabaseService, @MessageService, @MessageBox, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
         @$log.debug "constructing MessageCtrl"
         @messageBoxes = []
         @inbox={}
@@ -29,6 +29,10 @@ class MessageCtrl
                 )
         @$scope.$on('messageReplied', (event, data) =>
                                     @$log.debug "received message messageReplied(#{data.messageId})"
+                                    @listMessages()
+                )
+        @$scope.$on('messageMoved', (event, data) =>
+                                    @$log.debug "received message messageMoved(#{data.messageId}, #{data.messageBoxId})"
                                     @listMessages()
                 )
     
@@ -59,7 +63,7 @@ class MessageCtrl
 
     listMessageBoxes: () ->
         @$log.debug "MessageCtrl.listMessageBoxes()"
-        @MessageService.listMessageBoxes().then(
+        @MessageBox.query().$promise.then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} messages"
                 @inbox = @UtilityService.findByProperty(data, 'messageBoxType', 'INBOX')
@@ -68,7 +72,11 @@ class MessageCtrl
                 @filterMessageBoxId = @inbox.messageBoxId if @inbox
                 @messageBoxes = []
                 for box in data
-                   @messageBoxes.push(box) if box.messageBoxType == 'CUSTOM'
+                   @messageBoxes.push(box)
+                # sort the message boxes
+                @messageBoxes.sort((a, b) =>
+                                        a.name > b.name
+                )
             ,
             (error) =>
                 @$log.error "Unable to get messages: #{error}"
@@ -82,15 +90,15 @@ class MessageCtrl
 
     discard: () ->
         @$log.debug "MessageCtrl.discard()"
-        delete @newMessage
+        delete @newMessage if @newMessage 
     
     send: () ->
         @$log.debug "MessageCtrl.send()"
         @Message.save(@newMessage).$promise.then(
               (data) =>
                   @$log.debug "Successfully sent message!"
-                  delete @newMessage
                   @listMessages()
+                  @discard()
               ,
               (error) =>
                   @$log.error "Unable to send message: #{error}"
@@ -99,5 +107,17 @@ class MessageCtrl
     filterMessage: (messageBoxId) ->
       @$log.debug "MessageCtrl.filterMessage(#{messageBoxId})"
       @filterMessageBoxId = messageBoxId
+      @discard()
+
+    goToLabelCreate: () ->
+      @$log.debug "MessageCtrl.goToLabelCreate()"
+      @$state.go("messages.createMessageBox")
+      
+    showMessageBoxManagement: () ->
+      @messageBoxes.length > 0
+      
+    goToMessageBoxManagement: () ->
+      @$log.debug "MessageCtrl.goToMessageBoxManagement()"
+      @$state.go("messages.manageMessageBox")
 
 controllersModule.controller('MessageCtrl', MessageCtrl)
