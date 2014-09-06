@@ -14,15 +14,44 @@
    </form>
    <div></div>
    <form class="form-inline">
-     <h5>
-        You have not signed up yet, <a href="/signup">sign up</a> now.
-     </h5>
+    <h4>
+        You have not signed up yet, <a href="/signup"> sign up </a>  now.
+     </h4>
+     
    </form>
 }
 
 @contentsLeft = {}
-@contentMain={}
-@contentsRight = {}
+@contentMain={
+ 
+<br/>
+<br/>
+<img class="img-center center-block" src='@routes.Assets.at("images/spider.gif")'>
+
+}
+@contentsRight = {
+
+   <!-- +++ <head> --> 
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+   <!-- +++ </head> -->
+  
+   @helper.form(routes.Application.register, 'class -> "form-signin") {
+     <h2 class="form-signin-heading">Sign Up</h2>
+     
+     <input class="form-control" type="first_name" name = "first_name" autofocus="" required="" placeholder="First Name"></input>
+     <br>
+     <input class="form-control" type="last_name" name = "last_name" autofocus="" required="" placeholder="Last Name"></input>
+     <br>
+     <input class="form-control" type="email" name = "email" autofocus="" required="" placeholder="Email address"></input>
+     <br>
+     <input class="form-control" type="password" name="password" required="" placeholder="Password"></input>
+     <br>
+     <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+   }
+}
 
 @main("Spider Recruiter Tool")(message)(contentsSingnIn)(contentsLeft)(contentMain)(contentsRight)
+
+
+
 
