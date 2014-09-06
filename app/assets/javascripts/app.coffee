@@ -102,6 +102,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('contact', {
               url: '/contact',
               views: {
+               "viewGlobalSearch": {
+                    templateUrl: '/assets/partials/globalSearch.html'
+                }
                 "viewMain": {
                     templateUrl: '/assets/partials/contact.html'
                 }
@@ -119,6 +122,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
               url: '/database/tag/:userTagId',
               'abstract': true,
               views: {
+                "viewGlobalSearch": {
+                    templateUrl: '/assets/partials/globalSearch.html'
+                },
                 "viewMain": {
                     templateUrl: '/assets/partials/database.html'
                 }
@@ -170,6 +176,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseSearch', {
               url: '/database/document/search',
               views: {
+                "viewGlobalSearch": {
+                    templateUrl: '/assets/partials/globalSearch.html'
+                },
                 "viewMain": {
                     templateUrl: '/assets/partials/databaseSearch.html'
                 }

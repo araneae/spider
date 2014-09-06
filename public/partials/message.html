@@ -9,9 +9,11 @@
         <div class="col-md-3">
           <table class="table table-striped">
             <tr>
-              <td>
-                  <a href="" ng-click="ctrl.filterMessage(ctrl.inbox.messageBoxId)">{{ctrl.inbox.name}}</a>
-                  <a href="" class="glyphicon glyphicon-plus pull-right" data-placement="left" title="New" ng-click="ctrl.composeMessage()"></a>
+              <td class="clearfix">
+                  <a href="" class="pull-left" ng-click="ctrl.filterMessage(ctrl.inbox.messageBoxId)">{{ctrl.inbox.name}}</a>
+                  <div class="btn-group pull-right">
+                    <a href="" class="glyphicon glyphicon-plus pull-right" data-placement="left" title="New" ng-click="ctrl.composeMessage()"></a>
+                  </div>
               </td>
             </tr>
             <tr>

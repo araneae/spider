@@ -14,7 +14,7 @@
         <th class="col-md-2"></th>
       </tr>
       <tr ng-repeat="document in ctrl.documents">
-        <td>{{document.name}}</td>
+        <td data-placement="left" title="{{document.name}}">{{document.name}}</td>
         <td>{{document.sharedBy}}</td>
         <td>{{document.createdAt  | date : 'short'}}</td>
         <td> 

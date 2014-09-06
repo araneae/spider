@@ -1,8 +1,16 @@
 @(message: String)(implicit flash: Flash)
 
 @contentsSingnIn = {
-   <a class="glyphicon glyphicon-cog" href="/settings"></a>
-   <a href="/logout">Logout</a>
+  <form class="form-horizontal" role="form">
+    <form class="form-inline" role="form">
+     <div class="pull-right">
+      <a class="glyphicon glyphicon-cog" href="/settings"></a>
+      <a href="/logout">Logout</a>
+     </div>
+     <div class="clearfix"></div>
+    </form>
+     <div ui-view="viewGlobalSearch"></div>
+  </form>
 }
 @contentsLeft = {}
 @contentsMain = {
@@ -13,11 +21,11 @@
     <div class="navbar-header">
       <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
      <!--  <li class="active"><a ui-sref="feed" data-toggle="tab">Feeds</a></li>
-       <li><a ui-sref="feed" data-target="" data-toggle="tab">Dashboard</a></li>  -->
-       <li><a ui-sref="userSkill" data-toggle="tab">Skills</a></li>
+       <li><a ui-sref="feed" data-target="" data-toggle="tab">Dashboard</a></li>
+       <li><a ui-sref="userSkill" data-toggle="tab">Skills</a></li>  -->
        <li><a ui-sref="contact" data-toggle="tab">Contacts</a></li>
-       <li><a ui-sref="adviser" data-toggle="tab">Advisers</a></li>
-       <li><a ui-sref="database.documents" data-toggle="tab">Repository</a></li>
+       <!-- <li><a ui-sref="adviser" data-toggle="tab">Advisers</a></li>   -->
+       <li><a ui-sref="database.documents" data-toggle="tab">My Repository</a></li>
        <li><a ui-sref="sharedDatabase" data-toggle="tab">Shared Repository</a></li>
        <li><a ui-sref="messages.messageList" data-toggle="tab">Messages</a></li>
        <li><a ui-sref="groups" data-toggle="tab">Group</a></li>

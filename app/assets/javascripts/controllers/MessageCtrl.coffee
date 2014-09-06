@@ -114,7 +114,9 @@ class MessageCtrl
       @$state.go("messages.createMessageBox")
       
     showMessageBoxManagement: () ->
-      @messageBoxes.length > 0
+      @messageBoxes.filter((item) =>
+                            item.messageBoxType is 'CUSTOM'
+                          ).length > 0
       
     goToMessageBoxManagement: () ->
       @$log.debug "MessageCtrl.goToMessageBoxManagement()"

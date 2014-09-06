@@ -1,18 +1,20 @@
 
 class ContactCtrl
 
-    constructor: (@$log, @ContactService, @Contact, @$location, @UtilityService) ->
+    constructor: (@$log, @$scope, @ContactService, @Contact, @$location, @UtilityService) ->
         @$log.debug "constructing ContactCtrl"
         @contacts = []
-        @searchText
         @searchMode = false
+        @$scope.$on('globalSearch', (event, data) =>
+                                    @$log.debug "received message globalSearch(#{data.searchText})"
+                                    @search(data.searchText)
+        )
         # fetch data from server
         @listContacts()
 
     listContacts: () ->
         @$log.debug "ContactCtrl.listContacts()"
         @searchMode = false
-        @searchText
         @Contact.query().$promise.then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} my contacts"
@@ -22,19 +24,19 @@ class ContactCtrl
                 @$log.error "Unable to get my contacts: #{error}"
             )
 
-    search: () ->
-      @$log.debug "ContactCtrl.search()"
-      if @UtilityService.isEmpty(@searchText)
+    search: (searchText) ->
+      @$log.debug "ContactCtrl.search(#{searchText})"
+      if @UtilityService.isEmpty(searchText)
           @listContacts()
       else 
-        @ContactService.search(@searchText).then(
+        @ContactService.search(searchText).then(
           (data) =>
               @$log.debug "Successfully returned search result #{data}"
               @searchMode = true
               @contacts = data
           ,
           (error) =>
-              @$log.error "Unable to search #{@searchText}"
+              @$log.error "Unable to search #{searchText}"
         )
 
     invite: (userId) ->
@@ -45,7 +47,7 @@ class ContactCtrl
             @listContacts()
          ,
          (error) =>
-            @$log.error "Unable to invite #{@searchText}"
+            @$log.error "Unable to invite #{userId}"
       )
 
 controllersModule.controller('ContactCtrl', ContactCtrl)

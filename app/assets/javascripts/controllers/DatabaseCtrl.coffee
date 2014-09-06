@@ -8,7 +8,10 @@ class DatabaseCtrl
         @documents = []
         @removeId
         @removeAlert = false
-        @searchText
+        @$scope.$on('globalSearch', (event, data) =>
+                                    @$log.debug "received message globalSearch(#{data.searchText})"
+                                    @search(data.searchText)
+        )
         # load list of documents from server
         @listDocuments()
     
@@ -83,17 +86,17 @@ class DatabaseCtrl
                 @$log.error "Unable to delete document: #{error}!"
             )
 
-    search: () ->
-        @$log.debug "DatabaseCtrl.search()"
-        if (@searchText)
+    search: (searchText) ->
+        @$log.debug "DatabaseCtrl.search(#{searchText})"
+        if (searchText)
           @documents = []
-          @DatabaseService.search(@searchText).then(
+          @DatabaseService.search(searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @documents = data
             ,
             (error) =>
-                @$log.error "Unable to search #{@searchText}"
+                @$log.error "Unable to search #{searchText}"
             )
         else
           @listDocuments()

@@ -17,7 +17,7 @@
     </ul>
   </span>
  </span>
- <div class="clickable col-md-10">
+ <div class="clickable col-md-10" data-placement="left" title="{{message.subject}}">
    <a href="#" ng-click="toggleDetail()"></a>
     <span ng-show="message.read">
       <span class="col-md-3 ellipsis">{{message.sentBy}}</span>
@@ -35,21 +35,26 @@
  <div class="panel-body" ng-show="isShowingDetail()">
   <hr/>
   <div class="panel panel-default">
-    <div class="panel-heading text-right">
-      <a href="" class="glyphicon glyphicon-share-alt" ng-hide="isInSentItems()" data-placement="left" title="Reply" ng-click="reply()"></a>
+    <div class="panel-heading clearfix">
+        <span class="pull-left ellipsis">{{message.subject}}</span>
+        <div class="btn-group pull-right">
+          <a href="" class="glyphicon glyphicon-share-alt" ng-hide="isInSentItems()" data-placement="left" title="Reply" ng-click="reply()"></a>
+        </div>
     </div>
     <div class="panel-body" ng-bind-html="message.body | Newline2BR">
     </div>
   </div>
   <div class="panel panel-default" ng-show="isShowingReply">
    <form id="idReplyMessageForm" name="ReplyMessageForm" class="form-horizontal" role="form" ng-submit="send()">
-      <div class="panel-heading text-right">
-        <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="discard()"></a>
-        <button type="submit" class="glyphicon glyphicon-send btn-link" data-placement="left" title="Send"></button>
-      </div>
       <div class="panel-body">
         <textarea class="col-md-12" rows="6" name="body" id="textReplyBody" ng-model="replyBody" ng-required="true" ng-maxlength="1023" ></textarea>
         <span class="error" ng-show="ReplyMessageForm.body.$error.maxlength">Message is too long!</span>
+      </div>
+      <div class="panel-heading clearfix">
+        <div class="btn-group pull-right">
+          <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Discard" ng-click="discard()"></a>
+          <button type="submit" class="glyphicon glyphicon-send btn-link" data-placement="left" title="Send"></button>
+        </div>
       </div>
     </form>
   </div>
