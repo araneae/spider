@@ -32,25 +32,25 @@ class DatabaseCtrl
         @$log.debug "DatabaseCtrl.goToDocumentTag(#{documentId})"
         #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
-        @$state.go("database.documents.documentTag", {documentId: documentId})
+        @$state.go("databaseDocumentTag", {documentId: documentId})
 
     goToDocumentEdit: (documentId) ->
         @$log.debug "DatabaseCtrl.goToDocumentEdit(#{documentId})"
         #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
-        @$state.go("database.documents.documentEdit", {documentId: documentId})
+        @$state.go("databaseDocumentEdit", {documentId: documentId})
 
     goToXRay: (documentId) ->
         @$log.debug "DatabaseCtrl.goToXRay(#{documentId})"
         #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
-        @$state.go("database.documents.documentXRay", {documentId: documentId})
+        @$state.go("databaseDocumentXRay", {documentId: documentId})
 
     goToShare: (documentId) ->
         @$log.debug "DatabaseCtrl.goToShare(#{documentId})"
         #doc = @UtilityService.findByProperty(@documents, 'documentId', documentId)
         #@$log.debug "found document #{doc}" if doc
-        @$state.go("database.documents.documentShare", {documentId: documentId})
+        @$state.go("databaseDocumentShare", {documentId: documentId})
 
     goToUpload: () ->
         @$log.debug "DatabaseCtrl.goToUpload()"

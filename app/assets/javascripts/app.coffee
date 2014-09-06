@@ -184,34 +184,34 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('database.documents.documentTag', {
+          .state('databaseDocumentTag', {
               url: '/document/tag/:documentId',
               views: {
-                '': {
+                'viewMain': {
                     templateUrl: '/assets/partials/databaseTag.html'
                 }
               }
           })
-          .state('database.documents.documentEdit', {
+          .state('databaseDocumentEdit', {
               url: '/document/edit/:documentId',
               views: {
-                '': {
+                'viewMain': {
                     templateUrl: '/assets/partials/databaseEdit.html'
                 }
               }
           })
-          .state('database.documents.documentXRay', {
+          .state('databaseDocumentXRay', {
               url: '/document/xray/:documentId',
               views: {
-                '': {
+                'viewMain': {
                     templateUrl: '/assets/partials/databaseXRay.html'
                 }
               }
           })
-          .state('database.documents.documentShare', {
+          .state('databaseDocumentShare', {
               url: '/document/share/:documentId',
               views: {
-                '': {
+                'viewMain': {
                     templateUrl: '/assets/partials/databaseShare.html'
                 }
               }
