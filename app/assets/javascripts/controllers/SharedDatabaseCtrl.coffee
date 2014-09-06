@@ -22,7 +22,7 @@ class SharedDatabaseCtrl
 
     goToShare: (documentId) ->
         @$log.debug "SharedDatabaseCtrl.goToShare(#{documentId})"
-        @$state.go("sharedDatabase.documentShare", {documentId: documentId})
+        @$state.go("sharedDatabaseDocumentShare", {documentId: documentId})
 
     copyDocument: (documentId) ->
         @$log.debug "SharedDatabaseCtrl.copyDocument(#{documentId})"

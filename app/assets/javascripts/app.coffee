@@ -147,10 +147,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('sharedDatabase.documentShare', {
+          .state('sharedDatabaseDocumentShare', {
               url: '/share/:documentId',
               views: {
-                '': {
+                'viewMain': {
                     templateUrl: '/assets/partials/sharedDatabaseShare.html'
                 }
               }
