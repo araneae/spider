@@ -22,7 +22,6 @@ libraryDependencies ++= {
    val poiContribVersion = "3.6"
    val scalaTestVersion = "2.2.1"
    val junitVersion = "4.8.1"
-   
    Seq( 
     javaCore,
     jdbc,
