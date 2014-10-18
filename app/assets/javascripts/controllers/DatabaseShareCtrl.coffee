@@ -10,13 +10,14 @@ class DatabaseShareCtrl
         @share.canCopy = true
         @share.canShare = true
         @connections = []
+        @sharedConnections = []
         @select2Options = {
            data : @connections,
            multiple: true
         }
         # load objects from server
         @loadDocument(@documentId)
-        @loadConnections()
+        @loadConnections(@documentId)
 
     loadDocument: (documentId) ->
         @$log.debug "DatabaseShareCtrl.loadDocument(#{documentId})"
@@ -32,13 +33,14 @@ class DatabaseShareCtrl
               @ErrorService.error("Unable to fetch data from server!")
           )
 
-    loadConnections: () ->
-        @$log.debug "DatabaseShareCtrl.loadConnections()"
-        @DatabaseService.getConnections().then(
+    loadConnections: (documentId) ->
+        @$log.debug "DatabaseShareCtrl.loadConnections(#{documentId})"
+        @DatabaseService.getConnections(documentId).then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               for obj in data
-                @connections.push(obj)
+                @connections.push(obj) if obj.shared == false
+                @sharedConnections.push(obj) if obj.shared == true
             ,
             (error) =>
               @$log.error "Unable to get connections: #{error}"

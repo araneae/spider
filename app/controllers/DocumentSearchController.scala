@@ -15,10 +15,10 @@ import org.joda.time.DateTime
 
 object DocumentSearchController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def getAll = IsAuthenticated{ username => implicit request =>
-    logger.info("in DocumentSearchController.getAll()")
+    //logger.info("in DocumentSearchController.getAll()")
     println("in DocumentSearchController.getAll()")
     
     var list = DocumentSearchRepository.findAll(userId)
@@ -27,7 +27,7 @@ object DocumentSearchController extends Controller with Secured {
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in DocumentSearchController.create()")
+    //logger.info(s"in DocumentSearchController.create()")
     println(s"in DocumentSearchController.create()")
     val jsonObj = request.body.asInstanceOf[JsObject]
     val documentSearchObj = Json.obj("userId" -> userId) ++ Json.obj("createdUserId" -> userId) ++ 
@@ -44,7 +44,7 @@ object DocumentSearchController extends Controller with Secured {
   }
   
   def update(documentSearchId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in DocumentSearchController.update(${documentSearchId})")
+    //logger.info(s"in DocumentSearchController.update(${documentSearchId})")
     println(s"in DocumentSearchController.update(${documentSearchId})")
     val json = request.body.asInstanceOf[JsObject]
     json.validate[DocumentSearch].fold(
@@ -59,7 +59,7 @@ object DocumentSearchController extends Controller with Secured {
   }
 
   def delete(documentSearchId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DocumentSearchController.delete(${documentSearchId})")
+    //logger.info(s"in DocumentSearchController.delete(${documentSearchId})")
     println(s"in DocumentSearchController.delete(${documentSearchId})")
     DocumentSearchRepository.delete(documentSearchId)
     Ok(HttpResponseUtil.success("Successfully deleted search text!"))

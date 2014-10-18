@@ -2,7 +2,7 @@ package utils
 
 import scala.util.parsing.json.JSONObject
 
-object HtmleUtil {
+object HtmlUtil {
 
   def sanitize(data: Array[String]): Array[String] = {
       data.map{ line => 

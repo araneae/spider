@@ -14,9 +14,11 @@ object Configuration {
   
   def uploadBasePath = basePath
   
-  def uploadFilePath(userId: Long, fileName: String) = s"${basePath}/${userId}/${fileName}"
+  def uploadFilePath(fileName: String) = s"${basePath}/${fileName}"
   
-  def uploadPath(userId: Long) = s"${basePath}/${userId}"
+  def uploadUserTempFilePath(userId: Long, fileName: String) = s"${basePath}/temp/${userId}/${fileName}"
+  
+  def uploadUserTempPath(userId: Long) = s"${basePath}/temp/${userId}"
   
   def luceneIndexPath = lucenePath
   

@@ -1,19 +1,40 @@
 package lucene
 
 import org.junit.Test
-import parsers._
-import models.dtos._
-import enums._
+import org.junit.Assert.assertTrue
+import parsers.TxtFileParser
+import lucene.helper.LuceneDocumentService
+import _root_.utils.FileUtil
+import org.junit.Before
+import org.junit.After
 
-class LuceneWriterTest {
-
-  @Test def testAddDocument() {
-      val writer = new LuceneWriter("/tmp/lucene")
+class LuceneWriterTest extends LuceneConsts {
+  
+  val indexPath = "/tmp/lucene"
+  
+  @Before
+  def createIndex() {
+    FileUtil.deleteDirectory(indexPath)
+    val writer = new LuceneWriter(indexPath)
+    writer.create
+    writer.close
+  }
+  
+  @Test 
+  def testAddOrUpdateDocument() {
+      val writer = new LuceneWriter(indexPath)
       val reader = new TxtFileParser()
       val text = reader.parse("test/lucene/SampleResume.txt")
-      var doc =Document(Some(1), 10, "Arjun", DocumentType.TEXT,
-                FileType.TXT, "SampleResume.txt", "SampleResume.txt", "signature", "This is my first resume", 2)
-      writer.addOrUpdateDocument(10, doc, text)
+      val docId = 10
+      val doc = LuceneDocumentService.getTextDocument(docId, text)
+      writer.addOrUpdateDocument(DOC_TYPE_TEXT, docId, doc)
       writer.close()
+      
+      assertTrue("Unable to create index", FileUtil.isDirExists(indexPath))
+  }
+  
+  @After
+  def cleanUp() {
+    FileUtil.deleteDirectory(indexPath)
   }
 }

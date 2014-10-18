@@ -13,10 +13,10 @@ import models.dtos._
 
 object SkillController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in SkillController.create...")
+      //logger.info("in SkillController.create...")
       println("in SkillController.create...")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Skill].fold(
@@ -31,7 +31,7 @@ object SkillController extends Controller with Secured {
   }
   
   def update(skillId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in SkillController.update(${skillId})")
+      //logger.info("in SkillController.update(${skillId})")
       println("in SkillController.update(${skillId})")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Skill].fold(
@@ -46,14 +46,14 @@ object SkillController extends Controller with Secured {
   }
   
   def delete(skillId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.delete(${skillId})")
+      //logger.info("in SkillController.delete(${skillId})")
       println("in SkillController.delete(${skillId})")
       SkillRepository.delete(skillId);
       Ok("Deleted")
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.getAll...")
+      //logger.info("in SkillController.getAll...")
       println("in SkillController.getAll...")
       var list = SkillRepository.findAll
       val text = Json.toJson(list)

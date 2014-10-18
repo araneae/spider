@@ -16,7 +16,7 @@ import traits._
 
 object AuthController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   val loginForm = Form(
     tuple(
@@ -49,7 +49,7 @@ object AuthController extends Controller with Secured {
         value => {
           value match {
             case Tuple2(email, password) => {
-              logger.info(s"$email $password")
+              //logger.info(s"$email $password")
               UserRepository.findByEmail(email).map { 
                 user => {
                   if (BCrypt.checkpw(password, user.password)) {

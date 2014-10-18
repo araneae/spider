@@ -19,7 +19,6 @@ import play.api.mvc.Controller
 import play.api.mvc.MultipartFormData._
 import traits.Secured
 import utils._
-import play.api.mvc.AsyncResult
 import scala.util.Success
 import scala.util.Failure
 import play.api.libs.concurrent.Execution.Implicits._
@@ -27,10 +26,10 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 
 object SharedDatabaseController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def getAll = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in SharedDatabaseController.getAll()")
+    //logger.info(s"in SharedDatabaseController.getAll()")
     println(s"in SharedDatabaseController.getAll()")
     
     val list = SharedDocumentRepository.findAll(userId)
@@ -39,7 +38,7 @@ object SharedDatabaseController extends Controller with Secured {
   }
  
   def get(documentId: Long) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in SharedDatabaseController.get(${documentId})")
+    //logger.info(s"in SharedDatabaseController.get(${documentId})")
     println(s"in SharedDatabaseController.get(${documentId})")
     // find document object from database
     val document = SharedDocumentRepository.find(userId, documentId)
@@ -53,7 +52,7 @@ object SharedDatabaseController extends Controller with Secured {
   }
   
   def delete(documentId: Long) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in SharedDatabaseController.delete(${documentId})")
+    //logger.info(s"in SharedDatabaseController.delete(${documentId})")
     println(s"in SharedDatabaseController.delete(${documentId})")
     // find document object from database
     val document = SharedDocumentRepository.find(userId, documentId)

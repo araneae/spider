@@ -13,10 +13,10 @@ import models.dtos._
 
 object UserSkillController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def getAll = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.getAll...")
+      //logger.info("in SkillController.getAll...")
       println("in SkillController.getAll...")
       var list = UserSkillRepository.findAll(userId)
       val text = Json.toJson(list)
@@ -24,7 +24,7 @@ object UserSkillController extends Controller with Secured {
   }
   
   def get(skillId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.get(${skillId})...")
+      //logger.info("in SkillController.get(${skillId})...")
       println("in SkillController.get(${skillId})...")
       var skill = UserSkillRepository.find(userId, skillId)
       val text = Json.toJson(skill)
@@ -32,7 +32,7 @@ object UserSkillController extends Controller with Secured {
   }
   
   def create(skillId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in SkillController.create...")
+      //logger.info("in SkillController.create...")
       println("in SkillController.create...")
       val jsonObj = request.body.asInstanceOf[JsObject]
       // merge userId with the request object
@@ -50,7 +50,7 @@ object UserSkillController extends Controller with Secured {
   }
   
   def update(skillId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in SkillController.update...")
+      //logger.info("in SkillController.update...")
       println("in SkillController.update...")
       val json = request.body.asInstanceOf[JsObject]
       println(s"json ${json}")
@@ -66,14 +66,14 @@ object UserSkillController extends Controller with Secured {
   }
   
   def delete(skillId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.delete...")
+      //logger.info("in SkillController.delete...")
       println("in deleteMySkill...")
       UserSkillRepository.delete(userId, skillId);
       Ok("Deleted")
   }
   
   def getSkillLevels = IsAuthenticated{ username => implicit request =>
-      logger.info("in SkillController.getSkillLevels...")
+      //logger.info("in SkillController.getSkillLevels...")
       println("in getSkillLevels...")
       
       var b= new StringBuilder

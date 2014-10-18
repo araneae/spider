@@ -26,6 +26,8 @@ class SharedDocuments(tag: Tag) extends Table[SharedDocument](tag, "shared_docum
   
   def canShare = column[Boolean]("can_share", O.NotNull, O.Default(true))
   
+  def canView = column[Boolean]("can_view", O.NotNull, O.Default(true))
+  
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
@@ -34,7 +36,7 @@ class SharedDocuments(tag: Tag) extends Table[SharedDocument](tag, "shared_docum
   
   def updatedAt = column[DateTime]("updated_at", O.Nullable)
   
-  override def * = (userId, documentId, sharedByUserId, canCopy, canShare, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (SharedDocument.tupled, SharedDocument.unapply)
+  override def * = (userId, documentId, sharedByUserId, canCopy, canShare, canView, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (SharedDocument.tupled, SharedDocument.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_shared_document", (userId, documentId))

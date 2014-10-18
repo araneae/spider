@@ -1,24 +1,60 @@
 <div ng-controller="DatabaseShareCtrl as ctrl">
   <h3><span class="label label-default">Sharing {{ctrl.document.name}}</span></h3>
-  <form id="DocumentShareForm" name="DocumentShareForm" class="form-horizontal" role="form"
+  <div class="col-md-10">
+    <table class="table table-striped">
+      <tr>
+        <th>Email</th>
+        <th>Share</th>
+        <th>Can Copy</th>
+        <th>Can Share</th>
+      </tr>
+      <tr ng-repeat="connection in ctrl.sharedConnections">
+        <td>{{connection.text}}</td>
+        <td>
+          <div class="checkbox-inline">
+            <label>
+              <input type="checkbox" ng-model="connection.shared">
+            </label>
+          </div>
+        </td>
+        <td>
+          <div class="checkbox-inline">
+            <label>
+              <input type="checkbox" ng-model="connection.canCopy">
+            </label>
+          </div>
+        </td>
+        <td>
+          <div class="checkbox-inline">
+            <label>
+              <input type="checkbox" ng-model="connection.canShare">
+            </label>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <hr/>
+    <div class="form-group">
+      <div class="col-md-8">
+        <button type='button' class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+        <button type="submit" class="btn btn-success" id="btnSend" ng-disabled="ctrl.save()">Save</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <hr/>
+    <form id="DocumentShareForm" name="DocumentShareForm" class="form-horizontal" role="form"
       ng-submit="ctrl.sendShare()">
       <div class="form-group">
-          <div class="col-md-10">
-             <div ui-select2="ctrl.select2Options" class="form-control" name="receiver" id="idReceiver" placeholder="Select receivers"
+         <div ui-select2="ctrl.select2Options" class="form-control" name="receiver" id="idReceiver" placeholder="Select receivers"
                      ng-model="ctrl.share.receivers" required-multiple="true"></div>
-          </div>
       </div>
       <div class="form-group">
-          <div class="col-md-10">
-              <input type="text" class="form-control" rows="5" name="subject" id="idSubject" placeholder="Message subject"
+         <input type="text" class="form-control" rows="5" name="subject" id="idSubject" placeholder="Message subject"
                      ng-model="ctrl.share.subject" ng-required="true"></input>
-          </div>
       </div>
       <div class="form-group">
-          <div class="col-md-10">
-              <textarea class="form-control" rows="5" name="note" id="idNote" placeholder="Add a share message"
+         <textarea class="form-control" rows="5" name="note" id="idNote" placeholder="Add a share message"
                      ng-model="ctrl.share.message" ng-required="true"></textarea>
-          </div>
       </div>
       <div class="form-group">
         <div class="col-md-4">
@@ -34,6 +70,7 @@
           </div>
         </div>
       </div>
+      <hr/>
       <!-- <pre>{{ ctrl.share | json }}</pre> -->
       <div class="form-group">
           <div class="col-md-8">
@@ -42,5 +79,6 @@
           </div>
           <div class="clearfix"></div>
       </div>
-  </form>
+    </form>
+  </div>
 </div>

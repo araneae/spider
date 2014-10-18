@@ -104,8 +104,8 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                "viewGlobalSearch": {
                     templateUrl: '/assets/partials/globalSearch.html'
-                }
-                "viewMain": {
+                },
+               "viewMain": {
                     templateUrl: '/assets/partials/contact.html'
                 }
               }

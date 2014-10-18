@@ -1,30 +1,54 @@
-name := "spider"
+name := "spider-app"
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.10.3"
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-libraryDependencies ++= Seq(
-  javaCore,
-  jdbc,
-  anorm,
-  cache,
-  "com.typesafe.slick" %% "slick" % "2.0.1",
-  "com.typesafe.play" %% "play-slick" % "0.6.0.1",
-  "org.mindrot" % "jbcrypt" % "0.3m",
-  "com.typesafe" %% "play-plugins-mailer" % "2.1-RC2",
-  "org.apache.poi" % "poi" % "3.10-FINAL",
-  "org.apache.poi" % "poi-contrib" % "3.6" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
-  "org.apache.poi" % "poi-ooxml" % "3.9",
-  "org.apache.poi" % "poi-scratchpad" % "3.9",
-  "org.apache.lucene" % "lucene-core" % "4.7.0",
-  "org.apache.lucene" % "lucene-queries" % "4.7.0",
-  "org.apache.lucene" % "lucene-queryparser" % "4.7.0",
-  "org.apache.lucene" % "lucene-analyzers-common" % "4.7.0",
-  "org.apache.lucene" % "lucene-facet" % "4.7.0",
-  "org.apache.lucene" % "lucene-highlighter" % "4.7.0",
-  "com.typesafe.akka" %% "akka-testkit" % "2.1.0",
-  "junit" % "junit" % "4.8.1" % "test"
-)
+scalaVersion := "2.11.2"
 
-play.Project.playScalaSettings
+libraryDependencies ++= { 
+   val akkaVersion = "2.3.6"
+   val luceneVersion = "4.7.0"
+   val slickVersion = "2.1.0"
+   val playSlickVersion = "0.8.0"
+   val apacheCommonsVersion = "1.3.2"
+   val mysqlVersion = "5.1.30"
+   val mailerVersion = "2.3.0"
+   val jbcryptVersion = "0.3m"
+   val mokitoVersion = "1.9.5"
+   val poiVersion =  "3.10-FINAL"
+   val poiXmlVersion =  "3.9"
+   val poiScratchpadVersion =  "3.9"
+   val poiContribVersion = "3.6"
+   val scalaTestVersion = "2.2.1"
+   val junitVersion = "4.8.1"
+   
+   Seq( 
+    javaCore,
+    jdbc,
+    anorm,
+    cache,
+    "com.typesafe.slick" %% "slick" % slickVersion,
+    "com.typesafe.play" %% "play-slick" % playSlickVersion,
+    "com.typesafe.play.plugins" %% "play-plugins-mailer" % mailerVersion,
+    "mysql" % "mysql-connector-java" % mysqlVersion,
+    "org.mindrot" % "jbcrypt" % jbcryptVersion,
+    "org.apache.poi" % "poi" % poiVersion,
+    "org.apache.poi" % "poi-contrib" % poiContribVersion exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
+    "org.apache.poi" % "poi-ooxml" % poiXmlVersion,
+    "org.apache.poi" % "poi-scratchpad" % poiScratchpadVersion,
+    "org.apache.lucene" % "lucene-core" % luceneVersion withSources(),
+    "org.apache.lucene" % "lucene-queries" % luceneVersion withSources(),
+    "org.apache.lucene" % "lucene-queryparser" % luceneVersion withSources(),
+    "org.apache.lucene" % "lucene-analyzers-common" % luceneVersion withSources(),
+    "org.apache.lucene" % "lucene-facet" % luceneVersion withSources(),
+    "org.apache.lucene" % "lucene-highlighter" % luceneVersion withSources(),
+    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+    "com.typesafe.akka" %% "akka-testkit" % akkaVersion withSources(),
+    "org.apache.commons" % "commons-io" % apacheCommonsVersion withSources(),
+    "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
+    "org.mockito" % "mockito-core" % mokitoVersion % "test",
+    "junit" % "junit" % junitVersion % "test"
+  )
+}
+

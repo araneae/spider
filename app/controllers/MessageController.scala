@@ -18,16 +18,16 @@ import services._
 
 object MessageController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def get(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info("in MessageController.get(${messageId})")
+    //logger.info("in MessageController.get(${messageId})")
     println("in MessageController.get(${messageId})")
     Ok("")
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-    logger.info("in MessageController.getAll()")
+    //logger.info("in MessageController.getAll()")
     println("in MessageController.getAll()")
     
     var list = UserMessageRepository.findAll(userId)
@@ -36,7 +36,7 @@ object MessageController extends Controller with Secured {
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in MessageController.create()")
+      //logger.info("in MessageController.create()")
       println("in MessageController.create()")
       val jsonObj = request.body.asInstanceOf[JsObject]
       val optSubject = (jsonObj \ "subject").asOpt[String]
@@ -63,7 +63,7 @@ object MessageController extends Controller with Secured {
   }
 
   def delete(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.delete(${messageId})")
+    //logger.info(s"in MessageController.delete(${messageId})")
     println(s"in MessageController.delete(${messageId})")
     
     UserMessageRepository.delete(messageId, userId)
@@ -72,7 +72,7 @@ object MessageController extends Controller with Secured {
   }
   
   def markStar(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.markStar(${messageId})")
+    //logger.info(s"in MessageController.markStar(${messageId})")
     println(s"in MessageController.markStar(${messageId})")
     
     UserMessageRepository.markStar(messageId, userId)
@@ -80,7 +80,7 @@ object MessageController extends Controller with Secured {
   }
 
   def removeStar(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.removeStar(${messageId})")
+    //logger.info(s"in MessageController.removeStar(${messageId})")
     println(s"in MessageController.removeStar(${messageId})")
     
     UserMessageRepository.removeStar(messageId, userId)
@@ -88,7 +88,7 @@ object MessageController extends Controller with Secured {
   }
 
   def markImportant(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.markImportant(${messageId})")
+    //logger.info(s"in MessageController.markImportant(${messageId})")
     println(s"in MessageController.markImportant(${messageId})")
     
     UserMessageRepository.markImportant(messageId, userId)
@@ -96,7 +96,7 @@ object MessageController extends Controller with Secured {
   }
 
   def removeImportant(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.removeImportant(${messageId})")
+    //logger.info(s"in MessageController.removeImportant(${messageId})")
     println(s"in MessageController.removeImportant(${messageId})")
     
     UserMessageRepository.removeImportant(messageId, userId)
@@ -104,7 +104,7 @@ object MessageController extends Controller with Secured {
   }
   
   def markRead(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.markRead(${messageId})")
+    //logger.info(s"in MessageController.markRead(${messageId})")
     println(s"in MessageController.markRead(${messageId})")
     
     UserMessageRepository.markRead(messageId, userId)
@@ -112,7 +112,7 @@ object MessageController extends Controller with Secured {
   }
   
   def reply(messageId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in MessageController.reply(${messageId})")
+    //logger.info(s"in MessageController.reply(${messageId})")
     println(s"in MessageController.reply(${messageId})")
     
     val jsonObj = request.body.asInstanceOf[JsObject]
@@ -134,7 +134,7 @@ object MessageController extends Controller with Secured {
   }
   
   def trash(messageId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.trash(${messageId})")
+    //logger.info(s"in MessageController.trash(${messageId})")
     println(s"in MessageController.trash(${messageId})")
     val optTrash = MessageBoxRepository.findTrash(userId)
     optTrash match {
@@ -147,7 +147,7 @@ object MessageController extends Controller with Secured {
   }
   
   def move(messageId: Int, messageBoxId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in MessageController.move(${messageId}, ${messageBoxId})")
+    //logger.info(s"in MessageController.move(${messageId}, ${messageBoxId})")
     println(s"in MessageController.move(${messageId}, ${messageBoxId})")
     UserMessageRepository.moveMessageBox(messageId, messageBoxId, userId)
     Ok(HttpResponseUtil.success("Successfully moved message!"))

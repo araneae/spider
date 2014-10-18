@@ -16,16 +16,16 @@ import org.joda.time.DateTime
 
 object UserTagController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def get(userTagId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info("in UserTagController.get(${userTagId})")
+    //logger.info("in UserTagController.get(${userTagId})")
     println("in UserTagController.get(${userTagId})")
     Ok("")
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-    logger.info("in UserTagController.getAll...")
+    //logger.info("in UserTagController.getAll...")
     println("in UserTagController.getAll...")
     
     var list = UserTagRepository.findAll(userId)
@@ -34,7 +34,7 @@ object UserTagController extends Controller with Secured {
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in UserTagController.create()")
+      //logger.info("in UserTagController.create()")
       println("in UserTagController.create()")
       val jsonObj = request.body.asInstanceOf[JsObject]
       // merge userId with the request object
@@ -52,7 +52,7 @@ object UserTagController extends Controller with Secured {
   }
 
   def update(userTagId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in UserTagController.update(${userTagId})")
+    //logger.info(s"in UserTagController.update(${userTagId})")
     println(s"in UserTagController.update(${userTagId})")
     val json = request.body.asInstanceOf[JsObject]
     json.validate[UserTag].fold(
@@ -67,7 +67,7 @@ object UserTagController extends Controller with Secured {
   }
   
   def delete(userTagId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in UserTagController.delete(${userTagId})")
+    //logger.info(s"in UserTagController.delete(${userTagId})")
     println(s"in UserTagController.delete(${userTagId})")
     // first delete all the document tags
     DocumentTagRepository.deleteByUserTagId(userId, userTagId)

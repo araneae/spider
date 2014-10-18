@@ -15,13 +15,13 @@ import models.dtos._
 
 object AdviserController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   private final val BLANK = ""
     
   val applicationBaseUrl = Play.current.configuration.getString("application.baseUrl").getOrElse("http://localhost:9000")
   
   def getAll = IsAuthenticated{ username => implicit request =>
-      logger.info("in AdviserController.getAll...")
+      //logger.info("in AdviserController.getAll...")
       println("in AdviserController.getAll...")
       var list = AdviserRepository.findAll(userId)
       val data = Json.toJson(list)
@@ -29,7 +29,7 @@ object AdviserController extends Controller with Secured {
   }
   
   def get(adviserUserId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in AdviserController.get(${adviserUserId})...")
+      //logger.info("in AdviserController.get(${adviserUserId})...")
       println("in AdviserController.get(${adviserUserId})...")
       var adviser = AdviserRepository.find(userId, adviserUserId)
       val data = Json.toJson(adviser)
@@ -37,7 +37,7 @@ object AdviserController extends Controller with Secured {
   }
   
   def create(adviserUserId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in AdviserController.creater...")
+      //logger.info("in AdviserController.creater...")
       println("in AdviserController.create...")
       UserRepository.find(adviserUserId).map{ adviserUser =>
         // merge userId with the request object
@@ -66,14 +66,14 @@ object AdviserController extends Controller with Secured {
   }
   
   def delete(adviserUserId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in AdviserController.delete...")
+      //logger.info("in AdviserController.delete...")
       println("in AdviserController.delete...")
       AdviserRepository.delete(userId, adviserUserId);
       Ok("Deleted")
   }
   
   def search(email: String) = IsAuthenticated{ username => implicit request =>
-      logger.info("in search...")
+      //logger.info("in search...")
       println("in search...")
       val user = UserRepository.findByEmail(email);
       user match {
@@ -88,7 +88,7 @@ object AdviserController extends Controller with Secured {
   }
   
   def accept(token: String) = IsAuthenticated{ username => implicit request =>
-      logger.info("in AdviserController.accept...")
+      //logger.info("in AdviserController.accept...")
       println("in AdviserController.accept...")
       // find the adviser entry in the database
       AdviserRepository.findByToken(token).map{ adviser =>

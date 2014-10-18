@@ -12,10 +12,10 @@ import models.repositories._
 
 object DomainController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in DomainController.create...")
+      //logger.info("in DomainController.create...")
       println("in DomainController.create...")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Domain].fold(
@@ -30,7 +30,7 @@ object DomainController extends Controller with Secured {
   }
   
   def update(domainId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in DomainController.update...")
+      //logger.info("in DomainController.update...")
       println(s"in DomainController.update($domainId)...")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Domain].fold(
@@ -45,14 +45,14 @@ object DomainController extends Controller with Secured {
   }
   
   def delete(domainId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in DomainController.delete...")
+      //logger.info("in DomainController.delete...")
       println("in DomainController.delete...")
       DomainRepository.delete(domainId);
       Ok("Deleted")
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-      logger.info("in DomainController.getAll...")
+      //logger.info("in DomainController.getAll...")
       println("in DomainController.getAll...")
       var list = DomainRepository.findAll
       val text = Json.toJson(list)

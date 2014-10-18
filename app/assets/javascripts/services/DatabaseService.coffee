@@ -68,10 +68,10 @@ class DatabaseService
             )
         deferred.promise
 
-    getConnections: () ->
-        @$log.debug "DatabaseService.getConnections()"
+    getConnections: (documentId) ->
+        @$log.debug "DatabaseService.getConnections(#{documentId})"
         deferred = @$q.defer()
-        @$http.get("/connection")
+        @$http.get("/database/connection/#{documentId}")
         .success((data, status, headers) =>
                 @$log.info("Successfully fetched in-network connections - status #{status}")
                 deferred.resolve(data)

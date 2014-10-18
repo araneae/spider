@@ -15,10 +15,10 @@ import org.joda.time.DateTime
 
 object DocumentTagController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def getAll(documentId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DocumentTagController.getAll(${documentId})")
+    //logger.info(s"in DocumentTagController.getAll(${documentId})")
     println(s"in DocumentTagController.getAll(${documentId})")
     
     var list = DocumentTagRepository.findAll(userId, documentId)
@@ -27,7 +27,7 @@ object DocumentTagController extends Controller with Secured {
   }
 
   def create(documentId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in DocumentTagController.create(${documentId})")
+    //logger.info(s"in DocumentTagController.create(${documentId})")
     println(s"in DocumentTagController.create(${documentId})")
     val jsonObj = request.body.asInstanceOf[JsObject]
     // merge userId with the request object
@@ -45,7 +45,7 @@ object DocumentTagController extends Controller with Secured {
   }
 
   def delete(documentId: Int, userTagId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info(s"in DocumentTagController.delete(${documentId}, ${userTagId})")
+    //logger.info(s"in DocumentTagController.delete(${documentId}, ${userTagId})")
     println(s"in DocumentTagController.delete(${documentId}, ${userTagId})")
     DocumentTagRepository.delete(userId, documentId, userTagId)
     Ok(HttpResponseUtil.success("Successfully deleted tag!"))

@@ -6,6 +6,8 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption._
 import java.io.FileInputStream
 import java.security.MessageDigest
+import org.apache.commons.io.FileUtils
+import java.io.File
 
 object FileUtil {
 
@@ -40,6 +42,16 @@ object FileUtil {
   def delete(filePath: String) = {
     val path = Paths.get(filePath);
     Files.delete(path)
+  }
+  
+  def deleteDirectory(filePath: String) = {
+    val path = new File(filePath);
+    FileUtils.deleteDirectory(path)
+  }
+  
+  def isDirExists(filePath: String) = {
+    val path = Paths.get(filePath);
+    Files.isDirectory(path)
   }
   
   def getMD5Hash(filePath: String): String = {

@@ -16,13 +16,14 @@ case class SharedDocument(
                    sharedUserId: Long,
                    canCopy: Boolean,
                    canShare: Boolean,
+                   canView: Boolean,
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None
                    )
 
-object SharedDocument extends Function9[Long, Long, Long, Boolean, Boolean, Long, DateTime, Option[Long], Option[DateTime], SharedDocument]
+object SharedDocument extends Function10[Long, Long, Long, Boolean, Boolean, Boolean, Long, DateTime, Option[Long], Option[DateTime], SharedDocument]
 {
     implicit val documentWrites : Writes[SharedDocument] = (
             (JsPath \ "userId").write[Long] and
@@ -30,6 +31,7 @@ object SharedDocument extends Function9[Long, Long, Long, Boolean, Boolean, Long
             (JsPath \ "sharedUserId").write[Long] and
             (JsPath \ "canCopy").write[Boolean] and
             (JsPath \ "canShare").write[Boolean] and
+            (JsPath \ "canView").write[Boolean] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -42,6 +44,7 @@ object SharedDocument extends Function9[Long, Long, Long, Boolean, Boolean, Long
           (JsPath \ "sharedUserId").read[Long] and
           (JsPath \ "canCopy").read[Boolean] and
           (JsPath \ "canShare").read[Boolean] and
+          (JsPath \ "canView").read[Boolean] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and

@@ -11,10 +11,11 @@ import play.api.mvc.RequestHeader
 import play.api.mvc.Result
 import play.api.mvc.Results
 import play.api.mvc.Security
-import play.api.mvc.SimpleResult
+import play.api.mvc.Result
 import play.api.mvc.Session
 import play.api.mvc.Flash
 import java.util.{Date, Locale}
+import scala.concurrent.Future
 import utils._
 
 trait Secured {
@@ -25,7 +26,7 @@ trait Secured {
   private final val PARAM_PATH = "path"
   private final val EMPTY = ""
   private final val INVALID_USER_ID = "0"
-
+ 
   //def username(request: RequestHeader) = request.session.get(Security.username)
   def username(request: RequestHeader) : Option[String] = {
      val optValue = request.session.get(Security.username)
@@ -79,10 +80,11 @@ trait Secured {
 
   def IsAuthenticated(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) { 
-        user => Action(request => {
+        user => Action.async(request => {
                             // update time in session
                             val currentTicks = new Date().getTime()
-                            f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString)) 
+                            val result = f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString))
+                            Future.successful(result)
                           }
                        )
      }
@@ -90,10 +92,11 @@ trait Secured {
   
   def IsAuthenticated(b: BodyParser[Any]) (f: => String => Request[Any] => Result) = {
     Security.Authenticated(username, onUnauthorized) { 
-      user => Action(b)(request => {
+      user => Action.async(b)(request => {
                             // update time in session
                             val currentTicks = new Date().getTime()
-                            f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString))
+                            val result = f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString))
+                            Future.successful(result)
                           }
                         )
     }

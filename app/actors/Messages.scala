@@ -1,17 +1,29 @@
 package actors
 
-import models.dtos._
+import models.dtos.Document
+import models.dtos.DocumentSearchResult
+import models.dtos.User
+
+abstract class Message
 
 // incoming messages to actors
-case class MessageAddDocument(userId: Long, document: Document)
+case class MessageAddDocument(document: Document) extends Message
 
-case class MessageSearch(userId: Long, searchText: String)
+case class MessageDocumentSearch(documentIds: Seq[Long], searchText: String) extends Message
 
-case class MessageDeleteDocument(userId: Long, documentId: Long)
+case class MessageDeleteDocument(documentId: Long) extends Message
 
-case class MessageSearchWithHighlighter(userId: Long, documentId: Long, searchText: String)
+case class MessageSearchWithHighlighter(documentId: Long, searchText: String) extends Message
 
 //  outgoing messages to actors
-case class MessageSearchResult(userId: Long, documents: Option[List[Document]])
+case class MessageDocumentSearchResult(documentIds: Seq[Long]) extends Message
 
-case class MessageSearchResultWithHighlighter(userId: Long, documentId: Long, results: Option[List[DocumentSearchResult]])
+case class MessageSearchResultWithHighlighter(documentId: Long, results: Seq[DocumentSearchResult]) extends Message
+
+
+// user related messages
+case class MessageAddUser(user: User) extends Message
+
+case class MessageUserSearch(searchText: String) extends Message
+
+case class MessageUserSearchResult(userIds: List[Long]) extends Message

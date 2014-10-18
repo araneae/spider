@@ -11,14 +11,14 @@ import play.api.data.Forms.tuple
 import play.api.db.slick._
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import models.repositories.UserRepository
-import traits.Secured
+import traits._
 import play.api.mvc.Flash
 import models.repositories._
+import actors._
 
-object Application extends Controller with Secured {
+object Application extends Controller with Secured with AkkaActor {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   val signupForm = Form(
     tuple(
@@ -30,7 +30,7 @@ object Application extends Controller with Secured {
   )
   
   def index = Action {
-    logger.info("Application.index...")
+    //logger.info("Application.index...")
     Ok(views.html.index("Recruiter Tool"))
   }
   
@@ -39,9 +39,9 @@ object Application extends Controller with Secured {
   }
   
   def signup = Action { implicit request =>
-    logger.info("Application.signup...")
-    val form = if (flash.get("error").isDefined) 
-                  signupForm.bind(flash.data)
+    //logger.info("Application.signup...")
+    val form = if (request.flash.get("error").isDefined) 
+                  signupForm.bind(request.flash.data)
                 else
                   signupForm
     Ok(views.html.signup(form))
@@ -49,14 +49,14 @@ object Application extends Controller with Secured {
   
   def register = Action {
     implicit request => 
-       logger.info("Application.register...") 
+       //logger.info("Application.register...") 
        val formData = signupForm.bindFromRequest
        formData.fold(
           hasErrors = { form => 
             BadRequest(views.html.index("Error"))
           },
           success = { value => 
-            logger.info(s"register $value") 
+            //logger.info(s"register $value") 
             value match {
               case Tuple4(first_name, last_name, email, password) => {
                 // find if the user already exists
@@ -69,6 +69,13 @@ object Application extends Controller with Secured {
                       val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                       val user = User(None, first_name, last_name, email, encryptedPassword)
                       val userId = UserRepository create user
+                      
+                      val savedUser = UserRepository find userId
+                      savedUser match {
+                        case Some(user) => 
+                             indexWriterActor ! MessageAddUser(user)
+                        case None =>
+                      }
                       // create default message boxes
                       MessageBoxRepository.createDefaults(userId, userId)
                       Redirect(routes.AuthController.login)

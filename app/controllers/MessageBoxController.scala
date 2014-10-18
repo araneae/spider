@@ -17,10 +17,10 @@ import enums._
 
 object MessageBoxController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in MessageBoxController.create()")
+      //logger.info("in MessageBoxController.create()")
       println("in MessageBoxController.create()")
       val jsonObj = request.body.asInstanceOf[JsObject]
       val optName = (jsonObj \ "name").asOpt[String]
@@ -36,7 +36,7 @@ object MessageBoxController extends Controller with Secured {
   }
   
   def update(messageBoxId: Int) = IsAuthenticated{ username => implicit request =>
-    logger.info("in MessageBoxController.update(${messageBoxId})")
+    //logger.info("in MessageBoxController.update(${messageBoxId})")
     println("in MessageBoxController.update(${messageBoxId})")
     
     var list = MessageBoxRepository.findAll(userId)
@@ -45,7 +45,7 @@ object MessageBoxController extends Controller with Secured {
   }
   
   def rename(messageBoxId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-    logger.info(s"in MessageBoxController.update(${messageBoxId})")
+    //logger.info(s"in MessageBoxController.update(${messageBoxId})")
     println(s"in MessageBoxController.update(${messageBoxId})")
     val jsonObj = request.body.asInstanceOf[JsObject]
     val optName = (jsonObj \ "name").asOpt[String]
@@ -59,7 +59,7 @@ object MessageBoxController extends Controller with Secured {
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-    logger.info("in MessageBoxController.getAll()")
+    //logger.info("in MessageBoxController.getAll()")
     println("in MessageBoxController.getAll()")
     
     var list = MessageBoxRepository.findAll(userId)

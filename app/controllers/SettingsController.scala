@@ -16,10 +16,10 @@ import traits._
 
 object SettingsController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def settings = IsAuthenticated{ username => implicit request =>
-      logger.info("in SettingsController.settings...")
+      //logger.info("in SettingsController.settings...")
       println("in SettingsController.settings...")
       Ok(views.html.settings("Recruiter Tool"))
   }

@@ -12,10 +12,10 @@ import models.repositories._
 
 object IndustryController extends Controller with Secured {
   
-  private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
+  //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def create = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in IndustryController.create...")
+      //logger.info("in IndustryController.create...")
       println("in IndustryController.create...")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Industry].fold(
@@ -30,7 +30,7 @@ object IndustryController extends Controller with Secured {
   }
   
   def update(industryId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      logger.info("in IndustryController.update...")
+      //logger.info("in IndustryController.update...")
       println("in IndustryController.update...")
       val json = request.body.asInstanceOf[JsObject]
       json.validate[Industry].fold(
@@ -45,14 +45,14 @@ object IndustryController extends Controller with Secured {
   }
   
   def delete(industryId: Int) = IsAuthenticated{ username => implicit request =>
-      logger.info("in IndustryController.delete...")
+      //logger.info("in IndustryController.delete...")
       println("in IndustryController.delete...")
       IndustryRepository.delete(industryId);
       Ok("Deleted")
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-      logger.info("in IndustryController.get...")
+      //logger.info("in IndustryController.get...")
       println("in IndustryController.get...")
       var list = IndustryRepository.findAll
       val text = Json.toJson(list)

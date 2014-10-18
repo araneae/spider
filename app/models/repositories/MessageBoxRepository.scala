@@ -61,8 +61,8 @@ object MessageBoxRepository {
         
         val q2 = q.groupBy(_._1)
         val q3 = q2.map{
-             case(um, group) 
-                    => (um.messageBoxId, um.messageBoxType, um.name, um.createdAt, group.map(u => u._2.messageId).length)}
+             case(mb, group) 
+                    => (mb.messageBoxId, mb.messageBoxType, mb.name, mb.createdAt, group.map(u => u._2.messageId).length)}
         
         q3.list.map {
                 case(messageBoxId, messageBoxType, name, createdAt, messageCount) 

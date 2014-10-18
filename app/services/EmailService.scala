@@ -14,8 +14,8 @@ object EmailService {
        val content = views.html.email.inviteContact(receiver.firstName)(senderName)(token)(applicationBaseUrl)
        val mail = use[MailerPlugin].email
        mail.setSubject(s"Hello ${receiver.firstName}")
-       mail.addRecipient(receiver.email)
-       mail.addFrom("Spider App <noreply@spider.com>")
+       mail.setRecipient(receiver.email)
+       mail.setFrom("Spider App <noreply@spider.com>")
 //       mail.sendHtml(content.body)
      }
      
@@ -24,8 +24,8 @@ object EmailService {
        val content = views.html.email.inviteAdviser(receiver.firstName)(senderName)(token)(applicationBaseUrl)
        val mail = use[MailerPlugin].email
        mail.setSubject(s"Hello ${receiver.firstName}")
-       mail.addRecipient(receiver.email)
-       mail.addFrom("Spider App <noreply@spider.com>")
+       mail.setRecipient(receiver.email)
+       mail.setFrom("Spider App <noreply@spider.com>")
 //       mail.sendHtml(content.body)
      }
 }
