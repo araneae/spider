@@ -13,7 +13,8 @@ object AdminController extends Controller with Secured {
   def admin = IsAuthenticated { username => _ =>
     //logger.info("in AdminController.index...")
     println("in index...")
-    Ok(views.html.admin("Back Office Admin Module"))
+    //Ok(views.html.admin("Back Office Admin Module"))
+    Ok("")
   }
   
 }

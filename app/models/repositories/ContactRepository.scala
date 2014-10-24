@@ -33,10 +33,23 @@ object ContactRepository {
         val q = for {
             c <- query.filter(_.userId === userId)
             a <- c.contact
-        } yield (c.userId, c.contactUserId, a.firstName, a.lastName, a.email)
+        } yield (c.contactUserId, a.firstName, a.lastName, a.email)
          
-        q.list.map{case (userId, contactUserId, firstName, lastName, email) 
-                => ContactFull(userId, contactUserId, firstName, lastName, email)}
+        q.list.map{case (contactUserId, firstName, lastName, email) 
+                => ContactFull(contactUserId, firstName, lastName, email, true)}
+    }
+  }
+  
+  def findContact(userId: Long, contactUserId: Long): Seq[ContactFull] = {
+    DB.withSession {
+      implicit session =>
+        val q = for {
+            c <-query.filter(s => s.userId === userId && s.contactUserId === contactUserId)
+            a <- c.contact
+        } yield (c.contactUserId, a.firstName, a.lastName, a.email)
+         
+        q.list.map{case (contactUserId, firstName, lastName, email) 
+                => ContactFull(contactUserId, firstName, lastName, email, true)}
     }
   }
   

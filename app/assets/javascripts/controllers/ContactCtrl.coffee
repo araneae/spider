@@ -4,7 +4,6 @@ class ContactCtrl
     constructor: (@$log, @$scope, @ContactService, @Contact, @$location, @UtilityService) ->
         @$log.debug "constructing ContactCtrl"
         @contacts = []
-        @searchMode = false
         @$scope.$on('globalSearch', (event, data) =>
                                     @$log.debug "received message globalSearch(#{data.searchText})"
                                     @search(data.searchText)
@@ -14,7 +13,6 @@ class ContactCtrl
 
     listContacts: () ->
         @$log.debug "ContactCtrl.listContacts()"
-        @searchMode = false
         @Contact.query().$promise.then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} my contacts"
@@ -32,22 +30,26 @@ class ContactCtrl
         @ContactService.search(searchText).then(
           (data) =>
               @$log.debug "Successfully returned search result #{data}"
-              @searchMode = true
               @contacts = data
           ,
           (error) =>
               @$log.error "Unable to search #{searchText}"
         )
+    
+    isConnected: (contact) ->
+      @$log.debug "ContactCtrl.isConnected(#{contact.isConnected})"
+      contact.isConnected
+    
 
-    invite: (userId) ->
-      @$log.debug "ContactCtrl.invite(#{userId})"
-      @Contact.save({contactUserId: userId}).$promise.then(
+    invite: (contact) ->
+      @$log.debug "ContactCtrl.invite(#{contact.contactId})"
+      @Contact.save({contactUserId: contact.contactId}).$promise.then(
           (data) =>
             @$log.debug "Successfully invited #{data}"
             @listContacts()
          ,
          (error) =>
-            @$log.error "Unable to invite #{userId}"
+            @$log.error "Unable to invite #{contact.contactId}"
       )
 
 controllersModule.controller('ContactCtrl', ContactCtrl)

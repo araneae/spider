@@ -26,12 +26,12 @@ object EnumTest {
           (JsPath \ "status").write[Status]
     )(unlift(Product.unapply))
 
-    val productReads = (
-        (__ \ "id").readNullable[Long] and
-        (__ \ "ean").read[Long] and
-        (__ \ "name").read[String] and
-        (__ \ "description").read[String] and
-        (__ \ "status").read[Status]
+    val productReads : Reads[Product] = (
+        (JsPath \ "id").readNullable[Long] and
+        (JsPath \ "ean").read[Long] and
+        (JsPath \ "name").read[String] and
+        (JsPath \ "description").read[String] and
+        (JsPath \ "status").read[Status]
     )(Product)
     
  

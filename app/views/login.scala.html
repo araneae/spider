@@ -7,7 +7,7 @@
    <head>
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
   </head>
-  
+  <div class="col-md-8 col-md-offset-1">
    @helper.form(routes.AuthController.authenticate, 'class -> "form-signin") {
      <h2 class="form-signin-heading">Login</h2>
      @form.globalError.map { error =>
@@ -40,6 +40,7 @@
         <a href="/signup" class="form-link btn-block" >Sign Up</a>
       </strong>
    }
+  </div>
 }
 @contentsRight = {}
 

@@ -11,7 +11,7 @@
         <td>{{contact.firstName}}</td>
         <td>{{contact.lastName}}</td>
         <td>{{contact.email}}</td>
-        <td><a href="" class="glyphicon glyphicon-send" data-placement="left" title="Send Invite"  ng-show="ctrl.searchMode" ng-click="ctrl.invite(contact.userId)"></a></td>
+        <td><a href="" class="glyphicon glyphicon-send" data-placement="left" title="Send Invite"  ng-show="!ctrl.isConnected(contact)" ng-click="ctrl.invite(contact)"></a></td>
       </tr>
     </table>
   </div>

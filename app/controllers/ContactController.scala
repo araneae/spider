@@ -27,8 +27,8 @@ object ContactController extends Controller with Secured with AkkaActor {
   private final val BLANK = ""
   
   def getAll = IsAuthenticated{ username => implicit request =>
-      //logger.info("in ContactController.get...")
-      println("in ContactController.get...")
+      //logger.info("in ContactController.getAll...")
+      println("in ContactController.getAll")
       var list = ContactRepository.findAll(userId)
       val data = Json.toJson(list)
       Ok(data).as(JSON)
@@ -82,30 +82,37 @@ object ContactController extends Controller with Secured with AkkaActor {
       //logger.info(s"in ContactController.search(${searchText})")
       println(s"in ContactController.search(${searchText})")
 
-      //AsyncResult {
-          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-          // send message to index searcher
-          val f = ask(indexSearcherActor, MessageUserSearch(searchText)).mapTo[MessageUserSearchResult]
-          val result = f.map {
-               case MessageUserSearchResult(userIds) => {
-                     var list = new ListBuffer[User]()
-                      userIds.map { usrId =>
-                        val user = UserRepository.find(usrId)
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageUserSearch(searchText)).mapTo[MessageUserSearchResult]
+      val result = f.map {
+           case MessageUserSearchResult(userIds) => {
+                 var list = new ListBuffer[ContactFull]()
+                  userIds.map { uId =>
+                    if (uId != userId) {
+                      // check if the user is already connected
+                      val contacts = ContactRepository.findContact(userId, uId)
+                      if (contacts.length > 0) {
+                    	  list += contacts(0)
+                      }
+                      else {
+                        val user = UserRepository.find(uId)
                         user match {
                           case Some(u) =>
-                            val safeUser = User(Some(u.userId.get), u.firstName, u.lastName, u.email, BLANK)
-                            list += safeUser
+                              val contact = ContactFull(u.userId.get, u.firstName, u.lastName, u.email, false)
+                              list += contact
                           case _ =>    
                         }
                       }
-                      val text = Json.toJson(list)
-                      Ok(text).as(JSON)
-                }
-               case _ => Ok("").as(JSON)
-          }
-      
-        Await.result(result, timeout.duration)
-      //}
+                    }
+                  }
+                  val text = Json.toJson(list)
+                  Ok(text).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
+      }
+  
+    Await.result(result, timeout.duration)
   }
   
   def accept(token: String) = IsAuthenticated{ username => implicit request =>

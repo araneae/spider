@@ -76,7 +76,7 @@ class IndexSearcherActor extends Actor with LuceneConsts {
     }
   
   private def getSearcher() = {
-    new LuceneSearcher(Configuration.luceneIndexPath) 
+    new LuceneSearcher(Configuration.luceneIndexPath)
   }
 }
 

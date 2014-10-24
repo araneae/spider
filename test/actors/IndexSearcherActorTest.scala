@@ -1,40 +1,85 @@
 package actors
 
-import models.tables._
-import models.dtos._
-import play.api.db.slick.Config.driver.simple.Session
-import play.api.db.slick.DB
-import play.api.test.WithApplication
-import org.scalatest.concurrent._
-import org.scalatest.matchers.ShouldMatchers
-import akka.actor.{ Actor, Props, ActorSystem }
-import akka.testkit.{ ImplicitSender, TestKit, TestActorRef }
-import scala.concurrent.duration._
+import akka.actor.ActorSystem
+import akka.actor.Actor
+import akka.actor.Props
+import akka.testkit.{ TestActors, TestKit, ImplicitSender }
+import org.scalatest.WordSpecLike
+import akka.testkit.DefaultTimeout
+import org.scalatest.Matchers
 import org.scalatest.BeforeAndAfterAll
-import org.scalatest.fixture.FlatSpec
-
-class HelloAkkaSpec(_system: ActorSystem) extends TestKit(_system)
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
+import _root_.utils.FileUtil
+import lucene._
+import lucene.helper._
+import models.dtos._
+import utils._
+import play.api.Play
+import play.api.test.FakeApplication
+ 
+@RunWith(classOf[JUnitRunner])
+class IndexSearcherActorTest(_system: ActorSystem) extends TestKit(_system)
+  with DefaultTimeout
   with ImplicitSender
-  with ShouldMatchers {
+  with WordSpecLike 
+  with Matchers 
+  with BeforeAndAfterAll 
+  with LuceneConsts {
+  
+  val indexPath = "/private/tmp/lucene"
+ 
+  def this() = this(ActorSystem("MySpec"))
+ 
+  override def afterAll {
+    TestKit.shutdownActorSystem(system)
+    FileUtil.deleteDirectory(indexPath)
+  }
+  
+  override def beforeAll {
+    createIndex
+  }
+ 
+  "Lucene Search Actor" must {
+ 
+    "send back search result" in {
+      //val echo = system.actorOf(TestActors.echoActorProps)
+      val indexSearcherActor = system.actorOf(Props[IndexSearcherActor])
+      indexSearcherActor ! MessageDocumentSearch(List(10), "java")
+      expectMsg(MessageDocumentSearchResult(List(10)))
+    }
+ 
+  }
+  
+  def createIndex() {
+    FileUtil.deleteDirectory(indexPath)
+    val writer = new LuceneWriter(indexPath)
+    writer.create
 
-  def this() = this(ActorSystem("HelloAkkaSpec"))
-
-//  override def afterAll: Unit = {
-//    system.shutdown()
-//    system.awaitTermination(10.seconds)
-//  }
-
-//  "An HelloAkkaActor" should "be able to set a new greeting" in {
-//    val greeter = TestActorRef(Props[Greeter])
-//    greeter ! WhoToGreet("testkit")
-//    greeter.underlyingActor.asInstanceOf[Greeter].greeting should be("hello, testkit")
-  //}
-
-//  it should "be able to get a new greeting" in {
-//    val greeter = system.actorOf(Props[Greeter], "greeter")
-//    greeter ! WhoToGreet("testkit")
-//    greeter ! Greet
-//    expectMsgType[Greeting].message.toString should be("hello, testkit")
-//  }
+    // add first text document 
+    val docId = 10
+    val text = "Java Oracle Mobile Hadoop"
+    val doc = LuceneDocumentService.getTextDocument(docId, text)
+    writer.addOrUpdateDocument(DOC_TYPE_TEXT, docId, doc)
+    
+    // add second text document
+    val docId2 = 20
+    val text2 = "Software Engineer"
+    val doc2 = LuceneDocumentService.getTextDocument(docId2, text2)
+    writer.addOrUpdateDocument(DOC_TYPE_TEXT, docId2, doc2)
+    
+    // add first user document
+    val userId = 10
+    val user = User(Some(userId), "John", "Brown", "john@abc.com", "abc")
+    val userDoc = LuceneDocumentService.getUserDocument(docId, user)
+    writer.addOrUpdateDocument(DOC_TYPE_USER, userId, userDoc)
+    
+    // add second user document
+    val userId2 = 20
+    val user2 = User(Some(userId), "Jenny", "Brown", "jenny@abc.com", "abc")
+    val userDoc2 = LuceneDocumentService.getUserDocument(docId2, user2)
+    writer.addOrUpdateDocument(DOC_TYPE_USER, userId2, userDoc2)
+    
+    writer.close
+  }
 }
-//}

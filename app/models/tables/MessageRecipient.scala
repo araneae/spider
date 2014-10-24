@@ -26,7 +26,7 @@ class MessageRecipients(tag: Tag) extends Table[MessageRecipient](tag, "message_
   
   def updatedAt = column[DateTime]("updated_at", O.Nullable)
   
-  override def * = (userId, messageId, read, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (MessageRecipient.tupled, MessageRecipient.unapply)
+  override def * = (userId, messageId, read, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (MessageRecipient.tupled, MessageRecipient.unapply _)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_message_recipient", (userId, messageId))
