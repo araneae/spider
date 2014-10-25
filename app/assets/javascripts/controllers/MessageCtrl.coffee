@@ -1,7 +1,7 @@
 
 class MessageCtrl
 
-    constructor: (@$log, @$scope, @DatabaseService, @MessageService, @MessageBox, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @ConnectionService, @MessageService, @MessageBox, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
         @$log.debug "constructing MessageCtrl"
         @messageBoxes = []
         @inbox={}
@@ -50,7 +50,7 @@ class MessageCtrl
     
     loadConnections: () ->
         @$log.debug "MessageCtrl.loadConnections()"
-        @DatabaseService.getConnections().then(
+        @ConnectionService.getConnections().then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               for obj in data

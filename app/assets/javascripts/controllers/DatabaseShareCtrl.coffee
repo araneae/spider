@@ -2,7 +2,7 @@
 class DatabaseShareCtrl
 
     constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, 
-                              @DatabaseService, @UtilityService, @$location, @ErrorService) ->
+                              @DatabaseService, @ConnectionService, @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseShareCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
@@ -52,7 +52,7 @@ class DatabaseShareCtrl
 
     sendShare: () ->
       @$log.debug "DatabaseShareCtrl.sendShare()"
-      @DatabaseService.share(@documentId, @share).then(
+      @ConnectionService.share(@documentId, @share).then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               @ErrorService.success("Successfully shared document!")

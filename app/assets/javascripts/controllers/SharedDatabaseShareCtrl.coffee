@@ -2,7 +2,7 @@
 class SharedDatabaseShareCtrl
 
     constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, @SharedDocument, 
-                              @SharedDatabaseService, @UtilityService, @$location, @ErrorService) ->
+                              @SharedDatabaseService, @ConnectionService, @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing SharedDatabaseShareCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
@@ -49,7 +49,7 @@ class SharedDatabaseShareCtrl
 
     loadConnections: () ->
         @$log.debug "SharedDatabaseShareCtrl.loadConnections()"
-        @SharedDatabaseService.getConnections().then(
+        @ConnectionService.getConnections().then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               for obj in data
@@ -65,7 +65,7 @@ class SharedDatabaseShareCtrl
     
     sendShare: () ->
       @$log.debug "SharedDatabaseShareCtrl.sendShare()"
-      @SharedDatabaseService.share(@documentId, @share).then(
+      @ConnectionService.share(@documentId, @share).then(
             (data) => 
               @$log.debug "Promise returned #{data} connections"
               @ErrorService.success("Successfully shared the document!")

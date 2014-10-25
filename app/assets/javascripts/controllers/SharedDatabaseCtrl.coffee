@@ -1,7 +1,7 @@
 
 class SharedDatabaseCtrl
 
-    constructor: (@$log, @$scope, @SharedDatabaseService, @$state, @$stateParams, @SharedDocument, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @ConnectionService, @$state, @$stateParams, @SharedDocument, @UtilityService, @ErrorService) ->
         @$log.debug "constructing SharedDatabaseCtrl"
         @documents = []
         @removeId
@@ -26,7 +26,7 @@ class SharedDatabaseCtrl
 
     copyDocument: (documentId) ->
         @$log.debug "SharedDatabaseCtrl.copyDocument(#{documentId})"
-        @SharedDatabaseService.copyDocument(documentId).then(
+        @ConnectionService.copyDocument(documentId).then(
             (data) =>
                 # show status
                 @$log.debug "Successfully copied document"

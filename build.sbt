@@ -54,3 +54,6 @@ libraryDependencies ++= Seq(
     "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % "test"
   )
 
+includeFilter in (Assets, LessKeys.less) := "*.less"
+
+excludeFilter in (Assets, LessKeys.less) := "_*.less"

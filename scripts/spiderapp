@@ -3,8 +3,13 @@
 ## END INIT INFO
  
 # Path to play install folder
-PLAY_HOME=/usr/lib/play-2.2.3
-PLAY=$PLAY_HOME/play
+#PLAY_HOME=/usr/lib/play-2.2.3
+#PLAY=$PLAY_HOME/play
+PLAY_HOME=/usr/lib/activator-install/activator
+PLAY=$PLAY_HOME/activator
+
+# set jvm memory size 
+export JAVA_OPTS="-Xms624m -Xmx624m"
  
 # Path to the JVM
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
