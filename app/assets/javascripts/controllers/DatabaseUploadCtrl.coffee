@@ -1,7 +1,7 @@
 
 class DatabaseUploadCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @Document, @$upload, @ErrorService) ->
+    constructor: (@$log, @$state, @DatabaseService, @Document, @ErrorService) ->
         @$log.debug "constructing DatabaseUploadCtrl"
         @document = {}
         @fileUpload = {}
@@ -25,18 +25,18 @@ class DatabaseUploadCtrl
         @$log.debug "DatabaseUploadCtrl.onUploadSuccess()"
         @Document.save(@document).$promise.then(
             (data) =>
-                @$log.debug "Promise returned #{data} document"
                 @ErrorService.success("Successfully uploaded document!")
+                @$log.debug "Promise returned #{data} document"
                 @$state.go('database.documents')
             ,
             (error) =>
-                @$log.error "Unable to save document: #{error.data.message}"
                 @ErrorService.error("Failed to upload document!")
+                @$log.error "Unable to save document: #{error.data.message}"
             )
 
     onUploadError : (error) =>
-      @$log.debug "DatabaseUploadCtrl.onUploadError(#{error.message})"
       @ErrorService.error("Failed to upload document!")
+      @$log.debug "DatabaseUploadCtrl.onUploadError(#{error})"
 
     cancel: () ->
         @$log.debug "DatabaseUploadCtrl.cancel()"

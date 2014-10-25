@@ -1,5 +1,10 @@
-<div class="row">
-  <div ng-controller="DatabaseUploadCtrl as ctrl">
+<div ng-controller="DatabaseUploadCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="row">
       <form id="DatabaseUploadForm" name="DatabaseUploadForm" class="form-horizontal" role="form">
           <legend class="sm-col-12">Resume upload</legend>
           <div class="form-group">

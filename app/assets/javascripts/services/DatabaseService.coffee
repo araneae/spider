@@ -15,7 +15,7 @@ class DatabaseService
             method: 'POST',
             #headers: {'Content-type': 'application/text'},
             #withCredentials: true,
-            data: {resume: selectedFile},
+            #data: {data: selectedFile},
             file: selectedFile,
             # set the file formData name ('Content-Desposition'). Default is 'file'
             # fileFormDataName: myFile, //or a list of names for multiple files (html5).

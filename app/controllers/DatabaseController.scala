@@ -1,11 +1,9 @@
 package controllers
 
 import java.io.File
-
 import org.joda.time.DateTime
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
 import actors._
 import akka.pattern.ask
 import akka.util.Timeout
@@ -28,33 +26,29 @@ import utils.Configuration
 import utils.FileUtil
 import utils.HttpResponseUtil
 import utils.TokenGenerator
+import play.api.mvc.MultipartFormData
+import play.api.mvc.MultipartFormData.FilePart
+import play.api.libs.Files.TemporaryFile
 
 object DatabaseController extends Controller with Secured with AkkaActor {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
-  def upload = IsAuthenticated{ username => implicit request =>
+  def upload = IsAuthenticated(parse.multipartFormData) { username => implicit request =>
       //logger.info("in DatabaseController.upload...")
       println("in DatabaseController.upload...")
-      val body = request.body.asMultipartFormData
-      body match { 
-        case Some(maltiPartData) =>
-            val filePart = maltiPartData.file("resume")
-            filePart match { 
-              case Some(file) =>
-                    val uploadPath = Configuration.uploadUserTempFilePath(userId, file.filename)
-                    // check if the file aready exists
-                    //val existingDocument = DocumentRepository.findDocument(userId, file.filename)
-                    //existingDocument match {
-                    //  case Some(doc) => BadRequest(HttpResponseUtil.error("File Aready Exists!"))
-                    //  case None => file.ref.moveTo(new File(uploadPath), true)
-                    //               Ok(HttpResponseUtil.success("Successfully Uploaded!"))
-                    //}
-                    file.ref.moveTo(new File(uploadPath), true)
-                    Ok(HttpResponseUtil.success("Successfully Uploaded!"))
-              case None => BadRequest(HttpResponseUtil.error("Unable to upload file, please try again!"))
-            }
-       case None => BadRequest(HttpResponseUtil.error("Unable to upload file, please try again!"))
+      request.body match {
+        case MultipartFormData(dataParts, fileParts, badParts, missingFileParts) =>
+             fileParts.map { case FilePart(key, filename, contentType, ref) =>
+                 val file = ref.asInstanceOf[TemporaryFile]
+                 val uploadFilePath = Configuration.uploadUserTempFilePath(userId, filename)
+                 val uploadDir = Configuration.uploadUserTempPath(userId)
+                 FileUtil.createPath(uploadDir)
+                 file.moveTo(new File(uploadFilePath), true)
+             }
+             Ok(HttpResponseUtil.success("Successfully Uploaded!"))
+        case _ =>  
+            BadRequest(HttpResponseUtil.error("Unable to upload file, please try again!"))
       }
   }
   
