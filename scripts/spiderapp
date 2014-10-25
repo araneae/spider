@@ -3,10 +3,11 @@
 ## END INIT INFO
  
 # Path to play install folder
-#PLAY_HOME=/usr/lib/play-2.2.3
-#PLAY=$PLAY_HOME/play
-PLAY_HOME=/usr/lib/activator-install/activator
-PLAY=$PLAY_HOME/activator
+ACTIVATOR_HOME=/usr/lib/activator-install/activator
+ACTIVATOR=activator
+START_APP=target/universal/stage/bin/spider-app
+
+export PATH=$PATH:$ACTIVATOR_HOME
 
 # set jvm memory size 
 export JAVA_OPTS="-Xms624m -Xmx624m"
@@ -25,16 +26,18 @@ APPLICATION_PATH=/usr/lib/spider-app
  
 case "$1" in
     start)
+        cd ${APPLICATION_PATH}
+        echo -n "Staging Play service: "
+        $ACTIVATOR clean stage
         echo -n "Starting Play service: "
         rm -f ${APPLICATION_PATH}/server.pid
-        #su $USER -c "${PLAY} start ${APPLICATION_PATH} --%production >/dev/null"
-        cd ${APPLICATION_PATH}
-        #su $USER -c "${PLAY} start >/dev/null"
-        su $USER -c "${PLAY} start"
+        #su $USER -c "${ACTIVATOR} start ${APPLICATION_PATH} --%production >/dev/null"
+        #su $USER -c "${ACTIVATOR} start >/dev/null"
+        su $USER -c "${START_APP}"
         RETVAL=$?
  
         # You may want to start more applications as follows
-        # [ $RETVAL -eq 0 ] && su $USER -c "${PLAY} start application2"
+        # [ $RETVAL -eq 0 ] && su $USER -c "${ACTIVATOR} start application2"
         # RETVAL=$?
  
         if [ $RETVAL -eq 0 ]; then
@@ -45,11 +48,11 @@ case "$1" in
         ;;  
     stop)
         echo -n "Shutting down Play service: "
-        #${PLAY} stop ${APPLICATION_PATH} > /dev/null
+        #${ACTIVATOR} stop ${APPLICATION_PATH} > /dev/null
         cd ${APPLICATION_PATH}
-        #${PLAY} stop > /dev/null
-        ${PLAY} stop
-        # ${PLAY} stop application2 > /dev/null
+        #${ACTIVATOR} stop > /dev/null
+        ${ACTIVATOR} stop
+        # ${ACTIVATOR} stop application2 > /dev/null
  
         RETVAL=$?
  
@@ -60,7 +63,7 @@ case "$1" in
         fi
         ;;
     status)
-        ${PLAY} status ${APPLICATION_PATH}
+        ${ACTIVATOR} status ${APPLICATION_PATH}
         RETVAL=$?
         ;;
     *)
