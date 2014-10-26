@@ -72,6 +72,28 @@ class IndexSearcherActor extends Actor with LuceneConsts {
           }
       }
       
+      case MessageDocumentGetContents(documentId) => {
+          try {
+            val searcher = getSearcher
+            // search in lucene index
+            val optDocuments = searcher.getDocument(DOC_TYPE_TEXT, documentId)
+            val message = optDocuments match {
+              case Some(document) =>
+                  val contents = document.get(FIELD_CONTENTS)
+                  MessageDocumentContents(documentId, HtmlUtil.sanitize(contents))
+              case _ =>
+                  MessageDocumentContents(documentId, TEXT_EMPTY)
+            }
+            
+            searcher.close
+            sender ! message
+          } catch {
+            case e: Exception =>
+              sender ! akka.actor.Status.Failure(e)
+              throw e
+          }
+      }
+      
       case _ => 
     }
   

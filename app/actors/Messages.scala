@@ -15,11 +15,14 @@ case class MessageDeleteDocument(documentId: Long) extends Message
 
 case class MessageSearchWithHighlighter(documentId: Long, searchText: String) extends Message
 
-//  outgoing messages to actors
+case class MessageDocumentGetContents(documentIds: Long) extends Message
+
+//  outgoing messages from actors
 case class MessageDocumentSearchResult(documentIds: Seq[Long]) extends Message
 
 case class MessageSearchResultWithHighlighter(documentId: Long, results: Seq[DocumentSearchResult]) extends Message
 
+case class MessageDocumentContents(documentId: Long, contents: String) extends Message
 
 // user related messages
 case class MessageAddUser(user: User) extends Message

@@ -5,6 +5,10 @@ import org.apache.lucene.search.vectorhighlight.SimpleFragListBuilder
 import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter
 import org.apache.lucene.search.vectorhighlight.ScoreOrderFragmentsBuilder
 import org.apache.lucene.search.vectorhighlight.BaseFragmentsBuilder
+import org.apache.lucene.util._
+import org.apache.lucene.index._
+import org.apache.lucene.store._
+import org.apache.lucene.document._
 
 trait LuceneConsts {
   
@@ -18,6 +22,7 @@ trait LuceneConsts {
   val FIELD_EMAIL = "email"
   val DOC_TYPE_TEXT = "text"
   val DOC_TYPE_USER = "user"
+  val TEXT_EMPTY = ""
     
   val highlighterType = new FieldType()
   highlighterType.setIndexed(true)
@@ -44,4 +49,6 @@ trait LuceneConsts {
   val fragmentBuilder = new ScoreOrderFragmentsBuilder(COLORED_PRE_TAGS,
                                                        BaseFragmentsBuilder.COLORED_POST_TAGS)
   val fastVectorHighlighter = new FastVectorHighlighter(true, true, fragListBuilder, fragmentBuilder)
+  
+  def getDocIdTerm(docType: String, docId: Long) = new Term(FIELD_DOC_ID, s"${docType}-${docId}")
 }

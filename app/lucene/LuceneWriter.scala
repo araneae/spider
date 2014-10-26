@@ -46,7 +46,7 @@ class LuceneWriter(indexDir: String) extends LuceneConsts {
   def addOrUpdateDocument(docType: String, docId: Long, document: Document) = {
     writer match {
       case Some(wr) => {
-                  wr.updateDocument(new Term(FIELD_DOC_ID, s"${docType}-${docId}"), document)
+                  wr.updateDocument(getDocIdTerm(docType, docId), document)
                   wr.commit()
                }
       case None => 
@@ -56,7 +56,7 @@ class LuceneWriter(indexDir: String) extends LuceneConsts {
   def deleteDocument(docType: String, docId: Long) = {
     writer match {
       case Some(wr) => {
-                  wr.deleteDocuments(new Term(FIELD_DOC_ID, s"${docType}-${docId}"))
+                  wr.deleteDocuments(getDocIdTerm(docType, docId))
                   wr.commit()
                }
       case None => 

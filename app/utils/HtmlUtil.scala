@@ -1,14 +1,16 @@
 package utils
 
-import scala.util.parsing.json.JSONObject
-
 object HtmlUtil {
 
   def sanitize(data: Array[String]): Array[String] = {
       data.map{ line => 
-                val temp = line.replaceAll("\r\n", "<br/>")
-                temp.replaceAll("\u0007", "\t")
+           sanitize(line)
       }
+  }
+  
+  def sanitize(contents: String): String = {
+      val temp = contents.replaceAll("\r\n", "<br/>")
+      temp.replaceAll("\u0007", "\t")
   }
 
 }

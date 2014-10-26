@@ -172,24 +172,22 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.search(${searchText})")
     
     if (searchText.length() > 0){
-      //AsyncResult {
-          val documentIds = UserDocumentRepository.findDocumentIds(userId)
-          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-          // send message to index searcher
-          val f = ask(indexSearcherActor, MessageDocumentSearch(documentIds, searchText)).mapTo[MessageDocumentSearchResult]
-          val result = f.map {
-               case MessageDocumentSearchResult(docIds) => {
-                      val userDocuments = UserDocumentRepository.findAllByDocumentIds(userId, docIds)
-                      val text = Json.toJson(userDocuments)
-                      Ok(text).as(JSON)
-                }
-               case _ => Ok("").as(JSON)
+      val documentIds = UserDocumentRepository.findDocumentIds(userId)
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentIds, searchText)).mapTo[MessageDocumentSearchResult]
+      val result = f.map {
+           case MessageDocumentSearchResult(docIds) => {
+                  val userDocuments = UserDocumentRepository.findAllByDocumentIds(userId, docIds)
+                  val text = Json.toJson(userDocuments)
+                  Ok(text).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
 //                        println(s"Failrure ${failure}")
 //                        Ok("")
-          }
-      //}
-          Await.result(result, timeout.duration)
+      }
+      Await.result(result, timeout.duration)
     }
     else {
       Ok("")
@@ -201,28 +199,48 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.search(${documentId}, ${searchText})")
     
     if (searchText.length() > 0){
-      //AsyncResult {
-          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-          // send message to index searcher
-          val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
-          val result = f.map{
-               case MessageSearchResultWithHighlighter(documentId, results) => {
-                          val text = Json.toJson(results)
-                          //println(text)
-                          Ok(text).as(JSON)
-                }
-               case _ => Ok("").as(JSON)
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
+      val result = f.map{
+           case MessageSearchResultWithHighlighter(documentId, results) => {
+                      val text = Json.toJson(results)
+                      //println(text)
+                      Ok(text).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
 //                        println(s"Failrure ${failure}")
 //                        Ok("")
-          }
-          
-          Await.result(result, timeout.duration)
-      //}
+      }
+      
+      Await.result(result, timeout.duration)
     }
     else {
       Ok("")
     }
+  }
+  
+  def getContents(documentId: Long) = IsAuthenticated { username => implicit request =>
+    //logger.info(s"in DatabaseController.getContents(${documentId})")
+    println(s"in DatabaseController.getContents(${documentId})")
+    
+    implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+    // send message to index searcher
+    val f = ask(indexSearcherActor, MessageDocumentGetContents(documentId)).mapTo[MessageDocumentContents]
+    val result = f.map{
+         case MessageDocumentContents(documentId, contents) => {
+                    val text = Json.toJson(contents)
+                    println(text)
+                    Ok(text).as(JSON)
+          }
+         case _ => Ok("").as(JSON)
+//                case Failure(failure) =>
+//                        println(s"Failrure ${failure}")
+//                        Ok("")
+    }
+    
+    Await.result(result, timeout.duration)
   }
   
   def delete(documentId: Long) = IsAuthenticated{ username => implicit request =>

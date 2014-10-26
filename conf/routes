@@ -113,6 +113,8 @@ GET    /database/search/:searchText                             controllers.Data
 
 GET    /database/document/:documentId/search/:searchText        controllers.DatabaseController.searchDocument(documentId: Long, searchText: String)
 
+GET    /database/document/:documentId/contents                  controllers.DatabaseController.getContents(documentId: Long)
+
 # UserTag specific routes
 POST   /userTag                                                 controllers.UserTagController.create
 

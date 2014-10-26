@@ -48,7 +48,7 @@ class LuceneSearcher(indexDir: String) extends LuceneConsts {
                     val document = searcher.doc(scoreDoc.doc)
                     list += document
                 }
-               println(s"result ${list}")
+               //println(s"result ${list}")
                Some(list)
              case None => None
            }
@@ -81,6 +81,21 @@ class LuceneSearcher(indexDir: String) extends LuceneConsts {
            }
            
         case None => None
+    }
+  }
+  
+  def getDocument(docType: String, docId: Long) : Option[Document] = {
+    println(s"LuceneSearcher.getDocument(${docType}, ${docId})")
+    indexSearcher match {
+        case Some(searcher) =>
+          val query = new TermQuery(getDocIdTerm(docType, docId));
+          val scoreDocs = searcher.search(query, 1).scoreDocs
+          scoreDocs.map { scoreDoc => 
+            val document = searcher.doc(scoreDoc.doc)
+            return Some(document)
+          }
+          None
+       case None => None
     }
   }
   

@@ -208,6 +208,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
+          .state('databaseDocumentView', {
+              url: '/document/view/:documentId',
+              views: {
+                'viewMain': {
+                    templateUrl: '/assets/partials/databaseView.html'
+                }
+              }
+          })
           .state('databaseDocumentShare', {
               url: '/document/share/:documentId',
               views: {

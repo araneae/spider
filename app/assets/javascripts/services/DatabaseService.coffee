@@ -54,10 +54,25 @@ class DatabaseService
         deferred.promise
 
     searchDocument: (documentId, searchText) ->
-        @$log.debug "DatabaseService.search #{documentId} #{searchText}"
+        @$log.debug "DatabaseService.search(#{documentId} #{searchText})"
         deferred = @$q.defer()
 
         @$http.get("/database/document/#{documentId}/search/#{searchText}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully searched - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to search - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    getDocumentContents: (documentId) ->
+        @$log.debug "DatabaseService.getDocumentContents(#{documentId})"
+        deferred = @$q.defer()
+
+        @$http.get("/database/document/#{documentId}/contents")
         .success((data, status, headers) =>
                 @$log.info("Successfully searched - status #{status}")
                 deferred.resolve(data)
