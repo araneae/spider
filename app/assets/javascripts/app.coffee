@@ -4,6 +4,7 @@ dependencies = [
     'ngResource',
     'ngSanitize',
     'ui.bootstrap',
+    'ui.bootstrap.datepicker',
     'ui.router',
     'ui.select2',
     'angularFileUpload',
@@ -221,6 +222,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseShare.html'
+                }
+              }
+          })
+          .state('manageDatabaseShares', {
+              url: '/document/share/:documentId/manage',
+              views: {
+                'viewMain': {
+                    templateUrl: '/assets/partials/databaseManageShares.html'
                 }
               }
           })

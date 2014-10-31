@@ -10,17 +10,18 @@
         <tr>
           <th>Name</th>
           <th>Description</th>
-          <th>Uploaded At</th>
-          <th class="col-md-2"></th>
+          <th class="col-md-2">Uploaded On</th>
+          <th class="col-md-3"></th>
         </tr>
         <tr ng-repeat="document in ctrl.documents">
           <td><a href="" data-placement="left" title="{{document.name}}" ng-click="ctrl.goToDocumentEdit(document.documentId)">{{document.name}}</a></td>
           <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
-          <td>{{document.createdAt  | date : 'short'}}</td>
+          <td>{{document.createdAt  | date : 'shortDate'}}</td>
           <td> 
-            <a href="" class="glyphicon glyphicon-folder-open" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
-            <a href="" class="glyphicon glyphicon-share" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
-            <a class="glyphicon glyphicon-download" file-download url="ctrl.getUrl({{document.documentId}})" data-placement="left" title="Download"></a>
+            <a href="" class="glyphicon glyphicon-folder-open" ng-show="document.canView" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
+            <a href="" class="glyphicon glyphicon-share" ng-show="document.canShare" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
+            <a href="" class="glyphicon glyphicon-save" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>
+            <a class="glyphicon glyphicon-download" ng-show="document.canCopy" file-download url="ctrl.getUrl({{document.documentId}})" data-placement="left" title="Download"></a>
             <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a> 
             <a href="" class="glyphicon glyphicon-tags" data-placement="left" title="Tag" ng-click="ctrl.goToDocumentTag(document.documentId)"></a>
             <a href="" class="glyphicon glyphicon-remove-circle" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(document.documentId)"></a>

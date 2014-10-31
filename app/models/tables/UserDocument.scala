@@ -29,15 +29,23 @@ class UserDocuments(tag: Tag) extends Table[UserDocument](tag, "user_document") 
   
   def canView = column[Boolean]("can_view", O.NotNull, O.Default(true))
   
+  def isLimitedShare = column[Boolean]("is_limited_share", O.NotNull, O.Default(true))
+  
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
+  
+  def shareUntilEOD = column[DateTime]("share_until_eod", O.Nullable)
   
   def updatedUserId = column[Long]("updated_user_id", O.Nullable)
   
   def updatedAt = column[DateTime]("updated_at", O.Nullable)
   
-  override def * = (userId, documentId, ownershipType, canCopy, canShare, canView, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserDocument.tupled, UserDocument.unapply)
+  override def * = (userId, documentId, ownershipType, canCopy, canShare, canView, isLimitedShare, createdUserId, createdAt, shareUntilEOD.?, updatedUserId.?, updatedAt.?) <> (UserDocument.tupled, UserDocument.unapply)
+  
+  def ? = (userId.?, documentId.?, ownershipType.?, canCopy.?, canShare.?, canView.?, isLimitedShare.?, createdUserId.?, createdAt.?, shareUntilEOD.?, updatedUserId.?, updatedAt.?)
+
+//  def optionUnapply(oc: Option[Supplier]): Option[(Option[Int], Option[String], Option[String])] = None)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_document", (userId, documentId))

@@ -1,48 +1,8 @@
 <div ng-controller="DatabaseShareCtrl as ctrl">
-  <h3><span class="label label-default">Sharing {{ctrl.document.name}}</span></h3>
+  <h3><span class="col-md-10 label label-default ellipsis" data-placement="left" title="{{ctrl.document.name}}">{{ctrl.document.name}}</span></h3>
+  <div></div>
   <div class="col-md-10">
-    <table class="table table-striped">
-      <tr>
-        <th>Email</th>
-        <th>Share</th>
-        <th>Can Copy</th>
-        <th>Can Share</th>
-      </tr>
-      <tr ng-repeat="connection in ctrl.sharedConnections">
-        <td>{{connection.text}}</td>
-        <td>
-          <div class="checkbox-inline">
-            <label>
-              <input type="checkbox" ng-model="connection.shared">
-            </label>
-          </div>
-        </td>
-        <td>
-          <div class="checkbox-inline">
-            <label>
-              <input type="checkbox" ng-model="connection.canCopy">
-            </label>
-          </div>
-        </td>
-        <td>
-          <div class="checkbox-inline">
-            <label>
-              <input type="checkbox" ng-model="connection.canShare">
-            </label>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <hr/>
-    <div class="form-group">
-      <div class="col-md-8">
-        <button type='button' class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-        <button type="submit" class="btn btn-success" id="btnSend" ng-disabled="ctrl.save()">Save</button>
-      </div>
-      <div class="clearfix"></div>
-    </div>
-    <hr/>
-    <form id="DocumentShareForm" name="DocumentShareForm" class="form-horizontal" role="form"
+    <form id="idDocumentShareForm" name="DocumentShareForm" class="form-horizontal" role="form"
       ng-submit="ctrl.sendShare()">
       <div class="form-group">
          <div ui-select2="ctrl.select2Options" class="form-control" name="receiver" id="idReceiver" placeholder="Select receivers"
@@ -57,17 +17,33 @@
                      ng-model="ctrl.share.message" ng-required="true"></textarea>
       </div>
       <div class="form-group">
-        <div class="col-md-4">
-          <div class="checkbox-inline">
-            <label>
-              <input type="checkbox" ng-model="ctrl.share.canCopy"> Can Copy
-            </label>
-          </div>
-          <div class="checkbox-inline">
-            <label>
-              <input type="checkbox" ng-model="ctrl.share.canShare"> Can Share
-            </label>
-          </div>
+        <label>
+          <input type="checkbox" ng-model="ctrl.share.canCopy"> Can Copy</input>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" ng-model="ctrl.share.canView"> Can View</input>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" ng-model="ctrl.share.canShare" ng-disabled="ctrl.share.isLimitedShare"> Can Share</input>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" ng-model="ctrl.share.isLimitedShare"> Limited Share Until (EOD)</input>
+        </label>
+        <div class="input-group col-md-3" ng-show="ctrl.share.isLimitedShare">
+            <input type="text" class="form-control" datepicker-popup="{{ctrl.dateOptions.format}}" 
+                  ng-model="ctrl.share.shareUntilEOD" is-open="ctrl.isDatePickerOpened" min-date="{{ctrl.dateOptions.minDate}}" 
+                        datepicker-options="ctrl.dateOptions" close-text="Close" placeholder="{{ctrl.dateOptions.format}}"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="ctrl.openDatePicker($event)">
+                 <i class="glyphicon glyphicon-calendar"></i>
+               </button>
+            </span>
         </div>
       </div>
       <hr/>
@@ -80,5 +56,7 @@
           <div class="clearfix"></div>
       </div>
     </form>
+    <hr/>
+    <a href="" ng-click="ctrl.goToManageShares()" data-placement="left" title="Manage Existing Shares">Manage Shares</a>
   </div>
 </div>

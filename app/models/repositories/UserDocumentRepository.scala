@@ -6,6 +6,7 @@ import play.api.Play.current
 import models.tables._
 import models.dtos._
 import enums.DocumentType._
+import org.joda.time.DateTime
 
 object UserDocumentRepository {
   
@@ -77,7 +78,7 @@ object UserDocumentRepository {
   def udate(userDocument: UserDocument) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(d => d.userId === userDocument.userId && d.documentId === userDocument.documentId ) update userDocument 
+          query filter(d => d.userId === userDocument.userId && d.documentId === userDocument.documentId) update userDocument
     }
   }
   
@@ -86,6 +87,58 @@ object UserDocumentRepository {
        implicit session: Session =>
           query.filter(d => d.userId === userId && d.documentId === documentId) delete
     }
+  }
+  
+  def findByFileName(userId: Long, fileName : String): Seq[UserDocument] = { 
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+              ud <- query.filter(d => d.userId === userId)
+              d  <- ud.document if d.fileName === fileName
+          } 
+          yield (ud)
+         
+         q.list
+    }
+  }
+  
+  def findByName(userId: Long, name : String): Seq[UserDocument] = { 
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+              ud <- query.filter(d => d.userId === userId)
+              d  <- ud.document if d.name === name
+          } 
+          yield (ud)
+         
+         q.list
+    }
+  }
+  
+  def getCopyFileName(userId: Long, fileName: String) : String = {
+     def getNextName(seq: Int) : String = {
+         val copyName = s"${fileName}_copy${seq}"
+         val docs = findByFileName(userId, copyName)
+         if (docs.length > 0) {
+               getNextName(seq + 1)
+         } else {
+            copyName
+         }
+      }
+     getNextName(1)
+  }
+  
+  def getCopyName(userId: Long, name: String) : String = {
+     def getNextName(seq: Int) : String = {
+         val copyName = s"${name}_copy${seq}"
+         val docs = findByName(userId, copyName)
+         if (docs.length > 0) {
+               getNextName(seq + 1)
+         } else {
+            copyName
+         }
+      }
+     getNextName(1)
   }
 }
 

@@ -83,16 +83,58 @@ class DatabaseService
             )
         deferred.promise
 
-    getConnections: (documentId) ->
-        @$log.debug "DatabaseService.getConnections(#{documentId})"
+    getShareContacts: (documentId) ->
+        @$log.debug "DatabaseService.getContacts(#{documentId})"
         deferred = @$q.defer()
-        @$http.get("/database/connection/#{documentId}")
+        @$http.get("/database/document/#{documentId}/contact")
         .success((data, status, headers) =>
-                @$log.info("Successfully fetched in-network connections - status #{status}")
+                @$log.info("Successfully fetched contacts - status #{status}")
                 deferred.resolve(data)
             )
         .error((data, status, headers) =>
-                @$log.error("Failed to fetch in-network connections - status #{status}")
+                @$log.error("Failed to fetch contacts - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
+    copyDocument: (documentId) ->
+        @$log.debug " DatabaseService.copyDocument(#{documentId})"
+        deferred = @$q.defer()
+        @$http.post("/database/document/#{documentId}/copy")
+        .success((data, status, headers) =>
+                @$log.info("Successfully copy document - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to copy document - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    share: (documentId, share) ->
+        @$log.debug "DatabaseService.share(#{documentId}, #{share})"
+        deferred = @$q.defer()
+        @$http.post("/database/document/#{documentId}/share", share)
+        .success((data, status, headers) =>
+                @$log.info("Successfully shared contacts - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to share contacts - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
+    updateShare: (documentId, share) ->
+        @$log.debug "DatabaseService.updateShare(#{documentId}, #{share})"
+        deferred = @$q.defer()
+        @$http.put("/database/document/#{documentId}/share", share)
+        .success((data, status, headers) =>
+                @$log.info("Successfully updated shares - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to update shares - status #{status}")
                 deferred.reject(data);
             )
         deferred.promise

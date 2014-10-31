@@ -95,7 +95,7 @@ GET    /adviser/accept/:token                                   controllers.Advi
 # Database specific routes
 POST   /database/upload                                         controllers.DatabaseController.upload
 
-GET    /database/connection/:documentId                         controllers.DatabaseController.getAllConnections(documentId: Int)
+GET    /database/document/:documentId/contact                   controllers.DatabaseController.getShareContacts(documentId: Int)
 
 GET    /database/download/:documentId                           controllers.DatabaseController.download(documentId: Int)
 
@@ -114,6 +114,12 @@ GET    /database/search/:searchText                             controllers.Data
 GET    /database/document/:documentId/search/:searchText        controllers.DatabaseController.searchDocument(documentId: Long, searchText: String)
 
 GET    /database/document/:documentId/contents                  controllers.DatabaseController.getContents(documentId: Long)
+
+POST   /database/document/:documentId/share                     controllers.DatabaseController.share(documentId: Int)
+
+PUT   /database/document/:documentId/share                     controllers.DatabaseController.updateShare(documentId: Int)
+
+POST   /database/document/:documentId/copy                      controllers.DatabaseController.copy(documentId: Int)
 
 # UserTag specific routes
 POST   /userTag                                                 controllers.UserTagController.create
@@ -144,10 +150,6 @@ DELETE /database/documentSearch/:documentSearchId               controllers.Docu
 
 # Share document related routes
 GET   /connection                                               controllers.ConnectionController.getAll
-
-POST  /connection/share/document/:documentId                    controllers.ConnectionController.share(documentId: Int)
-
-GET   /connection/copy/document/:documentId                     controllers.ConnectionController.copy(documentId: Int)
 
 # Shared Database specific routes
 GET   /database/shared/document                                 controllers.SharedDatabaseController.getAll

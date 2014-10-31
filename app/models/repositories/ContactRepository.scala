@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 object ContactRepository {
   
   val query = TableQuery[Contacts]
-  val sharedDocument = TableQuery[SharedDocuments]
+  val userDocument = TableQuery[UserDocuments]
   
   def create(contact: Contact) = {
     DB.withSession {
@@ -92,18 +92,20 @@ object ContactRepository {
     DB.withSession {
       implicit session =>
         val q = for {
-          (c, d) <- query leftJoin sharedDocument on ((c, d) =>
+          (c, d) <- query leftJoin userDocument on ((c, d) =>
                                           c.contactUserId === d.userId &&
-                                          c.userId === d.sharedByUserId &&
                                           d.documentId === documentId) if c.userId === userId
           cu <- c.contact
-        } yield (cu.userId, cu.email, d.documentId.?, d.canShare.?, d.canCopy.?)
+        } yield (cu.userId, cu.email, d.?)
         
-        q.list.map{case (userId, email, docId, canShare, canCopy) 
-                => {  val shared = docId match { case Some(d) => true
-                                                 case None => false
-                                               }
-                      ContactWithDocument(userId, email, documentId, shared, canShare, canCopy)
+        q.list.map{case (userId, email, d) 
+                   => {
+                        d match {
+                          case (uId, documentId, ownershipType, canCopy, canShare, canView, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) =>
+                            ContactWithDocument(userId, email, documentId, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
+                          case _ =>
+                            ContactWithDocument(userId, email, None, None, None, None, None, None)
+                        }
                    }
         }
     }

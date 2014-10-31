@@ -18,13 +18,15 @@ case class UserDocument(
                    canCopy: Boolean,
                    canShare: Boolean,
                    canView: Boolean,
+                   isLimitedShare : Boolean,
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
+                   shareUntilEOD : Option[DateTime] = None,
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None
                    )
 
-object UserDocument extends Function10[Long, Long, OwnershipType, Boolean, Boolean, Boolean, Long, DateTime, Option[Long], Option[DateTime], UserDocument]
+object UserDocument extends Function12[Long, Long, OwnershipType, Boolean, Boolean, Boolean, Boolean, Long, DateTime, Option[DateTime], Option[Long], Option[DateTime], UserDocument]
 {
     implicit val documentWrites : Writes[UserDocument] = (
             (JsPath \ "userId").write[Long] and
@@ -33,8 +35,10 @@ object UserDocument extends Function10[Long, Long, OwnershipType, Boolean, Boole
             (JsPath \ "canCopy").write[Boolean] and
             (JsPath \ "canShare").write[Boolean] and
             (JsPath \ "canView").write[Boolean] and
+            (JsPath \ "isLimitedShare").write[Boolean] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
+            (JsPath \ "shareUntilEOD").write[Option[DateTime]] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
             (JsPath \ "updatedAt").write[Option[DateTime]]
     )(unlift(UserDocument.unapply))
@@ -46,8 +50,10 @@ object UserDocument extends Function10[Long, Long, OwnershipType, Boolean, Boole
           (JsPath \ "canCopy").read[Boolean] and
           (JsPath \ "canShare").read[Boolean] and
           (JsPath \ "canView").read[Boolean] and
+          (JsPath \ "isLimitedShare").read[Boolean] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
+          (JsPath \ "shareUntilEOD").readNullable[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
     )(UserDocument)

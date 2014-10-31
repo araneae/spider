@@ -60,6 +60,19 @@ class DatabaseCtrl
         @$log.debug "DatabaseCtrl.showRemoveAlert(#{documentId})"
         @removeId = documentId
         @removeAlert = true
+    
+    copyDocument: (documentId) ->
+        @$log.debug "DatabaseCtrl.copyDocument(#{documentId})"
+        @DatabaseService.copyDocument(documentId).then(
+            (data) =>
+                # show status
+                @$log.debug "Successfully copied document"
+                @listDocuments()
+            ,
+            (error) =>
+                @$log.error "Unable to copy document: #{error}"
+                @ErrorService.error
+            )
 
     getUrl: (documentId) ->
         @$log.debug "DatabaseCtrl.getUrl(#{documentId})"

@@ -54,6 +54,15 @@ object FileUtil {
     Files.isDirectory(path)
   }
   
+  def getOriginalName(name: String) = {
+    val pos = name.indexOf("_copy")
+    
+    if (pos > 0)
+      name.substring(0, pos)
+    else
+      name
+  }
+  
   def getMD5Hash(filePath: String): String = {
     val md5 = MessageDigest.getInstance("MD5");
     val fis = new FileInputStream(filePath);
