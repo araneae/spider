@@ -4,6 +4,7 @@ class UserTagCtrl
     constructor: (@$log, @$q, @$scope, @$state, @UserTagService, @UtilityService, @UserTag, @ErrorService) ->
         @$log.debug "constructing UserTagCtrl"
         @userTags = []
+        @userTagsMgm = []
         @removedIds = []
         # fetch data from server
         @listUserTags()
@@ -14,18 +15,24 @@ class UserTagCtrl
             (data) =>
                 @$log.debug "Promise returned #{data.length} tags"
                 @userTags = data
+                @userTags.unshift({userTagId: 0, name: 'All'})
             ,
             (error) =>
                 @$log.error "Unable to get tags: #{error}"
                 @ErrorService.error("Unable to fetch tags from server!")
             )
-
+  
+    isDisabled: (userTag) ->
+      @$log.debug "UserTagCtrl.isEditable(#{userTag})"
+      userTag.userTagId == 0
+      
     goToTag: (userTagId) ->
         @$log.debug "UserTagCtrl.goToTag(#{userTagId})"
         @$state.go("database.documents", {userTagId: userTagId})
 
     goToUserTagManagement: () ->
-        @$log.debug "UserTagCtrl.goToUserTagCreate()"
+        @$log.debug "UserTagCtrl.goToUserTagManagement()"
+        @userTagsMgm = angular.copy(@userTags)
         @$state.go("database.userTagManagement")
 
     goToUserTagCreate: () ->
@@ -43,8 +50,8 @@ class UserTagCtrl
     remove: (userTagId) ->
         @$log.debug "UserTagCtrl.remove(#{userTagId})"
         @removedIds.push(userTagId)
-        index = @UtilityService.findIndexByProperty(@userTags, 'userTagId', userTagId)
-        @userTags.splice(index, 1)
+        index = @UtilityService.findIndexByProperty(@userTagsMgm, 'userTagId', userTagId)
+        @userTagsMgm.splice(index, 1)
 
     save: () ->
         @$log.debug "UserTagCtrl.save()"
@@ -54,7 +61,7 @@ class UserTagCtrl
             promises.push(promise)
         
         # TBD: only update the dirty ones
-        for tag in @userTags
+        for tag in @userTagsMgm
             promise = @UserTag.update(tag).$promise
             promises.push(promise)
         # wait for all the promises to complete

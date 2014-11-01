@@ -1,20 +1,23 @@
 <div ng-controller="DatabaseTagCtrl as ctrl">
   <h3><span class="label label-default">{{ctrl.document.name}}</span></h3>
-  <table class="table table-striped">
-    <tr>
-      <th>Name</th>
-    </tr>
-    <tr ng-repeat="docTag in ctrl.docTags">
-      <td>
-      <input type="checkbox" ng-model="docTag.isTagged">
-      {{docTag.name}}
-      </td>
-    </tr>
-  </table>
-  <div class="form-group clearfix">
-    <div class="col-sm-offset-4 col-sm-8 text-right">
-      <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-      <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
+  <div class="col-md-4">
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+      </tr>
+      <tr ng-repeat="docTag in ctrl.docTags">
+        <td>
+          <input type="checkbox" ng-model="docTag.isTagged">
+          {{docTag.name}}
+        </td>
+      </tr>
+    </table>
+    <hr/>
+    <div class="form-group clearfix">
+      <div class="text-left">
+        <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
+      </div>
     </div>
   </div>
 </div>

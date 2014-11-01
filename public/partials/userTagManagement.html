@@ -1,15 +1,20 @@
+<div class="col-md-8">
     <table class="table table-striped">
-      <tr ng-repeat="tag in ctrl.userTags">
-        <td><input type="text" ng-model="tag.name"></td>
-        <td><a href="" ng-click="ctrl.remove(tag.userTagId)">Remove</a></td>
+      <tr ng-repeat="tag in ctrl.userTagsMgm" ng-disabled="true">
+        <td>
+          <input type="text" ng-model="tag.name" ng-disabled="ctrl.isDisabled(tag)">
+        </td>
+        <td>
+          <a href="" class="glyphicon glyphicon-trash" ng-hide="ctrl.isDisabled(tag)" data-placement="left" title="Remove" ng-click="ctrl.remove(tag.userTagId)"></a>
+        </td>
       </tr>
     </table>
     <hr>
     <div class="form-group clearfix">
-      <div class="col-sm-offset-4 col-sm-8 text-right">
+      <div class="text-left">
         <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
+        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Update</button>
       </div>
     </div>
     <hr>
-
+</div>

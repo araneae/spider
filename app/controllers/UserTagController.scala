@@ -25,8 +25,8 @@ object UserTagController extends Controller with Secured {
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
-    //logger.info("in UserTagController.getAll...")
-    println("in UserTagController.getAll...")
+    //logger.info("in UserTagController.getAll()")
+    println("in UserTagController.getAll()")
     
     var list = UserTagRepository.findAll(userId)
     val text = Json.toJson(list)

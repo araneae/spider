@@ -101,7 +101,7 @@ GET    /database/download/:documentId                           controllers.Data
 
 GET    /database/document/:documentId                           controllers.DatabaseController.get(documentId: Int)
 
-GET    /database/document                                       controllers.DatabaseController.getAll(userTagId: Option[Int])
+GET    /database/document/usertag/:userTagId                    controllers.DatabaseController.getAllByUserTagId(userTagId: Int)
 
 POST   /database/document                                       controllers.DatabaseController.create
 

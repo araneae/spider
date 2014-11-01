@@ -81,19 +81,18 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     }
   }
   
-  def getAll(userTagId: Option[Int]) = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.getAll(${userTagId})")
-    println(s"in DatabaseController.getAll(${userTagId})")
+  def getAllByUserTagId(userTagId: Int) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.getAllByUserTagId(${userTagId})")
+    println(s"in DatabaseController.getAllByUserTagId(${userTagId})")
     
-    userTagId match {
-      case Some(tagId) =>
-                  val list = DocumentTagRepository.findDocumentByUserTagId(userId, tagId)
-                  val text = Json.toJson(list)
+    if (userTagId > 0) {
+      val list = DocumentTagRepository.findDocumentByUserTagId(userId, userTagId)
+      val text = Json.toJson(list)
                   Ok(text).as(JSON)
-      case None =>  
-                  val list = UserDocumentRepository.findAll(userId)
-                  val text = Json.toJson(list)
-                  Ok(text).as(JSON)
+    } else {  
+      val list = UserDocumentRepository.findAll(userId)
+      val text = Json.toJson(list)
+      Ok(text).as(JSON)
     }
   }
 

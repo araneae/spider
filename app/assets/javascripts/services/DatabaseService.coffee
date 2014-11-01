@@ -82,6 +82,21 @@ class DatabaseService
                 deferred.reject(data);
             )
         deferred.promise
+   
+    getDocumentByUserTagId: (userTagId) ->
+        @$log.debug "DatabaseService.getDocumentByUserTagId(#{userTagId})"
+        deferred = @$q.defer()
+        
+        @$http.get("/database/document/usertag/#{userTagId}")
+           .success((data, status, headers) =>
+                 @$log.info("Successfully searched - status #{status}")
+                 deferred.resolve(data)
+           )
+           .error((data, status, headers) =>
+                 @$log.error("Failed to search - status #{status}")
+                 deferred.reject(data);
+           )
+        deferred.promise
 
     getShareContacts: (documentId) ->
         @$log.debug "DatabaseService.getContacts(#{documentId})"

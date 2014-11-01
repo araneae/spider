@@ -5,6 +5,7 @@ class DatabaseCtrl
         @$log.debug "constructing DatabaseCtrl"
         @userTagId
         @userTagId = parseInt(@$stateParams.userTagId) if @$stateParams.userTagId
+        @userTagId = 0 if !@userTagId
         @documents = []
         @removeId
         @removeAlert = false
@@ -17,7 +18,7 @@ class DatabaseCtrl
     
     listDocuments: () ->
         @$log.debug "DatabaseCtrl.listDocuments()"
-        @Document.query({userTagId: @userTagId}).$promise.then(
+        @DatabaseService.getDocumentByUserTagId(@userTagId).then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} documents"
                 @documents = data
