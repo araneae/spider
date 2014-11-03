@@ -13,6 +13,7 @@ import play.api.mvc.Controller
 import play.api.mvc.Security
 import models.repositories.UserRepository
 import traits._
+import utils._
 
 object SettingsController extends Controller with Secured {
   
@@ -21,6 +22,6 @@ object SettingsController extends Controller with Secured {
   def settings = IsAuthenticated{ username => implicit request =>
       //logger.info("in SettingsController.settings...")
       println("in SettingsController.settings...")
-      Ok(views.html.settings("Recruiter Tool"))
+      Ok(views.html.settings(Configuration.applicationTitle){Configuration.applicationName})
   }
 }

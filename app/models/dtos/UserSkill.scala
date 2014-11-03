@@ -14,21 +14,21 @@ import org.joda.time.DateTime
 case class UserSkill(userId: Long,
                 skillId: Long,
                 skillLevel: SkillLevel,
-                descriptionShort: String,
-                descriptionLong: String,
+                descriptionShort: Option[String],
+                descriptionLong: Option[String],
                 createdUserId: Long,
                 createdAt: DateTime = new DateTime(),
                 updatedUserId: Option[Long] = None,
                 updatedAt: Option[DateTime] = None)
 
-object UserSkill extends Function9[Long, Long, SkillLevel, String, String, Long, DateTime, Option[Long], Option[DateTime], UserSkill]
+object UserSkill extends Function9[Long, Long, SkillLevel, Option[String], Option[String], Long, DateTime, Option[Long], Option[DateTime], UserSkill]
 {
     implicit val userSkillWrites : Writes[UserSkill] = (
             (JsPath \ "userId").write[Long] and
             (JsPath \ "skillId").write[Long] and
             (JsPath \ "skillLevel").write[SkillLevel] and
-            (JsPath \ "descriptionShort").write[String] and
-            (JsPath \ "descriptionLong").write[String] and
+            (JsPath \ "descriptionShort").write[Option[String]] and
+            (JsPath \ "descriptionLong").write[Option[String]] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -39,8 +39,8 @@ object UserSkill extends Function9[Long, Long, SkillLevel, String, String, Long,
           (JsPath \ "userId").read[Long] and
           (JsPath \ "skillId").read[Long] and
           (JsPath \ "skillLevel").read[SkillLevel] and
-          (JsPath \ "descriptionShort").read[String] and
-          (JsPath \ "descriptionLong").read[String] and
+          (JsPath \ "descriptionShort").readNullable[String] and
+          (JsPath \ "descriptionLong").readNullable[String] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and

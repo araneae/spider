@@ -30,11 +30,11 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userId, messageId, messageBoxId, read, replied, important, star, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserMessage.tupled, UserMessage.unapply)
+  override def * = (userId, messageId, messageBoxId, read, replied, important, star, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserMessage.tupled, UserMessage.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_message", (userId, messageId, messageBoxId))

@@ -67,7 +67,7 @@ object ContactRepository {
                      cu <- query.filter (u => u.userId === userId && u.contactUserId === contactUserId)
                  } yield (cu.token, cu.updatedUserId, cu.updatedAt)
                  
-         q.update((token, userId, new DateTime()))
+         q.update((Some(token), Some(userId), Some(new DateTime())))
     }
   }
   
@@ -77,7 +77,7 @@ object ContactRepository {
          val q = for { 
                      u <- query if u.userId === userId && u.contactUserId === contactUserId 
                   } yield (u.status, u.token, u.updatedUserId, u.updatedAt)
-         q.update((status, token.getOrElse(null), contactUserId, new DateTime()))
+         q.update((status, token, Some(contactUserId), Some(new DateTime())))
     }
   }
   

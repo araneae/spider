@@ -8,12 +8,12 @@ import enums._
 case class UserSkillFull(userId: Long,
                 skillId: Long,
                 skillLevel: SkillLevel,
-                descriptionShort: String,
-                descriptionLong: String,
+                descriptionShort: Option[String],
+                descriptionLong: Option[String],
                 skillName: String
                 )
 
-object UserSkillFull extends Function6[Long, Long, SkillLevel, String, String, String, UserSkillFull]
+object UserSkillFull extends Function6[Long, Long, SkillLevel, Option[String], Option[String], String, UserSkillFull]
 {
     implicit val enumTypeFormat = EnumUtils.enumFormat(SkillLevel)
   
@@ -21,8 +21,8 @@ object UserSkillFull extends Function6[Long, Long, SkillLevel, String, String, S
             (JsPath \ "userId").write[Long] and
             (JsPath \ "skillId").write[Long] and
             (JsPath \ "skillLevel").write[SkillLevel] and
-            (JsPath \ "descriptionShort").write[String] and
-            (JsPath \ "descriptionLong").write[String] and
+            (JsPath \ "descriptionShort").write[Option[String]] and
+            (JsPath \ "descriptionLong").write[Option[String]] and
             (JsPath \ "skillName").write[String]
     )(unlift(UserSkillFull.unapply))
       
@@ -30,8 +30,8 @@ object UserSkillFull extends Function6[Long, Long, SkillLevel, String, String, S
           (JsPath \ "userId").read[Long] and
           (JsPath \ "skillId").read[Long] and
           (JsPath \ "skillLevel").read[SkillLevel] and
-          (JsPath \ "descriptionShort").read[String] and
-          (JsPath \ "descriptionLong").read[String] and
+          (JsPath \ "descriptionShort").readNullable[String] and
+          (JsPath \ "descriptionLong").readNullable[String] and
           (JsPath \ "skillName").read[String]
     )(UserSkillFull)
 }

@@ -61,7 +61,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.star, um.updatedUserId, um.updatedAt)
          
-         q.update((true, userId, new DateTime())) 
+         q.update((true, Some(userId), Some(new DateTime()))) 
     }
   }
   
@@ -72,7 +72,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.star, um.updatedUserId, um.updatedAt)
          
-         q.update((false, userId, new DateTime()))
+         q.update((false, Some(userId), Some(new DateTime())))
     }
   }
   
@@ -83,7 +83,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.important, um.updatedUserId, um.updatedAt)
          
-         q.update((true, userId, new DateTime()))
+         q.update((true, Some(userId), Some(new DateTime())))
     }
   }
   
@@ -94,7 +94,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.important, um.updatedUserId, um.updatedAt)
          
-         q.update((false, userId, new DateTime())) 
+         q.update((false, Some(userId), Some(new DateTime()))) 
     }
   }
   
@@ -105,7 +105,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.read, um.updatedUserId, um.updatedAt)
          
-         q.update((true, userId, new DateTime())) 
+         q.update((true, Some(userId), Some(new DateTime()))) 
     }
   }
   
@@ -116,7 +116,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.replied, um.updatedUserId, um.updatedAt)
          
-         q.update((true, userId, new DateTime()))
+         q.update((true, Some(userId), Some(new DateTime())))
     }
   }
   
@@ -127,7 +127,7 @@ object UserMessageRepository {
            um <-  query filter(m => m.userId === userId && m.messageId === messageId)
          } yield (um.messageBoxId, um.updatedUserId, um.updatedAt)
          
-         q.update((messageBoxId, userId, new DateTime()))
+         q.update((messageBoxId, Some(userId), Some(new DateTime())))
     }
   }
   

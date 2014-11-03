@@ -17,17 +17,17 @@ class Contacts(tag: Tag) extends Table[Contact](tag, "contact") {
   
   def status = column[ContactStatus]("status", O.NotNull, O.Default(PENDING))
   
-  def token = column[String]("token", O.Nullable)
+  def token = column[Option[String]]("token", O.Nullable)
   
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userId, contactUserId, status, token.?, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Contact.tupled, Contact.unapply)
+  override def * = (userId, contactUserId, status, token, createdUserId, createdAt, updatedUserId, updatedAt) <> (Contact.tupled, Contact.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_contact_user_id_contact_user_id", (userId, contactUserId))

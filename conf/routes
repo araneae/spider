@@ -9,7 +9,19 @@ GET    /login                                                   controllers.Auth
 
 POST   /login                                                   controllers.AuthController.authenticate
 
+GET    /login/password/:token/recover                           controllers.AuthController.formRecoverPassword(token: String)
+
+POST   /login/password/:token/recover                           controllers.AuthController.recoverPassword(token: String)
+
+GET    /login/password/reset                                    controllers.AuthController.formResetPassword
+
+POST   /login/password/reset                                    controllers.AuthController.resetPassword
+
 GET    /logout                                                  controllers.AuthController.logout
+
+GET    /activation/:token/resend                                controllers.AuthController.resend(token: String)
+
+GET    /activation/:token/activate                              controllers.AuthController.activate(token: String)
 
 GET    /home                                                    controllers.Application.home
 
@@ -19,7 +31,7 @@ POST   /signup                                                  controllers.Appl
 
 # Settings
 
-GET   /settings                                                 controllers.SettingsController.settings
+GET    /settings                                                 controllers.SettingsController.settings
 
 
 # Admin specific routes
@@ -189,6 +201,12 @@ GET    /messagebox                                              controllers.Mess
 PUT    /messagebox/:messageBoxId                                controllers.MessageBoxController.rename(messageBoxId: Int)
 
 POST   /messagebox                                              controllers.MessageBoxController.create
+
+# country
+
+GET    /country                                                 controllers.CountryController.getAll
+
+POST   /country                                                 controllers.CountryController.create
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                           controllers.Assets.at(path="/public", file)

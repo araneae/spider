@@ -78,7 +78,7 @@ object MessageBoxRepository {
            mb <- queryMessageBoxes filter(m => m.messageBoxId === messageBoxId)
          } yield(mb.name, mb.updatedUserId, mb.updatedAt)
          
-         q.update((name, userId, new DateTime()))
+         q.update((name, Some(userId), Some(new DateTime())))
     }
   }
 }

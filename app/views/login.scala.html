@@ -1,16 +1,15 @@
 @* login Template File *@
-@(form: Form[(String, String)])(implicit flash: Flash)
+@(title: String)(loginForm: Form[(String, String)])(implicit flash: Flash)
 
 @contentSignin={}
 @contentsLeft = {}
 @contentMain={
-   <head>
+  <head>
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
   </head>
-  <div class="col-md-8 col-md-offset-1">
    @helper.form(routes.AuthController.authenticate, 'class -> "form-signin") {
      <h2 class="form-signin-heading">Login</h2>
-     @form.globalError.map { error =>
+     @loginForm.globalError.map { error =>
         <p class="error">
             @error.message
         </p>
@@ -27,12 +26,18 @@
             @message
         </p>
       }
+      
+      @flash.get("html").map { message =>
+        <p class="html">
+          @Html(message)
+         </p>
+      }
 
-     <input class="form-control" type="email" autofocus="" required="" name="email" placeholder="Enter email"></input>
+     <input class="form-control" type="email" autofocus="" required="true" name="email" placeholder="Enter your email" value="@loginForm("email").value">
      <br>
-     <input class="form-control" type="password" required="" name="password" placeholder="Password"></input>
+     <input class="form-control" type="password" required="true" name="password" placeholder="Password">
      <label class="checkbox">
-       <input type="checkbox" value="remember-me"></input>
+       <input type="checkbox" value="remember-me">
        Remember me  
      </label>
      <button class="btn btn-primary btn-block" type="submit">Log In</button>
@@ -40,8 +45,7 @@
         <a href="/signup" class="form-link btn-block" >Sign Up</a>
       </strong>
    }
-  </div>
 }
 @contentsRight = {}
 
-@main("Spider Recruiter Tool")("")(contentSignin)(contentsLeft)(contentMain)(contentsRight)
+@main(title)("")(contentSignin)(contentsLeft)(contentMain)(contentsRight)

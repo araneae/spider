@@ -1,10 +1,10 @@
-@(message: String)
+@(title: String)(message: String)
 
 @contentsSingnIn = {
    <form class="form-inline" method="POST" action="/login">
      <div class="form-group">
            <label class="sr-only" for="idInputLoginEmail">Email address</label>
-           <input type="email" name="email" class="form-control" id="idInputLoginEmail" placeholder="Enter email"></input>
+           <input type="email" name="email" class="form-control" id="idInputLoginEmail" placeholder="Enter email">
      </div>
      <div class="form-group">
        <label class="sr-only" for="idInputLoginPassword">Password</label>
@@ -38,19 +38,19 @@
    @helper.form(routes.Application.register, 'class -> "form-signin") {
      <h2 class="form-signin-heading">Sign Up</h2>
      
-     <input class="form-control" type="first_name" name = "first_name" autofocus="" required="" placeholder="First Name"></input>
+     <input class="form-control" type="first_name" name = "first_name" autofocus="" required="" placeholder="First Name">
      <br>
-     <input class="form-control" type="last_name" name = "last_name" autofocus="" required="" placeholder="Last Name"></input>
+     <input class="form-control" type="last_name" name = "last_name" autofocus="" required="" placeholder="Last Name">
      <br>
-     <input class="form-control" type="email" name = "email" autofocus="" required="" placeholder="Email address"></input>
+     <input class="form-control" type="email" name = "email" autofocus="" required="" placeholder="Email address">
      <br>
-     <input class="form-control" type="password" name="password" required="" placeholder="Password"></input>
+     <input class="form-control" type="password" name="password" required="" placeholder="Password">
      <br>
      <button class="btn btn-primary btn-block" type="submit">Sign up</button>
    }
 }
 
-@main("Spider Recruiter Tool")(message)(contentsSingnIn)(contentsLeft)(contentMain)(contentsRight)
+@main(title)(message)(contentsSingnIn)(contentsLeft)(contentMain)(contentsRight)
 
 
 

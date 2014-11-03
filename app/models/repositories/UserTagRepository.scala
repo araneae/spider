@@ -32,7 +32,7 @@ object UserTagRepository {
            ut <-  query filter(_.userTagId === userTag.userTagId)
          } yield (ut.name, ut.updatedUserId, ut.updatedAt)
          
-         q.update((userTag.name, userId, new DateTime())) 
+         q.update((userTag.name, Some(userId), Some(new DateTime()))) 
     }
   }
   

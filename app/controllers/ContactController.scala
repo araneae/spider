@@ -54,7 +54,7 @@ object ContactController extends Controller with Secured with AkkaActor {
             if (myContact.status == ContactStatus.PENDING)
             { // update token
                 ContactRepository.updateToken(userId, contactUserId, token)
-                EmailService.inviteContact(contactUser, name, token, Configuration.applicationBaseUrl)
+                EmailService.inviteContact(contactUser, name, token)
                 Ok(HttpResponseUtil.success("Successfully invited!"))
             }
             else
@@ -64,7 +64,7 @@ object ContactController extends Controller with Secured with AkkaActor {
             val myNewContact = Contact(userId, contactUserId, ContactStatus.PENDING, Some(token), userId)
             ContactRepository.create(myNewContact)
             // send invitation email (should be used Actor)
-            EmailService.inviteContact(contactUser, name, token, Configuration.applicationBaseUrl)
+            EmailService.inviteContact(contactUser, name, token)
             Ok(HttpResponseUtil.success("Successfully invited!"))
         }
       }

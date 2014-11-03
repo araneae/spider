@@ -1,5 +1,6 @@
 @* login Template File *@
-@(form: Form[(String, String, String, String)])(implicit flash: Flash)
+@import models.dtos._
+@(title: String)(message: String)(countries: Seq[Country])(signupForm: Form[(String, String, String, String, String, String)])(implicit flash: Flash)
 
 @contentSignIn={
   <div class="col-lg-8">
@@ -12,26 +13,39 @@
   <head>
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
   </head>
-  <div class="col-md-8 col-md-offset-1">
     @helper.form(routes.Application.register, 'class -> "form-signin") {
      <h2 class="form-signin-heading">Sign Up</h2>
     @flash.get("error").map { message =>
-        <p class="error">
-            @message
-        </p>
-      }
-      <input class="form-control" type="first_name" name = "first_name" autofocus="" required="" placeholder="First Name"></input>
-      <br>
-      <input class="form-control" type="last_name" name = "last_name" autofocus="" required="" placeholder="Last Name"></input>
-      <br>
-      <input class="form-control" type="email" name = "email" autofocus="" required="" placeholder="Email address"></input>
-      <br>
-      <input class="form-control" type="password" name="password" required="" placeholder="Password"></input>
-      <br>
-      <button class="btn btn-primary btn-block" type="submit">Sign up</button>
-   }
-  </div>
+      <p class="error">
+          @message
+      </p>
+    }
+    <input class="form-control" type="first_name" name="first_name" autofocus="" required="true" placeholder="First Name" value="@signupForm("first_name").value">
+    <br>
+    <input class="form-control" type="last_name" name="last_name" autofocus="" required="true" placeholder="Last Name" value="@signupForm("last_name").value">
+    <br>
+    <input class="form-control" type="email" name="email" autofocus="" required="true" placeholder="Email address" value="@signupForm("email").value">
+    <br>
+    <input class="form-control" type="password" name="password" required="true" placeholder="Password, minimum 6 characters">
+    @if(!signupForm.errors("password").isEmpty) {
+          <span class="error">@Messages(signupForm.errors("password")(0).message,6)</span>
+     }
+    <br>
+    <input class="form-control" type="password" name="confirmPassword" required="true" placeholder="Confirm Password">
+    @if(!signupForm.errors("").isEmpty) {
+          <span class="error">@Messages(signupForm.errors("")(0).message)</span>
+    }
+    <br>
+    <select class="form-control" name="countryCode" required="true">
+       <option value="" selected>Select country</option>
+       @for(country <- countries) {
+         <option value="@country.code">@country.name</option>
+       }
+    </select>
+    <br>
+    <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+  }
 }
 @contentsRight = {}
 
-@main("Spider Recruiter Tool")("Recruiter Tool")(contentSignIn)(contentsLeft)(contentsMain)(contentsRight)
+@main(title)(message)(contentSignIn)(contentsLeft)(contentsMain)(contentsRight)

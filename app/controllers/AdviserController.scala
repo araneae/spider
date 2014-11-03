@@ -18,8 +18,6 @@ object AdviserController extends Controller with Secured {
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   private final val BLANK = ""
     
-  val applicationBaseUrl = Play.current.configuration.getString("application.baseUrl").getOrElse("http://localhost:9000")
-  
   def getAll = IsAuthenticated{ username => implicit request =>
       //logger.info("in AdviserController.getAll...")
       println("in AdviserController.getAll...")
@@ -48,7 +46,7 @@ object AdviserController extends Controller with Secured {
             if (myAdviser.status == ContactStatus.PENDING)
             { // update token
                 AdviserRepository.updateToken(userId, adviserUserId, token)
-                EmailService.inviteAdviser(adviserUser, name, token, applicationBaseUrl)
+                EmailService.inviteAdviser(adviserUser, name, token)
                 Ok("Updated")
             }
             else
@@ -58,7 +56,7 @@ object AdviserController extends Controller with Secured {
             val myNewAdviser = Adviser(userId, adviserUserId, ContactStatus.PENDING, Some(token), userId)
             AdviserRepository.create(myNewAdviser)
             // send invitation email (should be used Actor)
-            EmailService.inviteAdviser(adviserUser, name, token, applicationBaseUrl)
+            EmailService.inviteAdviser(adviserUser, name, token)
             Ok("Created")
         }
       }
@@ -78,10 +76,11 @@ object AdviserController extends Controller with Secured {
       val user = UserRepository.findByEmail(email);
       user match {
         case Some(u) =>
-                  val safeUser = User(Some(u.userId.get), u.firstName, u.lastName, u.email, BLANK)
-                  val list = List(safeUser)
-                  val text = Json.toJson(list)
-                  Ok(text).as(JSON)
+//                  val safeUser = User(Some(u.userId.get), u.firstName, u.lastName, u.email, BLANK)
+//                  val list = List(safeUser)
+//                  val text = Json.toJson(list)
+//                  Ok(text).as(JSON)
+                 Ok("").as(JSON)
         case None => // empty result
                  Ok(BLANK)
       }

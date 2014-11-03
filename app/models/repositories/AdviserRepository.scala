@@ -49,7 +49,7 @@ object AdviserRepository {
     DB.withSession {
        implicit session: Session =>
          val q = for { u <- query if u.userId === userId && u.adviserUserId === adviserUserId } yield (u.status, u.token)
-         q.update((status, token.getOrElse(null)))
+         q.update((status, token))
     }
   }
   
@@ -57,7 +57,7 @@ object AdviserRepository {
     DB.withSession {
        implicit session: Session =>
          val q = for { u <- query if u.userId === userId && u.adviserUserId === adviserUserId } yield u.token
-         q.update(token)
+         q.update(Some(token))
     }
   }
   

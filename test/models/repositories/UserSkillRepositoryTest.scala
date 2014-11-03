@@ -19,19 +19,21 @@ class UserSkillRepositoryTest extends Specification {
           implicit session: Session =>
             session.withTransaction{ 
               // create an industry
-              val industry = Industry(None, "Software", "-software-", "This is for Software Industry", 1)
+              val industry = Industry(None, "Software", "-software-", Some("This is for Software Industry"), 1)
               val industryId = IndustryRepository.create(industry)
+              val country = Country(None, "usa", "usa", true)
+              val countryId = CountryRepository.create(country)
               
               // create a skill
-              val skill = Skill(None, industryId, "Software", "-software-", "This is for Software Industry", 1)
+              val skill = Skill(None, industryId, "Software", "-software-", Some("This is for Software Industry"), 1)
               val skillId = SkillRepository.create(skill)
               
               // create a user
-              val user = User(None, "Krzysztof", "Nowak", "test@email.com", "assa")
+              val user = User(None, "Krzysztof", "Nowak", "test@email.com", "assa", countryId, "token", true)
               val userId = UserRepository create user
               
               
-              val userSkill = UserSkill(userId, skillId, SkillLevel.EXPERT, "Good at software", "I done many software projects.", 1)
+              val userSkill = UserSkill(userId, skillId, SkillLevel.EXPERT, Some("Good at software"), Some("I done many software projects."), 1)
               UserSkillRepository.create(userSkill)
               
               

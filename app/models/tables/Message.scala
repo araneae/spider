@@ -14,7 +14,7 @@ class Messages(tag: Tag) extends Table[Message](tag, "message") {
 
   def messageId = column[Long]("message_id", O.PrimaryKey, O.AutoInc)
   
-  def parentMessageId = column[Long]("parent_message_id", O.Nullable)
+  def parentMessageId = column[Option[Long]]("parent_message_id", O.Nullable)
   
   def senderUserId = column[Long]("sender_user_id", O.NotNull)
   
@@ -22,17 +22,17 @@ class Messages(tag: Tag) extends Table[Message](tag, "message") {
   
   def subject = column[String]("subject", O.NotNull)
   
-  def body = column[String]("body", O.Nullable, O.DBType("VARCHAR(1024)"))
+  def body = column[Option[String]]("body", O.Nullable, O.DBType("VARCHAR(1024)"))
   
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (messageId.?, parentMessageId.?, senderUserId, editable, subject, body.?, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Message.tupled, Message.unapply)
+  override def * = (messageId.?, parentMessageId, senderUserId, editable, subject, body, createdUserId, createdAt, updatedUserId, updatedAt) <> (Message.tupled, Message.unapply)
   
   // foreign keys and indexes
   def sender = foreignKey("fk_on_message_sender_user_id", senderUserId, TableQuery[Users])(_.userId)

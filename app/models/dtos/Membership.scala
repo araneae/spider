@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 
 case class Membership(membershipId: Option[Long], 
                        name: String,
-                       description: String,
+                       description: Option[String],
                        createdUserId: Long,
                        createdAt: DateTime = new DateTime(),
                        updatedUserId: Option[Long] = None,

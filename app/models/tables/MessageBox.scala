@@ -25,11 +25,11 @@ class MessageBoxes(tag: Tag) extends Table[MessageBox](tag, "message_box") {
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (messageBoxId.?, userId, messageBoxType, name, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (MessageBox.tupled, MessageBox.unapply _)
+  override def * = (messageBoxId.?, userId, messageBoxType, name, createdUserId, createdAt, updatedUserId, updatedAt) <> (MessageBox.tupled, MessageBox.unapply _)
   
   // foreign keys and indexes
   def owner = foreignKey("fk_on_message_box_user_id", userId, TableQuery[Users])(_.userId)

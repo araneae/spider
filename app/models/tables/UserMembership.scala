@@ -19,21 +19,21 @@ class UserMemberships(tag: Tag) extends Table[UserMembership](tag, "user_members
   
   def startDate = column[DateTime]("start_date", O.NotNull)
   
-  def endDate = column[DateTime]("end_date", O.Nullable)
+  def endDate = column[Option[DateTime]]("end_date", O.Nullable)
   
   def active = column[Boolean]("active", O.NotNull, O.Default(true))
   
-  def description = column[String]("description", O.Nullable)
+  def description = column[Option[String]]("description", O.Nullable)
   
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userMembershipId.?, userId, membershipId, startDate, endDate, active, description, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserMembership.tupled, UserMembership.unapply)
+  override def * = (userMembershipId.?, userId, membershipId, startDate, endDate, active, description, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserMembership.tupled, UserMembership.unapply)
   
   // foreign keys and indexes
   def user = foreignKey("fk_on_user_id", userId, TableQuery[Users])(_.userId)

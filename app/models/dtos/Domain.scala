@@ -13,20 +13,20 @@ case class Domain(domainId: Option[Long],
                    industryId: Long,
                    name: String,
                    code: String,
-                   description: String,
+                   description: Option[String],
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object Domain extends Function9[Option[Long], Long, String, String, String, Long, DateTime, Option[Long], Option[DateTime], Domain]
+object Domain extends Function9[Option[Long], Long, String, String, Option[String], Long, DateTime, Option[Long], Option[DateTime], Domain]
 {
     implicit val domainWrites : Writes[Domain] = (
             (JsPath \ "domainId").write[Option[Long]] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "code").write[String] and
-            (JsPath \ "description").write[String] and
+            (JsPath \ "description").write[Option[String]] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -38,7 +38,7 @@ object Domain extends Function9[Option[Long], Long, String, String, String, Long
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "code").read[String] and
-          (JsPath \ "description").read[String] and
+          (JsPath \ "description").readNullable[String] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and

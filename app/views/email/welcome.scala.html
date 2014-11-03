@@ -1,5 +1,22 @@
-@* welcome Template File *@
-@(name: String)
+@* inviteContact Template File *@
+@import play.api.mvc._
+@(receiver: String)(token: String)(applicationBaseUrl: String)
 
-<h1>Welcome @name!</h1>
-
+<p>
+Hello <strong>@receiver</strong>,
+</p>
+<p>
+Please click <a href="@applicationBaseUrl@routes.AuthController.activate(token)">here</a> to activate your account.
+</p>
+<p>
+If you are having trouble in activating your account, please copy and paste the following link in a browser and then activate.
+</p>
+<p>
+@applicationBaseUrl@routes.AuthController.activate(token)
+</p>
+<p> 
+Thanks,
+</p>
+<p>
+Araneae Team
+</p>

@@ -17,14 +17,14 @@ case class Document(documentId: Option[Long],
                    fileType: FileType,
                    fileName: String,
                    physicalName: String,
-                   description: String,
+                   description: Option[String],
                    signature: String,
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object Document extends Function13[Option[Long], Long, String, DocumentType, FileType, String, String, String, String, Long, DateTime, Option[Long], Option[DateTime], Document]
+object Document extends Function13[Option[Long], Long, String, DocumentType, FileType, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Document]
 {
     implicit val documentWrites : Writes[Document] = (
             (JsPath \ "documentId").write[Option[Long]] and
@@ -34,7 +34,7 @@ object Document extends Function13[Option[Long], Long, String, DocumentType, Fil
             (JsPath \ "fileType").write[FileType] and
             (JsPath \ "fileName").write[String] and
             (JsPath \ "physicalName").write[String] and
-            (JsPath \ "description").write[String] and
+            (JsPath \ "description").write[Option[String]] and
             (JsPath \ "signature").write[String] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
@@ -50,7 +50,7 @@ object Document extends Function13[Option[Long], Long, String, DocumentType, Fil
           (JsPath \ "fileType").read[FileType] and
           (JsPath \ "fileName").read[String] and
           (JsPath \ "physicalName").read[String] and
-          (JsPath \ "description").read[String] and
+          (JsPath \ "description").readNullable[String] and
           (JsPath \ "signature").read[String] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and

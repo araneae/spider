@@ -7,6 +7,8 @@ import org.specs2.mutable.Specification
 import play.api.test.WithApplication
 import play.api.db.slick.DB
 import models._
+import models.dtos._
+import models.repositories._
 import play.api.db.slick.Config.driver.simple._
 
 class UserRepositoryTest extends Specification {
@@ -17,7 +19,10 @@ class UserRepositoryTest extends Specification {
       DB.withSession {
           implicit session: Session =>
             session.withTransaction{
-              val user = User(None, "Krzysztof", "Nowak", "test@email.com", "assa")
+              val country = Country(None, "usa", "USA", true)
+              val countryId = CountryRepository.create(country)
+              
+              val user = User(None, "Krzysztof", "Nowak", "test@email.com", "assa", countryId, "token", true)
               val userId = UserRepository create user
               val userOpt = UserRepository findByEmail "test@email.com"
     

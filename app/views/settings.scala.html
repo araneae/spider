@@ -1,4 +1,4 @@
-@(message: String)(implicit flash: Flash)
+@(title: String)(message: String)(implicit flash: Flash)
 
 @contentsSingnIn = {
    <a href="/logout">Logout</a>
@@ -10,5 +10,5 @@
 
 @contentsRight = {}
 
-@main("Spider Recruiter Tool")(message)(contentsSingnIn)(contentsLeft)(contentsMain)(contentsRight)
+@main(title)(message)(contentsSingnIn)(contentsLeft)(contentsMain)(contentsRight)
 

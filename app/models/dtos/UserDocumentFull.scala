@@ -14,7 +14,7 @@ import enums.OwnershipType._
 case class UserDocumentFull(
                    documentId: Long,
                    name: String,
-                   description: String,
+                   description: Option[String],
                    connected: Boolean,
                    ownershipType: OwnershipType,
                    signature: String,
@@ -24,12 +24,12 @@ case class UserDocumentFull(
                    createdAt: DateTime
                    )
 
-object UserDocumentFull extends Function10[Long, String, String, Boolean, OwnershipType, String, Boolean, Boolean, String, DateTime, UserDocumentFull]
+object UserDocumentFull extends Function10[Long, String, Option[String], Boolean, OwnershipType, String, Boolean, Boolean, String, DateTime, UserDocumentFull]
 {
     implicit val documentWrites : Writes[UserDocumentFull] = (
             (JsPath \ "documentId").write[Long] and
             (JsPath \ "name").write[String] and
-            (JsPath \ "description").write[String] and
+            (JsPath \ "description").write[Option[String]] and
             (JsPath \ "connected").write[Boolean] and
             (JsPath \ "ownershipType").write[OwnershipType] and
             (JsPath \ "signature").write[String] and
@@ -42,7 +42,7 @@ object UserDocumentFull extends Function10[Long, String, String, Boolean, Owners
     implicit val documentReads : Reads[UserDocumentFull] = (
           (JsPath \ "documentId").read[Long] and
           (JsPath \ "name").read[String] and
-          (JsPath \ "description").read[String] and
+          (JsPath \ "description").readNullable[String] and
           (JsPath \ "connected").read[Boolean] and
           (JsPath \ "ownershipType").read[OwnershipType] and
           (JsPath \ "signature").read[String] and

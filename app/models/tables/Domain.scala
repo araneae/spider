@@ -21,17 +21,17 @@ class Domains(tag: Tag) extends Table[Domain](tag, "domain") {
   
   def code = column[String]("code", O.NotNull)
   
-  def description = column[String]("description", O.Nullable)
+  def description = column[Option[String]]("description", O.Nullable)
   
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (domainId.?, industryId, name, code, description, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (Domain.tupled, Domain.unapply)
+  override def * = (domainId.?, industryId, name, code, description, createdUserId, createdAt, updatedUserId, updatedAt) <> (Domain.tupled, Domain.unapply)
   
     // foreign keys and indexes
   def industry = foreignKey("fk_on_skill_industry_id", industryId, TableQuery[Industries])(_.industryId)

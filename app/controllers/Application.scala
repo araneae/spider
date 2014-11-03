@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory
 
 import models.dtos.User
 import play.api.data.Form
-import play.api.data.Forms.nonEmptyText
-import play.api.data.Forms.tuple
+import play.api.data.Forms._
 import play.api.db.slick._
 import play.api.mvc.Action
 import play.api.mvc.Controller
@@ -15,27 +14,32 @@ import traits._
 import play.api.mvc.Flash
 import models.repositories._
 import actors._
+import utils._
+import services._
 
 object Application extends Controller with Secured with AkkaActor {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
-  
-  val signupForm = Form(
-    tuple(
+  val tup = tuple(
       "first_name" -> nonEmptyText,
       "last_name" -> nonEmptyText,
       "email" -> nonEmptyText,
-      "password" -> nonEmptyText
+      "password" -> text(minLength=6, maxLength=16),
+      "confirmPassword" -> text,
+      "countryCode" -> nonEmptyText
+    ).verifying (
+        "Passwords don't match", data => data._4 == data._5
     )
-  )
+  
+  val signupForm = Form (tup)
   
   def index = Action {
     //logger.info("Application.index...")
-    Ok(views.html.index("Recruiter Tool"))
+    Ok(views.html.index(Configuration.applicationTitle){Configuration.applicationName})
   }
   
   def home = IsAuthenticated { username => implicit request =>
-    Ok(views.html.home(s"Welcome back ${name}"))
+    Ok(views.html.home(Configuration.applicationTitle){s"Welcome back ${name}"})
   }
   
   def signup = Action { implicit request =>
@@ -44,7 +48,8 @@ object Application extends Controller with Secured with AkkaActor {
                   signupForm.bind(request.flash.data)
                 else
                   signupForm
-    Ok(views.html.signup(form))
+    val countries = CountryRepository.findAllAvailable
+    Ok(views.html.signup(Configuration.applicationTitle){Configuration.applicationName}{countries}{form})
   }
   
   def register = Action {
@@ -52,13 +57,14 @@ object Application extends Controller with Secured with AkkaActor {
        //logger.info("Application.register...") 
        val formData = signupForm.bindFromRequest
        formData.fold(
-          hasErrors = { form => 
-            BadRequest(views.html.index("Error"))
+          hasErrors = { form =>
+            val countries = CountryRepository.findAllAvailable
+            BadRequest(views.html.signup(Configuration.applicationTitle){Configuration.applicationName}{countries}{form})
           },
           success = { value => 
             //logger.info(s"register $value") 
             value match {
-              case Tuple4(first_name, last_name, email, password) => {
+              case Tuple6(first_name, last_name, email, password, confirmPassword, countryCode) => {
                 // find if the user already exists
                 val existingUser = UserRepository findByEmail email
                 existingUser match {
@@ -66,19 +72,27 @@ object Application extends Controller with Secured with AkkaActor {
                      Redirect(routes.Application.signup).flashing(Flash(formData.data) + ("error" -> "Email already exists"))
                   }
                   case None => {
-                      val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-                      val user = User(None, first_name, last_name, email, encryptedPassword)
-                      val userId = UserRepository create user
-                      
-                      val savedUser = UserRepository find userId
-                      savedUser match {
-                        case Some(user) => 
-                             indexWriterActor ! MessageAddUser(user)
+                      val optCountry = CountryRepository.findByCode(countryCode)
+                      optCountry match {
+                        case Some(country) =>
+                          val token = TokenGenerator.token
+                          val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+                          val user = User(None, first_name, last_name, email, encryptedPassword, country.countryId.get, token, false, None, None)
+                          val userId = UserRepository create user
+                        
+                          val savedUser = UserRepository find userId
+                          savedUser match {
+                            case Some(user) => 
+                              indexWriterActor ! MessageAddUser(user)
+                              EmailService.sendWelcomeEmail(user)
+                            case None =>
+                          }
+                          // create default message boxes
+                          MessageBoxRepository.createDefaults(userId, userId)
+                          Redirect(routes.AuthController.login).flashing(Flash(formData.data) + ("success" -> "Activation email has been sent."))
                         case None =>
+                          Redirect(routes.Application.signup).flashing(Flash(formData.data) + ("error" -> "Country is not available"))
                       }
-                      // create default message boxes
-                      MessageBoxRepository.createDefaults(userId, userId)
-                      Redirect(routes.AuthController.login)
                   }
                 }
               }

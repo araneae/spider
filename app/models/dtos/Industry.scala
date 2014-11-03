@@ -11,19 +11,19 @@ import org.joda.time.DateTime
 case class Industry(industryId: Option[Long],
                    code : String,
                    name: String,
-                   description: String,
+                   description: Option[String],
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object Industry extends Function8[Option[Long], String, String, String, Long, DateTime, Option[Long], Option[DateTime], Industry]
+object Industry extends Function8[Option[Long], String, String, Option[String], Long, DateTime, Option[Long], Option[DateTime], Industry]
 {
     implicit val industryWrites : Writes[Industry] = (
             (JsPath \ "industryId").write[Option[Long]] and
             (JsPath \ "code").write[String] and
             (JsPath \ "name").write[String] and
-            (JsPath \ "description").write[String] and
+            (JsPath \ "description").write[Option[String]] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -34,7 +34,7 @@ object Industry extends Function8[Option[Long], String, String, String, Long, Da
           (JsPath \ "industryId").readNullable[Long] and
           (JsPath \ "code").read[String] and
           (JsPath \ "name").read[String] and
-          (JsPath \ "description").read[String] and
+          (JsPath \ "description").readNullable[String] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and

@@ -35,13 +35,14 @@ class LuceneSearcherTest extends LuceneConsts {
     
     // add first user document
     val userId = 10
-    val user = User(Some(userId), "John", "Brown", "john@abc.com", "abc")
+    val countryId = 1
+    val user = User(Some(userId), "John", "Brown", "john@abc.com", "abc", countryId, "token", false)
     val userDoc = LuceneDocumentService.getUserDocument(docId, user)
     writer.addOrUpdateDocument(DOC_TYPE_USER, userId, userDoc)
     
     // add second user document
     val userId2 = 20
-    val user2 = User(Some(userId), "Jenny", "Brown", "jenny@abc.com", "abc")
+    val user2 = User(Some(userId), "Jenny", "Brown", "jenny@abc.com", "abc", countryId, "token", false)
     val userDoc2 = LuceneDocumentService.getUserDocument(docId2, user2)
     writer.addOrUpdateDocument(DOC_TYPE_USER, userId2, userDoc2)
     

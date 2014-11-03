@@ -7,17 +7,17 @@ case class SkillFull(skillId: Long,
                    industryId: Long,
                    name: String,
                    code: String,
-                   description: String,
+                   description: Option[String],
                    industryName : String)
 
-object SkillFull extends Function6[Long, Long, String, String, String, String, SkillFull]
+object SkillFull extends Function6[Long, Long, String, String, Option[String], String, SkillFull]
 {
     implicit val skillWrites : Writes[SkillFull] = (
             (JsPath \ "skillId").write[Long] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "code").write[String] and
-            (JsPath \ "description").write[String] and
+            (JsPath \ "description").write[Option[String]] and
             (JsPath \ "industryName").write[String]
     )(unlift(SkillFull.unapply))
       
@@ -26,7 +26,7 @@ object SkillFull extends Function6[Long, Long, String, String, String, String, S
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "code").read[String] and
-          (JsPath \ "description").read[String] and
+          (JsPath \ "description").readNullable[String] and
           (JsPath \ "industryName").read[String]
     )(SkillFull)
     

@@ -8,7 +8,7 @@ import play.api.db.slick.Config.driver.simple._
 
 case class Config(name: String,
                   value: String,
-                  description: String)
+                  description: Option[String])
 
 class Configs(tag: Tag) extends Table[Config](tag, "config") {
 
@@ -16,7 +16,7 @@ class Configs(tag: Tag) extends Table[Config](tag, "config") {
   
   def value = column[String]("value", O.NotNull)
   
-  def description = column[String]("description", O.Nullable)
+  def description = column[Option[String]]("description", O.Nullable)
   
   override def * = (name, value, description) <> (Config.tupled, Config.unapply)
   

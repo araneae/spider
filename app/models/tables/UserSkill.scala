@@ -20,19 +20,19 @@ class UserSkills(tag: Tag) extends Table[UserSkill](tag, "user_skill") {
   
   def skillLevel = column[SkillLevel]("skill_level", O.NotNull)
   
-  def descriptionShort = column[String]("description_short", O.Nullable)
+  def descriptionShort = column[Option[String]]("description_short", O.Nullable)
   
-  def descriptionLong = column[String]("description_long", O.Nullable)
+  def descriptionLong = column[Option[String]]("description_long", O.Nullable)
   
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedUserId = column[Long]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userId, skillId, skillLevel, descriptionShort, descriptionLong, createdUserId, createdAt, updatedUserId.?, updatedAt.?) <> (UserSkill.tupled, UserSkill.unapply)
+  override def * = (userId, skillId, skillLevel, descriptionShort, descriptionLong, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserSkill.tupled, UserSkill.unapply)
   
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_skill_user_id_skill_id", (userId, skillId))

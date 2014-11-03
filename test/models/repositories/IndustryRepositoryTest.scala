@@ -17,7 +17,7 @@ class IndustryRepositoryTest extends Specification {
       DB.withSession {
           implicit session: Session =>
             session.withTransaction{
-              val industry = Industry(None, "Software", "-software-", "This is for Software Industry", 1)
+              val industry = Industry(None, "Software", "-software-", Some("This is for Software Industry"), 1)
               val industryId = IndustryRepository.create(industry)
               
               val industryOpt = IndustryRepository find industryId
