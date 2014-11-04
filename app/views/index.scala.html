@@ -1,57 +1,72 @@
-@(title: String)(message: String)
+@import models.dtos._
+@(title: String)(message: String)(countries: Seq[Country])(signupForm: Form[(String, String, String, String, String, String)])(implicit flash: Flash)
 
 @contentsSingnIn = {
    <form class="form-inline" method="POST" action="/login">
      <div class="form-group">
            <label class="sr-only" for="idInputLoginEmail">Email address</label>
-           <input type="email" name="email" class="form-control" id="idInputLoginEmail" placeholder="Enter email">
+           <input type="email" name="email" class="form-control" required="true" id="idInputLoginEmail" placeholder="Enter email">
      </div>
      <div class="form-group">
        <label class="sr-only" for="idInputLoginPassword">Password</label>
-       <input type="password" name="password" class="form-control" id="idInputLoginPassword"  placeholder="Password">
+       <input type="password" name="password" class="form-control" required="true" id="idInputLoginPassword"  placeholder="Password">
      </div>
      <button type="submit" class="btn btn-primary">Log In</button>
-   </form>
-   <div></div>
-   <form class="form-inline">
-    <h4>
-        You have not signed up yet, <a href="/signup"> sign up </a>  now.
-     </h4>
-     
    </form>
 }
 
 @contentsLeft = {}
 @contentMain={
- 
-<br/>
-<br/>
-<img class="img-center center-block" src='@routes.Assets.at("images/spider.gif")'>
-
+  <div class="row">
+    <div class="col-md-8">
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <img class="img-center center-block" src='@routes.Assets.at("images/spider.gif")'>
+    </div>
+    <div class="col-md-4">
+      <!-- +++ <head> --> 
+      <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+      <!-- +++ </head> -->
+  
+      @helper.form(routes.Application.register, 'class -> "form-signin") {
+        <h2 class="form-signin-heading">Sign Up</h2>
+        @flash.get("error").map { message =>
+          <p class="error">
+            @message
+          </p>
+        }
+        <input class="form-control" type="first_name" name="first_name" autofocus="" required="true" placeholder="First Name" value="@signupForm("first_name").value">
+        <br>
+        <input class="form-control" type="last_name" name="last_name" autofocus="" required="true" placeholder="Last Name" value="@signupForm("last_name").value">
+        <br>
+        <input class="form-control" type="email" name="email" autofocus="" required="true" placeholder="Email address" value="@signupForm("email").value">
+        <br>
+        <input class="form-control" type="password" name="password" required="true" placeholder="Password, minimum 6 characters">
+        @if(!signupForm.errors("password").isEmpty) {
+          <span class="error">@Messages(signupForm.errors("password")(0).message,6)</span>
+        }
+        <br>
+        <input class="form-control" type="password" name="confirmPassword" required="true" placeholder="Confirm Password">
+        @if(!signupForm.errors("").isEmpty) {
+          <span class="error">@Messages(signupForm.errors("")(0).message)</span>
+        }
+        <br>
+        <select class="form-control" name="countryCode" required="true">
+          <option value="" selected>Select country</option>
+          @for(country <- countries) {
+            <option value="@country.code">@country.name</option>
+          }
+        </select>
+        <br>
+        <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+      }
+   </div>
+  </div>
 }
 @contentsRight = {
-
-   <!-- +++ <head> --> 
-    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
-   <!-- +++ </head> -->
-  
-   @helper.form(routes.Application.register, 'class -> "form-signin") {
-     <h2 class="form-signin-heading">Sign Up</h2>
-     
-     <input class="form-control" type="first_name" name = "first_name" autofocus="" required="" placeholder="First Name">
-     <br>
-     <input class="form-control" type="last_name" name = "last_name" autofocus="" required="" placeholder="Last Name">
-     <br>
-     <input class="form-control" type="email" name = "email" autofocus="" required="" placeholder="Email address">
-     <br>
-     <input class="form-control" type="password" name="password" required="" placeholder="Password">
-     <br>
-     <button class="btn btn-primary btn-block" type="submit">Sign up</button>
-   }
 }
 
 @main(title)(message)(contentsSingnIn)(contentsLeft)(contentMain)(contentsRight)
-
-
-
-

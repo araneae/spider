@@ -23,15 +23,15 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def verified = column[Boolean]("verified", O.NotNull)
   
-  def otp = column[String]("otp", O.Nullable)
+  def otp = column[Option[String]]("otp", O.Nullable)
   
   def otpExpiredAt = column[Option[DateTime]]("otp_expired_at", O.Nullable)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
-  def updatedAt = column[DateTime]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userId.?, firstName, lastName, email, password, countryId, activationToken, verified, otp.?, otpExpiredAt, createdAt, updatedAt.?) <> (User.tupled, User.unapply)
+  override def * = (userId.?, firstName, lastName, email, password, countryId, activationToken, verified, otp, otpExpiredAt, createdAt, updatedAt) <> (User.tupled, User.unapply)
   
   // foreign keys and indexes
   def uniqueEmail = index("idx_user_on_email_unique", email, unique = true)

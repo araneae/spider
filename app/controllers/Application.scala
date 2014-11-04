@@ -33,9 +33,10 @@ object Application extends Controller with Secured with AkkaActor {
   
   val signupForm = Form (tup)
   
-  def index = Action {
+  def index = Action { implicit request =>
     //logger.info("Application.index...")
-    Ok(views.html.index(Configuration.applicationTitle){Configuration.applicationName})
+    val countries = CountryRepository.findAllAvailable
+    Ok(views.html.index(Configuration.applicationTitle)(Configuration.applicationName)(countries)(signupForm))
   }
   
   def home = IsAuthenticated { username => implicit request =>
@@ -49,7 +50,7 @@ object Application extends Controller with Secured with AkkaActor {
                 else
                   signupForm
     val countries = CountryRepository.findAllAvailable
-    Ok(views.html.signup(Configuration.applicationTitle){Configuration.applicationName}{countries}{form})
+    Ok(views.html.signup(Configuration.applicationTitle)(Configuration.applicationName)(countries)(form))
   }
   
   def register = Action {

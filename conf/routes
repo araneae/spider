@@ -13,9 +13,9 @@ GET    /login/password/:token/recover                           controllers.Auth
 
 POST   /login/password/:token/recover                           controllers.AuthController.recoverPassword(token: String)
 
-GET    /login/password/reset                                    controllers.AuthController.formResetPassword
+GET    /login/password/:token/reset                             controllers.AuthController.formResetPassword(token: String)
 
-POST   /login/password/reset                                    controllers.AuthController.resetPassword
+POST   /login/password/:token/reset                             controllers.AuthController.resetPassword(token: String)
 
 GET    /logout                                                  controllers.AuthController.logout
 

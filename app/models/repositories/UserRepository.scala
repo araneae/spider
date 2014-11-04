@@ -47,7 +47,7 @@ object UserRepository {
            u <-  query filter(_.userId === userId) 
           } yield (u.verified, u.updatedAt)
           
-          q.update((true, new DateTime()))
+          q.update((true, Some(new DateTime())))
     }
   }
   
@@ -70,9 +70,9 @@ object UserRepository {
       implicit session =>
         val q = for {
           u <- query filter (_.userId === userId)
-        } yield (u.otp.?, u.otpExpiredAt, u.updatedAt)
+        } yield (u.otp, u.otpExpiredAt, u.updatedAt)
         
-        q update ((otp, date, new DateTime()))
+        q update ((otp, date, Some(new DateTime())))
     }
   }
   
@@ -81,9 +81,9 @@ object UserRepository {
       implicit session =>
         val q = for {
           u <- query filter (_.userId === userId)
-        } yield (u.password, u.otp.?, u.otpExpiredAt, u.updatedAt)
+        } yield (u.password, u.otp, u.otpExpiredAt, u.updatedAt)
         
-        q update ((password, None, None, new DateTime()))
+        q update ((password, None, None, Some(new DateTime())))
     }
   }
 }
