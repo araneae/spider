@@ -96,11 +96,11 @@ object AuthController extends Controller with Secured {
                     }
                 }
               }.getOrElse(
-                Redirect(routes.AuthController.login()).flashing("error" -> "Invalid email or password")
+                Redirect(routes.AuthController.login()).flashing(Flash(formData.data) + ("error" -> "Invalid email or password"))
               )
             }
           case _ =>  
-                Redirect(routes.AuthController.login()).flashing("error" -> "Invalid email or password")
+                Redirect(routes.AuthController.login()).flashing(Flash(formData.data) + ("error" -> "Invalid email or password"))
         }
       }
     )
@@ -150,40 +150,32 @@ object AuthController extends Controller with Secured {
       formWithErrors => {
         Ok(views.html.recoverPassword(Configuration.applicationTitle)(Configuration.applicationName)(token)(formData))
       },
-      value => {
-        value match {
-          case email => {
-            val optUser = UserRepository.findByActivationToken(token)
-            optUser match {
-              case Some(user) =>
-                if (user.email == email) {
-                  val otp = TokenGenerator.otp
-                  EmailService.sendOtpEmail(user, otp)
-                  
-                  val expiryTime = new DateTime().plusMinutes(Configuration.otpPasswordTimeoutInMins)
-                  val encryptedOtp = BCrypt.hashpw(otp, BCrypt.gensalt());
-                  val token = user.activationToken
-                  
-                  UserRepository.updateOneTimePassword(user.userId.get, Some(encryptedOtp), Some(expiryTime))
-                  Redirect(routes.AuthController.resetPassword(token)).flashing(
-                                                                 ("success" -> "Your one time password has been sent by email. Please enter your password within 10 minutes."))
-                }
-                else {
-                  Redirect(routes.AuthController.formRecoverPassword(token)).flashing(Flash(formData.data) + 
-                                                                ("error" -> "Invalid email address.") +
-                                                                ("html" -> "If you don't have an account, click <a href='/signup'>here</a> to signup."))
-                }
-              case None =>
+      email => {
+          val optUser = UserRepository.findByActivationToken(token)
+          optUser match {
+            case Some(user) =>
+              if (user.email == email) {
+                val otp = TokenGenerator.otp
+                EmailService.sendOtpEmail(user, otp)
+                
+                val expiryTime = new DateTime().plusMinutes(Configuration.otpPasswordTimeoutInMins)
+                val encryptedOtp = BCrypt.hashpw(otp, BCrypt.gensalt());
+                val token = user.activationToken
+                
+                UserRepository.updateOneTimePassword(user.userId.get, Some(encryptedOtp), Some(expiryTime))
+                Redirect(routes.AuthController.resetPassword(token)).flashing(
+                                                               ("success" -> "Your one time password has been sent by email. Please enter your password within 10 minutes."))
+              }
+              else {
                 Redirect(routes.AuthController.formRecoverPassword(token)).flashing(Flash(formData.data) + 
-                                                                ("error" -> "Invalid email address.") +
-                                                                ("html" -> "Click <a href='/signup'>here</a> to signup."))
-            }
+                                                              ("error" -> "Invalid email address.") +
+                                                              ("html" -> "If you don't have an account, click <a href='/signup'>here</a> to signup."))
+              }
+            case None =>
+              Redirect(routes.AuthController.formRecoverPassword(token)).flashing(Flash(formData.data) + 
+                                                              ("error" -> "Invalid email address.") +
+                                                              ("html" -> "Click <a href='/signup'>here</a> to signup."))
           }
-          case _ =>
-            Redirect(routes.AuthController.formRecoverPassword(token)).flashing(Flash(formData.data) + 
-                                                                ("error" -> "Invalid request.") +
-                                                                ("html" -> "Click <a href='/signup'>here</a> to signup."))
-        }
       }
     )
   }
