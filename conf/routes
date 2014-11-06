@@ -163,13 +163,6 @@ DELETE /database/documentSearch/:documentSearchId               controllers.Docu
 # Share document related routes
 GET   /connection                                               controllers.ConnectionController.getAll
 
-# Shared Database specific routes
-GET   /database/shared/document                                 controllers.SharedDatabaseController.getAll
-
-GET   /database/shared/document/:documentId                     controllers.SharedDatabaseController.get(documentId: Int)
-
-DELETE /database/shared/document/:documentId                    controllers.SharedDatabaseController.delete(documentId: Int)
-
 # message specific routes
 POST   /message                                                 controllers.MessageController.create
 

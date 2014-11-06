@@ -1,12 +1,13 @@
 <div ng-controller="GlobalSearchCtrl as ctrl">
+  <br/>
   <form ng-submit="ctrl.search()">
     <div class="input-group">
-      <input type="text" class='form-control' name='searchBox' id='searchBox' ng-model='ctrl.searchText'>
-      <span class="input-group-btn" data-placement="left" title="Search">
-        <button type="submit" class='btn' id='idSearchBtn'>
-         <span class="glyphicon glyphicon-search" data-placement="left" title="Search"></span>
+      <input type="text" class="form-control" name="searchBox" id="idSearchBox" ng-model="ctrl.searchText">
+      <div class="input-group-btn" data-placement="left" title="Search">
+        <button type="submit" class="btn btn-default" id="idSearchBtn">
+          <span class="glyphicon glyphicon-search"></span>
         </button>
-      </span>
+      </div>
     </div>
   </form>
 </div>

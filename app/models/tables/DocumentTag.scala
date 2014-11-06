@@ -22,6 +22,8 @@ class DocumentTags(tag: Tag) extends Table[DocumentTag](tag, "document_tag") {
   
   def documentId = column[Long]("document_id", O.NotNull)
   
+  def userDocumentId = column[Long]("user_document_id", O.NotNull)
+  
   def createdUserId = column[Long]("created_user_id", O.NotNull)
   
   def createdAt = column[DateTime]("created_at", O.NotNull)
@@ -30,16 +32,16 @@ class DocumentTags(tag: Tag) extends Table[DocumentTag](tag, "document_tag") {
   
   def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userId, userTagId, documentId, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentTag.tupled, DocumentTag.unapply)
+  override def * = (userId, userTagId, documentId, userDocumentId, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentTag.tupled, DocumentTag.unapply)
   
+  // foreign keys and indexes
   def user = foreignKey("fk_on_document_tag_user_id", userId, TableQuery[Users])(_.userId)
   
   def userTag = foreignKey("fk_on_document_tag_tag_id", userTagId, TableQuery[UserTags])(_.userTagId)
   
   def document = foreignKey("fk_on_document_tag_document_id", documentId, TableQuery[Documents])(_.documentId)
   
-  // foreign keys and indexes
-  def pk = primaryKey("pk_on_document_tag_userid_user_tag_id_document_id", (userId, userTagId, documentId))
+  def userDocument = foreignKey("fk_on_document_tag_user_document_id", userDocumentId, TableQuery[UserDocuments])(_.userDocumentId)
   
   def createdBy = foreignKey("fk_on_document_tag_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   

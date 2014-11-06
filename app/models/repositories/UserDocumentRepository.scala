@@ -27,10 +27,10 @@ object UserDocumentRepository {
               d  <- ud.document
               u  <- ud.createdBy
           } 
-          yield (ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, u.firstName, ud.createdAt)
+          yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
-          q.list.map{case (documentId, name, description, connected, ownershipType, signature, canCopy, canShare, createdBy, createdAt) 
-                 => UserDocumentFull(documentId, name, description, connected, ownershipType, signature, canCopy, canShare, createdBy, createdAt)}
+          q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   
@@ -42,10 +42,10 @@ object UserDocumentRepository {
               d  <- ud.document
               u  <- ud.createdBy
           } 
-          yield (ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, u.firstName, ud.createdAt)
+          yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
-          q.list.map{case (documentId, name, description, connected, ownershipType, signature, canCopy, canShare, createdBy, createdAt) 
-                 => UserDocumentFull(documentId, name, description, connected, ownershipType, signature, canCopy, canShare, createdBy, createdAt)}
+          q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   

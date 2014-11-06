@@ -140,22 +140,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('sharedDatabase', {
-              url: '/database/shared',
-              views: {
-                "viewMain": {
-                    templateUrl: '/assets/partials/sharedDatabase.html'
-                }
-              }
-          })
-          .state('sharedDatabaseDocumentShare', {
-              url: '/share/:documentId',
-              views: {
-                'viewMain': {
-                    templateUrl: '/assets/partials/sharedDatabaseShare.html'
-                }
-              }
-          })
           .state('database.userTagCreate', {
               views: {
                 "viewTag": {

@@ -12,6 +12,7 @@ import enums.OwnershipType._
  * 
  */
 case class UserDocumentFull(
+                   userDocumentId: Long,
                    documentId: Long,
                    name: String,
                    description: Option[String],
@@ -20,13 +21,15 @@ case class UserDocumentFull(
                    signature: String,
                    canCopy: Boolean,
                    canShare: Boolean,
+                   canView: Boolean,
                    createdBy: String,
                    createdAt: DateTime
                    )
 
-object UserDocumentFull extends Function10[Long, String, Option[String], Boolean, OwnershipType, String, Boolean, Boolean, String, DateTime, UserDocumentFull]
+object UserDocumentFull extends Function12[Long, Long, String, Option[String], Boolean, OwnershipType, String, Boolean, Boolean, Boolean, String, DateTime, UserDocumentFull]
 {
     implicit val documentWrites : Writes[UserDocumentFull] = (
+            (JsPath \ "userDocumentId").write[Long] and
             (JsPath \ "documentId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "description").write[Option[String]] and
@@ -35,11 +38,13 @@ object UserDocumentFull extends Function10[Long, String, Option[String], Boolean
             (JsPath \ "signature").write[String] and
             (JsPath \ "canCopy").write[Boolean] and
             (JsPath \ "canShare").write[Boolean] and
+            (JsPath \ "canView").write[Boolean] and
             (JsPath \ "createdBy").write[String] and
             (JsPath \ "createdAt").write[DateTime]
     )(unlift(UserDocumentFull.unapply))
 
     implicit val documentReads : Reads[UserDocumentFull] = (
+          (JsPath \ "userDocumentId").read[Long] and
           (JsPath \ "documentId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "description").readNullable[String] and
@@ -48,6 +53,7 @@ object UserDocumentFull extends Function10[Long, String, Option[String], Boolean
           (JsPath \ "signature").read[String] and
           (JsPath \ "canCopy").read[Boolean] and
           (JsPath \ "canShare").read[Boolean] and
+          (JsPath \ "canView").read[Boolean] and
           (JsPath \ "createdBy").read[String] and
           (JsPath \ "createdAt").read[DateTime]
     )(UserDocumentFull)

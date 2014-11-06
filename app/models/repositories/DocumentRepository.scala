@@ -25,20 +25,6 @@ object DocumentRepository {
     }
   }
   
-  def findDocument(userId: Long, fileName: String): Option[Document] = {
-    DB.withSession {
-      implicit session =>
-        query.filter(d => d.userId === userId && d.fileName === fileName).firstOption
-    }
-  }
-  
-  def findAll(userId: Long): Seq[Document] = {
-    DB.withSession {
-      implicit session =>
-       query.filter(_.userId === userId).list
-    }
-  }
-  
   def udate(document: Document) = {
     DB.withSession {
        implicit session: Session =>

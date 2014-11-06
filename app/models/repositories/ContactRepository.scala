@@ -101,7 +101,7 @@ object ContactRepository {
         q.list.map{case (userId, email, d) 
                    => {
                         d match {
-                          case (uId, documentId, ownershipType, canCopy, canShare, canView, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) =>
+                          case (userDpocumentId, usrId, documentId, ownershipType, canCopy, canShare, canView, important, star, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) =>
                             ContactWithDocument(userId, email, documentId, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
                           case _ =>
                             ContactWithDocument(userId, email, None, None, None, None, None, None)

@@ -33,16 +33,18 @@ object DocumentTagRepository {
     }
   }
   
-  def findDocumentByUserTagId(userId: Long, userTagId: Long): Seq[Document] = {
+  def findDocumentByUserTagId(userId: Long, userTagId: Long): Seq[UserDocumentFull] = {
     DB.withSession {
       implicit session =>
        val q = for {
-            docTag <- query.filter( d => d.userId === userId &&
-                               d.userTagId === userTagId)
-            doc <- docTag.document
-        } yield (doc)
-         
-        q.list
+            docTag <- query.filter( d => d.userId === userId && d.userTagId === userTagId)
+            ud <- docTag.userDocument
+            doc <- ud.document
+            u  <- ud.createdBy
+        } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+        
+        q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   

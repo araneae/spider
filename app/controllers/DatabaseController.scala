@@ -121,7 +121,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                       val documentId = DocumentRepository.create(document)
                       
                       // add DocumentUser entry
-                      val userDocument = UserDocument(userId, documentId, OwnershipType.OWNED, true, true, true, false, userId)
+                      val userDocument = UserDocument(None, userId, documentId, OwnershipType.OWNED, true, true, true, false, false, false, userId)
                       UserDocumentRepository.create(userDocument)
                       
                       // find the saved document
@@ -156,8 +156,8 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                                                       
                     // create shared link
                     share.receivers.map(r => {
-                                        val sharedDoc = UserDocument(r.id, documentId, OwnershipType.SHARED, share.canCopy, share.canShare, 
-                                                      share.canView, share.isLimitedShare, userId, new DateTime(), share.shareUntilEOD)
+                                        val sharedDoc = UserDocument(None, r.id, documentId, OwnershipType.SHARED, share.canCopy, share.canShare, 
+                                                      share.canView, false, false, share.isLimitedShare, userId, new DateTime(), share.shareUntilEOD)
                                         UserDocumentRepository.create(sharedDoc)
                                     })
                     Ok(HttpResponseUtil.success("Successfully shared!"))
@@ -178,12 +178,15 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                     val optUserDocument = UserDocumentRepository.find(share.id, documentId)
                     optUserDocument match {
                       case Some(doc) =>
-                          val userDocument = UserDocument(doc.userId, 
+                          val userDocument = UserDocument(None,
+                                                      doc.userId, 
                                                       doc.documentId, 
                                                       doc.ownershipType, 
                                                       share.canCopy.getOrElse(doc.canCopy), 
                                                       share.canShare.getOrElse(doc.canShare), 
                                                       share.canView.getOrElse(doc.canView), 
+                                                      false,
+                                                      false,
                                                       share.isLimitedShare.getOrElse(doc.isLimitedShare), 
                                                       doc.createdUserId,
                                                       doc.createdAt,
@@ -331,7 +334,6 @@ object DatabaseController extends Controller with Secured with AkkaActor {
             val copyName = UserDocumentRepository.getCopyName(userId, orgName)
             
             val copyDocument = Document(None,
-                                      userId,
                                       copyName,
                                       doc.documentType,
                                       doc.fileType,
@@ -343,7 +345,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
             val docId = DocumentRepository.create(copyDocument)
             
             // add DocumentUser entry
-            val userDocument = UserDocument(userId, docId, OwnershipType.OWNED, true, true, true, false, userId)
+            val userDocument = UserDocument(None, userId, docId, OwnershipType.OWNED, true, true, true, false, false, false, userId)
             UserDocumentRepository.create(userDocument)
                       
             // find the saved document

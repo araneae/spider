@@ -11,7 +11,6 @@ import org.joda.time.DateTime
  * 
  */
 case class Document(documentId: Option[Long],
-                   userId: Long,
                    name: String,
                    documentType: DocumentType,
                    fileType: FileType,
@@ -24,11 +23,10 @@ case class Document(documentId: Option[Long],
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object Document extends Function13[Option[Long], Long, String, DocumentType, FileType, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Document]
+object Document extends Function12[Option[Long], String, DocumentType, FileType, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Document]
 {
     implicit val documentWrites : Writes[Document] = (
             (JsPath \ "documentId").write[Option[Long]] and
-            (JsPath \ "userId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "documentType").write[DocumentType] and
             (JsPath \ "fileType").write[FileType] and
@@ -44,7 +42,6 @@ object Document extends Function13[Option[Long], Long, String, DocumentType, Fil
 
     implicit val documentReads : Reads[Document] = (
           (JsPath \ "documentId").readNullable[Long] and
-          (JsPath \ "userId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "documentType").read[DocumentType] and
           (JsPath \ "fileType").read[FileType] and

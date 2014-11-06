@@ -2,8 +2,7 @@ package controllers
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
-import models.dtos.DocumentTag
+import models.dtos._
 import models.repositories.DocumentTagRepository
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
@@ -12,6 +11,7 @@ import play.api.mvc.Controller
 import traits.Secured
 import utils.HttpResponseUtil
 import org.joda.time.DateTime
+import models.repositories.UserDocumentRepository
 
 object DocumentTagController extends Controller with Secured {
   
@@ -30,10 +30,15 @@ object DocumentTagController extends Controller with Secured {
     //logger.info(s"in DocumentTagController.create(${documentId})")
     println(s"in DocumentTagController.create(${documentId})")
     val jsonObj = request.body.asInstanceOf[JsObject]
-    // merge userId with the request object
-    val userTagObj = Json.obj("userId" -> userId) ++ Json.obj("createdUserId" -> userId) ++
-                     Json.obj("createdAt" -> new DateTime()) ++ jsonObj
-    userTagObj.validate[DocumentTag].fold(
+    
+    val optUserDocument = UserDocumentRepository.find(userId, documentId)
+    optUserDocument match {
+      case Some(userDocument) => 
+        // merge userId with the request object
+        val userTagObj = Json.obj("userId" -> userId) ++ Json.obj("createdUserId" -> userId) ++
+                     Json.obj("createdAt" -> new DateTime()) ++ Json.obj("userDocumentId" -> userDocument.userDocumentId) ++ jsonObj
+        println("userTagObj "+userTagObj)
+        userTagObj.validate[DocumentTag].fold(
           valid = { documentTag =>
                   DocumentTagRepository.create(documentTag)
                   Ok(HttpResponseUtil.success("Successfully created tag!"))
@@ -41,7 +46,10 @@ object DocumentTagController extends Controller with Secured {
           invalid = {
               errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
           }
-    )
+        )
+      case None =>
+        BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+    }
   }
 
   def delete(documentId: Int, userTagId: Int) = IsAuthenticated{ username => implicit request =>

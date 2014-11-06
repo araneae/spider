@@ -13,17 +13,19 @@ import org.joda.time.DateTime
 case class DocumentTag(userId: Long,
                        userTagId: Long,
                        documentId: Long,
+                       userDocumentId: Long,
                        createdUserId: Long,
                        createdAt: DateTime = new DateTime(),
                        updatedUserId: Option[Long] = None,
                        updatedAt: Option[DateTime] = None)
 
-object DocumentTag extends Function7[Long, Long, Long, Long, DateTime, Option[Long], Option[DateTime], DocumentTag]
+object DocumentTag extends Function8[Long, Long, Long, Long, Long, DateTime, Option[Long], Option[DateTime], DocumentTag]
 {
     implicit val documentTagWrites : Writes[DocumentTag] = (
             (JsPath \ "userId").write[Long] and
             (JsPath \ "userTagId").write[Long] and
             (JsPath \ "documentId").write[Long] and
+            (JsPath \ "userDocumentId").write[Long] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -34,6 +36,7 @@ object DocumentTag extends Function7[Long, Long, Long, Long, DateTime, Option[Lo
           (JsPath \ "userId").read[Long] and
           (JsPath \ "userTagId").read[Long] and
           (JsPath \ "documentId").read[Long] and
+          (JsPath \ "userDocumentId").read[Long] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
