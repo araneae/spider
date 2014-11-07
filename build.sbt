@@ -23,6 +23,7 @@ scalaVersion := "2.11.2"
  val junitVersion = "4.8.1"
  val scalaCheckVersion = "1.11.6"
  val scalaMockVersion = "3.2-RC1"
+ val tikkaVersion = "1.6"
 
 libraryDependencies ++= Seq( 
     javaCore,
@@ -51,7 +52,9 @@ libraryDependencies ++= Seq(
     "org.mockito" % "mockito-core" % mokitoVersion % "test",
     "junit" % "junit" % junitVersion % "test",
     "org.scalacheck" %% "scalacheck" % scalaCheckVersion % "test",
-    "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % "test"
+    "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % "test",
+    "org.apache.tika" % "tika-core" % tikkaVersion,
+    "org.apache.tika" % "tika-parsers" % tikkaVersion
   )
 
 includeFilter in (Assets, LessKeys.less) := "*.less"

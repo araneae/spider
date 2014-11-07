@@ -9,8 +9,11 @@ object HtmlUtil {
   }
   
   def sanitize(contents: String): String = {
-      val temp = contents.replaceAll("\r\n", "<br/>")
-      temp.replaceAll("\u0007", "\t")
+      contents.replaceAll("\r\n", "<br/>")
+               .replaceAll("\n", "<br/>")
+               .replaceAll("\r", "")
+               .replaceAll("\u0007", "  ")
+               .replaceAll("\t", "  ")
   }
 
 }
