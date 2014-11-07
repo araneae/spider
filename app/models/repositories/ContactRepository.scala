@@ -7,6 +7,7 @@ import models.tables._
 import models.dtos._
 import enums.ContactStatus._
 import org.joda.time.DateTime
+import enums._
 
 object ContactRepository {
   
@@ -33,10 +34,10 @@ object ContactRepository {
         val q = for {
             c <- query.filter(_.userId === userId)
             a <- c.contact
-        } yield (c.contactUserId, a.firstName, a.lastName, a.email)
+        } yield (c.contactUserId, a.firstName, a.lastName, a.email, c.status)
          
-        q.list.map{case (contactUserId, firstName, lastName, email) 
-                => ContactFull(contactUserId, firstName, lastName, email, true)}
+        q.list.map{case (contactUserId, firstName, lastName, email, status) 
+                => ContactFull(contactUserId, firstName, lastName, email, status)}
     }
   }
   
@@ -46,10 +47,10 @@ object ContactRepository {
         val q = for {
             c <-query.filter(s => s.userId === userId && s.contactUserId === contactUserId)
             a <- c.contact
-        } yield (c.contactUserId, a.firstName, a.lastName, a.email)
+        } yield (c.contactUserId, a.firstName, a.lastName, a.email, c.status)
          
-        q.list.map{case (contactUserId, firstName, lastName, email) 
-                => ContactFull(contactUserId, firstName, lastName, email, true)}
+        q.list.map{case (contactUserId, firstName, lastName, email, status) 
+                => ContactFull(contactUserId, firstName, lastName, email, status)}
     }
   }
   

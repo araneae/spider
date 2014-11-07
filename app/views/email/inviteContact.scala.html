@@ -5,10 +5,13 @@
 Hey <strong>@receiver</strong>,
 </p>
 <p>
-<strong>@sender</strong> wants to get connected with you, please click on the following link to accept invitation.
+<strong>@sender</strong> wants to get connected with you, please click <a href="@applicationBaseUrl@routes.ContactController.accept(token)">here</a> to accept.
 </p>
 <p>
-@* @applicationBaseUrl@routes.ContactController.accept(token)  *@
+If you are having trouble in accepting his invitation, please copy and paste the following link in a browser to accept.
+</p>
+<p>
+@applicationBaseUrl@routes.ContactController.accept(token)
 </p>
 <p> 
 Thanks,

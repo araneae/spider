@@ -31,12 +31,13 @@ object ContactController extends Controller with Secured with AkkaActor {
       println("in ContactController.getAll")
       var list = ContactRepository.findAll(userId)
       val data = Json.toJson(list)
+      println("data "+ data)
       Ok(data).as(JSON)
   }
   
   def get(contactUserId: Int) = IsAuthenticated{ username => implicit request =>
       //logger.info("in ContactController.get(${contactUserId})...")
-      println("in ContactController.get(${contactUserId})...")
+      println(s"in ContactController.get(${contactUserId})")
       var contact = ContactRepository.find(userId, contactUserId)
       val data = Json.toJson(contact)
       Ok(data).as(JSON)
@@ -44,15 +45,15 @@ object ContactController extends Controller with Secured with AkkaActor {
   
   def create(contactUserId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in ContactController.create...")
-      println("in ContactController.create...")
+      println(s"in ContactController.create(${contactUserId}).")
       UserRepository.find(contactUserId).map{ contactUser =>
         // merge userId with the request object
         val token = TokenGenerator.token
         
         // check if the contact already exist
         ContactRepository.find(userId, contactUserId).map{ myContact =>
-            if (myContact.status == ContactStatus.PENDING)
-            { // update token
+            if (myContact.status != ContactStatus.CONNECTED){
+                // update token
                 ContactRepository.updateToken(userId, contactUserId, token)
                 EmailService.inviteContact(contactUser, name, token)
                 Ok(HttpResponseUtil.success("Successfully invited!"))
@@ -73,7 +74,7 @@ object ContactController extends Controller with Secured with AkkaActor {
   
   def delete(contactUserId: Int) = IsAuthenticated{ username => implicit request =>
       //logger.info("in ContactController.delete...")
-      println("in ContactController.delete...")
+      println(s"in ContactController.delete(${contactUserId})")
       ContactRepository.delete(userId, contactUserId);
       Ok(HttpResponseUtil.success("Successfully deleted!"))
   }
@@ -99,7 +100,7 @@ object ContactController extends Controller with Secured with AkkaActor {
                         val user = UserRepository.find(uId)
                         user match {
                           case Some(u) =>
-                              val contact = ContactFull(u.userId.get, u.firstName, u.lastName, u.email, false)
+                              val contact = ContactFull(u.userId.get, u.firstName, u.lastName, u.email, ContactStatus.NOTCONNECTED)
                               list += contact
                           case _ =>    
                         }
@@ -117,33 +118,29 @@ object ContactController extends Controller with Secured with AkkaActor {
   
   def accept(token: String) = IsAuthenticated{ username => implicit request =>
       //logger.info("in ContactController.accept...")
-      println("in ContactController.accept...")
+      println(s"in ContactController.accept(${token})")
       // find the contact entry in the database
-      ContactRepository.findByToken(token).map{ contact =>
+      ContactRepository.findByToken(token).map { contact =>
         // verify the logged in user
-        UserRepository.find(contact.contactUserId).map{ contactUser =>
-            contactUser.userId.map{ myUserId =>
-              if (myUserId == userId){
-                // update contact entry
-                ContactRepository.updateStatus(contact.userId, userId, ContactStatus.CONNECTED, None)
-                AdviserRepository.find(userId, contact.userId).map{ adviser =>
-                  // already connected
-                  Redirect(routes.Application.home)
-                }.getOrElse{
-                  // create adviser entry
-                  val myAdviser = Adviser(userId, contact.userId, ContactStatus.CONNECTED, None, userId)
-                  AdviserRepository.create(myAdviser)
-                  Redirect(routes.Application.home)
-                }
-              }
-              else
-              { // the user is trying to use someone else's token
-                Redirect(routes.AuthController.login)
-              }
+        if (contact.contactUserId == userId) {
+          // update contact entry
+          ContactRepository.updateStatus(contact.userId, userId, ContactStatus.CONNECTED, None)
+          val optMyContact = ContactRepository.find(userId, contact.userId)
+          optMyContact match {
+            case Some(myContact) =>
+                 if (myContact.status != ContactStatus.CONNECTED) {
+                   ContactRepository.updateStatus(userId, contact.userId, ContactStatus.CONNECTED, None)
+                 }
+            case None =>
+                val myNewContact = Contact(userId, contact.userId, ContactStatus.CONNECTED, None, userId)
+                ContactRepository.create(myNewContact)
             }
-            .getOrElse(NotFound) // contact userId is not set in the object
+          
+            Redirect(routes.Application.home)
         }
-        .getOrElse(NotFound) // contact user is not found in the database
+        else { // the user is trying to use someone else's token
+          Redirect(routes.Application.home)
+        }
       }
       .getOrElse(Redirect(routes.Application.home)) // user is already connected
   }

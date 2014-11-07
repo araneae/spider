@@ -36,10 +36,14 @@ class ContactCtrl
               @$log.error "Unable to search #{searchText}"
         )
     
-    isConnected: (contact) ->
-      @$log.debug "ContactCtrl.isConnected(#{contact.isConnected})"
-      contact.isConnected
+    sendInviteMessage: (contact) ->
+      @$log.debug "ContactCtrl.sendInviteMessage(#{contact})"
+      return "Send Invite" if contact.status is 'NOTCONNECTED'
+      "Resend Invite"
     
+    isConnected: (contact) ->
+      @$log.debug "ContactCtrl.isConnected(#{contact})"
+      contact.status is 'CONNECTED'
 
     invite: (contact) ->
       @$log.debug "ContactCtrl.invite(#{contact.contactId})"
