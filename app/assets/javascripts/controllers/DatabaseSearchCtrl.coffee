@@ -1,19 +1,36 @@
 
 class DatabaseSearchCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @DatabaseSearch, @Document, 
+    constructor: (@$log, @$scope, @$state, @DatabaseService, @DatabaseSearch, @Document, 
                               @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseSearchCtrl"
         @savedSearchTexts = []
         @searchResults = []
         @searchText
         @searchName
+        @$scope.$on('globalSearch', (event, data) =>
+                                    @$log.debug "received message globalSearch(#{data.searchText})"
+                                    @searchText = data.searchText 
+                                    @search()
+        )
         # load data from server
         @listSavedSearchTexts()
+        @listDocuments()
 
     listSavedSearchTexts: () ->
         @$log.debug "DatabaseSearchCtrl.listSavedSearchTexts()"
         @savedSearchTexts = @DatabaseSearch.query()
+
+    listDocuments: () ->
+        @$log.debug "DatabaseSearchCtrl.listDocuments()"
+        @DatabaseService.getDocumentByUserTagId(0).then(
+            (data) =>
+                @$log.debug "Promise returned #{data.length} documents"
+                @searchResults = data
+            ,
+            (error) =>
+                @$log.error "Unable to get documents: #{error}"
+            )
 
     selectedSavedSearch: (text) ->
         @$log.debug "DatabaseSearchCtrl.selectedSavedSearch()"
@@ -25,18 +42,21 @@ class DatabaseSearchCtrl
         @$log.debug "DatabaseSearchCtrl.cancel()"
         @$state.go('database.documents')
 
-    search: () ->
+    search: (searchText) ->
         @$log.debug "DatabaseSearchCtrl.search()"
-        @searchResults = []
-        @DatabaseService.search(@searchText).then(
-          (data) =>
+        if (@UtilityService.isEmpty(@searchText))
+          @listDocuments()
+        else
+          @searchResults = []
+          @DatabaseService.search(@searchText).then(
+            (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @searchResults = data
-          ,
-          (error) =>
-            @$log.error "Unable to search #{@searchText}"
-            @ErrorService.error("Unable to get search results from server!")
-        )
+            ,
+            (error) =>
+              @$log.error "Unable to search #{@searchText}"
+              @ErrorService.error("Unable to get search results from server!")
+          )
 
     saveQuery: () ->
         @$log.debug "DatabaseSearchCtrl.search()"

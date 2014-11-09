@@ -35,6 +35,10 @@ class MessageCtrl
                                     @$log.debug "received message messageMoved(#{data.messageId}, #{data.messageBoxId})"
                                     @listMessages()
                 )
+        @$scope.$on('contextMenu', (event, data) =>
+                                    @$log.debug "received message contextMenu(#{data.menuItem})"
+                                    @refresh() if data.menuItem is "refresh"
+                )
     
     listMessages: () ->
         @$log.debug "MessageCtrl.listMessages()"
@@ -61,6 +65,9 @@ class MessageCtrl
               @ErrorService.error("Unable to fetch contacts from server!")
         )
 
+    refresh: () ->
+      @listMessages()
+    
     listMessageBoxes: () ->
         @$log.debug "MessageCtrl.listMessageBoxes()"
         @MessageBox.query().$promise.then(

@@ -108,6 +108,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 },
                "viewMain": {
                     templateUrl: '/assets/partials/contact.html'
+                },
+               "viewContextMenu": {
+                    templateUrl: '/assets/partials/contextMenuGeneric.html'
                 }
               }
           })
@@ -136,6 +139,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 },
                 "viewMain": {
                     templateUrl: '/assets/partials/database.html'
+                },
+                "viewContextMenu": {
+                    templateUrl: '/assets/partials/contextMenuDatabase.html'
                 }
               }
           })
@@ -239,6 +245,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/message.html'
+                },
+                "viewContextMenu": {
+                    templateUrl: '/assets/partials/contextMenuGeneric.html'
                 }
               }
           })

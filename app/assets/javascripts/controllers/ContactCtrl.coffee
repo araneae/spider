@@ -8,6 +8,11 @@ class ContactCtrl
                                     @$log.debug "received message globalSearch(#{data.searchText})"
                                     @search(data.searchText)
         )
+        @$scope.$on('contextMenu', (event, data) =>
+                                    @$log.debug "received message contextMenu(#{data.menuItem})"
+                                    @refresh() if data.menuItem is "refresh"
+        )
+
         # fetch data from server
         @listContacts()
 
@@ -23,6 +28,9 @@ class ContactCtrl
                 @$log.error "Unable to get my contacts: #{error}"
             )
 
+    refresh: () ->
+      @listContacts()
+    
     search: (searchText) ->
       @$log.debug "ContactCtrl.search(#{searchText})"
       if @UtilityService.isEmpty(searchText)

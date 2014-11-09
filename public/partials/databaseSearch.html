@@ -1,27 +1,24 @@
-<div class="row">
-  <div ng-controller="DatabaseSearchCtrl as ctrl">
-    <div class="col-md-2" ng-show="ctrl.savedSearchTexts.length > 0">
+<div ng-controller="DatabaseSearchCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-10">
+      <form class="form-inline">
+        <button type="button" class="btn btn-primary" id="btnSaveQuery" ng-click="ctrl.saveQuery()">Save Search Query As</button>
+        <input type="text" class="form-control" name="name" id="txtQueryName" ng-model='ctrl.searchName'> 
+      </form>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-3">
       <table class="table table-striped">
+        <th>
+          <td>Saved Query</td>
+        </th>
         <tr ng-repeat="savedText in ctrl.savedSearchTexts">
           <td><a href="" ng-click="ctrl.selectedSavedSearch(savedText.searchText)">{{savedText.name}}</a></td>
         </tr>
       </table>
     </div>
-    <div class="col-md-10">
-      <div class="col-md-8 pull-right">
-        <div class="form-group">
-          <form ng-submit="ctrl.search()">
-            <div class="input-group">
-             <span class="input-group-btn" data-placement="left" title="Search">
-                <button type="submit" class='btn' id='idSearchBtn'>
-                  <span class="glyphicon glyphicon-search" data-placement="left" title="Search"></span>
-                </button>
-             </span>
-             <input type="text" class='form-control' name='searchBox' id='searchBox' ng-model='ctrl.searchText'>
-            </div>
-          </form>
-       </div>
-      </div>
+    <div class="col-md-9">
       <table class="table table-striped">
         <tr>
           <th>Name</th>
@@ -33,11 +30,9 @@
           <td>{{document.description}}</td>
         </tr>
       </table>
-      <form class="form-inline">
-        <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-        <button type="button" class="btn btn-primary" id="btnSaveQuery" ng-click="ctrl.saveQuery()">Save Search Query As</button>
-        <input type="text" class="form-control" name="name" id="txtQueryName" ng-model='ctrl.searchName'> 
-     </form>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Done</button>
     </div>
   </div>
 </div>

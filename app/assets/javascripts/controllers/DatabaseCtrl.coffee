@@ -13,6 +13,12 @@ class DatabaseCtrl
                                     @$log.debug "received message globalSearch(#{data.searchText})"
                                     @search(data.searchText)
         )
+        @$scope.$on('contextMenu', (event, data) =>
+                                    @$log.debug "received message contextMenu(#{data.menuItem})"
+                                    @refresh() if data.menuItem is "refresh"
+                                    @goToUpload() if data.menuItem is "uploadFile"
+                                    @goToSearch() if data.menuItem is "advancedSearch"
+        )
         # load list of documents from server
         @listDocuments()
     
@@ -28,7 +34,10 @@ class DatabaseCtrl
             (error) =>
                 @$log.error "Unable to get documents: #{error}"
             )
-
+    
+    refresh: () ->
+      @listDocuments()
+    
     goToDocumentTag: (documentId) ->
         @$log.debug "DatabaseCtrl.goToDocumentTag(#{documentId})"
         @$state.go("databaseDocumentTag", {documentId: documentId})
