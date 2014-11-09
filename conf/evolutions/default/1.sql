@@ -1,6 +1,3 @@
-# --- Created by Slick DDL
-To stop Slick DDL generation, remove this comment and start using Evolutions
-
 # --- !Ups
 
 create table `adviser` (`user_id` BIGINT NOT NULL,`adviser_user_id` BIGINT NOT NULL,`status` INTEGER DEFAULT 1 NOT NULL,`token` VARCHAR(254),`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);

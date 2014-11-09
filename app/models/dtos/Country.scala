@@ -14,14 +14,14 @@ case class Country(countryId: Option[Long],
 
 object Country extends Function4[Option[Long], String, String, Boolean, Country]
 {
-    implicit val domainWrites : Writes[Country] = (
+    implicit val countryWrites : Writes[Country] = (
             (JsPath \ "countryId").write[Option[Long]] and
             (JsPath \ "code").write[String] and
             (JsPath \ "name").write[String] and
             (JsPath \ "active").write[Boolean]
     )(unlift(Country.unapply))
       
-    implicit val domainReads : Reads[Country] = (
+    implicit val countryReads : Reads[Country] = (
           (JsPath \ "countryId").readNullable[Long] and
           (JsPath \ "code").read[String] and
           (JsPath \ "name").read[String] and

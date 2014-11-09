@@ -41,7 +41,7 @@ object ContactRepository {
     }
   }
   
-  def findContact(userId: Long, contactUserId: Long): Seq[ContactFull] = {
+  def findContact(userId: Long, contactUserId: Long): Option[ContactFull] = {
     DB.withSession {
       implicit session =>
         val q = for {
@@ -49,8 +49,10 @@ object ContactRepository {
             a <- c.contact
         } yield (c.contactUserId, a.firstName, a.lastName, a.email, c.status)
          
-        q.list.map{case (contactUserId, firstName, lastName, email, status) 
+        val result = q.list.map{case (contactUserId, firstName, lastName, email, status) 
                 => ContactFull(contactUserId, firstName, lastName, email, status)}
+        if (result.length > 0) Some(result(0))
+        else None
     }
   }
   

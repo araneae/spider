@@ -9,7 +9,7 @@ import models.dtos._
 import models.repositories._
 
 object MessageService {
- 
+  
      def send(senderUserId: Long, parentMessageId: Option[Long], subject: String, body: String, recipientUserIds : List[Long]) = {
        // create a message
        val message = Message(None, parentMessageId, senderUserId, false, subject, Some(body), senderUserId)

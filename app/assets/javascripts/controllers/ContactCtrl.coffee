@@ -1,7 +1,7 @@
 
 class ContactCtrl
 
-    constructor: (@$log, @$scope, @ContactService, @Contact, @$location, @UtilityService) ->
+    constructor: (@$log, @$scope,  @$state, @ContactService, @ErrorService, @Contact, @$location, @UtilityService) ->
         @$log.debug "constructing ContactCtrl"
         @contacts = []
         @$scope.$on('globalSearch', (event, data) =>
@@ -19,6 +19,7 @@ class ContactCtrl
                 @contacts = data
             ,
             (error) =>
+                @ErrorService.error("Oops, something wrong! Unable to fetch data from server.")
                 @$log.error "Unable to get my contacts: #{error}"
             )
 
@@ -33,27 +34,63 @@ class ContactCtrl
               @contacts = data
           ,
           (error) =>
+              @ErrorService.error("Oops, something wrong! Unable to search #{searchText}.")
               @$log.error "Unable to search #{searchText}"
         )
     
-    sendInviteMessage: (contact) ->
-      @$log.debug "ContactCtrl.sendInviteMessage(#{contact})"
-      return "Send Invite" if contact.status is 'NOTCONNECTED'
-      "Resend Invite"
+    getStatusDisplayName: (status) ->
+      return "Not Connected" if status is 'NOTCONNECTED'
+      return "Connected" if status is 'CONNECTED'
+      return "Rejected" if status is 'REJECTED'
+      return "Pending" if status is 'PENDING'
+      return "Awaiting" if status is 'AWAITING'
+      ""
     
-    isConnected: (contact) ->
-      @$log.debug "ContactCtrl.isConnected(#{contact})"
-      contact.status is 'CONNECTED'
+    getInviteTitle: (status) ->
+      return "Send Invite" if status is 'NOTCONNECTED'
+      "Resend Invite"
+      return "Send Invite" if status is 'NOTCONNECTED'
+      return "Resend Invite" if status is 'REJECTED'
+      return "Resend Invite" if status is 'PENDING'
+      ""
+    
+    showSendInvite: (contact) ->
+      contact.status is 'NOTCONNECTED' or 
+      contact.status is 'PENDING' or 
+      contact.status is 'REJECTED'
+    
+    showAccept: (contact) ->
+      contact.status is 'AWAITING'
+      
+    showReject: (contact) ->
+      contact.status is 'AWAITING'
 
-    invite: (contact) ->
-      @$log.debug "ContactCtrl.invite(#{contact.contactId})"
-      @Contact.save({contactUserId: contact.contactId}).$promise.then(
+    accept: (contact) ->
+      @$log.debug "ContactCtrl.accept(#{contact.contactId})"
+      @ContactService.accept(contact.contactId).then(
           (data) =>
-            @$log.debug "Successfully invited #{data}"
+            @$log.debug "Successfully accepted invitation #{data}"
             @listContacts()
          ,
          (error) =>
-            @$log.error "Unable to invite #{contact.contactId}"
+            @ErrorService.error("Oops, something wrong! Unable to accept invitation.")
+            @$log.error "Unable to accept invitation"
       )
+      
+    reject: (contact) ->
+      @$log.debug "ContactCtrl.reject(#{contact.contactId})"
+      @ContactService.reject(contact.contactId).then(
+          (data) =>
+            @$log.debug "Successfully rejected invitation #{data}"
+            @listContacts()
+         ,
+         (error) =>
+            @ErrorService.error("Oops, something wrong! Unable to reject invitation.")
+            @$log.error "Unable to reject invitation"
+      )
+      
+    goToInvite: (contact) ->
+      @$log.debug "ContactCtrl.goToInvite(#{contact.contactId})"
+      @$state.go("contactInvite", {contactId: contact.contactId})
 
 controllersModule.controller('ContactCtrl', ContactCtrl)

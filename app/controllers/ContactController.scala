@@ -31,48 +31,18 @@ object ContactController extends Controller with Secured with AkkaActor {
       println("in ContactController.getAll")
       var list = ContactRepository.findAll(userId)
       val data = Json.toJson(list)
-      println("data "+ data)
       Ok(data).as(JSON)
   }
   
-  def get(contactUserId: Int) = IsAuthenticated{ username => implicit request =>
+  def get(contactUserId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in ContactController.get(${contactUserId})...")
       println(s"in ContactController.get(${contactUserId})")
-      var contact = ContactRepository.find(userId, contactUserId)
+      var contact = ContactRepository.findContact(userId, contactUserId)
       val data = Json.toJson(contact)
       Ok(data).as(JSON)
   }
   
-  def create(contactUserId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
-      //logger.info("in ContactController.create...")
-      println(s"in ContactController.create(${contactUserId}).")
-      UserRepository.find(contactUserId).map{ contactUser =>
-        // merge userId with the request object
-        val token = TokenGenerator.token
-        
-        // check if the contact already exist
-        ContactRepository.find(userId, contactUserId).map{ myContact =>
-            if (myContact.status != ContactStatus.CONNECTED){
-                // update token
-                ContactRepository.updateToken(userId, contactUserId, token)
-                EmailService.inviteContact(contactUser, name, token)
-                Ok(HttpResponseUtil.success("Successfully invited!"))
-            }
-            else
-              Ok(HttpResponseUtil.success("Ignored, already in connection!"))
-        }
-        .getOrElse{
-            val myNewContact = Contact(userId, contactUserId, ContactStatus.PENDING, Some(token), userId)
-            ContactRepository.create(myNewContact)
-            // send invitation email (should be used Actor)
-            EmailService.inviteContact(contactUser, name, token)
-            Ok(HttpResponseUtil.success("Successfully invited!"))
-        }
-      }
-      .getOrElse(NotFound)
-  }
-  
-  def delete(contactUserId: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(contactUserId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in ContactController.delete...")
       println(s"in ContactController.delete(${contactUserId})")
       ContactRepository.delete(userId, contactUserId);
@@ -92,18 +62,18 @@ object ContactController extends Controller with Secured with AkkaActor {
                   userIds.map { uId =>
                     if (uId != userId) {
                       // check if the user is already connected
-                      val contacts = ContactRepository.findContact(userId, uId)
-                      if (contacts.length > 0) {
-                    	  list += contacts(0)
-                      }
-                      else {
-                        val user = UserRepository.find(uId)
-                        user match {
-                          case Some(u) =>
+                      val optContact = ContactRepository.findContact(userId, uId)
+                      optContact match {
+                        case Some(contact) =>
+                    	    list += contact
+                        case None =>
+                          val user = UserRepository.find(uId)
+                          user match {
+                            case Some(u) =>
                               val contact = ContactFull(u.userId.get, u.firstName, u.lastName, u.email, ContactStatus.NOTCONNECTED)
                               list += contact
-                          case _ =>    
-                        }
+                            case _ =>    
+                          }
                       }
                     }
                   }
@@ -143,5 +113,106 @@ object ContactController extends Controller with Secured with AkkaActor {
         }
       }
       .getOrElse(Redirect(routes.Application.home)) // user is already connected
+  }
+  
+  def inviteMessage(contactUserId: Long) = IsAuthenticated{ username => implicit request =>
+    //logger.info("in ContactController.inviteMessage()")
+    println(s"in ContactController.inviteMessage(${contactUserId})")
+    val optUser = UserRepository.find(contactUserId)
+    optUser match {
+       case Some(user) =>
+          val subject = s"Hello ${user.firstName}"
+          val message = s"Hi ${user.firstName}, \nI would like to get connected with you. Please accept my invitation.\nThanks,\n${name}"
+          val contactInvite = ContactInvite(contactUserId, subject, message)
+          val data = Json.toJson(contactInvite)
+          Ok(data).as(JSON)
+      case None =>
+          Ok("").as(JSON)
+    }
+  }
+  
+  def invite(contactUserId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
+    //logger.info("in ContactController.invite()")
+    println(s"in ContactController.invite(${contactUserId})")
+    val jsonObj = request.body.asInstanceOf[JsObject]
+    jsonObj.validate[ContactInvite].fold(
+        valid = { contactInvite =>
+           val optContactuserId = UserRepository.find(contactUserId)
+           optContactuserId match {
+               case Some(contactUser) =>
+                  val token = TokenGenerator.token
+                   // check if the contact already exist
+                  val optExistingContact = ContactRepository.find(userId, contactUserId)
+                  optExistingContact match { 
+                    case Some(existingContact) =>
+                        if (existingContact.status != ContactStatus.CONNECTED) {
+                           // update token
+                           ContactRepository.updateToken(userId, contactUserId, token)
+                           val optOtherContact = ContactRepository.find(contactUserId, userId)
+                           optOtherContact match {
+                              case Some(otherContact) =>
+                                  ContactRepository.updateStatus(contactUserId, userId, ContactStatus.AWAITING, None)
+                              case None =>  
+                                  val newContact = Contact(contactUserId, userId, ContactStatus.AWAITING, None, userId)
+                                  ContactRepository.create(newContact)
+                           }
+                           MessageService.send(userId, None, contactInvite.subject, contactInvite.message, List(contactUserId))
+                           EmailService.inviteContact(contactUser, name, token)
+                           Ok(HttpResponseUtil.success("Successfully invited!"))
+                        }
+                        else
+                          Ok(HttpResponseUtil.success("Ignored, already connected!"))
+                    case None =>
+                        val newContact = Contact(userId, contactUserId, ContactStatus.PENDING, Some(token), userId)
+                        ContactRepository.create(newContact)
+                        val optOtherContact = ContactRepository.find(contactUserId, userId)
+                        optOtherContact match {
+                          case Some(otherContact) =>
+                              ContactRepository.updateStatus(contactUserId, userId, ContactStatus.AWAITING, None)
+                          case None =>  
+                              val newContact = Contact(contactUserId, userId, ContactStatus.AWAITING, None, userId)
+                              ContactRepository.create(newContact)
+                        }
+                        // send invitation email (should be used Actor)
+                        MessageService.send(userId, None, contactInvite.subject, contactInvite.message, List(contactUserId))
+                        EmailService.inviteContact(contactUser, name, token)
+                        Ok(HttpResponseUtil.success("Successfully invited!"))
+                  }
+               case None =>
+                 Ok(HttpResponseUtil.error("User not found!"))
+          }
+        }
+        ,invalid = { errors => 
+             Ok(HttpResponseUtil.error("Unable to parse payload"))
+          }
+        )
+  }
+  
+  def acceptInvitation(contactUserId: Long) = IsAuthenticated{ username => implicit request =>
+    //logger.info("in ContactController.acceptInvitation()")
+    println(s"in ContactController.acceptInvitation(${contactUserId})")
+    val optContact = ContactRepository.find(userId, contactUserId)
+    optContact match { 
+      case Some(contact) =>
+          ContactRepository.updateStatus(userId, contactUserId, ContactStatus.CONNECTED, None)
+          ContactRepository.updateStatus(contactUserId, userId, ContactStatus.CONNECTED, None)
+          Ok(HttpResponseUtil.success("Successfully accepted invitation!"))
+      case None =>
+          Ok(HttpResponseUtil.error("Contact not found!"))
+    }
+  }
+  
+  def rejectInvitation(contactUserId: Long) = IsAuthenticated{ username => implicit request =>
+    //logger.info("in ContactController.rejectInvitation()")
+    println(s"in ContactController.rejectInvitation(${contactUserId})")
+    val optContact = ContactRepository.find(userId, contactUserId)
+    optContact match { 
+      case Some(contact) =>
+          ContactRepository.delete(userId, contactUserId)
+          ContactRepository.updateStatus(contactUserId, userId, ContactStatus.REJECTED, None)
+          Ok(HttpResponseUtil.success("Successfully rejected invitation!"))
+      case None =>
+          Ok(HttpResponseUtil.error("Contact not found!"))
+    }
   }
 }

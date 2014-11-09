@@ -22,6 +22,66 @@ class ContactService
                 deferred.reject(data);
             )
         deferred.promise
+   
+    getInviteMessage: (contactUserId) ->
+        @$log.debug "ContactService.getInviteMessage #{contactUserId}"
+        deferred = @$q.defer()
+
+        @$http.get("/contact/invite/#{contactUserId}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully fetched data - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to fetch data - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    sendInvite: (contactuserId, contactInvite) ->
+        @$log.debug "ContactService.sendInvite #{contactuserId} #{contactInvite}"
+        deferred = @$q.defer()
+
+        @$http.post("/contact/invite/#{contactuserId}", contactInvite)
+        .success((data, status, headers) =>
+                @$log.info("Successfully post data - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to post data - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    accept: (contactuserId) ->
+        @$log.debug "ContactService.accept #{contactuserId}"
+        deferred = @$q.defer()
+
+        @$http.post("/contact/invite/#{contactuserId}/accept")
+        .success((data, status, headers) =>
+                @$log.info("Successfully post data - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to post data - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    reject: (contactuserId) ->
+        @$log.debug "ContactService.accept #{contactuserId}"
+        deferred = @$q.defer()
+
+        @$http.post("/contact/invite/#{contactuserId}/reject")
+        .success((data, status, headers) =>
+                @$log.info("Successfully post data - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to post data - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
 
 servicesModule.service('ContactService', ContactService)
 

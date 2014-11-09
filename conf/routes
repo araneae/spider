@@ -79,17 +79,23 @@ DELETE /userSkill/:skillId                                      controllers.User
 GET    /skillLevel                                              controllers.UserSkillController.getSkillLevels
 
 # Contact specific routes
-POST   /contact/:contactUserId                                  controllers.ContactController.create(contactUserId: Int)
-
-GET    /contact/:contactUserId                                  controllers.ContactController.get(contactUserId: Int)
+GET    /contact/:contactUserId                                  controllers.ContactController.get(contactUserId: Long)
 
 GET    /contact                                                 controllers.ContactController.getAll
 
-DELETE /contact/:contactUserId                                  controllers.ContactController.delete(contactUserId: Int)
+DELETE /contact/:contactUserId                                  controllers.ContactController.delete(contactUserId: Long)
 
 GET    /contact/search/:email                                   controllers.ContactController.search(email: String)
 
 GET    /contact/accept/:token                                   controllers.ContactController.accept(token: String)
+
+GET    /contact/invite/:contactUserId                           controllers.ContactController.inviteMessage(contactUserId: Long)
+
+POST   /contact/invite/:contactUserId                           controllers.ContactController.invite(contactUserId: Long)
+
+POST   /contact/invite/:contactUserId/accept                    controllers.ContactController.acceptInvitation(contactUserId: Long)
+
+POST   /contact/invite/:contactUserId/reject                    controllers.ContactController.rejectInvitation(contactUserId: Long)
 
 # Adviser specific routes
 POST   /adviser/:adviserUserId                                  controllers.AdviserController.create(adviserUserId: Int)

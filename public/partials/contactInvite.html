@@ -1,0 +1,32 @@
+<div ng-controller="ContactInviteCtrl as ctrl">
+  <div class="row">
+     <div class="col-md-offset-2 col-md-8">
+       <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+     </div>
+  </div>
+  <form id="idContactInviteForm" name="ContactInviteForm" class="form-horizontal" role="form">
+      <div class="form-group">
+          <label id="lblSubject" for="subject" class="col-md-2 control-label">Subject</label>
+          <div class="col-md-5">
+              <input type="text" class="form-control" name="subject" id="idSubject" placeholder=""
+                     ng-model="ctrl.contactInvite.subject">
+          </div>
+      </div>
+      <div class="form-group">
+          <label id="lblMessage" for="descLong" class="col-md-2 control-label">Message</label>
+          <div class="col-md-5">
+              <textarea class="form-control" rows="6" name="message" id="idMessage" placeholder=""
+                     ng-model="ctrl.contactInvite.message">
+               </textarea>
+          </div>
+      </div>
+      <!-- <pre>{{ ctrl.document | json }}</pre> -->
+      <div class="form-group">
+          <div class="col-md-offset-1">
+              <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+              <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.send()">Send</button>
+          </div>
+      </div>
+    </form>
+</div>
+

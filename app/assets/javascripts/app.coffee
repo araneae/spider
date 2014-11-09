@@ -111,6 +111,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
+          .state('contactInvite', {
+              url: '/contact/invite/:contactId',
+              views: {
+               "viewMain": {
+                    templateUrl: '/assets/partials/contactInvite.html'
+                }
+              }
+          })
           .state('adviser', {
               url: '/adviser',
               views: {

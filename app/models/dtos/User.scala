@@ -17,8 +17,6 @@ case class User(userId: Option[Long],
                 createdAt: DateTime = new DateTime(),
                 updatedAt: Option[DateTime] = None)
 
-// case class User(userId:String,email:String,loginId:String,fullName:String,firstName:String,lastName:String,location:String,homeTown:String,providerId:String,provider:String,state:String,zip:String,accessKey:String,refreshKey:String,avatarUrl:String)
-
 object User extends Function12[Option[Long], String, String, String, String, Long, String, Boolean, Option[String], Option[DateTime], DateTime, Option[DateTime], User]
 {
     implicit val userWrites : Writes[User] = (

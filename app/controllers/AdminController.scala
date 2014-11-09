@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import play.api.mvc.Controller
 import traits.Secured
 import models._
+import utils._
 
 object AdminController extends Controller with Secured {
   
@@ -13,8 +14,7 @@ object AdminController extends Controller with Secured {
   def admin = IsAuthenticated { username => _ =>
     //logger.info("in AdminController.index...")
     println("in index...")
-    //Ok(views.html.admin("Back Office Admin Module"))
-    Ok("")
+    Ok(views.html.admin("Back Office Admin Module")(Configuration.applicationName))
   }
   
 }
