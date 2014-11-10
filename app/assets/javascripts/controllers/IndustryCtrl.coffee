@@ -1,18 +1,20 @@
 
 class IndustryCtrl
 
-    constructor: (@$log, @IndustryService) ->
-        @$log.debug "constructing IndustryController"
-        @industry = {}
+    constructor: (@$log, @$scope, @$state, @Industry, @ErrorService, @IndustryService) ->
+        @$log.debug "constructing IndustryCtrl"
         @industries = []
-        @editMode = false
+        @$scope.$on('contextMenu', (event, data) =>
+                                    @$log.debug "received message contextMenu(#{data.menuItem})"
+                                    @refresh() if data.menuItem is "refresh"
+                                    @goToCreate() if data.menuItem is "create"
+        )
+        # fetch data from server
         @listIndustries()
         
     listIndustries: () ->
         @$log.debug "IndustryCtrl.listIndustries()"
-        @editMode = false
-        @industry = {}
-        @IndustryService.listIndustries()
+        @Industry.query().$promise
         .then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} Industries"
@@ -22,63 +24,20 @@ class IndustryCtrl
                 @$log.error "Unable to get Industries: #{error}"
             )
     
-    createIndustry: () ->
-        @$log.debug "IndustryCtrl.createIndustry()"
-        @editMode = false
-        @IndustryService.createIndustry(@industry)
-        .then( 
-            (data) =>
-              @$log.debug "Promise returned #{data} Industry"
-              @listIndustries()
-            ,
-            (error) =>
-                @$log.error "Unable to create Industry: #{error}"
-            )
-
-    updateIndustry: () ->
-        @$log.debug "IndustryCtrl.updateIndustry()"
-        @editMode = false
-        @IndustryService.updateIndustry(@industry)
-        .then( 
-            (data) =>
-              @$log.debug "Promise returned #{data} Industry"
-              @listIndustries()
-            ,
-            (error) =>
-                @$log.error "Unable to save Industry: #{error}"
-            )
-
-    saveIndustry: () ->
-        if @editMode
-            @updateIndustry()
-         else
-            @createIndustry()
-
-    cancelIndustry: () ->
-        @$log.debug "IndustryCtrl.cancelIndustry()"
-        @industry = {}
-        @editMode = false
+    refresh: () ->
+        @listIndustries()
     
-    deleteIndustry: (index) ->
-        @$log.debug "IndustryCtrl.deleteIndustry(#{index})"
-        item = @industries[index]
-        @editMode = false
-        @IndustryService.deleteIndustry(item.industryId)
-        .then( (data) =>
-            @$log.debug "server returned #{data} Industry"
-            @listIndustries()
-        )
+    goToCreate: () ->
+      @$log.debug "IndustryCtrl.goToCreate()"
+      @$state.go("industryCreate")
     
-    editIndustry: (index) ->
-        @$log.debug "IndustryCtrl.editIndustry(#{index})"
-        item = @industries[index]
-        @industry = item
-        @editMode = true
+    delete: (industry) ->
+        @$log.debug "IndustryCtrl.delete(#{industry})"
+        @Industry.remove({industryId: industry.industryId})
+        @listIndustries()
     
-    getCreateLabel: () ->
-        if @editMode
-          'Edit Industry'
-        else
-           'Create Industry'
+    goToEdit: (industry) ->
+        @$log.debug "IndustryCtrl.goToEdit(#{industry})"
+        @$state.go("industryEdit", {industryId: industry.industryId})
 
 controllersModule.controller('IndustryCtrl', IndustryCtrl)

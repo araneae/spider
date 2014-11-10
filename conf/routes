@@ -42,9 +42,11 @@ POST   /industry                                                controllers.Indu
 
 GET    /industry                                                controllers.IndustryController.getAll
 
-PUT    /industry/:industryId                                    controllers.IndustryController.update(industryId: Int)
+GET    /industry/:industryId                                    controllers.IndustryController.get(industryId: Long)
 
-DELETE /industry/:industryId                                    controllers.IndustryController.delete(industryId: Int)
+PUT    /industry/:industryId                                    controllers.IndustryController.update(industryId: Long)
+
+DELETE /industry/:industryId                                    controllers.IndustryController.delete(industryId: Long)
 
 # Skill specific routes
 POST   /skill                                                   controllers.SkillController.create
@@ -60,10 +62,11 @@ POST   /domain                                                  controllers.Doma
 
 GET    /domain                                                  controllers.DomainController.getAll
 
-PUT    /domain/:domainId                                        controllers.DomainController.update(domainId: Int)
+GET    /domain/:domainId                                        controllers.DomainController.get(domainId: Long)
 
-DELETE /domain/:domainId                                        controllers.DomainController.delete(domainId: Int)
+PUT    /domain/:domainId                                        controllers.DomainController.update(domainId: Long)
 
+DELETE /domain/:domainId                                        controllers.DomainController.delete(domainId: Long)
 
 # UserSkill specific routes
 POST   /userSkill/:skillId                                      controllers.UserSkillController.create(skillId: Int)

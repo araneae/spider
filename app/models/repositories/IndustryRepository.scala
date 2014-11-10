@@ -5,6 +5,7 @@ import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import play.api.Play.current
 import models.dtos._
+import org.joda.time.DateTime
 
 object IndustryRepository {
   
@@ -18,10 +19,14 @@ object IndustryRepository {
     }
   }
   
-  def udate(industry: Industry) = {
+  def udate(industry: Industry, userId: Long) = {
     DB.withSession {
        implicit session: Session =>
-         query filter(_.industryId === industry.industryId.get) update industry 
+         val q = for {
+           q <- query filter(_.industryId === industry.industryId)
+         } yield (q.code, q.name, q.description, q.updatedUserId, q.updatedAt)
+         
+         q update((industry.code, industry.name, industry.description, Some(userId), Some(new DateTime())))
     }
   }
 

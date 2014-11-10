@@ -9,6 +9,7 @@ import play.api.libs.json._
 import models.tables._
 import models.dtos._
 import models.repositories._
+import utils.HttpResponseUtil
 
 object DomainController extends Controller with Secured {
   
@@ -17,36 +18,34 @@ object DomainController extends Controller with Secured {
   def create = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in DomainController.create...")
       println("in DomainController.create...")
-      val json = request.body.asInstanceOf[JsObject]
-      json.validate[Domain].fold(
-            valid = { domain =>
-                    DomainRepository.create(domain)
-                    Ok("Created")
-            },
-            invalid = {
-                errors => BadRequest(JsError.toFlatJson(errors))
-            }
-      )
+      val jsonObj = request.body.asInstanceOf[JsObject]
+      val optDomain = getObject(jsonObj, userId)
+      optDomain match {
+        case Some(domain) =>
+              DomainRepository.create(domain)
+              Ok(HttpResponseUtil.success("Created domain!"))
+        case None =>
+              Ok(HttpResponseUtil.error("Unable to parse payload!"))
+      }
   }
   
-  def update(domainId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(domainId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in DomainController.update...")
       println(s"in DomainController.update($domainId)...")
-      val json = request.body.asInstanceOf[JsObject]
-      json.validate[Domain].fold(
-            valid = { domain =>
-                    DomainRepository.udate(domain)
-                    Ok("Updated")
-            },
-            invalid = {
-                errors => BadRequest(JsError.toFlatJson(errors))
-            }
-      )
+      val jsonObj = request.body.asInstanceOf[JsObject]
+      val optDomain = getObject(jsonObj, userId)
+      optDomain match {
+        case Some(domain) =>
+              DomainRepository.update(domain, userId)
+              Ok(HttpResponseUtil.success("Updated domain!"))
+         case None =>
+              Ok(HttpResponseUtil.error("Unable to parse payload!"))
+      }
   }
   
-  def delete(domainId: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(domainId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in DomainController.delete...")
-      println("in DomainController.delete...")
+      println("in DomainController.delete(${domainId})")
       DomainRepository.delete(domainId);
       Ok("Deleted")
   }
@@ -57,5 +56,32 @@ object DomainController extends Controller with Secured {
       var list = DomainRepository.findAll
       val text = Json.toJson(list)
       Ok(text).as(JSON)
+  }
+  
+  def get(domainId: Long) = IsAuthenticated{ username => implicit request =>
+      //logger.info("in DomainController.get...")
+      println("in DomainController.get(${domainId})")
+      var optDomain = DomainRepository.find(domainId)
+      val text = Json.toJson(optDomain)
+      Ok(text).as(JSON)
+  }
+  
+  def getObject(jsonObj: JsObject, userId: Long): Option[Domain] = {
+    val optDomainId = (jsonObj \ "domainId").asOpt[Long]
+    val optIndustryId = (jsonObj \ "industryId").asOpt[Long]
+    val optName = (jsonObj \ "name").asOpt[String]
+    val optCode = (jsonObj \ "code").asOpt[String]
+    val optDescrition = (jsonObj \ "description").asOpt[String]
+    
+    optName.map { name =>
+       optCode.map { code =>
+         optDescrition.map { description =>
+            optIndustryId.map { industryId =>
+              val domain = Domain(optDomainId, industryId, code, name, Some(description), userId)
+              Some(domain)
+            }.getOrElse(None)
+         }.getOrElse(None)
+       }.getOrElse(None)
+    }.getOrElse(None)
   }
 }

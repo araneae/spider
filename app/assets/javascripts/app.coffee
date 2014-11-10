@@ -41,6 +41,25 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/industry.html'
+                },
+                "viewContextMenu": {
+                    templateUrl: '/assets/partials/contextMenuAdmin.html'
+                }
+              }
+          })
+          .state('industryCreate', {
+              url: '/industry/create'
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/industryCreate.html'
+                }
+              }
+          })
+          .state('industryEdit', {
+              url: '/industry/edit/:industryId'
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/industryEdit.html'
                 }
               }
           })
@@ -49,6 +68,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/skill.html'
+                },
+                "viewContextMenu": {
+                    templateUrl: '/assets/partials/contextMenuAdmin.html'
                 }
               }
           })
@@ -57,6 +79,25 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 "viewMain": {
                     templateUrl: '/assets/partials/domain.html'
+                },
+                "viewContextMenu": {
+                    templateUrl: '/assets/partials/contextMenuAdmin.html'
+                }
+              }
+          })
+          .state('domainCreate', {
+              url: '/domain/create'
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/domainCreate.html'
+                }
+              }
+          })
+          .state('domainEdit', {
+              url: '/domain/edit/:domainId'
+              views: {
+                "viewMain": {
+                    templateUrl: '/assets/partials/domainEdit.html'
                 }
               }
           })

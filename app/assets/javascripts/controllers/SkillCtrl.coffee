@@ -40,8 +40,8 @@ class SkillCtrl
                 @$log.error "Unable to get Skills: #{error}"
             )
     
-    createSkill: () ->
-        @$log.debug "createSkill()"
+    create: () ->
+        @$log.debug "create()"
         @editMode = false
         @skill.industryId = @industry.id
         @SkillService.createSkill(@skill)
@@ -54,8 +54,8 @@ class SkillCtrl
                 @$log.error "Unable to create Skill: #{error}"
             )
 
-    updateSkill: () ->
-        @$log.debug "updateSkill()"
+    update: () ->
+        @$log.debug "update()"
         @editMode = false
         @skill.industryId = @industry.id
         @SkillService.updateSkill(@skill)
@@ -68,19 +68,19 @@ class SkillCtrl
                 @$log.error "Unable to save Skill: #{error}"
             )
 
-    saveSkill: () ->
+    save: () ->
         if @editMode
-            @updateSkill()
+            @update()
          else
-            @createSkill()
+            @create()
 
-    cancelSkill: () ->
-        @$log.debug "cancelSkill()"
+    cancel: () ->
+        @$log.debug "cancel()"
         @skill = {}
         @editMode = false
     
-    deleteSkill: (index) ->
-        @$log.debug "deleteSkill(#{index})"
+    delete: (index) ->
+        @$log.debug "delete(#{index})"
         item = @skills[index]
         @editMode = false
         @SkillService.deleteSkill(item.id)
@@ -89,8 +89,8 @@ class SkillCtrl
             @listSkills()
         )
     
-    editSkill: (index) ->
-        @$log.debug "editSkill(#{index})"
+    edit: (index) ->
+        @$log.debug "edit(#{index})"
         item = @skills[index]
         @skill = item
         @industry = @UtilityService.findByProperty(@industries, 'id', item['industryId'])

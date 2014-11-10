@@ -1,22 +1,25 @@
 
 class DomainCtrl
 
-    constructor: (@$log, @DomainService, @Domain, @IndustryService, @UtilityService, @$location) ->
+    constructor: (@$log, @$scope, @$state, @DomainService, @Domain, @Industry, @ErrorService, @UtilityService, @$location) ->
         @$log.debug "constructing DomainController"
         @domain = {}
         @domains = []
-        @editMode = false
         @industry = {}
         @industries = []
+        @$scope.$on('contextMenu', (event, data) =>
+                                    @$log.debug "received message contextMenu(#{data.menuItem})"
+                                    @refresh() if data.menuItem is "refresh"
+                                    @goToCreate() if data.menuItem is "create"
+        )
         # fetch data from server
         @listIndustries()
         @listDomains()
 
     listIndustries: () ->
         @$log.debug "DomainCtrl.listIndustries()"
-        @editMode = false
-        @IndustryService.listIndustries()
-        .then(
+        @Industry.query().$promise
+          .then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} Industries"
                 @industries = data
@@ -27,60 +30,24 @@ class DomainCtrl
     
     listDomains: () ->
         @$log.debug "DomainCtrl.listDomains()"
-        @editMode = false
         @domain = {}
         @industry = {}
         @domains = @Domain.query()
-    
-    create: () ->
-        @$log.debug "DomainCtrl.createDomain()"
-        @editMode = false
-        @domain.industryId = @industry.industryId
-        domain = new @Domain(@domain);
-        domain.$save().then( (data) =>
-            @$log.debug "server returned #{data} Domain"
-            @listDomains()
-        )
 
-    update: () ->
-        @$log.debug "DomainCtrl.updateDomain()"
-        @editMode = false
-        @domain.industryId = @industry.industryId
-        domain = new @Domain(@domain);
-        domain.$update().then( (data) =>
-            @$log.debug "server returned #{data} Domain"
-            @listDomains()
-        )
-
-    save: () ->
-        if @editMode
-            @updateDomain()
-         else
-            @createDomain()
-
-    cancel: () ->
-        @$log.debug "DomainCtrl.cancelDomain()"
-        @domain = {}
-        @editMode = false
-
-    delete: (index) ->
-        @$log.debug "DomainCtrl.deleteDomain(#{index})"
-        item = @domains[index]
-        @editMode = false
-        @Domain.remove({domainId: item['domainId']})
+    refresh: () ->
         @listDomains()
 
-    edit: (index) ->
-        @$log.debug "DomainCtrl.editDomain(#{index})"
-        item = @domains[index]
-        @domain = item
-        @industry = @UtilityService.findByProperty(@industries, 'industryId', item['industryId'])
-        @editMode = true
+    goToCreate: () ->
+        @$log.debug "DomainCtrl.goToCreate()"
+        @$state.go("domainCreate")
     
-    getCreateLabel: () ->
-        if @editMode
-          'Edit Domain'
-        else
-           'Create Domain'
-
+    delete: (domain) ->
+        @$log.debug "DomainCtrl.delete(#{domain.domainId})"
+        @Domain.remove({domainId: domain.domainId})
+        @listDomains()
+    
+    goToEdit: (domain) ->
+        @$log.debug "IndustryCtrl.goToEdit(#{domain})"
+        @$state.go("domainEdit", {domainId: domain.domainId})
+        
 controllersModule.controller('DomainCtrl', DomainCtrl)

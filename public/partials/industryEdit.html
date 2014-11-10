@@ -1,0 +1,35 @@
+<div ng-controller="IndustryEditCtrl as ctrl">
+  <form novalidate id="idEditIndustryForm" name="EditIndustryForm" class="form-horizontal" role="form"
+        ng-submit="ctrl.save()">
+    <legend class="col-md-12">Create Industry</legend>
+    <div class="form-group">
+        <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Enter name"
+                   ng-model="ctrl.industry.name" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblCode" for="name" class="col-md-2 control-label">Code</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="code" id="code" placeholder="Enter code"
+                   ng-model="ctrl.industry.code" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" name="description" id="description" placeholder="Enter description"
+                   ng-model="ctrl.industry.description" required>
+        </div>
+    </div>
+    <!-- <pre>{{ ctrl.industry | json }}</pre> -->
+    <div class="form-group">
+        <div class="col-md-offset-1 col-md-8">
+            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!EditIndustryForm.$valid'>Save</button>
+        </div>
+    </div>
+  </form>
+</div>
+

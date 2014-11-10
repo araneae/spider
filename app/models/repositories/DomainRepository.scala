@@ -5,6 +5,7 @@ import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import play.api.Play.current
 import models.dtos._
+import org.joda.time.DateTime
 
 object DomainRepository {
   
@@ -17,16 +18,29 @@ object DomainRepository {
     }
   }
   
-  def udate(domain: Domain) = {
+  def update(domain: Domain, userId: Long) = {
     DB.withSession {
        implicit session: Session =>
-         query.filter(_.domainId === domain.domainId).update(domain)
+         val q = for {
+            d <- query.filter(_.domainId === domain.domainId)
+          } yield (d.code, d.name, d.description, d.updatedUserId, d.updatedAt)
+          
+          q update((domain.code, domain.name, domain.description, Some(userId), Some(new DateTime())))
     }
   }
-  def find(domainId: Long): Option[Domain] = {
+  def find(domainId: Long): Option[DomainFull] = {
     DB.withSession {
        implicit session: Session =>
-          query filter(_.domainId === domainId) firstOption
+          val q = for {
+             s <- query filter (_.domainId === domainId)
+             i <- s.industry
+           } yield (s.domainId, s.industryId, s.name, s.code, s.description, i.name)
+           
+          val result = q.list.map{case (domainId, industryId, name, code, description, industryName) => 
+                 DomainFull(domainId, industryId, name, code, description, industryName)}
+           
+          if (result.length > 0) Some(result(0))
+          else None
     }
   }
   
