@@ -22,6 +22,10 @@ object FileParserService {
                        val parser = TikaFileParser.getInstance
                        Some(parser.parse(fileName))
                     }
+       case RTF => {
+                       val parser = RTFFileParser.getInstance()
+                       Some(parser.parse(fileName))
+                    }
        case TXT => {
                        val parser = new TxtFileParser()
                        Some(parser.parse(fileName))
