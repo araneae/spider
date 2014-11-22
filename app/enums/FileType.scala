@@ -1,8 +1,8 @@
 package enums
 
-object JobStatusType extends BaseEnumeration {
-  type JobStatusType = Value
-  val DRAFT, PUBLISHED, CLOSED = Value
+object FileType extends BaseEnumeration {
+  type FileType = Value
+  val DOC, DOCX, TXT, PDF, ODT, RTF, UNKNOWN = Value
   
-  implicit val enumTypeFormat = EnumUtils.enumFormat(JobStatusType)
+  implicit val enumTypeFormat = EnumUtils.enumFormat(FileType)
 }
