@@ -9,7 +9,7 @@ abstract class Message
 // incoming messages to actors
 case class MessageAddDocument(document: Document) extends Message
 
-case class MessageDocumentSearch(documentIds: Seq[Long], searchText: String) extends Message
+case class MessageDocumentSearch(documentBoxIds: Seq[Long], searchText: String) extends Message
 
 case class MessageDeleteDocument(documentId: Long) extends Message
 

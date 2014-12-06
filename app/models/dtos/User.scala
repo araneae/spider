@@ -12,12 +12,14 @@ case class User(userId: Option[Long],
                 countryId: Long,
                 activationToken: String,
                 verified: Boolean,
+                lastLogon: DateTime,
+                userProfilePersonalId: Option[Long],
                 otp: Option[String] = None,
                 otpExpiredAt: Option[DateTime] = None,
                 createdAt: DateTime = new DateTime(),
                 updatedAt: Option[DateTime] = None)
 
-object User extends Function12[Option[Long], String, String, String, String, Long, String, Boolean, Option[String], Option[DateTime], DateTime, Option[DateTime], User]
+object User extends Function14[Option[Long], String, String, String, String, Long, String, Boolean, DateTime, Option[Long], Option[String], Option[DateTime], DateTime, Option[DateTime], User]
 {
     implicit val userWrites : Writes[User] = (
             (JsPath \ "userId").write[Option[Long]] and
@@ -28,6 +30,8 @@ object User extends Function12[Option[Long], String, String, String, String, Lon
             (JsPath \ "countryId").write[Long] and
             (JsPath \ "activationToken").write[String] and
             (JsPath \ "verified").write[Boolean] and
+            (JsPath \ "lastLogon").write[DateTime] and
+            (JsPath \ "userProfilePersonalId").write[Option[Long]] and
             (JsPath \ "otp").write[Option[String]] and
             (JsPath \ "otpExpiredAt").write[Option[DateTime]] and
             (JsPath \ "createdAt").write[DateTime] and
@@ -43,6 +47,8 @@ object User extends Function12[Option[Long], String, String, String, String, Lon
           (JsPath \ "countryId").read[Long] and
           (JsPath \ "activationToken").read[String] and
           (JsPath \ "verified").read[Boolean] and
+          (JsPath \ "lastLogon").read[DateTime] and
+          (JsPath \ "userProfilePersonalId").readNullable[Long] and
           (JsPath \ "otp").readNullable[String] and
           (JsPath \ "otpExpiredAt").readNullable[DateTime] and
           (JsPath \ "createdAt").read[DateTime] and

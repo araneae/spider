@@ -9,4 +9,6 @@ abstract class QueryGenerator {
   
   def getFilter(ids: Seq[Long]) : Filter
   
+  def getFilter(fieldName:String, ids: Seq[Long]) : Filter
+  
 }

@@ -5,75 +5,82 @@ import play.api.libs.json._
 import org.joda.time.DateTime
 import enums.EmploymentType._
 import enums.JobStatusType._
-import enums.SalarayTermType._
+import enums.SalaryTermType._
 import enums.CurrencyType._
 
 /**
- * Defines a job requirement
+ * Defines job requirements
  *  
  */
-case class Job(  jobId: Option[Long],
-                 userId: Long,
+case class JobRequirement(  
+                 jobRequirementId: Option[Long],
+                 companyId: Long,
                  code: String,
                  refNumber: Option[String],
                  title: String,
                  employmentType: EmploymentType,
                  industryId: Long,
                  location: String,
-                 salaray: Double,
-                 currencyType: CurrencyType,
-                 salarayTerm: SalarayTermType,
+                 salaryMin: Double,
+                 salaryMax: Double,
+                 currency: CurrencyType,
+                 salaryTerm: SalaryTermType,
                  description: String,
-                 searchTerms: String,
-                 jobStatusType: JobStatusType,
+                 status: JobStatusType,
+                 positions: Int,
+                 jobTitleId: Long,
                  createdUserId: Long,
                  createdAt: DateTime = new DateTime(),
                  updatedUserId: Option[Long] = None,
                  updatedAt: Option[DateTime] = None)
 
-object Job extends Function18[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, Double, CurrencyType, 
-                                SalarayTermType, String, String, JobStatusType, Long, DateTime, Option[Long], Option[DateTime], Job]
+object JobRequirement extends Function20[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, Double, Double, CurrencyType, 
+                            SalaryTermType, String, JobStatusType, Int, Long, Long, DateTime, Option[Long], Option[DateTime], JobRequirement]
 {
-    implicit val jobWrites : Writes[Job] = (
-            (JsPath \ "jobId").write[Option[Long]] and
-            (JsPath \ "userId").write[Long] and
+    implicit val jobRequirementWrites : Writes[JobRequirement] = (
+            (JsPath \ "jobRequirementId").write[Option[Long]] and
+            (JsPath \ "companyId").write[Long] and
             (JsPath \ "code").write[String] and
             (JsPath \ "refNumber").write[Option[String]] and
             (JsPath \ "title").write[String] and
             (JsPath \ "employmentType").write[EmploymentType] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "location").write[String] and
-            (JsPath \ "salaray").write[Double] and
-            (JsPath \ "currencyType").write[CurrencyType] and
-            (JsPath \ "salarayTerm").write[SalarayTermType] and
+            (JsPath \ "salaryMin").write[Double] and
+            (JsPath \ "salaryMax").write[Double] and
+            (JsPath \ "currency").write[CurrencyType] and
+            (JsPath \ "salaryTerm").write[SalaryTermType] and
             (JsPath \ "description").write[String] and
-            (JsPath \ "searchTerms").write[String] and
-            (JsPath \ "jobStatusType").write[JobStatusType] and
+            (JsPath \ "status").write[JobStatusType] and
+            (JsPath \ "positions").write[Int] and
+            (JsPath \ "jobTitleId").write[Long] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
             (JsPath \ "updatedAt").write[Option[DateTime]]
-    )(unlift(Job.unapply))
+    )(unlift(JobRequirement.unapply))
       
-    implicit val jobReads : Reads[Job] = (
-          (JsPath \ "jobId").readNullable[Long] and
-          (JsPath \ "userId").read[Long] and
+    implicit val jobRequirementReads : Reads[JobRequirement] = (
+          (JsPath \ "jobRequirementId").readNullable[Long] and
+          (JsPath \ "companyId").read[Long] and
           (JsPath \ "code").read[String] and
           (JsPath \ "refNumber").readNullable[String] and
           (JsPath \ "title").read[String] and
           (JsPath \ "employmentType").read[EmploymentType] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "location").read[String] and
-          (JsPath \ "salaray").read[Double] and
-          (JsPath \ "currencyType").read[CurrencyType] and
-          (JsPath \ "salarayTerm").read[SalarayTermType] and
+          (JsPath \ "salaryMin").read[Double] and
+          (JsPath \ "salaryMax").read[Double] and
+          (JsPath \ "currency").read[CurrencyType] and
+          (JsPath \ "salaryTerm").read[SalaryTermType] and
           (JsPath \ "description").read[String] and
-          (JsPath \ "searchTerms").read[String] and
-          (JsPath \ "jobStatusType").read[JobStatusType] and
+          (JsPath \ "status").read[JobStatusType] and
+          (JsPath \ "positions").read[Int] and
+          (JsPath \ "jobTitleId").read[Long] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
-    )(Job)
+    )(JobRequirement)
     
 }

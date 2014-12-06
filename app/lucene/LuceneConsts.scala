@@ -14,6 +14,7 @@ trait LuceneConsts {
   
   val FIELD_DOC_ID = "docId"
   val FIELD_DOCUMENT_ID = "documentId"
+  val FIELD_DOCUMENT_BOX_ID = "documentBoxId"
   val FIELD_USER_ID = "userId"
   val FIELD_DOCUMENT_TYPE = "documentType"
   val FIELD_CONTENTS = "contents"

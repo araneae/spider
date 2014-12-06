@@ -4,25 +4,32 @@
        <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
      </div>
   </div>
-  <table class="table table-striped">
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Status</th>
-      <th class="col-md-1"></th>
-    </tr>
-    <tr ng-repeat="contact in ctrl.contacts">
-      <td>{{contact.firstName}}</td>
-      <td>{{contact.lastName}}</td>
-      <td>{{contact.email}}</td>
-      <td>{{ctrl.getStatusDisplayName(contact.status)}}</td>
-      <td>
-        <a href="" class="glyphicon glyphicon-send" data-placement="left" title="{{ctrl.getInviteTitle(contact.status)}}"  ng-show="ctrl.showSendInvite(contact)" ng-click="ctrl.goToInvite(contact)">
-        <a href="" class="glyphicon glyphicon-ok" data-placement="left" title="Accept"  ng-show="ctrl.showAccept(contact)" ng-click="ctrl.accept(contact)"></a>
-        <a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Reject"  ng-show="ctrl.showReject(contact)" ng-click="ctrl.reject(contact)"></a>
-      </td>
-    </tr>
-  </table>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">Contacts</div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th class="col-md-1"></th>
+      </tr>
+      <tr ng-repeat="contact in ctrl.contacts">
+        <td>{{contact.firstName}}</td>
+        <td>{{contact.lastName}}</td>
+        <td>{{contact.email}}</td>
+        <td>{{ctrl.getStatusDisplayName(contact.status)}}</td>
+        <td>
+          <a href="" class="glyphicon glyphicon-send" data-placement="left" title="{{ctrl.getInviteTitle(contact.status)}}"  ng-show="ctrl.showSendInvite(contact)" ng-click="ctrl.goToInvite(contact)">
+          <a href="" class="glyphicon glyphicon-ok" data-placement="left" title="Accept"  ng-show="ctrl.showAccept(contact)" ng-click="ctrl.accept(contact)"></a>
+          <a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Reject"  ng-show="ctrl.showReject(contact)" ng-click="ctrl.reject(contact)"></a>
+        </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 

@@ -1,0 +1,109 @@
+<div ng-controller="UserProfileSettingCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">Profile Settings</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idUserSettingsForm" name="UserSettingsForm" class="form-horizontal" role="form"
+        ng-submit="ctrl.save()">
+        <div class="form-group">
+          <label id="lblEmail" for="email" class="col-md-2 control-label">Email</label>
+          <div class="row">
+            <div class="col-md-5">
+              <input type="email" class="form-control" name="email" id="idEmail" placeholder="Enter email"
+                   ng-model="ctrl.userProfile.email" required ng-readonly="ctrl.isEmailReadOnly()">
+            </div>
+            <div class="col-md-2" ng-show="ctrl.isShowVerifyCode()">
+              <input type="text" class="form-control" name="verifyCode" id="idVerifyCode" placeholder="Enter verification code"
+                            ng-model="ctrl.verifyCode">
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-default" id="btnChangeEmail" ng-click="ctrl.changeEmail()" ng-show="ctrl.isShowChangeButton()">Change</button>
+              <button type="button" class="btn btn-default" id="btnSendVerificationCode" ng-click="ctrl.sendEmailVerificationCode()" ng-show="ctrl.isShowSendCodeButton()">Send Verification Code</button>
+              <button type="button" class="btn btn-default" id="btnChangeEmail" ng-click="ctrl.updateEmail()" ng-show="ctrl.isShowUpdateButton()">Update</button>
+            </div>
+          </div>
+        </div>
+        <hr/>
+        <div class="form-group">
+          <label id="lblAboutMe" for="aboutMe" class="col-md-2 control-label">About Me</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="aboutMe" id="idAboutMe" placeholder="Enter something about yourself"
+                   ng-model="ctrl.userProfile.aboutMe">
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblPicture" for="picture" class="col-md-2 control-label">Picture</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="email" id="idPicture" placeholder="Enter picture url"
+                   ng-model="ctrl.userProfile.picture">
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblXrayTerms" for="xrayTerms" class="col-md-2 control-label">Xray Terms</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="xrayTerms" id="idXrayTerms" placeholder="Enter xray terms"
+                   ng-model="ctrl.userProfile.xrayTerms" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblMobile" for="mobile" class="col-md-2 control-label">Mobile</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" name="mobile" id="idMobile" placeholder="Enter mobile number"
+                   ng-model="ctrl.userProfile.mobile">
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblAlternateEmail" for="alternateEmail" class="col-md-2 control-label">Alternate Email</label>
+          <div class="col-md-4">
+            <input type="email" class="form-control" name="alternateEmail" id="idAlternateEmail" placeholder="Enter alternate email"
+                   ng-model="ctrl.userProfile.alternateEmail">
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblGender" for="gender" class="col-md-2 control-label">Gender</label>
+          <div class="col-md-4">
+           <select class="form-control" name="gender" id="idGender" ng-options="genderType as genderType for genderType in ctrl.EnumService.enumTypes.GenderType" 
+                   ng-model="ctrl.userProfile.gender"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblMaritalStatus" for="maritalStatus" class="col-md-2 control-label">Marital Status</label>
+          <div class="col-md-4">
+           <select class="form-control" name="maritalStatus" id="idMaritalStatus" ng-options="maritalStatusType as maritalStatusType for maritalStatusType in ctrl.EnumService.enumTypes.MaritalStatusType" 
+                   ng-model="ctrl.userProfile.maritalStatus"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblBorthday" for="birthday" class="col-md-2 control-label">Birthday</label>
+          <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-3">
+                    <select-month-day ng-model="ctrl.userProfile.birthDay"></select-month-day>
+                </div>
+                <div class="col-md-3">
+                   <select-month ng-model="ctrl.userProfile.birthMonth"></select-month>
+                </div>
+                <div class="col-md-3">
+                   <select-year ng-model="ctrl.userProfile.birthYear"></select-year>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!-- <pre>{{ ctrl.userProfile | json }}</pre> -->
+        <div class="form-group">
+          <div class="col-md-offset-1 col-md-8">
+            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!UserSettingsForm.$valid || ctrl.emailChanged'>Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

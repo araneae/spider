@@ -5,23 +5,30 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-2">
-      <table class="table table-striped">
-        <tr ng-repeat="tag in ctrl.userTags">
-           <td><a href="" ng-click="ctrl.goToTag(tag.userTagId)">{{tag.name}}</a></td>
-        </tr>
-      </table>
-      <hr>
-      <div>
-          <a href="" ng-show="ctrl.showUserTagManagement()"  ng-click="ctrl.goToUserTagManagement()">Manage tags</a>
+    <div class="col-md-3">
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <div class="panel-title">Tags</div>
+         </div>
+         <div class="panel-body">
+            <table class="table table-striped">
+              <tr ng-repeat="tag in ctrl.userTags">
+                <td><a href="" ng-click="ctrl.goToTag(tag.userTagId)">{{tag.name}}</a></td>
+              </tr>
+            </table>
+            <hr>
+            <div>
+              <a href="" ng-show="ctrl.showUserTagManagement()"  ng-click="ctrl.goToUserTagManagement()">Manage tags</a>
+            </div>
+            <div>
+              <a href="" ng-click="ctrl.goToUserTagCreate()">Create new tag</a>
+            </div>
+            <hr>
+            <div ui-view="viewTag"></div>
+         </div>
       </div>
-      <div>
-          <a href="" ng-click="ctrl.goToUserTagCreate()">Create new tag</a>
-      </div>
-      <hr>
-      <div ui-view="viewTag"></div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
       <div ui-view="viewDocument"></div>
      </div>
   </div>

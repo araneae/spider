@@ -3,7 +3,6 @@ package controllers
 import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
 import models.dtos.User
 import play.api.data.Form
 import play.api.data.Forms._
@@ -13,9 +12,13 @@ import play.api.mvc.Controller
 import traits._
 import play.api.mvc.Flash
 import models.repositories._
+import models.dtos._
 import actors._
 import utils._
 import services._
+import enums.OwnershipType._
+import enums.OwnershipType
+import org.joda.time.DateTime
 
 object Application extends Controller with Secured with AkkaActor {
   
@@ -78,7 +81,8 @@ object Application extends Controller with Secured with AkkaActor {
                         case Some(country) =>
                           val token = TokenGenerator.token
                           val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-                          val user = User(None, first_name, last_name, email, encryptedPassword, country.countryId.get, token, false, None, None)
+                          val userProfilePersonalId = UserProfilePersonalRepository.create(UserProfilePersonal(None, Configuration.defaultXrayTerms))
+                          val user = User(None, first_name, last_name, email, encryptedPassword, country.countryId.get, token, false, new DateTime(), Some(userProfilePersonalId))
                           val userId = UserRepository create user
                         
                           val savedUser = UserRepository find userId
@@ -90,6 +94,8 @@ object Application extends Controller with Secured with AkkaActor {
                           }
                           // create default message boxes
                           MessageBoxRepository.createDefaults(userId, userId)
+                          val documentBoxId = DocumentBoxRepository.create(DocumentBox(None, "Default", Some("Default Store"), true, userId))
+                          UserDocumentBoxRepository.create(UserDocumentBox(None, documentBoxId, userId, OwnershipType.OWNED, true, false, None, userId))
                           Redirect(routes.AuthController.login).flashing(Flash(formData.data) + ("success" -> "Activation email has been sent."))
                         case None =>
                           Redirect(routes.Application.signup).flashing(Flash(formData.data) + ("error" -> "Country is not available"))

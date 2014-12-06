@@ -56,10 +56,14 @@
         <script src='@routes.Assets.at("javascripts/directives/FileDownload.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/directives/AlertBar.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/directives/MessageBar.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/SelectYear.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/SelectMonth.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/SelectMonthDay.js")' type="text/javascript"></script>
         
         <script src='@routes.Assets.at("javascripts/filters/Newline2BR.js")' type="text/javascript"></script>
         
         <script src='@routes.Assets.at("javascripts/services/ErrorService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/services/EnumService.js")' type="text/javascript"></script>
         
         <script src='@routes.Assets.at("javascripts/controllers/ContextMenuCtrl.js")' type="text/javascript"></script>
         
@@ -75,6 +79,16 @@
         <script src='@routes.Assets.at("javascripts/controllers/DomainCtrl.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/DomainCreateCtrl.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/DomainEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/JobTitleService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobTitleCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobTitleCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobTitleEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/JobRequirementService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementEditCtrl.js")' type="text/javascript"></script>
         
         <script src='@routes.Assets.at("javascripts/services/UserSkillService.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/UserSkillCtrl.js")' type="text/javascript"></script>
@@ -98,6 +112,12 @@
         <script src='@routes.Assets.at("javascripts/controllers/DatabaseViewCtrl.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/DatabaseShareCtrl.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/DatabaseManageShareCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/RepositoryShareCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/SharedRepositoryService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedRepositoryCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedDocumentViewCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedDocumentXRayCtrl.js")' type="text/javascript"></script>
         
         <script src='@routes.Assets.at("javascripts/services/UserTagService.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/UserTagCtrl.js")' type="text/javascript"></script>
@@ -110,6 +130,12 @@
         
         <script src='@routes.Assets.at("javascripts/services/DatabaseSearchService.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/DatabaseSearchCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/CompanyService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanySetupCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/UserProfileSettingService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserProfileSettingCtrl.js")' type="text/javascript"></script>
         
         <script src='@routes.Assets.at("javascripts/services/MessageService.js")' type="text/javascript"></script>
 
@@ -150,7 +176,8 @@
           </div> <!-- /right column -->
         </div> <!-- /.row main-->
       </div><!-- /container-fluid -->
-
+      <br/>
+      <br/>
       <div id="footer" class="container-fluid footer">
          <div class="row-fluid">
            <div class="col-lg-2"></div>

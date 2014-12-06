@@ -82,6 +82,7 @@ object AuthController extends Controller with Secured {
                                       ("html" -> s"Click <a href='/activation/${token}/resend'>here</a> to resend activation email."))
                       } 
                       else {
+                        UserRepository.updateLastLogon(user.userId.get)
                         if (path.isEmpty())
                           Redirect(routes.Application.home).withSession(Security.username -> userName, "userId" -> userId, "name" -> firstName)
                         else

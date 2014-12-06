@@ -6,7 +6,7 @@ class DatabaseViewCtrl
         @$log.debug "constructing DatabaseViewCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
-        @contents = {}
+        @contents = ""
         # load objects from server
         @loadDocument(@documentId)
         @loadDocumentContents(@documentId)
@@ -20,8 +20,8 @@ class DatabaseViewCtrl
               @document = data
           ,
           (error) =>
-              @$log.error "Unable to get document: #{error}"
               @ErrorService.error("Unable to fetch data from server!")
+              @$log.error "Unable to get document: #{error}"
           )
 
     loadDocumentContents: (documentId) ->

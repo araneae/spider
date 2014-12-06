@@ -48,4 +48,14 @@ object EmailService {
      mail.setFrom("Araneae Team <noreply@araneae.com>")
      mail.sendHtml(content.body)
    }
+   
+   def sendChangeEmailOtp(name: String, email: String, otp: String) = {
+     println("in EmailService.sendChangeEmailOtp()")
+     val content = views.html.email.changeEmailOtp(name)(otp)(Configuration.applicationBaseUrl)
+     val mail = use[MailerPlugin].email
+     mail.setSubject(s"${name}, your one time password")
+     mail.setRecipient(email)
+     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.sendHtml(content.body)
+   }
 }

@@ -34,7 +34,7 @@ class Domains(tag: Tag) extends Table[Domain](tag, "domain") {
   override def * = (domainId.?, industryId, name, code, description, createdUserId, createdAt, updatedUserId, updatedAt) <> (Domain.tupled, Domain.unapply)
   
     // foreign keys and indexes
-  def industry = foreignKey("fk_on_skill_industry_id", industryId, TableQuery[Industries])(_.industryId)
+  def industry = foreignKey("fk_on_domain_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
   def uniqueCode = index("idx_unique_on_skill_code", code, unique = true)
   

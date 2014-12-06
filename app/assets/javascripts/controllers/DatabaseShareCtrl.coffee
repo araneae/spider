@@ -92,7 +92,7 @@ class DatabaseShareCtrl
     
     goToManageShares: () ->
       @$log.debug "DatabaseShareCtrl.goToManageShares()"
-      @$state.go("manageDatabaseShares", {documentId: @documentId})
+      @$state.go("databaseManageShares", {documentId: @documentId})
     
     formatDate: (date) ->
       dateString = null

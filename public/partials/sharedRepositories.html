@@ -1,0 +1,33 @@
+<div ng-controller="SharedRepositoryCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">Shared Repository Documents</div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped table-fixed">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th class="col-md-2">Shared By</th>
+          <th class="col-md-3"></th>
+        </tr>
+        <tr ng-repeat="document in ctrl.documents">
+          <td><a href="" data-placement="left" title="{{document.name}}">{{document.name}}</a></td>
+          <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
+          <td data-placement="left" title="{{document.sharedBy}}">{{document.sharedBy}}</td>
+          <td> 
+            <a href="" class="glyphicon glyphicon-folder-open" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
+            <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy to my repository" ng-click="ctrl.copyDocument(document.documentId)"></a>
+            <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a> 
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+

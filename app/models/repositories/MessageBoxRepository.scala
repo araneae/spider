@@ -21,7 +21,7 @@ object MessageBoxRepository {
   }
   
   def createDefaults(userId: Long, createdUserId: Long) = {
-    MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Messages", createdUserId))
+    MessageBoxRepository.create(MessageBox(None, userId, INBOX, "Inbox", createdUserId))
     MessageBoxRepository.create(MessageBox(None, userId, SENTITEMS, "Sent", createdUserId)) 
     MessageBoxRepository.create(MessageBox(None, userId, TRASH, "Trash", createdUserId)) 
   }

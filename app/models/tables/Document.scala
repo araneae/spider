@@ -18,6 +18,8 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
 
   def documentId = column[Long]("document_id", O.PrimaryKey, O.AutoInc)
   
+  def documentBoxId = column[Long]("document_box_id", O.NotNull)
+  
   def name = column[String]("name", O.NotNull)
   
   def documentType = column[DocumentType]("document_type", O.NotNull)
@@ -40,9 +42,10 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
   
   def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (documentId.?, name, documentType, fileType, fileName, physicalName, description, signature, createdUserId, createdAt, updatedUserId, updatedAt) <> (Document.tupled, Document.unapply)
+  override def * = (documentId.?, documentBoxId, name, documentType, fileType, fileName, physicalName, description, signature, createdUserId, createdAt, updatedUserId, updatedAt) <> (Document.tupled, Document.unapply)
   
   // foreign keys and indexes
+  def documentBox = foreignKey("fk_document_on_document_box_id", documentBoxId, TableQuery[DocumentBoxes])(_.documentBoxId)
   
   def createdBy = foreignKey("fk_on_document_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   

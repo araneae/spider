@@ -20,11 +20,11 @@ object DocumentQueryGenerator extends QueryGenerator with LuceneConsts {
     query
   }
   
-  override def getFilter(ids : Seq[Long]) : Filter = {
+  override def getFilter(fieldName: String, ids : Seq[Long]) : Filter = {
     val booleanQuery = new BooleanQuery();
     if (ids.length > 0) booleanQuery.setMinimumNumberShouldMatch(1)
     ids.map { docId =>
-        val term = new TermQuery(new Term(FIELD_DOCUMENT_ID, docId.toString))
+        val term = new TermQuery(new Term(fieldName, docId.toString))
         booleanQuery.add(term, BooleanClause.Occur.SHOULD);
     }
     
@@ -33,6 +33,10 @@ object DocumentQueryGenerator extends QueryGenerator with LuceneConsts {
     
     val filter = new QueryWrapperFilter(booleanQuery)
     filter
+  }
+  
+  override def getFilter(ids : Seq[Long]) : Filter = {
+    getFilter(FIELD_DOCUMENT_ID, ids)
   }
 
 }

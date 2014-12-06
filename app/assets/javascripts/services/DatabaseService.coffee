@@ -53,11 +53,11 @@ class DatabaseService
             )
         deferred.promise
 
-    searchDocument: (documentId, searchText) ->
-        @$log.debug "DatabaseService.search(#{documentId} #{searchText})"
+    searchDocument: (documentId) ->
+        @$log.debug "DatabaseService.search(#{documentId})"
         deferred = @$q.defer()
 
-        @$http.get("/database/document/#{documentId}/search/#{searchText}")
+        @$http.get("/database/document/#{documentId}/search")
         .success((data, status, headers) =>
                 @$log.info("Successfully searched - status #{status}")
                 deferred.resolve(data)
@@ -111,13 +111,27 @@ class DatabaseService
                 deferred.reject(data);
             )
         deferred.promise
+    
+    getRepositoryShareContacts: () ->
+        @$log.debug "DatabaseService.getRepositoryShareContacts()"
+        deferred = @$q.defer()
+        @$http.get("/database/repository/contact")
+        .success((data, status, headers) =>
+                @$log.info("Successfully fetched contacts - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to fetch contacts - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
 
     copyDocument: (documentId) ->
         @$log.debug " DatabaseService.copyDocument(#{documentId})"
         deferred = @$q.defer()
         @$http.post("/database/document/#{documentId}/copy")
         .success((data, status, headers) =>
-                @$log.info("Successfully copy document - status #{status}")
+                @$log.info("Successfully copied document - status #{status}")
                 deferred.resolve(data)
             )
         .error((data, status, headers) =>
@@ -150,6 +164,20 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to update shares - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    shareRepository: (share) ->
+        @$log.debug "DatabaseService.shareRepository(#{share})"
+        deferred = @$q.defer()
+        @$http.post("/database/repository/share", share)
+        .success((data, status, headers) =>
+                @$log.info("Successfully shared repository - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to share repository - status #{status}")
                 deferred.reject(data);
             )
         deferred.promise

@@ -21,7 +21,7 @@ class DomainEditCtrl
                 @industries.push(@industry)
               ,
               (error) =>
-                @ErrorService.error("Oops, something wrong! Unable to fetch data from server!")
+                @ErrorService.error()
                 @$log.error "Unable to fetch data from server: #{error}"
           )
     

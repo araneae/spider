@@ -1,0 +1,41 @@
+<div ng-controller="CompanySetupCtrl as ctrl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Setup Company</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCompanySetupForm" name="CompanySetupForm" class="form-horizontal" role="form"
+            ng-submit="ctrl.save()">
+        <div class="form-group">
+            <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="name" id="idName" placeholder="Enter name"
+                      ng-model="ctrl.company.name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblCode" for="code" class="col-md-2 control-label">Address</label>
+            <div class="col-md-6">
+            <input type="text" class="form-control" name="address" id="idAddress" placeholder="Enter address"
+                       ng-model="ctrl.company.code" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblDescription" for="description" class="col-md-2 control-label">Telephone</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="telephone" id="idTelephone" placeholder="Enter telephone"
+                      ng-model="ctrl.company.telephone" required>
+            </div>
+        </div>
+        <!--  <pre>{{ ctrl.company | json }}</pre>  -->
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CompanySetupForm.$valid'>Save</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

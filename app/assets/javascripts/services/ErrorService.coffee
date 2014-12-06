@@ -6,13 +6,16 @@ class ErrorService
     @defaultConfig = { headers: @headers }
 
     constructor: (@$log) ->
-        @$log.debug "constructing MessageService"
+        @$log.debug "constructing ErrorService"
         @message
         @type='success'
 
     error: (msg) ->
         @$log.debug "ErrorService.error(#{msg})"
-        @message = msg
+        if (msg)
+          @message = msg
+        else
+          @message = "Oops, something wrong. Unable to fetch data from server!"
         @type='error'
 
     success: (msg) ->

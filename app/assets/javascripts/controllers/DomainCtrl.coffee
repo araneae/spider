@@ -32,7 +32,16 @@ class DomainCtrl
         @$log.debug "DomainCtrl.listDomains()"
         @domain = {}
         @industry = {}
-        @domains = @Domain.query()
+        @domains = @Domain.query().$promise
+          .then(
+            (data) =>
+              @$log.debug "Promise returned #{data.length} Domains"
+              @domains = data
+            ,
+            (error) =>
+              @ErrorService.error("Opps, something wrong. Unable to fetch data from server!")
+              @$log.error "Unable to get fetch Domains: #{error}"
+          )
 
     refresh: () ->
         @listDomains()

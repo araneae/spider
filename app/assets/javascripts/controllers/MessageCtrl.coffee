@@ -15,6 +15,7 @@ class MessageCtrl
            multiple: true
         }
         @filterMessageBoxId
+        @selectedMessageBoxName
         # load list of messages from server
         @listMessageBoxes()
         @listMessages()
@@ -84,20 +85,26 @@ class MessageCtrl
                 @messageBoxes.sort((a, b) =>
                                         a.name > b.name
                 )
+                @selectedMessageBoxName = @getMessageBoxName(@filterMessageBoxId)
             ,
             (error) =>
                 @$log.error "Unable to get messages: #{error}"
                 @ErrorService.error("Unable to fetch message box information from server!")
             )
 
+    getMessageBoxName: (messageBoxId) ->
+      for box in @messageBoxes
+          return box.name if box.messageBoxId is messageBoxId
+
     composeMessage: () ->
         @$log.debug "MessageCtrl.composeMessage()"
         @newMessage={}
         @filterMessageBoxId = @inbox.messageBoxId if @filterMessageBoxId != @inbox.messageBoxId
+        @selectedMessageBoxName = @getMessageBoxName(@filterMessageBoxId)
 
     discard: () ->
         @$log.debug "MessageCtrl.discard()"
-        delete @newMessage if @newMessage 
+        delete @newMessage if @newMessage
     
     send: () ->
         @$log.debug "MessageCtrl.send()"
@@ -114,6 +121,7 @@ class MessageCtrl
     filterMessage: (messageBoxId) ->
       @$log.debug "MessageCtrl.filterMessage(#{messageBoxId})"
       @filterMessageBoxId = messageBoxId
+      @selectedMessageBoxName = @getMessageBoxName(messageBoxId)
       @discard()
 
     goToLabelCreate: () ->

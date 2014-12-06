@@ -1,8 +1,8 @@
 package enums
 
-object SalarayTermType extends BaseEnumeration {
-  type SalarayTermType = Value
+object SalaryTermType extends BaseEnumeration {
+  type SalaryTermType = Value
   val WEEK, MONTH, ANNUM = Value
   
-  implicit val enumTypeFormat = EnumUtils.enumFormat(SalarayTermType)
+  implicit val enumTypeFormat = EnumUtils.enumFormat(SalaryTermType)
 }

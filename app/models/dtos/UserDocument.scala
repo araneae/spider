@@ -31,7 +31,7 @@ case class UserDocument(
 
 object UserDocument extends Function15[Option[Long],Long, Long, OwnershipType, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Long, DateTime, Option[DateTime], Option[Long], Option[DateTime], UserDocument]
 {
-    implicit val documentWrites : Writes[UserDocument] = (
+    implicit val userDocumentWrites : Writes[UserDocument] = (
             (JsPath \ "userDocumentId").write[Option[Long]] and
             (JsPath \ "userId").write[Long] and
             (JsPath \ "documentId").write[Long] and
@@ -49,7 +49,7 @@ object UserDocument extends Function15[Option[Long],Long, Long, OwnershipType, B
             (JsPath \ "updatedAt").write[Option[DateTime]]
     )(unlift(UserDocument.unapply))
 
-    implicit val documentReads : Reads[UserDocument] = (
+    implicit val userDocumentReads : Reads[UserDocument] = (
           (JsPath \ "userDocumentId").readNullable[Long] and
           (JsPath \ "userId").read[Long] and
           (JsPath \ "documentId").read[Long] and

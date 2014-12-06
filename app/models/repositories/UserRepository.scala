@@ -86,5 +86,42 @@ object UserRepository {
         q update ((password, None, None, Some(new DateTime())))
     }
   }
+  
+  def updateEmail(userId: Long, email: String) = {
+    DB.withSession {
+      implicit session =>
+        val q = for {
+          u <- query filter (_.userId === userId)
+        } yield (u.email, u.otp, u.otpExpiredAt, u.updatedAt)
+        
+        q update ((email, None, None, Some(new DateTime())))
+    }
+  }
+  
+  def updateLastLogon(userId: Long) = {
+    DB.withSession {
+      implicit session =>
+        val q = for {
+          u <- query filter (_.userId === userId)
+        } yield (u.lastLogon, u.updatedAt)
+        
+        val now = new DateTime()
+        q update ((now, Some(now)))
+    }
+  }
+  
+  def findUserProfilePersonal(userId: Long): Option[UserProfilePersonal] = {
+    DB.withSession {
+      implicit session =>
+        val q = for {
+          u <- query filter (_.userId === userId)
+          up <- u.userProfilePersonal
+        } yield (up)
+        
+        val result = q.list.map{case u => u}
+        if (result.length > 0) Some(result(0))
+        else None
+    }
+  }
 }
 

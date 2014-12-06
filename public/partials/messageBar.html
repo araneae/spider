@@ -7,18 +7,18 @@
   <a href="" class="glyphicon glyphicon-unchecked" ng-hide="message.important" data-placement="left" title="Not Important" ng-click="markImportant()"></a>
   <a href="" class="glyphicon glyphicon-collapse-up" ng-show="message.important" data-placement="left" title="Important" ng-click="removeImportant()"></a>
   <span class="dropdown" data-placement="left" title="Move to">
-    <a href="#" class="dropdown-toggle glyphicon glyphicon-briefcase" type="button" id="dropdownMenu" data-toggle="dropdown"></a>
+    <a href="" class="dropdown-toggle glyphicon glyphicon-briefcase" type="button" id="dropdownMenu" data-toggle="dropdown"></a>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
       <li role="presentation" class="dropdown-header">Move to:</li>
       <li role="presentation" class="divider"></li>
       <li ng-repeat="mbox in messageBoxes">
-        <a role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="moveTo(mbox.messageBoxId)">{{mbox.name}}</a>
+        <a role="presentation"><a role="menuitem" tabindex="-1" href="" ng-click="moveTo(mbox.messageBoxId)">{{mbox.name}}</a>
       </li>
     </ul>
   </span>
  </span>
  <div class="clickable col-md-10" data-placement="left" title="{{message.subject}}">
-   <a href="#" ng-click="toggleDetail()"></a>
+   <a href="" ng-click="toggleDetail()"></a>
     <span ng-show="message.read">
       <span class="col-md-3 ellipsis">{{message.sentBy}}</span>
       <span class="col-md-6 ellipsis">{{message.subject}}</span>

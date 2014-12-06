@@ -1,4 +1,8 @@
-<div class="col-md-8">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">Manage Tags</div>
+  </div>
+  <div class="panel-body">
     <table class="table table-striped">
       <tr ng-repeat="tag in ctrl.userTagsMgm" ng-disabled="true">
         <td>
@@ -16,5 +20,5 @@
         <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Update</button>
       </div>
     </div>
-    <hr>
+  </div>
 </div>

@@ -1,7 +1,7 @@
 
 class ContextMenuCtrl
 
-    constructor: (@$log, @$rootScope) ->
+    constructor: (@$log, @$rootScope, @$state) ->
         @$log.debug "constructing ContextMenuCtrl"
         @searchText
 

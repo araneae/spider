@@ -11,20 +11,15 @@ class IndexWriterActor extends Actor with LuceneConsts {
   
   def receive = {
       case MessageAddDocument(document) => {
-            document.documentId match {
-              case Some(docId) => {
-                      val filePath =  Configuration.uploadFilePath(document.physicalName)
-                      val textData = FileParserService.parse(document.fileType, filePath)
-                      textData match {
-                            case Some(contents) =>  val writer = getWriter
-                                      val document = LuceneDocumentService.getTextDocument(docId, contents)
-                                      writer.addOrUpdateDocument(DOC_TYPE_TEXT, docId, document)
-                                      writer.close
-                            case None =>
-                          }
-                    }
-              case None =>
-            }
+            val filePath =  Configuration.uploadFilePath(document.physicalName)
+            val textData = FileParserService.parse(document.fileType, filePath)
+            textData match {
+                  case Some(contents) =>  val writer = getWriter
+                            val luceneDocument = LuceneDocumentService.getTextDocument(document, contents)
+                            writer.addOrUpdateDocument(DOC_TYPE_TEXT, document.documentId.get, luceneDocument)
+                            writer.close
+                  case None =>
+                }
           }
       
       case MessageDeleteDocument(docId) => {

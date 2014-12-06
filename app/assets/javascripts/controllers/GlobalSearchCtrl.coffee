@@ -8,5 +8,9 @@ class GlobalSearchCtrl
     search: () ->
         @$log.debug "GlobalSearchCtrl.search()"
         @$rootScope.$broadcast('globalSearch', {searchText: @searchText})
+        
+    clearSearchText: () ->
+      @searchText=""
+      @$rootScope.$broadcast('globalSearch', {searchText: @searchText})
 
 controllersModule.controller('GlobalSearchCtrl', GlobalSearchCtrl)

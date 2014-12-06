@@ -18,7 +18,9 @@ class DatabaseCtrl
                                     @refresh() if data.menuItem is "refresh"
                                     @goToUpload() if data.menuItem is "uploadFile"
                                     @goToSearch() if data.menuItem is "advancedSearch"
+                                    @goToShareRepository() if data.menuItem is "shareRepository"
         )
+        
         # load list of documents from server
         @listDocuments()
     
@@ -34,7 +36,7 @@ class DatabaseCtrl
             (error) =>
                 @$log.error "Unable to get documents: #{error}"
             )
-    
+        
     refresh: () ->
       @listDocuments()
     
@@ -65,6 +67,10 @@ class DatabaseCtrl
     goToSearch: () ->
         @$log.debug "DatabaseCtrl.goToSearch()"
         @$state.go("databaseSearch")
+  
+    goToShareRepository: () ->
+        @$log.debug "DatabaseCtrl.goToShareRepository()"
+        @$state.go("shareRepository")
 
     showRemoveAlert: (documentId) ->
         @$log.debug "DatabaseCtrl.showRemoveAlert(#{documentId})"

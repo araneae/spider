@@ -18,21 +18,21 @@ class DomainCreateCtrl
                 @industries = data
              ,
              (error) =>
-                @ErrorService.error("Oops, something wrong! Unable to fetch data from server!")
+                @ErrorService.error()
                 @$log.error "Unable to get Industries: #{error}"
              )
     
     save: () ->
         @$log.debug "DomainCreateCtrl.save()"
         @domain.industryId = @industry.industryId
-        domain = new @Domain(@domain);
+        domain = new @Domain(@domain)
         domain.$save().then( 
           (data) =>
             @$log.debug "server returned #{data} Domain"
             @$state.go("domain")
           ,
           (error) =>
-            @ErrorService.error("Oops, something wrong! Unable to create #{@industry.name}")
+            @ErrorService.error("Oops, something wrong! Unable to create #{@domain.name}")
             @$log.error "Unable to create Industry: #{error}"
         )
 

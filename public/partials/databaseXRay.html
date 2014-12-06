@@ -1,17 +1,25 @@
 <div ng-controller="DatabaseXRayCtrl as ctrl">
- <h3><span class="label label-default">{{ctrl.document.name}}</span></h3>
-  <div ng-repeat="result in ctrl.results">
-   <table class="table table-striped">
-      <tr ng-repeat="snippet in result.snippets">
-        <td>
-          <p class="text-primary" ng-bind-html="snippet"></p>
-        </td>
-      </tr>
-   </table>
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
   </div>
-  <div class="form-group clearfix">
-    <div class="col-sm-offset-4 col-sm-8 text-right">
-      <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.done()">Done</button>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <b class="panel-title">{{ctrl.document.name}}</b>
+      <div class="pull-right">
+        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.done()">Done</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div ng-repeat="result in ctrl.results">
+      <table class="table table-striped">
+        <tr ng-repeat="snippet in result.snippets">
+          <td>
+            <p class="text-primary" ng-bind-html="snippet"></p>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

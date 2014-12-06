@@ -1,19 +1,20 @@
-<div class="row">
-  <div ng-controller="MessageCtrl as ctrl">
-     <div class="row">
-        <div class="col-md-offset-3 col-md-6">
-          <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
-        </div>
+<div ng-controller="MessageCtrl as ctrl">
+  <div class="row">
+     <div class="col-md-offset-3 col-md-6">
+       <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
      </div>
-     <div class="raw">
-        <div class="col-md-3">
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <button type="button" class="btn btn-success btn-block" id="btnSave" ng-click="ctrl.composeMessage()">Compose</button>
+          </div>
           <table class="table table-striped">
             <tr>
-              <td class="clearfix">
-                  <a href="" class="pull-left" ng-click="ctrl.filterMessage(ctrl.inbox.messageBoxId)">{{ctrl.inbox.name}}</a>
-                  <div class="btn-group pull-right">
-                    <a href="" class="glyphicon glyphicon-plus pull-right" data-placement="left" title="New" ng-click="ctrl.composeMessage()"></a>
-                  </div>
+              <td>
+                <a href="" class="pull-left" ng-click="ctrl.filterMessage(ctrl.inbox.messageBoxId)">{{ctrl.inbox.name}}</a>
               </td>
             </tr>
             <tr>
@@ -42,9 +43,17 @@
           <hr>
           <div ui-view="viewLabel"></div>
         </div>
-        <div class="col-md-9">
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">{{ctrl.selectedMessageBoxName}}</div>
+        </div>
+        <div class="panel-body">
           <div ui-view="viewMessageList"></div>
         </div>
+      </div>
     </div>
   </div>
 </div>

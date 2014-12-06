@@ -11,6 +11,7 @@ object Configuration {
   private val lucenePath = Play.current.configuration.getString("lucene.index.path").getOrElse("/tmp/lucene")
   private val timeoutInMins : Long = Play.current.configuration.getLong("sessionTimeoutInMins").getOrElse(10)
   private val otpTimeoutInMins : Int = Play.current.configuration.getInt("otp.password.timeout.mins").getOrElse(10)
+  private val xrayTerms: String = Play.current.configuration.getString("default.xray.terms").getOrElse("")
   private val timeoutInMillis = timeoutInMins * 1000 * 60
   
   def applicationTitle = appTitle
@@ -32,4 +33,6 @@ object Configuration {
   def sessionTimeoutInMillis = timeoutInMillis
   
   def otpPasswordTimeoutInMins = otpTimeoutInMins
+  
+  def defaultXrayTerms = xrayTerms
 }

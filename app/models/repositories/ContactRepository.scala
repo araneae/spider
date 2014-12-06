@@ -13,6 +13,7 @@ object ContactRepository {
   
   val query = TableQuery[Contacts]
   val userDocument = TableQuery[UserDocuments]
+  val userDocumentBox = TableQuery[UserDocumentBoxes]
   
   def create(contact: Contact) = {
     DB.withSession {
@@ -108,6 +109,33 @@ object ContactRepository {
                             ContactWithDocument(userId, email, documentId, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
                           case _ =>
                             ContactWithDocument(userId, email, None, None, None, None, None, None)
+                        }
+                   }
+        }
+    }
+  }
+  
+  def findAllWithDocumentBoxShareAttributes(userId: Long, documentBoxId: Long): Seq[ContactWithDocumentBox] = {
+    DB.withSession {
+      implicit session =>
+        val q = for {
+          (c, d) <- query leftJoin userDocumentBox on ((c, d) =>
+                                          c.contactUserId === d.userId &&
+                                          d.documentBoxId === documentBoxId) if c.userId === userId
+          cu <- c.contact
+        } yield (cu.userId, cu.email, d.?)
+        
+        q.list.map{case (userId, email, d) 
+                   => {
+                        d match {
+                          case (userDocumentBoxId, documentBoxId, usrId, ownershipType, canCopy, isLimitedShare, shareUntilEOD, createdUserId, createdAt, updatedUserId, updatedAt) =>
+                            val shared = userDocumentBoxId match {
+                              case Some(id) => true
+                              case None => false
+                            }
+                            ContactWithDocumentBox(userId, email, shared, canCopy, isLimitedShare, shareUntilEOD)
+                          case _ =>
+                            ContactWithDocumentBox(userId, email, false, None, None, None)
                         }
                    }
         }

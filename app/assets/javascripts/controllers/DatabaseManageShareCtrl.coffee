@@ -46,7 +46,7 @@ class DatabaseManageShareCtrl
           )
 
     loadShareContacts: (documentId) ->
-        @$log.debug "DatabaseShareCtrl.loadShareContacts(#{documentId})"
+        @$log.debug "DatabaseManageShareCtrl.loadShareContacts(#{documentId})"
         @DatabaseService.getShareContacts(documentId).then(
             (data) => 
               @$log.debug "Promise returned #{data} contacts"

@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import play.api.libs.json._
 import play.api.mvc.Controller
 import traits.Secured
-import play.api.libs.json._
 import models.tables._
 import models.repositories._
 import models.dtos._

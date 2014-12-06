@@ -37,7 +37,7 @@ class LuceneSearcher(indexDir: String) extends LuceneConsts {
   }
   
   def getDocuments(query: Query, filter: Filter) : Option[Seq[Document]] = {
-    println(s"LuceneSearcher.getDocuments(${query}, ${filter})")
+    //println(s"LuceneSearcher.getDocuments(${query}, ${filter})")
     indexSearcher match {
         case Some(searcher) =>
           val optScoreDocs = getScoreDocs(query, filter)
@@ -57,7 +57,7 @@ class LuceneSearcher(indexDir: String) extends LuceneConsts {
   }
   
   def getHighlights(query: Query, filter: Filter) : Option[List[DocumentSearchResult]] = {
-    println(s"LuceneSearcher.getHighlights(${query}, ${filter})")
+    //println(s"LuceneSearcher.getHighlights(${query}, ${filter})")
     indexSearcher match {
         case Some(searcher) =>
             val optScoreDocs = getScoreDocs(query, filter)
@@ -85,7 +85,7 @@ class LuceneSearcher(indexDir: String) extends LuceneConsts {
   }
   
   def getDocument(docType: String, docId: Long) : Option[Document] = {
-    println(s"LuceneSearcher.getDocument(${docType}, ${docId})")
+    //println(s"LuceneSearcher.getDocument(${docType}, ${docId})")
     indexSearcher match {
         case Some(searcher) =>
           val query = new TermQuery(getDocIdTerm(docType, docId));

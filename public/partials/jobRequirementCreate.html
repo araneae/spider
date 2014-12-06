@@ -1,0 +1,99 @@
+<div ng-controller="JobRequirementCreateCtrl as ctrl">
+  <form novalidate id="idCreateJobRequirementForm" name="CreateJobRequirementForm" class="form-horizontal" role="form"
+        ng-submit="ctrl.save()">
+    <legend class="col-md-12">Create Job Requirement</legend>
+    <div class="form-group">
+        <label id="lblTitle" for="name" class="col-md-2 control-label">Title</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" name="title" id="idTitle" placeholder="Enter title"
+                   ng-model="ctrl.jobRequirement.title" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblIndustry" for="parentIndustry" class="col-md-2 control-label">Industry</label>
+        <div class="col-md-4">
+            <select class="form-control" name="industry" id="opIndustry" ng-options="industry.name for industry in ctrl.industries" 
+                   ng-model="ctrl.industry" required></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblCode" for="code" class="col-md-2 control-label">Job Code</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="code" id="idCode" placeholder="Enter job code"
+                   ng-model="ctrl.jobRequirement.code" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblRefNumber" for="refNumber" class="col-md-2 control-label">Ref Number</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="refNumber" id="idRefNumber" placeholder="Enter reference number"
+                   ng-model="ctrl.jobRequirement.refNumber" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblSalary" for="salaryMin" class="col-md-2 control-label">Salary</label>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="salaryMin" id="idSalaryMin" placeholder="Min value"
+                          ng-model="ctrl.jobRequirement.salaryMin" required>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="salaryMax" id="idSalaryMax" placeholder="Max value"
+                          ng-model="ctrl.jobRequirement.salaryMax" required>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control" name="currencyType" id="idCurrencyType" ng-options="currencyType as currencyType for currencyType in ctrl.EnumService.enumTypes.CurrencyType" 
+                    ng-model="ctrl.jobRequirement.currencyType" required></select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+        <label id="lblEmploymentType" for="code" class="col-md-2 control-label">Employment Type</label>
+        <div class="col-md-4">
+            <select class="form-control" name="employmentType" id="idEmploymentType" ng-options="employmentType as employmentType for employmentType in ctrl.EnumService.enumTypes.EmploymentType" 
+                   ng-model="ctrl.jobRequirement.employmentType" required></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblLocation" for="code" class="col-md-2 control-label">Location</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter location"
+                   ng-model="ctrl.jobRequirement.location" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblSalaryTerm" for="code" class="col-md-2 control-label">Pay Term</label>
+        <div class="col-md-2">
+            <select class="form-control" name="salaryTerm" id="idSalaryTerm" ng-options="salaryTerm as salaryTerm for salaryTerm in ctrl.EnumService.enumTypes.SalaryTermType" 
+                   ng-model="ctrl.jobRequirement.salaryTerm" required></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblPositions" for="code" class="col-md-2 control-label"># Of Positions</label>
+        <div class="col-md-2">
+            <input type="text" class="form-control" name="positions" id="idPosition" placeholder="Enter number of positions"
+                   ng-model="ctrl.jobRequirement.positions" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+        <div class="col-md-8">
+            <textarea class="form-control" rows="12" name="description" id="description" placeholder="Enter description"
+                   ng-model="ctrl.jobRequirement.description" required>
+            </textarea>
+        </div>
+    </div>
+    <!--  <pre>{{ ctrl.jobRequirement | json }}</pre>  -->
+    <div class="form-group">
+        <div class="col-md-offset-1 col-md-8">
+            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CreateJobRequirementForm.$valid'>Save</button>
+        </div>
+    </div>
+  </form>
+</div>
+

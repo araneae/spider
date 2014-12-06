@@ -8,9 +8,11 @@ import enums.GenderType._
 import enums.MaritalStatusType._
 import enums.EducationLevelType._
 
-class UserPersonalProfiles(tag: Tag) extends Table[UserPersonalProfile](tag, "user_personal_profile") {
+class UserProfilePersonals(tag: Tag) extends Table[UserProfilePersonal](tag, "user_profile_personal") {
 
-  def userPersonalProfileId = column[Option[Long]]("user_personal_profile_id", O.PrimaryKey, O.AutoInc)
+  def userProfilePersonalId = column[Long]("user_profile_personal_id", O.PrimaryKey, O.AutoInc)
+  
+  def xrayTerms = column[String]("xray_terms", O.Nullable)
   
   def aboutMe = column[Option[String]]("aboutMe", O.Nullable)
   
@@ -18,7 +20,7 @@ class UserPersonalProfiles(tag: Tag) extends Table[UserPersonalProfile](tag, "us
   
   def mobile = column[Option[String]]("mobile", O.Nullable)
   
-  def alternativeEmail = column[Option[String]]("alternative_email", O.Nullable)
+  def alternateEmail = column[Option[String]]("alternate_email", O.Nullable)
   
   def gender = column[Option[GenderType]]("gender", O.Nullable)
   
@@ -30,13 +32,12 @@ class UserPersonalProfiles(tag: Tag) extends Table[UserPersonalProfile](tag, "us
   
   def birthDay = column[Option[Int]]("birth_day", O.Nullable)
   
-  def xrayTerms = column[String]("xray_terms", O.Nullable)
 
   def createdAt = column[DateTime]("created_at", O.NotNull)
   
   def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
   
-  override def * = (userPersonalProfileId, aboutMe, picture, mobile, alternativeEmail, gender, maritalStatus, birthYear, birthDay, birthMonth, xrayTerms, createdAt, updatedAt) <> (UserPersonalProfile.tupled, UserPersonalProfile.unapply)
+  override def * = (userProfilePersonalId.?, xrayTerms, aboutMe, picture, mobile, alternateEmail, gender, maritalStatus, birthYear, birthDay, birthMonth, createdAt, updatedAt) <> (UserProfilePersonal.tupled, UserProfilePersonal.unapply)
   
   // foreign keys and indexes
 

@@ -51,7 +51,7 @@ object EnumTest {
       //def ok = EnumA.VAL1 == myValue
       
       
-      println("SkillLevel.values "+SkillLevel.values);
+      println("SkillLevel.values "+Json.toJson(SkillLevel.values));
       var b= new StringBuilder
       for (d <- SkillLevel.values){
         val item = new StringContext(",{ \"name\":\"", "\"}").s(d.toString())

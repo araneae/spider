@@ -7,7 +7,6 @@ class DatabaseXRayCtrl
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
         @results = []
-        @termsXRay = 'java or hadoop or oracle or mobile or microsoft or \"big data\"'
         # load objects from server
         @loadDocument(@documentId)
         @searchDocument(@documentId)
@@ -28,7 +27,7 @@ class DatabaseXRayCtrl
     searchDocument: (documentId) ->
         @$log.debug "DatabaseXRayCtrl.searchDocument(#{documentId})"
         #delay = @$q.defer()
-        @DatabaseService.searchDocument(documentId, @termsXRay).then(
+        @DatabaseService.searchDocument(documentId).then(
           (data) =>
               @$log.debug "Promise returned #{data} search results"
               @results = data
