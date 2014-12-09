@@ -106,7 +106,7 @@ object ContactRepository {
                    => {
                         d match {
                           case (userDpocumentId, usrId, documentId, ownershipType, canCopy, canShare, canView, important, star, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) =>
-                            ContactWithDocument(userId, email, documentId, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
+                            ContactWithDocument(userId, email, documentId, canShare, canCopy, canView, isLimitedShare, shareUntilEOD)
                           case _ =>
                             ContactWithDocument(userId, email, None, None, None, None, None, None)
                         }

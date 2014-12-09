@@ -22,6 +22,7 @@ trait Secured {
   
   private final val PARAM_USER_TIME = "userTime"
   private final val PARAM_USER_ID = "userId"
+  private final val PARAM_HAS_UPGRADED = "hasUpgraded"
   private final val PARAM_NAME = "name"
   private final val PARAM_PATH = "path"
   private final val EMPTY = ""
@@ -59,6 +60,11 @@ trait Secured {
   
   def name(implicit request : RequestHeader) = {
       request.session.get(PARAM_NAME).getOrElse(EMPTY)
+  }
+  
+  def hasUpgraded(implicit request : RequestHeader) = {
+      val upgradeFlag : String = request.session.get(PARAM_HAS_UPGRADED).getOrElse("false");
+      upgradeFlag.equalsIgnoreCase("true")
   }
   
   def path(implicit request : RequestHeader) = {

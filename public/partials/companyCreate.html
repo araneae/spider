@@ -1,0 +1,55 @@
+<div ng-controller="CompanyCreateCtrl as ctrl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Setup Company</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCompanyCreateForm" name="CompanyCreateForm" class="form-horizontal" role="form"
+            ng-submit="ctrl.save()">
+        <div class="form-group">
+            <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="name" id="idName" placeholder="Enter company name"
+                      ng-model="ctrl.company.name" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblEmail" for="email" class="col-md-2 control-label">Email</label>
+            <div class="col-md-6">
+            <input type="email" class="form-control" name="email" id="idEmail" placeholder="Enter company email"
+                       ng-model="ctrl.company.email" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblAddress" for="address" class="col-md-2 control-label">Address</label>
+            <div class="col-md-6">
+            <input type="text" class="form-control" name="address" id="idAddress" placeholder="Enter company address"
+                       ng-model="ctrl.company.address" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblTelephone" for="telephone" class="col-md-2 control-label">Telephone</label>
+            <div class="col-md-6">
+            <input type="text" class="form-control" name="telephone" id="idTelephone" placeholder="Enter company telephone"
+                       ng-model="ctrl.company.telephone" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblWebsite" for="website" class="col-md-2 control-label">Website</label>
+            <div class="col-md-6">
+            <input type="text" class="form-control" name="website" id="idWebsite" placeholder="Enter company website URL"
+                       ng-model="ctrl.company.website">
+            </div>
+        </div>
+        <!-- <pre>{{ ctrl.company | json }}</pre> -->
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CompanyCreateForm.$valid'>Save</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

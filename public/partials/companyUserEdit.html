@@ -1,0 +1,67 @@
+<div ng-controller="CompanyUserEditCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">New User</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCompanyUserCreateForm" name="CompanyUserCreateForm" class="form-horizontal" role="form"
+            ng-submit="ctrl.save()">
+        <div class="form-group">
+            <label id="lblFirstName" for="firstName" class="col-md-2 control-label">First Name</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="firstName" id="idFirstName" placeholder="Enter first name"
+                      ng-model="ctrl.companyUser.firstName" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblMiddleName" for="middleName" class="col-md-2 control-label">Middle Name</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="middleName" id="idFirstName" placeholder="Enter middle name"
+                      ng-model="ctrl.companyUser.middleName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblLastName" for="lastName" class="col-md-2 control-label">Last Name</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="lastName" id="idLastName" placeholder="Enter last name"
+                      ng-model="ctrl.companyUser.lastName" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblEmail" for="email" class="col-md-2 control-label">Email</label>
+            <div class="col-md-6">
+                <input type="email" class="form-control" name="email" id="idEmail" placeholder="Enter company email"
+                       ng-model="ctrl.companyUser.email" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblStatus" for="status" class="col-md-2 control-label">Status</label>
+            <div class="col-md-6">
+                <select class="form-control" name="status" id="idStatus" ng-options="CompanyUserStatusType as CompanyUserStatusType for CompanyUserStatusType in ctrl.EnumService.enumTypes.CompanyUserStatusType" 
+                    ng-model="ctrl.companyUser.status" required></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblCompanyUserType" for="userType" class="col-md-2 control-label">User Type</label>
+            <div class="col-md-6">
+                <select class="form-control" name="userType" id="idCompanyUserType" ng-options="CompanyUserType as CompanyUserType for CompanyUserType in ctrl.EnumService.enumTypes.CompanyUserType" 
+                    ng-model="ctrl.companyUser.userType" required></select>
+            </div>
+        </div>
+        <pre>{{ ctrl.companyUser | json }}</pre>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CompanyUserCreateForm.$valid'>Update</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

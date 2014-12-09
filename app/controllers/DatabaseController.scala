@@ -9,6 +9,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import java.util.concurrent.TimeUnit
 import enums._
+import enums.OwnershipType._
 import models.dtos._
 import models.repositories._
 import services._
@@ -197,7 +198,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                     val optUserDocument = UserDocumentRepository.find(share.id, documentId)
                     optUserDocument match {
                       case Some(doc) =>
-                          val userDocument = UserDocument(None,
+                          val userDocument = UserDocument(doc.userDocumentId,
                                                       doc.userId, 
                                                       doc.documentId, 
                                                       doc.ownershipType, 
@@ -240,64 +241,68 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     )
   }
 
-  def search = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.search")
-    println(s"in DatabaseController.search")
-    
-    val optUserProfile = UserRepository.findUserProfilePersonal(userId)
-    optUserProfile match {
-      case Some(userProfile) =>
-        val searchText = userProfile.xrayTerms
-        if (searchText.length() > 0){
-          val documentBoxes = UserDocumentBoxRepository.findAll(userId)
-          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-          // send message to index searcher
-          val f = ask(indexSearcherActor, MessageDocumentSearch(documentBoxes.map(b => b.documentBoxId), searchText)).mapTo[MessageDocumentSearchResult]
-          val result = f.map {
-               case MessageDocumentSearchResult(docIds) => {
-                      val userDocuments = UserDocumentRepository.findAllByDocumentIds(userId, docIds)
-                      val text = Json.toJson(userDocuments)
-                      Ok(text).as(JSON)
-                }
-               case _ => Ok("").as(JSON)
-    //                case Failure(failure) =>
-    //                        println(s"Failrure ${failure}")
-    //                        Ok("")
-          }
-          Await.result(result, timeout.duration)
-        }
-        else {
-          Ok(HttpResponseUtil.reponseEmptyObject())
-        }
-      case None =>
-        Ok(HttpResponseUtil.reponseEmptyObject())
-    }
-  }
-  
-  def searchDocument(documentId: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.search(${documentId}, ${searchText})")
-    println(s"in DatabaseController.search(${documentId}, ${searchText})")
+  def search(userTagId: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.search(${userTagId}, ${searchText})")
+    println(s"in DatabaseController.search(${userTagId}, ${searchText})")
     
     if (searchText.length() > 0){
+      val documentBoxes = UserDocumentBoxRepository.findAll(userId)
       implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
       // send message to index searcher
-      val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
-      val result = f.map{
-           case MessageSearchResultWithHighlighter(documentId, results) => {
-                      val text = Json.toJson(results)
-                      //println(text)
-                      Ok(text).as(JSON)
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentBoxes.map(b => b.documentBoxId), searchText)).mapTo[MessageDocumentSearchResult]
+      val result = f.map {
+           case MessageDocumentSearchResult(docIds) => {
+                  val userDocuments = if (userTagId > 0) {
+                                          DocumentTagRepository.findDocumentByUserTagIdAndDocumentIds(userId, userTagId, docIds)
+                                      } else {
+                                          UserDocumentRepository.findAllByDocumentIds(userId, docIds)
+                                      }
+                  val text = Json.toJson(userDocuments)
+                  Ok(text).as(JSON)
             }
            case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
 //                        println(s"Failrure ${failure}")
 //                        Ok("")
       }
-      
       Await.result(result, timeout.duration)
     }
     else {
-      Ok("")
+      Ok(HttpResponseUtil.reponseEmptyObject())
+    }
+  }
+  
+  def searchDocument(documentId: Long) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.search(${documentId})")
+    println(s"in DatabaseController.search(${documentId})")
+    
+    val optUserProfile = UserRepository.findUserProfilePersonal(userId)
+    optUserProfile match {
+      case Some(userProfile) =>
+        val searchText = userProfile.xrayTerms
+        if (searchText.length() > 0){
+          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+          // send message to index searcher
+          val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
+          val result = f.map{
+               case MessageSearchResultWithHighlighter(documentId, results) => {
+                          val text = Json.toJson(results)
+                          //println(text)
+                          Ok(text).as(JSON)
+                }
+               case _ => Ok("").as(JSON)
+    //                case Failure(failure) =>
+    //                        println(s"Failrure ${failure}")
+    //                        Ok("")
+          }
+          
+          Await.result(result, timeout.duration)
+        }
+        else {
+          Ok("")
+        }
+      case None =>
+        Ok(HttpResponseUtil.reponseEmptyObject())
     }
   }
   

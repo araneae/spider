@@ -15,6 +15,7 @@ import traits._
 import utils._
 import services.EmailService
 import org.joda.time.DateTime
+import models.repositories.CompanyRepository
 
 object AuthController extends Controller with Secured {
   
@@ -83,10 +84,15 @@ object AuthController extends Controller with Secured {
                       } 
                       else {
                         UserRepository.updateLastLogon(user.userId.get)
+                        val optCompany = CompanyRepository.findByUserId(user.userId.get)
+                        val hasUpgraded = optCompany match {
+                            case Some(company) => "true"
+                            case None => "false"
+                        } 
                         if (path.isEmpty())
-                          Redirect(routes.Application.home).withSession(Security.username -> userName, "userId" -> userId, "name" -> firstName)
+                          Redirect(routes.Application.home).withSession(Security.username -> userName, "userId" -> userId, "name" -> firstName, "hasUpgraded" -> hasUpgraded)
                         else
-                          Redirect(path).withSession(Security.username -> userName, "userId" -> userId, "name" -> firstName)
+                          Redirect(path).withSession(Security.username -> userName, "userId" -> userId, "name" -> firstName, "hasUpgraded" -> hasUpgraded)
                       }
                     }
                     else {

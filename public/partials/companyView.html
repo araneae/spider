@@ -1,0 +1,55 @@
+<div ng-controller="CompanyViewCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Company Settings</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCompanyViewForm" name="CompanyViewForm" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label id="lblName" class="col-md-2 control-label">Name</label>
+            <div class="col-md-4">
+                <label class="form-control">{{ctrl.company.name}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblEmail" class="col-md-2 control-label">Email</label>
+            <div class="col-md-6">
+              <label class="form-control">{{ctrl.company.email}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblAddress" class="col-md-2 control-label">Address</label>
+            <div class="col-md-6">
+              <label class="form-control">{{ctrl.company.address}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblTelephone" class="col-md-2 control-label">Telephone</label>
+            <div class="col-md-6">
+              <label class="form-control">{{ctrl.company.telephone}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblWebsite" class="col-md-2 control-label">Website</label>
+            <div class="col-md-6">
+              <label class="form-control">{{ctrl.company.website}}</label>
+            </div>
+        </div>
+        <!-- <pre>{{ ctrl.company | json }}</pre> -->
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                <button class="btn btn-success" id="btnEdit" ng-click="ctrl.goToEdit()">Edit</button>
+                <button class="btn btn-success" id="btnUserManagement" ng-click="ctrl.goToManageUsers()">Manage Users</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

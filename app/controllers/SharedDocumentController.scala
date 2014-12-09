@@ -71,7 +71,34 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     Await.result(result, timeout.duration)
   }
   
-    def searchDocument(documentId: Long) = IsAuthenticated{ username => implicit request =>
+  def search(searchText: String) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in SharedDocumentController.search(${searchText})")
+    println(s"in SharedDocumentController.search(${searchText})")
+    
+    if (searchText.length() > 0){
+      val documentBoxes = UserDocumentBoxRepository.findAllByOwnershipType(userId, OwnershipType.SHARED)
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentBoxes.map(b => b.documentBoxId), searchText)).mapTo[MessageDocumentSearchResult]
+      val result = f.map {
+           case MessageDocumentSearchResult(docIds) => {
+                  val userDocuments = UserDocumentRepository.findAllByDocumentIds(docIds)
+                  val text = Json.toJson(userDocuments)
+                  Ok(text).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
+//                case Failure(failure) =>
+//                        println(s"Failrure ${failure}")
+//                        Ok("")
+      }
+      Await.result(result, timeout.duration)
+    }
+    else {
+      Ok(HttpResponseUtil.reponseEmptyObject())
+    }
+  }
+  
+  def searchDocument(documentId: Long) = IsAuthenticated{ username => implicit request =>
     //logger.info(s"in SharedDocumentController.search(${documentId})")
     println(s"in SharedDocumentController.search(${documentId})")
     

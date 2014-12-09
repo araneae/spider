@@ -38,11 +38,11 @@ class DatabaseService
         #.then(success, error, progress); 
         #.xhr(function(xhr){xhr.upload.addEventListener(...)})// access and attach any event listener to XMLHttpRequest.
 
-    search: (searchText) ->
-        @$log.debug "DatabaseService.search #{searchText}"
+    search: (userTagId, searchText) ->
+        @$log.debug "DatabaseService.search(#{userTagId}, #{searchText})"
         deferred = @$q.defer()
 
-        @$http.get("/database/search/#{searchText}")
+        @$http.get("/database/search/#{userTagId}/#{searchText}")
         .success((data, status, headers) =>
                 @$log.info("Successfully searched - status #{status}")
                 deferred.resolve(data)
@@ -54,7 +54,7 @@ class DatabaseService
         deferred.promise
 
     searchDocument: (documentId) ->
-        @$log.debug "DatabaseService.search(#{documentId})"
+        @$log.debug "DatabaseService.searchDocument(#{documentId})"
         deferred = @$q.defer()
 
         @$http.get("/database/document/#{documentId}/search")

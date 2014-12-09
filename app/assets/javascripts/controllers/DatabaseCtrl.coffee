@@ -11,7 +11,7 @@ class DatabaseCtrl
         @removeAlert = false
         @$scope.$on('globalSearch', (event, data) =>
                                     @$log.debug "received message globalSearch(#{data.searchText})"
-                                    @search(data.searchText)
+                                    @search(@userTagId, data.searchText)
         )
         @$scope.$on('contextMenu', (event, data) =>
                                     @$log.debug "received message contextMenu(#{data.menuItem})"
@@ -108,23 +108,24 @@ class DatabaseCtrl
                 @listDocuments()
             ,
             (error) =>
+                @ErrorService.error("Oops! Unable to delete document.")
                 @$log.error "Unable to delete document: #{error}!"
             )
 
-    search: (searchText) ->
-        @$log.debug "DatabaseCtrl.search(#{searchText})"
+    search: (userTagId, searchText) ->
+        @$log.debug "DatabaseCtrl.search(#{userTagId}, #{searchText})"
         if (searchText)
           @documents = []
-          @DatabaseService.search(searchText).then(
+          @DatabaseService.search(userTagId, searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @documents = data
             ,
             (error) =>
+                @ErrorService.error("Oops! Unable to search.")
                 @$log.error "Unable to search #{searchText}"
             )
         else
           @listDocuments()
-
 
 controllersModule.controller('DatabaseCtrl', DatabaseCtrl)

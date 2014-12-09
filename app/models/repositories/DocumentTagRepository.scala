@@ -43,7 +43,22 @@ object DocumentTagRepository {
             u  <- ud.createdBy
         } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
         
-        q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+        q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+    }
+  }
+  
+  def findDocumentByUserTagIdAndDocumentIds(userId: Long, userTagId: Long, documentIds : Seq[Long]): Seq[UserDocumentFull] = {
+    DB.withSession {
+      implicit session =>
+       val q = for {
+            docTag <- query.filter( d => (d.userId === userId) && (d.userTagId === userTagId) && (d.documentId inSet documentIds))
+            ud <- docTag.userDocument
+            doc <- ud.document
+            u  <- ud.createdBy
+        } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+        
+        q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }

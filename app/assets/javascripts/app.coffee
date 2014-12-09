@@ -83,6 +83,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('industryCreate', {
               url: '/industry/create'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -108,6 +111,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('skill', {
               url: '/skill',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -139,6 +145,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('domainCreate', {
               url: '/domain/create'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -150,22 +159,130 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('domainEdit', {
               url: '/domain/edit/:domainId'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/domainEdit.html'
                 }
               }
           })
-          .state('companySetup', {
-              url: '/company/setup'
+          .state('companyCreate', {
+              url: '/company/create'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
-                    templateUrl: '/assets/partials/companySetup.html'
+                    templateUrl: '/assets/partials/companyCreate.html'
+                }
+              }
+          })
+          .state('companyView', {
+              url: '/company/view'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/companyView.html'
+                }
+              }
+          })
+          .state('companyEdit', {
+              url: '/company/edit'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/companyEdit.html'
+                }
+              }
+          })
+          .state('companyUsers', {
+              url: '/companyUser'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewContextMenu@companyUsers': {
+                    templateUrl: '/assets/partials/contextMenuCompany.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/companyUsers.html'
+                }
+              }
+          })
+          .state('companyUserCreate', {
+              url: '/companyUser/create'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewContextMenu@companyUsers': {
+                    templateUrl: '/assets/partials/contextMenuCompany.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/companyUserCreate.html'
+                }
+              }
+          })
+          .state('companyUserView', {
+              url: '/companyUser/:companyUserId/view'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewContextMenu@companyUsers': {
+                    templateUrl: '/assets/partials/contextMenuCompany.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/companyUserView.html'
+                }
+              }
+          })
+          .state('companyUserEdit', {
+              url: '/companyUser/:companyUserId/edit'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewContextMenu@companyUsers': {
+                    templateUrl: '/assets/partials/contextMenuCompany.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/companyUserEdit.html'
                 }
               }
           })
           .state('jobTitle', {
               url: '/jobTitle',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitle.html'
                 },
@@ -177,6 +294,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('jobTitleCreate', {
               url: '/jobTitle/create'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitleCreate.html'
                 }
@@ -185,6 +305,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('jobTitleEdit', {
               url: '/jobTitle/edit/:jobTitleId'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitleEdit.html'
                 }
@@ -193,6 +316,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('jobRequirements', {
               url: '/jobs'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirements.html'
                 },
@@ -204,6 +330,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('jobRequirementCreate', {
               url: '/jobs/create'
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementCreate.html'
                 }
@@ -212,6 +341,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('userSkillCreate', {
               url: '/userSkillCreate',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/userSkillCreate.html'
                 }
@@ -220,6 +352,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('userSkillEdit/:skillId', {
               url: '/userSkillEdit/:skillId',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/userSkillEdit.html'
                 }
@@ -236,6 +371,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('userSkillEmpty', {
               url: '/userSkillEmpty',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/userSkillEmpty.html'
                 }
@@ -261,7 +399,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                'viewContextMenu@contact': {
                     templateUrl: '/assets/partials/contextMenuGeneric.html'
                 },
-               'viewGlobalSearch': {
+               'viewGlobalSearch@contact': {
                     templateUrl: '/assets/partials/globalSearch.html'
                 },
                'viewMain': {
@@ -295,7 +433,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
-                'viewGlobalSearch': {
+                'viewGlobalSearch@database': {
                     templateUrl: '/assets/partials/globalSearch.html'
                 },
                 'viewMain': {
@@ -328,6 +466,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseUpload', {
               url: '/database/document/upload',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -339,6 +480,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseSearch', {
               url: '/database/document/search',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -353,6 +497,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseDocumentTag', {
               url: '/document/tag/:documentId',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -375,6 +522,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseDocumentXRay', {
               url: '/document/xray/:documentId',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -386,6 +536,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('sharedDocumentXRay', {
               url: '/shared/document/xray/:documentId',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -397,6 +550,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseDocumentView', {
               url: '/document/view/:documentId',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -419,6 +575,12 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseDocumentShare', {
               url: '/document/share/:documentId',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                  templateUrl: '/assets/partials/menuBar.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseShare.html'
                 }
@@ -427,6 +589,12 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('databaseManageShares', {
               url: '/document/share/:documentId/manage',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                  templateUrl: '/assets/partials/menuBar.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseManageShares.html'
                 }
@@ -435,6 +603,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
           .state('shareRepository', {
               url: '/document/repository/share',
               views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
@@ -463,7 +634,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewContextMenu@sharedRepositories': {
                     templateUrl: '/assets/partials/contextMenuGeneric.html'
                 },
-                'viewGlobalSearch': {
+                'viewGlobalSearch@sharedRepositories': {
                     templateUrl: '/assets/partials/globalSearch.html'
                 },
                 'viewMain': {

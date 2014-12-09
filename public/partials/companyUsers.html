@@ -1,0 +1,40 @@
+<div ng-controller="CompanyUserCtrl as ctrl">
+  <div class="alert alert-danger" ng-show="ctrl.removeAlert">
+     <div><strong>Do you want to delete user, {{ctrl.removeObj.firstName}} ?</strong>
+        <button type='button' class="btn btn-danger display-inline col-md-offset-2" id="btnRemove" ng-click="ctrl.remove()">Yes</button>
+        <button type='button' class="btn btn-success display-inline" id="btnHideRemoveAlert" ng-click="ctrl.cancelRemove()">Cancel</button>
+     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">{{ctrl.company.name}} Users</div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped table-fixed">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th class="col-md-2">Status</th>
+          <th class="col-md-2">User Type</th>
+          <th class="col-md-3"></th>
+        </tr>
+        <tr ng-repeat="companyUser in ctrl.companyUsers">
+          <td><a href="" data-placement="left" title="{{companyUser.firstName}}" ng-click="ctrl.goToCompanyUserView(companyUser)">{{companyUser.firstName}}</a></td>
+          <td data-placement="left" title="{{companyUser.email}}">{{companyUser.email}}</td>
+          <td>{{companyUser.status}}</td>
+          <td>{{companyUser.userType}}</td>
+          <td> 
+            <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(companyUser)"></a>
+          </td>
+        </tr>
+      </table>
+      <hr>
+    </div>
+  </div>
+</div>
+

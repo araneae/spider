@@ -36,15 +36,15 @@ class UserProfileSettingService
         deferred.promise
     
     updateEmail: (code, email) ->
-        @$log.debug "UserProfileSettingService:verifyCode(#{code})"
+        @$log.debug "UserProfileSettingService:updateEmail(#{code})"
         deferred = @$q.defer()
         @$http.put("/userProfile/email", {code: code, email: email})
         .success((data, status, headers) =>
-                @$log.info("Successfully verified code - status #{status}")
+                @$log.info("Successfully updated email - status #{status}")
                 deferred.resolve(data)
             )
         .error((data, status, headers) =>
-                @$log.error("Failed to verify code - status #{status}")
+                @$log.error("Failed to update email - status #{status}")
                 deferred.reject(data);
             )
         deferred.promise

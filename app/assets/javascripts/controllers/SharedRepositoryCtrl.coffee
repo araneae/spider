@@ -54,4 +54,20 @@ class SharedRepositoryCtrl
                 @$log.error "Unable to copy document: #{error}"
             )
     
+    search: (searchText) ->
+        @$log.debug "SharedRepositoryCtrl.search(#{searchText})"
+        if (searchText)
+          @documents = []
+          @SharedRepositoryService.search(searchText).then(
+            (data) =>
+                @$log.debug "Successfully returned search result #{data.length}"
+                @documents = data
+            ,
+            (error) =>
+                @ErrorService.error("Oops! Unable to search.")
+                @$log.error "Unable to search #{searchText}"
+            )
+        else
+          @listDocuments()
+    
 controllersModule.controller('SharedRepositoryCtrl', SharedRepositoryCtrl)

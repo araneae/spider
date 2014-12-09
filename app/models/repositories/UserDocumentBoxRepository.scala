@@ -7,7 +7,8 @@ import models.tables._
 import models.dtos._
 import enums.DocumentType._
 import org.joda.time.DateTime
-import enums.OwnershipType
+import enums._
+import enums.OwnershipType._
 
 object UserDocumentBoxRepository {
   
@@ -32,6 +33,13 @@ object UserDocumentBoxRepository {
     DB.withSession {
        implicit session: Session =>
           query filter(_.userId === userId) list
+    }
+  }
+  
+  def findAllByOwnershipType(userId: Long, ownershipType: OwnershipType): Seq[UserDocumentBox] = { 
+    DB.withSession {
+       implicit session: Session =>
+          query filter(ud => ud.userId === userId && ud.ownershipType === ownershipType) list
     }
   }
   

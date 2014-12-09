@@ -1,0 +1,60 @@
+<div ng-controller="CompanyUserViewCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-6">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">{{ctrl.companyUser.firstName}} {{ctrl.companyUser.lastName}}</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCompanyUserViewForm" name="CompanyUserViewForm" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label id="lblFirstName" for="firstName" class="col-md-2 control-label">First Name</label>
+            <div class="col-md-4">
+                <label class="form-control">{{ctrl.companyUser.firstName}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblMiddleName" for="middleName" class="col-md-2 control-label">Middle Name</label>
+            <div class="col-md-4">
+                <label class="form-control">{{ctrl.companyUser.middleName}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblLastName" for="lastName" class="col-md-2 control-label">Last Name</label>
+            <div class="col-md-4">
+                <label class="form-control">{{ctrl.companyUser.lastName}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblEmail" for="email" class="col-md-2 control-label">Email</label>
+            <div class="col-md-6">
+              <label class="form-control">{{ctrl.companyUser.email}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblStatus" for="status" class="col-md-2 control-label">Status</label>
+            <div class="col-md-6">
+                <label class="form-control">{{ctrl.companyUser.status}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblCompanyUserType" for="userType" class="col-md-2 control-label">User Type</label>
+            <div class="col-md-6">
+                <label class="form-control">{{ctrl.companyUser.userType}}</label>
+            </div>
+        </div>
+        <!-- <pre>{{ ctrl.companyUser | json }}</pre> -->
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                <button class="btn btn-success" id="btnEdit" ng-click="ctrl.goToEdit()">Edit</button>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

@@ -1,4 +1,4 @@
-@(title: String)(message: String)(implicit flash: Flash)
+@(title: String)(message: String)(upgradeContent: String)(implicit flash: Flash)
 
 @contentsSingnIn = {
   <div ui-view="viewHeaderBar"></div>
@@ -11,17 +11,7 @@
 }
 
 @contentsRight = {
-  <br/>
-  <br/>
-  <br/>
-  <br/>
-  <div class="panel panel-primary">
-    <div class="panel-body">
-      <h2>
-        Click <a ui-sref="companySetup" class="text-primary">here</a> to upgrade your account.
-      </h2>
-    </div>
-  </div>
+  @Html(upgradeContent)
 }
 
 @main(title)(message)(contentsSingnIn)(contentsLeft)(contentsMain)(contentsRight)

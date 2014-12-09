@@ -29,7 +29,7 @@ object UserDocumentRepository {
           } 
           yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
-          q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+          q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
@@ -39,6 +39,21 @@ object UserDocumentRepository {
        implicit session: Session =>
           val q = for {
               ud <- query.filter(d => d.userId === userId && (d.documentId inSet documentIds))
+              d  <- ud.document
+              u  <- ud.createdBy
+          } 
+          yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+         
+          q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+    }
+  }
+  
+  def findAllByDocumentIds(documentIds : Seq[Long]): Seq[UserDocumentFull] = { 
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+              ud <- query.filter(d => d.documentId inSet documentIds)
               d  <- ud.document
               u  <- ud.createdBy
           } 

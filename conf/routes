@@ -36,11 +36,28 @@ GET    /enum                                                    controllers.Enum
 
 GET    /userProfile                                             controllers.UserProfileController.get
 
-POST    /userProfile                                            controllers.UserProfileController.save
+POST   /userProfile                                             controllers.UserProfileController.save
 
 POST   /userProfile/email/sendCode                              controllers.UserProfileController.sendEmailVerificationCode
 
 PUT    /userProfile/email                                       controllers.UserProfileController.updateEmail
+
+# Company
+
+GET    /company                                                 controllers.CompanyController.get
+
+POST   /company                                                 controllers.CompanyController.save
+
+# Company user
+POST   /companyUser                                             controllers.CompanyUserController.create
+
+GET    /companyUser                                             controllers.CompanyUserController.getAll
+
+GET    /companyUser/:companyUserId                              controllers.CompanyUserController.get(companyUserId: Long)
+
+PUT    /companyUser/:companyUserId                              controllers.CompanyUserController.update(companyUserId: Long)
+
+DELETE /companyUser/:companyUserId                              controllers.CompanyUserController.delete(companyUserId: Long)
 
 # Admin specific routes
 GET    /admin                                                   controllers.AdminController.admin
@@ -162,9 +179,9 @@ PUT    /database/document/:documentId                           controllers.Data
 
 DELETE /database/document/:documentId                           controllers.DatabaseController.delete(documentId: Long)
 
-GET    /database/search                                         controllers.DatabaseController.search
+GET    /database/search/:userTagId/:searchText                  controllers.DatabaseController.search(userTagId: Long, searchText: String)
 
-GET    /database/document/:documentId/search/:searchText        controllers.DatabaseController.searchDocument(documentId: Long, searchText: String)
+GET    /database/document/:documentId/search                    controllers.DatabaseController.searchDocument(documentId: Long)
 
 GET    /database/document/:documentId/contents                  controllers.DatabaseController.getContents(documentId: Long)
 
@@ -182,6 +199,8 @@ GET    /shared/repository/document                              controllers.Shar
 GET    /shared/repository/document/:documentId                  controllers.SharedDocumentController.get(documentId: Long)
 
 GET    /shared/repository/document/:documentId/contents         controllers.SharedDocumentController.getContents(documentId: Long)
+
+GET    /shared/repository/search/:searchText                    controllers.SharedDocumentController.search(searchText: String)
 
 GET    /shared/document/:documentId/search                      controllers.SharedDocumentController.searchDocument(documentId: Long)
 

@@ -20,7 +20,25 @@ case class Company(
                  createdUserId: Long,
                  createdAt: DateTime = new DateTime(),
                  updatedUserId: Option[Long] = None,
-                 updatedAt: Option[DateTime] = None)
+                 updatedAt: Option[DateTime] = None) {
+  def this(companyDTO: CompanyDTO, 
+          createdUserId: Long, 
+          createdAt: DateTime,
+          updatedUserId: Option[Long], 
+          updatedAt: Option[DateTime]) {
+      this(companyDTO.companyId,
+           companyDTO.name,
+           companyDTO.status,
+           companyDTO.address,
+           companyDTO.email,
+           companyDTO.website,
+           companyDTO.telephone,
+           createdUserId,
+           createdAt,
+           updatedUserId,
+           updatedAt)
+  }
+}
 
 object Company extends Function11[Option[Long], String, CompanyStatusType, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Company]
 {
@@ -52,4 +70,9 @@ object Company extends Function11[Option[Long], String, CompanyStatusType, Strin
             (JsPath \ "updatedAt").readNullable[DateTime]
     )(Company)
     
+    def apply(companyDTO: CompanyDTO,
+          createdUserId: Long, 
+          createdAt: DateTime, 
+          updatedUserId: Option[Long], 
+          updatedAt: Option[DateTime]) = new Company(companyDTO, createdUserId, createdAt, updatedUserId, updatedAt)
 }

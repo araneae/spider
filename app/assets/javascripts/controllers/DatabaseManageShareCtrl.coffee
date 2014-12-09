@@ -92,12 +92,12 @@ class DatabaseManageShareCtrl
             @DatabaseService.updateShare(@documentId, obj).then(
                 (data) => 
                   @$log.debug "Promise returned #{data} contacts"
-                  @ErrorService.success("Successfully shared document!")
+                  @ErrorService.success("Successfully updated shares!")
                   @$state.go('database.documents')
                 ,
                 (error) =>
                   @$log.error "Unable to share contacts: #{error}"
-                  @ErrorService.error("Unable to share document!")
+                  @ErrorService.error("Unable to update shares!")
             )
 
 controllersModule.controller('DatabaseManageShareCtrl', DatabaseManageShareCtrl)

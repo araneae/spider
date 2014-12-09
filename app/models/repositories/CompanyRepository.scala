@@ -24,4 +24,18 @@ object CompanyRepository {
         query returning query.map(_.companyId) += company
     }
   }
+  
+  def findByUserId(userId: Long): Option[Company] = {
+    DB.withSession {
+       implicit session: Session =>
+          query filter(_.createdUserId === userId) firstOption
+    }
+  }
+  
+  def update(company: Company) = {
+    DB.withSession {
+      implicit session =>
+        query filter(_.companyId === company.companyId) update company
+    }
+  }
 }

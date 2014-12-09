@@ -19,6 +19,13 @@ object CompanyUserRepository {
     }
   }
   
+  def find(companyUserId: Long): Option[CompanyUser] = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(_.companyUserId === companyUserId) firstOption
+    }
+  }
+  
   def findAll(companyId: Long): Seq[CompanyUser] = {
     DB.withSession {
        implicit session: Session =>
@@ -31,6 +38,13 @@ object CompanyUserRepository {
     }
   }
 
+  def update(companyUser: CompanyUser) = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter(_.companyUserId === companyUser.companyUserId) update companyUser
+    }
+  }
+  
   def delete(companyUserId: Long) = {
     DB.withSession {
        implicit session: Session =>

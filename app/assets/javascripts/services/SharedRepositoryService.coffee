@@ -65,6 +65,21 @@ class SharedRepositoryService
             )
         deferred.promise
 
+    search: (searchText) ->
+        @$log.debug "SharedRepositoryService.search #{searchText}"
+        deferred = @$q.defer()
+
+        @$http.get("/shared/repository/search/#{searchText}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully searched - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to search - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+        
     copyDocument: (documentId) ->
         @$log.debug " SharedRepositoryService.copyDocument(#{documentId})"
         deferred = @$q.defer()
