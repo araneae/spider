@@ -30,23 +30,16 @@ object SkillRepository {
           query filter(_.skillId === skillId) firstOption
     }
   }
-  
-  def findByCode(code: String): Option[Skill] = {
-    DB.withSession {
-       implicit session: Session =>
-          query filter(_.code === code) firstOption
-    }
-  }
-  
-  def findAll(): Seq[SkillFull] = {
+    
+  def findAll(): Seq[SkillDTO] = {
     DB.withSession {
        implicit session: Session =>
        val q = for {
            s <- query
            i <- s.industry
-         } yield (s.skillId, s.industryId, s.name, s.code, s.description, i.name)
+         } yield (s.skillId, s.industryId, s.name, s.description, i.name)
          
-       q.list.map{case (skillId, industryId, name, code, description, industryName) => SkillFull(skillId, industryId, name, code, description, industryName)}
+       q.list.map{case (skillId, industryId, name, description, industryName) => SkillDTO(skillId, industryId, name, description, industryName)}
     }
   }
   

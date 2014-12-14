@@ -8,15 +8,15 @@ import models.dtos._
 
 object ConnectionRepository {
   
-  val advisers = TableQuery[Advisers]
+  val followers = TableQuery[Followers]
   val contacts = TableQuery[Contacts]
   
   def findAll(userId: Long): Seq[Connection] = {
     DB.withSession {
        implicit session: Session =>
          val q1 = for {
-            u <- advisers.filter(a => a.userId ===  userId)
-            a <- u.adviser
+            u <- followers.filter(a => a.followerId ===  userId)
+            a <- u.subject
          } yield (a.userId, a.email)
         
          val q2 = for {

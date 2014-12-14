@@ -11,28 +11,28 @@ import org.joda.time.DateTime
 
 class Contacts(tag: Tag) extends Table[Contact](tag, "contact") {
 
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def contactUserId = column[Long]("contact_user_id", O.NotNull)
+  def friendId = column[Long]("friend_id")
   
-  def status = column[ContactStatus]("status", O.NotNull, O.Default(PENDING))
+  def status = column[ContactStatus]("status", O.Default(PENDING))
   
-  def token = column[Option[String]]("token", O.Nullable)
+  def token = column[Option[String]]("token")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (userId, contactUserId, status, token, createdUserId, createdAt, updatedUserId, updatedAt) <> (Contact.tupled, Contact.unapply)
+  override def * = (userId, friendId, status, token, createdUserId, createdAt, updatedUserId, updatedAt) <> (Contact.tupled, Contact.unapply)
   
   // foreign keys and indexes
-  def pk = primaryKey("pk_on_contact_user_id_contact_user_id", (userId, contactUserId))
+  def pk = primaryKey("pk_on_contact_user_id_friend_id", (userId, friendId))
   
-  def contact = foreignKey("fk_on_contact_contact_user_id", contactUserId, TableQuery[Users])(_.userId)
+  def contact = foreignKey("fk_on_contact_friend_id", friendId, TableQuery[Users])(_.userId)
   
   def createdBy = foreignKey("fk_on_contact_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   

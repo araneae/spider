@@ -19,33 +19,33 @@ class UserDocuments(tag: Tag) extends Table[UserDocument](tag, "user_document") 
 
   def userDocumentId = column[Long]("user_document_id", O.PrimaryKey, O.AutoInc)
   
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def documentId = column[Long]("document_id", O.NotNull)
+  def documentId = column[Long]("document_id")
   
-  def ownershipType = column[OwnershipType]("ownership_type", O.NotNull)
+  def ownershipType = column[OwnershipType]("ownership_type")
   
-  def canCopy = column[Boolean]("can_copy", O.NotNull, O.Default(false))
+  def canCopy = column[Boolean]("can_copy", O.Default(false))
   
-  def canShare = column[Boolean]("can_share", O.NotNull, O.Default(true))
+  def canShare = column[Boolean]("can_share", O.Default(true))
   
-  def canView = column[Boolean]("can_view", O.NotNull, O.Default(true))
+  def canView = column[Boolean]("can_view", O.Default(true))
   
-  def important = column[Boolean]("important", O.NotNull, O.Default(false))
+  def important = column[Boolean]("important", O.Default(false))
   
-  def star = column[Boolean]("star", O.NotNull, O.Default(false))
+  def star = column[Boolean]("star", O.Default(false))
   
-  def isLimitedShare = column[Boolean]("is_limited_share", O.NotNull, O.Default(true))
+  def isLimitedShare = column[Boolean]("is_limited_share", O.Default(true))
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def shareUntilEOD = column[Option[DateTime]]("share_until_eod", O.Nullable)
+  def shareUntilEOD = column[Option[DateTime]]("share_until_eod")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userDocumentId.?, userId, documentId, ownershipType, canCopy, canShare, canView, important, star, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) <> (UserDocument.tupled, UserDocument.unapply)
   

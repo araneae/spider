@@ -7,11 +7,11 @@ class Countries(tag: Tag) extends Table[Country](tag, "country") {
 
   def countryId = column[Long]("country_id", O.PrimaryKey, O.AutoInc)
   
-  def code = column[String]("code", O.NotNull)
+  def code = column[String]("code")
   
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
   
-  def active = column[Boolean]("active", O.NotNull)
+  def active = column[Boolean]("active")
   
   override def * = (countryId.?, code, name, active) <> (Country.tupled, Country.unapply)
   

@@ -1,26 +1,27 @@
 <div ng-controller="JobTitleCtrl as ctrl">
-  <h2>Manage JobTitles</h2>
   <div class="row">
     <div class="col-md-offset-2 col-md-8">
       <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
     </div>
   </div>
-  <table class="table table-striped">
-    <tr>
-       <th>Industry</th>
-       <th>Name</th>
-       <th>Code</th>
-       <th>Description</th>
-       <td></td>
-    </tr>
-    <tr ng-repeat="jobTitle in ctrl.jobTitles">
-     <td>{{jobTitle.industryName}}</td> 
-     <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(jobTitle)">{{jobTitle.name}}</a></td>
-     <td>{{jobTitle.code}}</td>
-     <td>{{jobTitle.description}}</td>
-     <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(jobTitle)"></a></td>
-    </tr>
-  </table>
-  <hr/>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Job Titles</div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <td></td>
+        </tr>
+        <tr ng-repeat="jobTitle in ctrl.jobTitles">
+          <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(jobTitle)">{{jobTitle.name}}</a></td>
+          <td>{{jobTitle.description}}</td>
+          <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(jobTitle)"></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 

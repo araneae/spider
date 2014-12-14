@@ -24,9 +24,9 @@ object IndustryRepository {
        implicit session: Session =>
          val q = for {
            q <- query filter(_.industryId === industry.industryId)
-         } yield (q.code, q.name, q.description, q.updatedUserId, q.updatedAt)
+         } yield (q.name, q.description, q.updatedUserId, q.updatedAt)
          
-         q update((industry.code, industry.name, industry.description, Some(userId), Some(new DateTime())))
+         q update((industry.name, industry.description, Some(userId), Some(new DateTime())))
     }
   }
 
@@ -34,13 +34,6 @@ object IndustryRepository {
     DB.withSession {
        implicit session: Session =>
           query filter(_.industryId === industryId) firstOption
-    }
-  }
-  
-  def findByCode(code: String): Option[Industry] = {
-    DB.withSession {
-       implicit session: Session =>
-          query filter(_.code === code) firstOption
     }
   }
   

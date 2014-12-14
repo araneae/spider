@@ -16,21 +16,21 @@ import org.joda.time.DateTime
 
 class DocumentTags(tag: Tag) extends Table[DocumentTag](tag, "document_tag") {
 
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def userTagId = column[Long]("user_tag_id", O.NotNull)
+  def userTagId = column[Long]("user_tag_id")
   
-  def documentId = column[Long]("document_id", O.NotNull)
+  def documentId = column[Long]("document_id")
   
-  def userDocumentId = column[Long]("user_document_id", O.NotNull)
+  def userDocumentId = column[Long]("user_document_id")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userId, userTagId, documentId, userDocumentId, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentTag.tupled, DocumentTag.unapply)
   

@@ -18,37 +18,17 @@ object JobRequirementRepository {
     }
   }
   
-  def update(jobRequirement: JobRequirement, userId: Long) = {
+  def update(jobRequirement: JobRequirement) = {
     DB.withSession {
        implicit session: Session =>
-         val q = for {
-            r <- query.filter(_.jobRequirementId === jobRequirement.jobRequirementId)
-          } yield (r.code, r.refNumber, r.title, r.employmentType, r.industryId, r.location, r.salaryMin, r.salaryMax,
-              r.currency, r.salaryTerm, r.description, r.status, r.positions, r.jobTitleId, r.description, r.updatedUserId, r.updatedAt)
-          
-          q update((jobRequirement.code, jobRequirement.refNumber, jobRequirement.title, jobRequirement.employmentType, 
-              jobRequirement.industryId, jobRequirement.location, jobRequirement.salaryMin, jobRequirement.salaryMax,
-              jobRequirement.currency, jobRequirement.salaryTerm, jobRequirement.description, jobRequirement.status, 
-              jobRequirement.positions, jobRequirement.jobTitleId, jobRequirement.description, Some(userId), Some(new DateTime())))
+          query filter(_.jobRequirementId === jobRequirement.jobRequirementId) update jobRequirement
     }
   }
   
-  def find(jobRequirementId: Long): Option[JobRequirementDTO] = {
+  def find(jobRequirementId: Long): Option[JobRequirement] = {
     DB.withSession {
        implicit session: Session =>
-          val q = for {
-             r <- query filter (_.jobRequirementId === jobRequirementId)
-           } 
-          yield (r.jobRequirementId, r.code, r.refNumber, r.title, r.employmentType, r.industryId, r.location, r.salaryMin, 
-               r.salaryMax, r.currency, r.salaryTerm, r.description, r.status, r.positions, r.jobTitleId)
-
-          val result = q.list.map{case (jobRequirementId, code, refNumber, title, employmentType, industryId, location, salaryMin, 
-                   salaryMax, currency, salaryTerm, description, status, positions, jobTitleId) => 
-                 JobRequirementDTO(Some(jobRequirementId), 1, code, refNumber, title, employmentType, industryId, location, salaryMin, 
-                   salaryMax, currency, salaryTerm, description, status, positions, jobTitleId)}
-           
-          if (result.length > 0) Some(result(0))
-          else None
+         query filter (_.jobRequirementId === jobRequirementId) firstOption
     }
   }
   
@@ -59,25 +39,34 @@ object JobRequirementRepository {
     }
   }
   
-  def findAll(): Seq[JobRequirementDTO] = {
+  def getAll(companyId: Long): Seq[JobRequirementDTO] = {
     DB.withSession {
        implicit session: Session =>
          val q = for {
-             r <- query
-           } yield (r.jobRequirementId, r.code, r.refNumber, r.title, r.employmentType, r.industryId, r.location, r.salaryMin, 
-               r.salaryMax, r.currency, r.salaryTerm, r.description, r.status, r.positions, r.jobTitleId)
+             r <- query filter(_.companyId === companyId)
+             rx <- r.xtn
+         } yield (r, rx)
            
-           q.list.map{case (jobRequirementId, code, refNumber, title, employmentType, industryId, location, salaryMin, 
-                   salaryMax, currency, salaryTerm, description, status, positions, jobTitleId) => 
-                 JobRequirementDTO(Some(jobRequirementId), 1, code, refNumber, title, employmentType, industryId, location, salaryMin, 
-                   salaryMax, currency, salaryTerm, description, status, positions, jobTitleId)}
+         q.list.map{case (r, rx) => JobRequirementDTO(r, rx)}
+    }
+  }
+  
+  def get(jobRequirementId: Long): Option[JobRequirementDTO] = {
+    DB.withSession {
+       implicit session: Session =>
+         val q = for {
+           r <- query filter (_.jobRequirementId === jobRequirementId)
+           rx <- r.xtn
+         } yield(r, rx)
+         
+         q.firstOption.map{ case(r, rx) => JobRequirementDTO(r, rx)}
     }
   }
   
   def delete(jobRequirementId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(_.jobRequirementId === jobRequirementId).delete
+           query filter(_.jobRequirementId === jobRequirementId) delete
     }
   }
 }

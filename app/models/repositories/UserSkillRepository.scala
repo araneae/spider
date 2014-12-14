@@ -31,7 +31,7 @@ object UserSkillRepository {
     }
   }
     
-  def findAll(userId: Long): Seq[UserSkillFull] = {
+  def findAll(userId: Long): Seq[UserSkillDTO] = {
     DB.withSession {
       implicit session =>
         //query.filter(_.userId === userId).list
@@ -41,7 +41,7 @@ object UserSkillRepository {
         } yield (u.userId, u.skillId, u.skillLevel, u.descriptionShort, u.descriptionLong, s.name)
          
         q.list.map{case (userId, skillId, skillLLevel, descriptionShort, descriptionLong, skillName) 
-                => UserSkillFull(userId, skillId, skillLLevel, descriptionShort, descriptionLong, skillName)}
+                => UserSkillDTO(userId, skillId, skillLLevel, descriptionShort, descriptionLong, skillName)}
     }
   }
   

@@ -11,9 +11,9 @@ import enums.OwnershipType._
  * Mapping between users and document store.
  * 
  */
-case class UserDocumentBox(
-                   userDocumentBoxId: Option[Long],
-                   documentBoxId: Long,
+case class UserDocumentFolder(
+                   userDocumentFolderId: Option[Long],
+                   documentFolderId: Long,
                    userId: Long,
                    ownershipType: OwnershipType,
                    canCopy: Boolean,
@@ -25,11 +25,11 @@ case class UserDocumentBox(
                    updatedAt: Option[DateTime] = None
                    )
 
-object UserDocumentBox extends Function11[Option[Long], Long, Long, OwnershipType, Boolean, Boolean, Option[DateTime], Long, DateTime, Option[Long], Option[DateTime], UserDocumentBox]
+object UserDocumentFolder extends Function11[Option[Long], Long, Long, OwnershipType, Boolean, Boolean, Option[DateTime], Long, DateTime, Option[Long], Option[DateTime], UserDocumentFolder]
 {
-    implicit val userDocumentBoxWrites : Writes[UserDocumentBox] = (
-            (JsPath \ "userDocumentBoxId").write[Option[Long]] and
-            (JsPath \ "documentBoxId").write[Long] and
+    implicit val userDocumentFolderWrites : Writes[UserDocumentFolder] = (
+            (JsPath \ "userDocumentFolderId").write[Option[Long]] and
+            (JsPath \ "documentFolderId").write[Long] and
             (JsPath \ "userId").write[Long] and
             (JsPath \ "ownershipType").write[OwnershipType] and
             (JsPath \ "canCopy").write[Boolean] and
@@ -39,11 +39,11 @@ object UserDocumentBox extends Function11[Option[Long], Long, Long, OwnershipTyp
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
             (JsPath \ "updatedAt").write[Option[DateTime]]
-    )(unlift(UserDocumentBox.unapply))
+    )(unlift(UserDocumentFolder.unapply))
 
-    implicit val userDocumentBoxReads : Reads[UserDocumentBox] = (
-          (JsPath \ "userDocumentBoxId").readNullable[Long] and
-          (JsPath \ "documentBoxId").read[Long] and
+    implicit val userDocumentFolderReads : Reads[UserDocumentFolder] = (
+          (JsPath \ "userDocumentFolderId").readNullable[Long] and
+          (JsPath \ "documentFolderId").read[Long] and
           (JsPath \ "userId").read[Long] and
           (JsPath \ "ownershipType").read[OwnershipType] and
           (JsPath \ "canCopy").read[Boolean] and
@@ -53,5 +53,5 @@ object UserDocumentBox extends Function11[Option[Long], Long, Long, OwnershipTyp
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
-    )(UserDocumentBox)
+    )(UserDocumentFolder)
 }

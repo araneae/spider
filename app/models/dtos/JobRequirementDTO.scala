@@ -5,8 +5,11 @@ import play.api.libs.json._
 import org.joda.time.DateTime
 import enums.EmploymentType._
 import enums.JobStatusType._
-import enums.SalaryTermType._
+import enums.PaymentTermType._
 import enums.CurrencyType._
+import enums.TaxTermType._
+import enums.SalaryType._
+import enums.BackgroundCheckType._
 
 /**
  * Defines job requirements
@@ -21,17 +24,30 @@ case class JobRequirementDTO(
                  employmentType: EmploymentType,
                  industryId: Long,
                  location: String,
-                 salaryMin: Double,
-                 salaryMax: Double,
-                 currency: CurrencyType,
-                 salaryTerm: SalaryTermType,
                  description: String,
                  status: JobStatusType,
                  positions: Int,
-                 jobTitleId: Long)
+                 jobTitleId: Long,
+                 xtn: JobRequirementXtnDTO) {
+  def this(jobRequirement: JobRequirement, xtn: JobRequirementXtn) {
+      this(jobRequirement.jobRequirementId,
+           jobRequirement.companyId,
+           jobRequirement.code,
+           jobRequirement.refNumber,
+           jobRequirement.title,
+           jobRequirement.employmentType,
+           jobRequirement.industryId,
+           jobRequirement.location,
+           jobRequirement.description,
+           jobRequirement.status,
+           jobRequirement.positions,
+           jobRequirement.jobTitleId,
+           JobRequirementXtnDTO(xtn))
+  }
+}
 
-object JobRequirementDTO extends Function16[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, Double, Double, CurrencyType, 
-                            SalaryTermType, String, JobStatusType, Int, Long, JobRequirementDTO]
+object JobRequirementDTO extends Function13[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, 
+                            String, JobStatusType, Int, Long, JobRequirementXtnDTO, JobRequirementDTO]
 {
     implicit val jobRequirementWrites : Writes[JobRequirementDTO] = (
             (JsPath \ "jobRequirementId").write[Option[Long]] and
@@ -42,14 +58,11 @@ object JobRequirementDTO extends Function16[Option[Long], Long, String, Option[S
             (JsPath \ "employmentType").write[EmploymentType] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "location").write[String] and
-            (JsPath \ "salaryMin").write[Double] and
-            (JsPath \ "salaryMax").write[Double] and
-            (JsPath \ "currency").write[CurrencyType] and
-            (JsPath \ "salaryTerm").write[SalaryTermType] and
             (JsPath \ "description").write[String] and
             (JsPath \ "status").write[JobStatusType] and
             (JsPath \ "positions").write[Int] and
-            (JsPath \ "jobTitleId").write[Long]
+            (JsPath \ "jobTitleId").write[Long] and
+            (JsPath \ "xtn").write[JobRequirementXtnDTO]
     )(unlift(JobRequirementDTO.unapply))
       
     implicit val jobRequirementReads : Reads[JobRequirementDTO] = (
@@ -61,14 +74,12 @@ object JobRequirementDTO extends Function16[Option[Long], Long, String, Option[S
           (JsPath \ "employmentType").read[EmploymentType] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "location").read[String] and
-          (JsPath \ "salaryMin").read[Double] and
-          (JsPath \ "salaryMax").read[Double] and
-          (JsPath \ "currency").read[CurrencyType] and
-          (JsPath \ "salaryTerm").read[SalaryTermType] and
           (JsPath \ "description").read[String] and
           (JsPath \ "status").read[JobStatusType] and
           (JsPath \ "positions").read[Int] and
-          (JsPath \ "jobTitleId").read[Long]
+          (JsPath \ "jobTitleId").read[Long] and
+          (JsPath \ "xtn").read[JobRequirementXtnDTO]
     )(JobRequirementDTO)
     
+    def apply(jobRequirement: JobRequirement, jobRequirementXtn: JobRequirementXtn) = new JobRequirementDTO(jobRequirement, jobRequirementXtn)
 }

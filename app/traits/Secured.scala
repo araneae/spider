@@ -55,7 +55,7 @@ trait Secured {
   
   def userId(implicit request : RequestHeader) = {
       val id : String = request.session.get(PARAM_USER_ID).getOrElse(INVALID_USER_ID);
-      id.toInt
+      id.toLong
   }
   
   def name(implicit request : RequestHeader) = {

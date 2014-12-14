@@ -6,7 +6,7 @@ import enums.DocumentType._
 import enums.FileType._
 
 /**
- * All connections - contacts and advisers
+ * All connections - contacts and followers
  * 
  */
 case class Connection(id: Long,

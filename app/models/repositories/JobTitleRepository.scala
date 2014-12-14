@@ -18,47 +18,28 @@ object JobTitleRepository {
     }
   }
   
-  def update(jobTitle: JobTitle, userId: Long) = {
+  def update(jobTitle: JobTitle) = {
+    DB.withSession {
+       implicit session: Session =>
+          query filter(_.jobTitleId === jobTitle.jobTitleId) update jobTitle
+    }
+  }
+  
+  def find(jobTitleId: Long): Option[JobTitle] = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter (_.jobTitleId === jobTitleId) firstOption
+    }
+  }
+  
+  def findAll(companyId: Long): Seq[JobTitleDTO] = {
     DB.withSession {
        implicit session: Session =>
          val q = for {
-            d <- query.filter(_.jobTitleId === jobTitle.jobTitleId)
-          } yield (d.code, d.name, d.description, d.updatedUserId, d.updatedAt)
-          
-          q update((jobTitle.code, jobTitle.name, jobTitle.description, Some(userId), Some(new DateTime())))
-    }
-  }
-  
-  def find(jobTitleId: Long): Option[JobTitleFull] = {
-    DB.withSession {
-       implicit session: Session =>
-          val q = for {
-             s <- query filter (_.jobTitleId === jobTitleId)
-           } yield (s.jobTitleId, s.name, s.code, s.description)
+             s <- query filter (_.companyId ===  companyId)
+           } yield (s)
            
-          val result = q.list.map{case (jobTitleId, name, code, description) => 
-                 JobTitleFull(jobTitleId, name, code, description)}
-           
-          if (result.length > 0) Some(result(0))
-          else None
-    }
-  }
-  
-  def findByCode(code: String): Option[JobTitle] = {
-    DB.withSession {
-       implicit session: Session =>
-          query filter(_.code === code) firstOption
-    }
-  }
-  
-  def findAll(): Seq[JobTitleFull] = {
-    DB.withSession {
-       implicit session: Session =>
-         val q = for {
-             s <- query
-           } yield (s.jobTitleId, s.name, s.code, s.description)
-           
-           q.list.map{case (jobTitleId, name, code, description) => JobTitleFull(jobTitleId, name, code, description)}
+           q.list.map{case (s) => JobTitleDTO(s)}
     }
   }
   

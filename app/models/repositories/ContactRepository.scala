@@ -13,7 +13,7 @@ object ContactRepository {
   
   val query = TableQuery[Contacts]
   val userDocument = TableQuery[UserDocuments]
-  val userDocumentBox = TableQuery[UserDocumentBoxes]
+  val userDocumentFolder = TableQuery[UserDocumentFolders]
   
   def create(contact: Contact) = {
     DB.withSession {
@@ -22,36 +22,36 @@ object ContactRepository {
     }
   }
   
-  def find(userId: Long, contactUserId: Long): Option[Contact] = {
+  def find(userId: Long, friendId: Long): Option[Contact] = {
     DB.withSession {
       implicit session =>
-        query.filter(s => s.userId === userId && s.contactUserId === contactUserId).firstOption
+        query.filter(s => s.userId === userId && s.friendId === friendId).firstOption
     }
   }
   
-  def findAll(userId: Long): Seq[ContactFull] = {
+  def findAll(userId: Long): Seq[ContactDTO] = {
     DB.withSession {
       implicit session =>
         val q = for {
             c <- query.filter(_.userId === userId)
             a <- c.contact
-        } yield (c.contactUserId, a.firstName, a.lastName, a.email, c.status)
+        } yield (c.friendId, a.firstName, a.lastName, a.email, c.status)
          
-        q.list.map{case (contactUserId, firstName, lastName, email, status) 
-                => ContactFull(contactUserId, firstName, lastName, email, status)}
+        q.list.map{case (friendId, firstName, lastName, email, status) 
+                => ContactDTO(friendId, firstName, lastName, email, status)}
     }
   }
   
-  def findContact(userId: Long, contactUserId: Long): Option[ContactFull] = {
+  def findContact(userId: Long, friendId: Long): Option[ContactDTO] = {
     DB.withSession {
       implicit session =>
         val q = for {
-            c <-query.filter(s => s.userId === userId && s.contactUserId === contactUserId)
+            c <-query.filter(s => s.userId === userId && s.friendId === friendId)
             a <- c.contact
-        } yield (c.contactUserId, a.firstName, a.lastName, a.email, c.status)
+        } yield (c.friendId, a.firstName, a.lastName, a.email, c.status)
          
-        val result = q.list.map{case (contactUserId, firstName, lastName, email, status) 
-                => ContactFull(contactUserId, firstName, lastName, email, status)}
+        val result = q.list.map{case (friendId, firstName, lastName, email, status) 
+                => ContactDTO(friendId, firstName, lastName, email, status)}
         if (result.length > 0) Some(result(0))
         else None
     }
@@ -64,31 +64,31 @@ object ContactRepository {
     }
   }
   
-  def updateToken(userId: Long, contactUserId: Long, token: String) = {
+  def updateToken(userId: Long, friendId: Long, token: String) = {
     DB.withSession {
        implicit session: Session =>
          val q = for { 
-                     cu <- query.filter (u => u.userId === userId && u.contactUserId === contactUserId)
+                     cu <- query.filter (u => u.userId === userId && u.friendId === friendId)
                  } yield (cu.token, cu.updatedUserId, cu.updatedAt)
                  
          q.update((Some(token), Some(userId), Some(new DateTime())))
     }
   }
   
-  def updateStatus(userId: Long, contactUserId: Long, status: ContactStatus, token: Option[String]) = {
+  def updateStatus(userId: Long, friendId: Long, status: ContactStatus, token: Option[String]) = {
     DB.withSession {
        implicit session: Session =>
          val q = for { 
-                     u <- query if u.userId === userId && u.contactUserId === contactUserId 
+                     u <- query if u.userId === userId && u.friendId === friendId 
                   } yield (u.status, u.token, u.updatedUserId, u.updatedAt)
-         q.update((status, token, Some(contactUserId), Some(new DateTime())))
+         q.update((status, token, Some(friendId), Some(new DateTime())))
     }
   }
   
-  def delete(userId: Long, contactUserId: Long) = {
+  def delete(userId: Long, friendId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter( u => u.userId === userId && u.contactUserId === contactUserId).delete
+          query.filter( u => u.userId === userId && u.friendId === friendId).delete
     }
   }
   
@@ -97,7 +97,7 @@ object ContactRepository {
       implicit session =>
         val q = for {
           (c, d) <- query leftJoin userDocument on ((c, d) =>
-                                          c.contactUserId === d.userId &&
+                                          c.friendId === d.userId &&
                                           d.documentId === documentId) if c.userId === userId
           cu <- c.contact
         } yield (cu.userId, cu.email, d.?)
@@ -115,27 +115,27 @@ object ContactRepository {
     }
   }
   
-  def findAllWithDocumentBoxShareAttributes(userId: Long, documentBoxId: Long): Seq[ContactWithDocumentBox] = {
+  def findAllWithDocumentFolderShareAttributes(userId: Long, documentFolderId: Long): Seq[ContactWithDocumentFolder] = {
     DB.withSession {
       implicit session =>
         val q = for {
-          (c, d) <- query leftJoin userDocumentBox on ((c, d) =>
-                                          c.contactUserId === d.userId &&
-                                          d.documentBoxId === documentBoxId) if c.userId === userId
+          (c, d) <- query leftJoin userDocumentFolder on ((c, d) =>
+                                          c.friendId === d.userId &&
+                                          d.documentFolderId === documentFolderId) if c.userId === userId
           cu <- c.contact
         } yield (cu.userId, cu.email, d.?)
         
         q.list.map{case (userId, email, d) 
                    => {
                         d match {
-                          case (userDocumentBoxId, documentBoxId, usrId, ownershipType, canCopy, isLimitedShare, shareUntilEOD, createdUserId, createdAt, updatedUserId, updatedAt) =>
-                            val shared = userDocumentBoxId match {
+                          case (userDocumentFolderId, documentFolderId, usrId, ownershipType, canCopy, isLimitedShare, shareUntilEOD, createdUserId, createdAt, updatedUserId, updatedAt) =>
+                            val shared = userDocumentFolderId match {
                               case Some(id) => true
                               case None => false
                             }
-                            ContactWithDocumentBox(userId, email, shared, canCopy, isLimitedShare, shareUntilEOD)
+                            ContactWithDocumentFolder(userId, email, shared, canCopy, isLimitedShare, shareUntilEOD)
                           case _ =>
-                            ContactWithDocumentBox(userId, email, false, None, None, None)
+                            ContactWithDocumentFolder(userId, email, false, None, None, None)
                         }
                    }
         }

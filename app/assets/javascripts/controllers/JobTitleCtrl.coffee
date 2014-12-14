@@ -33,7 +33,7 @@ class JobTitleCtrl
         @$log.debug "JobTitleCtrl.listJobTitles()"
         @jobTitle = {}
         @industry = {}
-        @jobTitles = @JobTitle.query().$promise
+        @JobTitle.query().$promise
           .then(
             (data) =>
               @$log.debug "Promise returned #{data.length} JobTitles"

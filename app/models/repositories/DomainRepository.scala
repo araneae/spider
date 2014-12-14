@@ -23,43 +23,36 @@ object DomainRepository {
        implicit session: Session =>
          val q = for {
             d <- query.filter(_.domainId === domain.domainId)
-          } yield (d.code, d.name, d.description, d.updatedUserId, d.updatedAt)
+          } yield (d.name, d.description, d.updatedUserId, d.updatedAt)
           
-          q update((domain.code, domain.name, domain.description, Some(userId), Some(new DateTime())))
+          q update((domain.name, domain.description, Some(userId), Some(new DateTime())))
     }
   }
-  def find(domainId: Long): Option[DomainFull] = {
+  def find(domainId: Long): Option[DomainDTO] = {
     DB.withSession {
        implicit session: Session =>
           val q = for {
              s <- query filter (_.domainId === domainId)
              i <- s.industry
-           } yield (s.domainId, s.industryId, s.name, s.code, s.description, i.name)
+           } yield (s.domainId, s.industryId, s.name, s.description, i.name)
            
-          val result = q.list.map{case (domainId, industryId, name, code, description, industryName) => 
-                 DomainFull(domainId, industryId, name, code, description, industryName)}
+          val result = q.list.map{case (domainId, industryId, name, description, industryName) => 
+                 DomainDTO(Some(domainId), industryId, name, description, industryName)}
            
           if (result.length > 0) Some(result(0))
           else None
     }
   }
   
-  def findByCode(code: String): Option[Domain] = {
-    DB.withSession {
-       implicit session: Session =>
-          query filter(_.code === code) firstOption
-    }
-  }
-  
-  def findAll(): Seq[DomainFull] = {
+  def findAll(): Seq[DomainDTO] = {
     DB.withSession {
        implicit session: Session =>
          val q = for {
              s <- query
              i <- s.industry
-           } yield (s.domainId, s.industryId, s.name, s.code, s.description, i.name)
+           } yield (s.domainId, s.industryId, s.name, s.description, i.name)
            
-           q.list.map{case (domainId, industryId, name, code, description, industryName) => DomainFull(domainId, industryId, name, code, description, industryName)}
+           q.list.map{case (domainId, industryId, name, description, industryName) => DomainDTO(Some(domainId), industryId, name, description, industryName)}
     }
   }
   

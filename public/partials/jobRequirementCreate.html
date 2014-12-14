@@ -1,99 +1,173 @@
 <div ng-controller="JobRequirementCreateCtrl as ctrl">
-  <form novalidate id="idCreateJobRequirementForm" name="CreateJobRequirementForm" class="form-horizontal" role="form"
-        ng-submit="ctrl.save()">
-    <legend class="col-md-12">Create Job Requirement</legend>
-    <div class="form-group">
-        <label id="lblTitle" for="name" class="col-md-2 control-label">Title</label>
-        <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Create Job Requirement</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCreateJobForm" name="CreateJobForm" class="form-horizontal" role="form"
+          ng-submit="ctrl.save()">
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.title.$invalid}">
+          <label id="lblTitle" for="title" class="col-md-2 control-label">Job Title</label>
+          <div class="col-md-6">
             <input type="text" class="form-control" name="title" id="idTitle" placeholder="Enter title"
                    ng-model="ctrl.jobRequirement.title" required>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblIndustry" for="parentIndustry" class="col-md-2 control-label">Industry</label>
-        <div class="col-md-4">
-            <select class="form-control" name="industry" id="opIndustry" ng-options="industry.name for industry in ctrl.industries" 
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.jobTitle.$invalid}">
+          <label id="lblJobTitle" for="jobTitle" class="col-md-2 control-label">Job Title</label>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6">
+                <select class="form-control" name="jobTitle" id="idJobTitle" ng-options="jobTitle.name for jobTitle in ctrl.jobTitles" 
+                     ng-model="ctrl.jobTitle" required></select>
+              </div>
+              <div>
+                <div class="col-md-4">
+                  <button type="button" class="btn btn-default" id="btnAddJobTitle" ng-click="ctrl.goToAddJobTitle()">Add Job Title</button>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.industry.$invalid}">
+          <label id="lblIndustry" for="industry" class="col-md-2 control-label">Job Industry</label>
+          <div class="col-md-4">
+            <select class="form-control" name="industry" id="idIndustry" ng-options="industry.name for industry in ctrl.industries" 
                    ng-model="ctrl.industry" required></select>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblCode" for="code" class="col-md-2 control-label">Job Code</label>
-        <div class="col-md-4">
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.code.$invalid}">
+          <label id="lblCode" for="code" class="col-md-2 control-label">Job Code</label>
+          <div class="col-md-4">
             <input type="text" class="form-control" name="code" id="idCode" placeholder="Enter job code"
                    ng-model="ctrl.jobRequirement.code" required>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblRefNumber" for="refNumber" class="col-md-2 control-label">Ref Number</label>
-        <div class="col-md-4">
+        <div class="form-group">
+          <label id="lblRefNumber" for="refNumber" class="col-md-2 control-label">Ref Number</label>
+          <div class="col-md-4">
             <input type="text" class="form-control" name="refNumber" id="idRefNumber" placeholder="Enter reference number"
-                   ng-model="ctrl.jobRequirement.refNumber" required>
+                   ng-model="ctrl.jobRequirement.refNumber">
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblSalary" for="salaryMin" class="col-md-2 control-label">Salary</label>
-        <div class="col-md-8">
-            <div class="row">
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="salaryMin" id="idSalaryMin" placeholder="Min value"
-                          ng-model="ctrl.jobRequirement.salaryMin" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="salaryMax" id="idSalaryMax" placeholder="Max value"
-                          ng-model="ctrl.jobRequirement.salaryMax" required>
-                </div>
-                <div class="col-md-3">
-                  <select class="form-control" name="currencyType" id="idCurrencyType" ng-options="currencyType as currencyType for currencyType in ctrl.EnumService.enumTypes.CurrencyType" 
-                    ng-model="ctrl.jobRequirement.currencyType" required></select>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-    </div>
-    <div class="form-group">
-        <label id="lblEmploymentType" for="code" class="col-md-2 control-label">Employment Type</label>
-        <div class="col-md-4">
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.employmentType.$invalid}">
+          <label id="lblEmploymentType" for="employmentType" class="col-md-2 control-label">Employment Type</label>
+          <div class="col-md-4">
             <select class="form-control" name="employmentType" id="idEmploymentType" ng-options="employmentType as employmentType for employmentType in ctrl.EnumService.enumTypes.EmploymentType" 
                    ng-model="ctrl.jobRequirement.employmentType" required></select>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblLocation" for="code" class="col-md-2 control-label">Location</label>
-        <div class="col-md-6">
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.location.$invalid}">
+          <label id="lblLocation" for="location" class="col-md-2 control-label">Location</label>
+          <div class="col-md-6">
             <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter location"
                    ng-model="ctrl.jobRequirement.location" required>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblSalaryTerm" for="code" class="col-md-2 control-label">Pay Term</label>
-        <div class="col-md-2">
-            <select class="form-control" name="salaryTerm" id="idSalaryTerm" ng-options="salaryTerm as salaryTerm for salaryTerm in ctrl.EnumService.enumTypes.SalaryTermType" 
-                   ng-model="ctrl.jobRequirement.salaryTerm" required></select>
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.salaryType.$invalid || CreateJobForm.currencyType.$invalid}">
+          <label id="lblCompensation" for="compensation" class="col-md-2 control-label">Compensation</label>
+          <div class="col-md-10">
+            <div class="row">
+             <div class="col-md-3">
+               <select class="form-control" name="salaryType" id="idSalaryType" ng-options="salaryType as salaryType for salaryType in ctrl.EnumService.enumTypes.SalaryType" 
+                      ng-model="ctrl.jobRequirement.xtn.salaryType" required></select>
+             </div>
+             <div class="col-md-3">
+                 <input type="number" step="0.01" min="0" class="form-control" name="salaryMin" id="idSalaryMin" placeholder="Min pay"
+                       ng-model="ctrl.jobRequirement.xtn.salaryMin">
+             </div>
+             <div class="col-md-3">
+                <input type="number" step="0.01" min="0" class="form-control" name="salaryMax" id="idSalaryMax" placeholder="Max pay"
+                       ng-model="ctrl.jobRequirement.xtn.salaryMax">
+             </div>
+             <div class="col-md-2">
+               <select class="form-control" name="currencyType" id="idCurrencyType" ng-options="currencyType as currencyType for currencyType in ctrl.EnumService.enumTypes.CurrencyType" 
+                      ng-model="ctrl.jobRequirement.xtn.currency" required></select>
+             </div>
+            </div>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblPositions" for="code" class="col-md-2 control-label"># Of Positions</label>
-        <div class="col-md-2">
-            <input type="text" class="form-control" name="positions" id="idPosition" placeholder="Enter number of positions"
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.paymentTerm.$invalid}">
+          <label id="lblPaymentTerm" for="paymentTerm" class="col-md-2 control-label">Pay Term</label>
+          <div class="col-md-2">
+            <select class="form-control" name="paymentTerm" id="idPaymentTerm" ng-options="paymentTerm as paymentTerm for paymentTerm in ctrl.EnumService.enumTypes.PaymentTermType" 
+                   ng-model="ctrl.jobRequirement.xtn.paymentTerm" required></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.taxTerm.$invalid}">
+          <label id="lblTaxTerm" for="taxTerm" class="col-md-2 control-label">Tax Term</label>
+          <div class="col-md-2">
+            <select class="form-control" name="taxTerm" id="idTaxTermType" ng-options="taxTermType as taxTermType for taxTermType in ctrl.EnumService.enumTypes.TaxTermType" 
+                   ng-model="ctrl.jobRequirement.xtn.taxTerm" required></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblTargetDate" for="targetDate" class="col-md-2 control-label">Target Date</label>
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ctrl.dateOptions.format}}" 
+                      ng-model="ctrl.targetStartDate" is-open="ctrl.isTargetStartDatePickerOpened" min-date="ctrl.dateOptions.minStartDate" 
+                        datepicker-options="ctrl.dateOptions" close-text="Close" placeholder="{{ctrl.dateOptions.format}}"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openStartDatePicker($event)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">  
+              <div class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ctrl.dateOptions.format}}" 
+                      ng-model="ctrl.targetEndDate" is-open="ctrl.isTargetEndDatePickerOpened" min-date="ctrl.dateOptions.minEndDate" 
+                        datepicker-options="ctrl.dateOptions" close-text="Close" placeholder="{{ctrl.dateOptions.format}}"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openEndDatePicker($event)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.backgroundCheck.$invalid}">
+          <label id="lblBackgroundCheck" for="backgroundCheck" class="col-md-2 control-label">Background Check</label>
+          <div class="col-md-4">
+            <select class="form-control" name="backgroundCheck" id="idBackgroundCheck" ng-options="backgroundCheckType as backgroundCheckType for backgroundCheckType in ctrl.EnumService.enumTypes.BackgroundCheckType" 
+                   ng-model="ctrl.jobRequirement.xtn.backgroundCheck" required></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.positions.$invalid}">
+          <label id="lblPositions" for="positions" class="col-md-2 control-label"># Of Positions</label>
+          <div class="col-md-2">
+            <input type="number" class="form-control" min="1" name="positions" id="idPosition" placeholder="Enter number of positions"
                    ng-model="ctrl.jobRequirement.positions" required>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
-        <div class="col-md-8">
+        <div class="form-group" ng-class="{'has-error': CreateJobForm.description.$invalid}">
+          <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+          <div class="col-md-10">
             <textarea class="form-control" rows="12" name="description" id="description" placeholder="Enter description"
                    ng-model="ctrl.jobRequirement.description" required>
             </textarea>
+          </div>
         </div>
-    </div>
-    <!--  <pre>{{ ctrl.jobRequirement | json }}</pre>  -->
-    <div class="form-group">
-        <div class="col-md-offset-1 col-md-8">
-            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CreateJobRequirementForm.$valid'>Save</button>
+        <!-- <pre>{{ ctrl.jobRequirement | json }}</pre> -->
+        <div class="form-group">
+          <div class="col-md-offset-1 col-md-8">
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CreateJobForm.$valid'>Save</button>
+          </div>
         </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
 

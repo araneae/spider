@@ -20,16 +20,16 @@ app = angular.module('myApp', dependencies)
 
 angular.module('myApp.routeConfig', ['ui.router'])
     .config ($stateProvider, $urlRouterProvider, $httpProvider) ->
-       $httpProvider.interceptors.push(['$log', '$rootScope', '$q', ($log, $rootScope, $q) ->
+       $httpProvider.interceptors.push(['$log', '$rootScope', '$q', 'ErrorService', ($log, $rootScope, $q, ErrorService) ->
               {
                 responseError: (rejection) =>
-                    $log.error("Intercepted response error")
+                    $log.error("Intercepted response error #{angular.toJson(rejection)}")
                     if (rejection.status is 401)
                         $q.reject(rejection)
                         window.location.href = '/logout'
                         #$rootScope.$broadcast('event:loginRequired');
-                    else if response.status >= 400 and response.status < 500
-                        ErrorService.setError('Server was unable to find what you were looking for... Sorry!!')
+                    else if (rejection.data)
+                        ErrorService.error(rejection.data.message) if rejection.data.message 
                     # otherwise, default behavior
                     $q.reject(rejection)
               }
@@ -63,7 +63,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('industry', {
+          .state('industries', {
               url: '/industry',
               views: {
                 'viewHeaderBar': {
@@ -72,7 +72,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
-                'viewContextMenu@industry': {
+                'viewContextMenu@industries': {
                     templateUrl: '/assets/partials/contextMenuAdmin.html'
                 },
                 'viewMain': {
@@ -125,7 +125,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('domain', {
+          .state('domains', {
               url: '/domain',
               views: {
                 'viewHeaderBar': {
@@ -134,7 +134,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
-                'viewContextMenu@domain': {
+                'viewContextMenu@domains': {
                     templateUrl: '/assets/partials/contextMenuAdmin.html'
                 },
                 'viewMain': {
@@ -274,7 +274,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('jobTitle', {
+          .state('jobTitles', {
               url: '/jobTitle',
               views: {
                 'viewHeaderBar': {
@@ -286,7 +286,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitle.html'
                 },
-                'viewContextMenu': {
+                'viewContextMenu@jobTitles': {
                     templateUrl: '/assets/partials/contextMenuAdmin.html'
                 }
               }
@@ -296,6 +296,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
                 },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitleCreate.html'
@@ -319,10 +322,16 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
                 },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewGlobalSearch@jobRequirements': {
+                    templateUrl: '/assets/partials/globalSearch.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirements.html'
                 },
-                'viewContextMenu': {
+                'viewContextMenu@jobRequirements': {
                     templateUrl: '/assets/partials/contextMenuAdmin.html'
                 }
               }
@@ -333,8 +342,25 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
                 },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementCreate.html'
+                }
+              }
+          })
+          .state('jobRequirementEdit', {
+              url: '/jobs/edit/:jobRequirementId'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/jobRequirementEdit.html'
                 }
               }
           })

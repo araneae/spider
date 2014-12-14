@@ -12,6 +12,8 @@ class JobRequirementCtrl
                                     @refresh() if data.menuItem is "refresh"
                                     @goToCreate() if data.menuItem is "create"
         )
+        @deleteObj
+        @deleteAlert = false
         # fetch data from server
         @listIndustries()
         @listJobRequirements()
@@ -33,7 +35,7 @@ class JobRequirementCtrl
         @$log.debug "JobRequirementCtrl.listJobRequirements()"
         @jobRequirement = {}
         @industry = {}
-        @jobRequirements = @JobRequirement.query().$promise
+        @JobRequirement.query().$promise
           .then(
             (data) =>
               @$log.debug "Promise returned #{data.length} JobRequirements"
@@ -51,11 +53,31 @@ class JobRequirementCtrl
         @$log.debug "JobRequirementCtrl.goToCreate()"
         @$state.go("jobRequirementCreate")
     
-    delete: (jobRequirement) ->
-        @$log.debug "JobRequirementCtrl.delete(#{jobRequirement.jobRequirementId})"
-        @JobRequirement.remove({jobRequirementId: jobRequirement.jobRequirementId})
-        @listJobRequirements()
+    showDeleteAlert: (jobRequirement) ->
+        @$log.debug "JobRequirementCtrl.showDeleteAlert(#{jobRequirement.jobRequirementId})"
+        @deleteObj = jobRequirement
+        @deleteAlert = true
+        
+    delete: () ->
+        @$log.debug "JobRequirementCtrl.delete()"
+        @deleteAlert = false
+        @JobRequirement.remove({jobRequirementId: @deleteObj.jobRequirementId}).$promise
+            .then(
+                (data) =>
+                  @$log.debug "Promise returned #{data}"
+                  @ErrorService.success(data.message)
+                  @listJobRequirements()
+                ,
+                (error) =>
+                  @ErrorService.error("Unable to delete Job Requirement #{deleteObj.title}")
+                  @$log.error "Unable to get delete JobRequirement: #{error}"
+            )
     
+    cancelDelete: () ->
+        @$log.debug "JobRequirementCtrl.cancelDelete()"
+        @deleteAlert = false
+        @deleteObj
+        
     goToEdit: (jobRequirement) ->
         @$log.debug "IndustryCtrl.goToEdit(#{jobRequirement})"
         @$state.go("jobRequirementEdit", {jobRequirementId: jobRequirement.jobRequirementId})

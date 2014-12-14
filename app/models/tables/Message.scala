@@ -14,23 +14,23 @@ class Messages(tag: Tag) extends Table[Message](tag, "message") {
 
   def messageId = column[Long]("message_id", O.PrimaryKey, O.AutoInc)
   
-  def parentMessageId = column[Option[Long]]("parent_message_id", O.Nullable)
+  def parentMessageId = column[Option[Long]]("parent_message_id")
   
-  def senderUserId = column[Long]("sender_user_id", O.NotNull)
+  def senderUserId = column[Long]("sender_user_id")
   
-  def editable = column[Boolean]("editable", O.NotNull, O.Default(true))
+  def editable = column[Boolean]("editable", O.Default(true))
   
-  def subject = column[String]("subject", O.NotNull)
+  def subject = column[String]("subject")
   
-  def body = column[Option[String]]("body", O.Nullable, O.DBType("VARCHAR(1024)"))
+  def body = column[Option[String]]("body", O.DBType("TEXT"))
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (messageId.?, parentMessageId, senderUserId, editable, subject, body, createdUserId, createdAt, updatedUserId, updatedAt) <> (Message.tupled, Message.unapply)
   

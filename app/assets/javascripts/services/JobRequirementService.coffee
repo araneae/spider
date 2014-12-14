@@ -13,4 +13,8 @@ servicesModule.service('JobRequirementService', JobRequirementService)
 # define the factories
 #
 servicesModule.factory('JobRequirement', ['$resource', ($resource) -> 
-              $resource('/jobRequirement/:jobRequirementId', {jobRequirementId: '@jobRequirementId'}, {'update': {method: 'PUT'}})])
+              $resource('/jobRequirement/:jobRequirementId', {jobRequirementId: '@jobRequirementId'}, 
+                  {
+                    'update': {method: 'PUT'}
+                  }
+             )])

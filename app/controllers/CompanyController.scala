@@ -26,7 +26,7 @@ object CompanyController extends Controller with Secured {
               val text = Json.toJson(companyDTO)
               Ok(text).as(JSON)
         case None =>
-            Ok(HttpResponseUtil.reponseEmptyObject())
+            BadRequest(HttpResponseUtil.error("Unable to find company"))
       }
   }
   
@@ -58,7 +58,8 @@ object CompanyController extends Controller with Secured {
                   }
             },
             invalid = {
-                errors => BadRequest(HttpResponseUtil.error("Unable to parse payload."))
+                errors =>
+                    BadRequest(HttpResponseUtil.error("Unable to parse payload."))
             }
       )
   }

@@ -1,6 +1,6 @@
 <div ng-controller="CompanyUserCreateCtrl as ctrl">
   <div class="row">
-    <div class="col-md-offset-2 col-md-6">
+    <div class="col-md-offset-1 col-md-8">
       <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
     </div>
   </div>
@@ -53,7 +53,7 @@
                     ng-model="ctrl.companyUser.userType" required></select>
             </div>
         </div>
-        <pre>{{ ctrl.companyUser | json }}</pre>
+        <!-- <pre>{{ ctrl.companyUser | json }}</pre> -->
         <div class="form-group">
             <div class="col-md-offset-1 col-md-8">
                 <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>

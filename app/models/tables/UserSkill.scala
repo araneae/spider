@@ -14,23 +14,23 @@ import org.joda.time.DateTime
 
 class UserSkills(tag: Tag) extends Table[UserSkill](tag, "user_skill") {
   
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def skillId = column[Long]("skill_id", O.NotNull)
+  def skillId = column[Long]("skill_id")
   
-  def skillLevel = column[SkillLevel]("skill_level", O.NotNull)
+  def skillLevel = column[SkillLevel]("skill_level")
   
-  def descriptionShort = column[Option[String]]("description_short", O.Nullable)
+  def descriptionShort = column[Option[String]]("description_short")
   
-  def descriptionLong = column[Option[String]]("description_long", O.Nullable)
+  def descriptionLong = column[Option[String]]("description_long")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userId, skillId, skillLevel, descriptionShort, descriptionLong, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserSkill.tupled, UserSkill.unapply)
   

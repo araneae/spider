@@ -15,25 +15,25 @@ class Companies(tag: Tag) extends Table[Company](tag, "company") {
 
   def companyId = column[Long]("company_id", O.PrimaryKey, O.AutoInc)
   
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
   
-  def status = column[CompanyStatusType]("status", O.NotNull)
+  def status = column[CompanyStatusType]("status")
   
-  def address = column[String]("address", O.NotNull)
+  def address = column[String]("address")
   
-  def email = column[String]("email", O.NotNull)
+  def email = column[String]("email")
   
-  def website = column[Option[String]]("website", O.Nullable)
+  def website = column[Option[String]]("website")
   
-  def telephone = column[String]("telephone", O.NotNull)
+  def telephone = column[String]("telephone")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (companyId.?, name, status, address, email, website, telephone, createdUserId, createdAt, updatedUserId, updatedAt) <> (Company.tupled, Company.unapply)
   

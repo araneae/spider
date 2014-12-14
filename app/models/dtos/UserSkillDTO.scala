@@ -5,7 +5,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import enums._
 
-case class UserSkillFull(userId: Long,
+case class UserSkillDTO(userId: Long,
                 skillId: Long,
                 skillLevel: SkillLevel,
                 descriptionShort: Option[String],
@@ -13,27 +13,27 @@ case class UserSkillFull(userId: Long,
                 skillName: String
                 )
 
-object UserSkillFull extends Function6[Long, Long, SkillLevel, Option[String], Option[String], String, UserSkillFull]
+object UserSkillDTO extends Function6[Long, Long, SkillLevel, Option[String], Option[String], String, UserSkillDTO]
 {
     implicit val enumTypeFormat = EnumUtils.enumFormat(SkillLevel)
   
-    implicit val userSkillWrites : Writes[UserSkillFull] = (
+    implicit val userSkillWrites : Writes[UserSkillDTO] = (
             (JsPath \ "userId").write[Long] and
             (JsPath \ "skillId").write[Long] and
             (JsPath \ "skillLevel").write[SkillLevel] and
             (JsPath \ "descriptionShort").write[Option[String]] and
             (JsPath \ "descriptionLong").write[Option[String]] and
             (JsPath \ "skillName").write[String]
-    )(unlift(UserSkillFull.unapply))
+    )(unlift(UserSkillDTO.unapply))
       
-    implicit val userSkillReads : Reads[UserSkillFull] = (
+    implicit val userSkillReads : Reads[UserSkillDTO] = (
           (JsPath \ "userId").read[Long] and
           (JsPath \ "skillId").read[Long] and
           (JsPath \ "skillLevel").read[SkillLevel] and
           (JsPath \ "descriptionShort").readNullable[String] and
           (JsPath \ "descriptionLong").readNullable[String] and
           (JsPath \ "skillName").read[String]
-    )(UserSkillFull)
+    )(UserSkillDTO)
 }
 /*
 https://groups.google.com/forum/#!topic/play-framework/ENlcpDzLZo8

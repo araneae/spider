@@ -12,19 +12,19 @@ import org.joda.time.DateTime
 
 class MessageRecipients(tag: Tag) extends Table[MessageRecipient](tag, "message_recipient") {
 
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def messageId = column[Long]("message_id", O.NotNull)
+  def messageId = column[Long]("message_id")
   
-  def read = column[Boolean]("read", O.NotNull)
+  def read = column[Boolean]("read")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userId, messageId, read, createdUserId, createdAt, updatedUserId, updatedAt) <> (MessageRecipient.tupled, MessageRecipient.unapply _)
   

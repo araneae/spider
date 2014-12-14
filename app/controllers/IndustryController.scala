@@ -68,15 +68,12 @@ object IndustryController extends Controller with Secured {
   def getObject(jsonObj: JsObject, userId: Long): Option[Industry] = {
     val optIndustryId = (jsonObj \ "industryId").asOpt[Long]
     val optName = (jsonObj \ "name").asOpt[String]
-    val optCode = (jsonObj \ "code").asOpt[String]
     val optDescrition = (jsonObj \ "description").asOpt[String]
     
     optName.map { name =>
-       optCode.map { code =>
-         optDescrition.map{ description =>
-           val industry = Industry(optIndustryId, code, name, Some(description), userId)
-           Some(industry)
-         }.getOrElse(None)
+       optDescrition.map{ description =>
+         val industry = Industry(optIndustryId, name, description, userId)
+         Some(industry)
        }.getOrElse(None)
     }.getOrElse(None)
   }

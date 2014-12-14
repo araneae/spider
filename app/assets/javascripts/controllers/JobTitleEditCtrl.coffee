@@ -32,7 +32,7 @@ class JobTitleEditCtrl
               (data) =>
                 @ErrorService.success("Successfully update jobTitle #{@jobTitle.name}")
                 @$log.debug "server returned #{data} JobTitle"
-                @$state.go("jobTitle")
+                @$state.go("jobTitles")
              (error) =>
                 @ErrorService.error("Oops, something wrong! Unable to update #{@jobTitle.name}!")
                 @$log.error "Unable to get Industries: #{error}"
@@ -40,6 +40,6 @@ class JobTitleEditCtrl
 
     cancel: () ->
         @$log.debug "JobTitleEditCtrl.cancel()"
-        @$state.go("jobTitle")
+        @$state.go("jobTitles")
 
 controllersModule.controller('JobTitleEditCtrl', JobTitleEditCtrl)

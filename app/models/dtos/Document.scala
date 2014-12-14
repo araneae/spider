@@ -11,30 +11,30 @@ import org.joda.time.DateTime
  * 
  */
 case class Document(documentId: Option[Long],
-                   documentBoxId: Long,
+                   documentFolderId: Long,
                    name: String,
                    documentType: DocumentType,
                    fileType: FileType,
                    fileName: String,
                    physicalName: String,
-                   description: Option[String],
+                   description: String,
                    signature: String,
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None)
 
-object Document extends Function13[Option[Long], Long, String, DocumentType, FileType, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Document]
+object Document extends Function13[Option[Long], Long, String, DocumentType, FileType, String, String, String, String, Long, DateTime, Option[Long], Option[DateTime], Document]
 {
     implicit val documentWrites : Writes[Document] = (
             (JsPath \ "documentId").write[Option[Long]] and
-            (JsPath \ "documentBoxId").write[Long] and
+            (JsPath \ "documentFolderId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "documentType").write[DocumentType] and
             (JsPath \ "fileType").write[FileType] and
             (JsPath \ "fileName").write[String] and
             (JsPath \ "physicalName").write[String] and
-            (JsPath \ "description").write[Option[String]] and
+            (JsPath \ "description").write[String] and
             (JsPath \ "signature").write[String] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
@@ -44,13 +44,13 @@ object Document extends Function13[Option[Long], Long, String, DocumentType, Fil
 
     implicit val documentReads : Reads[Document] = (
           (JsPath \ "documentId").readNullable[Long] and
-          (JsPath \ "documentBoxId").read[Long] and
+          (JsPath \ "documentFolderId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "documentType").read[DocumentType] and
           (JsPath \ "fileType").read[FileType] and
           (JsPath \ "fileName").read[String] and
           (JsPath \ "physicalName").read[String] and
-          (JsPath \ "description").readNullable[String] and
+          (JsPath \ "description").read[String] and
           (JsPath \ "signature").read[String] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and

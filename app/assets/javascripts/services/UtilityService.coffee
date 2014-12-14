@@ -33,4 +33,13 @@ class UtilityService
           empty = obj.length is 0
       empty
 
+    formatDate: (date) ->
+      dateString = null
+      if (date)
+        year = date.getFullYear()
+        month = date.getMonth() + 1
+        day = date.getDate()
+        dateString = year + "-" + month + "-" + day
+      dateString
+
 servicesModule.service('UtilityService', UtilityService)

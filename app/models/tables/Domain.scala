@@ -15,28 +15,26 @@ class Domains(tag: Tag) extends Table[Domain](tag, "domain") {
 
   def domainId = column[Long]("domain_id", O.PrimaryKey, O.AutoInc)
   
-  def industryId = column[Long]("industry_id", O.NotNull)
+  def industryId = column[Long]("industry_id")
   
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
   
-  def code = column[String]("code", O.NotNull)
+  def description = column[String]("description")
   
-  def description = column[Option[String]]("description", O.Nullable)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
-  
-  override def * = (domainId.?, industryId, name, code, description, createdUserId, createdAt, updatedUserId, updatedAt) <> (Domain.tupled, Domain.unapply)
+  override def * = (domainId.?, industryId, name, description, createdUserId, createdAt, updatedUserId, updatedAt) <> (Domain.tupled, Domain.unapply)
   
     // foreign keys and indexes
   def industry = foreignKey("fk_on_domain_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
-  def uniqueCode = index("idx_unique_on_skill_code", code, unique = true)
+  def uniqueName = index("idx_unique_on_skill_name", name, unique = true)
   
   def createdBy = foreignKey("fk_on_domain_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   

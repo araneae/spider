@@ -19,7 +19,7 @@ object UserDocumentRepository {
     }
   }
   
-  def findAll(userId: Long): Seq[UserDocumentFull] = { 
+  def findAll(userId: Long): Seq[UserDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
           val q = for {
@@ -30,11 +30,11 @@ object UserDocumentRepository {
           yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
           q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
-                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   
-  def findAllByDocumentIds(userId: Long, documentIds : Seq[Long]): Seq[UserDocumentFull] = { 
+  def findAllByDocumentIds(userId: Long, documentIds : Seq[Long]): Seq[UserDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
           val q = for {
@@ -45,11 +45,11 @@ object UserDocumentRepository {
           yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
           q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
-                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   
-  def findAllByDocumentIds(documentIds : Seq[Long]): Seq[UserDocumentFull] = { 
+  def findAllByDocumentIds(documentIds : Seq[Long]): Seq[UserDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
           val q = for {
@@ -60,7 +60,7 @@ object UserDocumentRepository {
           yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
           q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
-                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   

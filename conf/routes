@@ -129,36 +129,36 @@ DELETE /userSkill/:skillId                                      controllers.User
 GET    /skillLevel                                              controllers.UserSkillController.getSkillLevels
 
 # Contact specific routes
-GET    /contact/:contactUserId                                  controllers.ContactController.get(contactUserId: Long)
+GET    /contact/:friendId                                       controllers.ContactController.get(friendId: Long)
 
 GET    /contact                                                 controllers.ContactController.getAll
 
-DELETE /contact/:contactUserId                                  controllers.ContactController.delete(contactUserId: Long)
+DELETE /contact/:friendId                                       controllers.ContactController.delete(friendId: Long)
 
 GET    /contact/search/:email                                   controllers.ContactController.search(email: String)
 
 GET    /contact/accept/:token                                   controllers.ContactController.accept(token: String)
 
-GET    /contact/invite/:contactUserId                           controllers.ContactController.inviteMessage(contactUserId: Long)
+GET    /contact/invite/:friendId                                controllers.ContactController.inviteMessage(friendId: Long)
 
-POST   /contact/invite/:contactUserId                           controllers.ContactController.invite(contactUserId: Long)
+POST   /contact/invite/:friendId                                controllers.ContactController.invite(friendId: Long)
 
-POST   /contact/invite/:contactUserId/accept                    controllers.ContactController.acceptInvitation(contactUserId: Long)
+POST   /contact/invite/:friendId/accept                         controllers.ContactController.acceptInvitation(friendId: Long)
 
-POST   /contact/invite/:contactUserId/reject                    controllers.ContactController.rejectInvitation(contactUserId: Long)
+POST   /contact/invite/:friendId/reject                         controllers.ContactController.rejectInvitation(friendId: Long)
 
-# Adviser specific routes
-POST   /adviser/:adviserUserId                                  controllers.AdviserController.create(adviserUserId: Int)
+# Follower specific routes
+POST   /adviser/:adviserUserId                                  controllers.FollowerController.create(adviserUserId: Int)
 
-GET    /adviser/:adviserUserId                                  controllers.AdviserController.get(adviserUserId: Int)
+GET    /adviser/:adviserUserId                                  controllers.FollowerController.get(adviserUserId: Int)
 
-GET    /adviser                                                 controllers.AdviserController.getAll
+GET    /adviser                                                 controllers.FollowerController.getAll
 
-DELETE /adviser/:adviserUserId                                  controllers.AdviserController.delete(adviserUserId: Int)
+DELETE /adviser/:adviserUserId                                  controllers.FollowerController.delete(adviserUserId: Int)
 
-GET    /adviser/search/:email                                   controllers.AdviserController.search(email: String)
+GET    /adviser/search/:email                                   controllers.FollowerController.search(email: String)
 
-GET    /adviser/accept/:token                                   controllers.AdviserController.accept(token: String)
+GET    /adviser/accept/:token                                   controllers.FollowerController.accept(token: String)
 
 # Database specific routes
 POST   /database/upload                                         controllers.DatabaseController.upload

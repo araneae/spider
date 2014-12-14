@@ -1,0 +1,174 @@
+<div ng-controller="JobRequirementEditCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Edit Job Requirement</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idEditJobForm" name="EditJobForm" class="form-horizontal" role="form"
+          ng-submit="ctrl.save()">
+        <div class="form-group" ng-class="{'has-error': EditJobForm.title.$invalid}">
+          <label id="lblTitle" for="title" class="col-md-2 control-label">Job Title</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="title" id="idTitle" placeholder="Enter title"
+                   ng-model="ctrl.jobRequirement.title" required>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.jobTitle.$invalid}">
+          <label id="lblJobTitle" for="jobTitle" class="col-md-2 control-label">Job Title</label>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-6">
+                <select class="form-control" name="jobTitle" id="idJobTitle" ng-options="jobTitle.name for jobTitle in ctrl.jobTitles" 
+                     ng-model="ctrl.jobTitle" required></select>
+              </div>
+              <div>
+                <div class="col-md-4">
+                  <button type="button" class="btn btn-default" id="btnAddJobTitle" ng-click="ctrl.goToAddJobTitle()">Add Job Title</button>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.industry.$invalid}">
+          <label id="lblIndustry" for="industry" class="col-md-2 control-label">Job Industry</label>
+          <div class="col-md-4">
+            <select class="form-control" name="industry" id="idIndustry" ng-options="industry.name for industry in ctrl.industries" 
+                   ng-model="ctrl.industry" required></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.code.$invalid}">
+          <label id="lblCode" for="code" class="col-md-2 control-label">Job Code</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" name="code" id="idCode" placeholder="Enter job code"
+                   ng-model="ctrl.jobRequirement.code" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblRefNumber" for="refNumber" class="col-md-2 control-label">Ref Number</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" name="refNumber" id="idRefNumber" placeholder="Enter reference number"
+                   ng-model="ctrl.jobRequirement.refNumber">
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.employmentType.$invalid}">
+          <label id="lblEmploymentType" for="employmentType" class="col-md-2 control-label">Employment Type</label>
+          <div class="col-md-4">
+            <select class="form-control" name="employmentType" id="idEmploymentType" ng-options="employmentType as employmentType for employmentType in ctrl.EnumService.enumTypes.EmploymentType" 
+                   ng-model="ctrl.jobRequirement.employmentType" required></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.location.$invalid}">
+          <label id="lblLocation" for="location" class="col-md-2 control-label">Location</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter location"
+                   ng-model="ctrl.jobRequirement.location" required>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.salaryType.$invalid || EditJobForm.currencyType.$invalid}">
+          <label id="lblCompensation" for="compensation" class="col-md-2 control-label">Compensation</label>
+          <div class="col-md-10">
+            <div class="row">
+             <div class="col-md-3">
+               <select class="form-control" name="salaryType" id="idSalaryType" ng-options="salaryType as salaryType for salaryType in ctrl.EnumService.enumTypes.SalaryType" 
+                      ng-model="ctrl.jobRequirement.xtn.salaryType" required></select>
+             </div>
+             <div class="col-md-3">
+                 <input type="number" step="0.01" min="0" class="form-control" name="salaryMin" id="idSalaryMin" placeholder="Min pay"
+                       ng-model="ctrl.jobRequirement.xtn.salaryMin">
+             </div>
+             <div class="col-md-3">
+                <input type="number" step="0.01" min="0" class="form-control" name="salaryMax" id="idSalaryMax" placeholder="Max pay"
+                       ng-model="ctrl.jobRequirement.xtn.salaryMax">
+             </div>
+             <div class="col-md-2">
+               <select class="form-control" name="currencyType" id="idCurrencyType" ng-options="currencyType as currencyType for currencyType in ctrl.EnumService.enumTypes.CurrencyType" 
+                      ng-model="ctrl.jobRequirement.xtn.currency" required></select>
+             </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.paymentTerm.$invalid}">
+          <label id="lblPaymentTerm" for="paymentTerm" class="col-md-2 control-label">Pay Term</label>
+          <div class="col-md-2">
+            <select class="form-control" name="paymentTerm" id="idPaymentTerm" ng-options="paymentTerm as paymentTerm for paymentTerm in ctrl.EnumService.enumTypes.PaymentTermType" 
+                   ng-model="ctrl.jobRequirement.xtn.paymentTerm" required></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.taxTerm.$invalid}">
+          <label id="lblTaxTerm" for="taxTerm" class="col-md-2 control-label">Tax Term</label>
+          <div class="col-md-2">
+            <select class="form-control" name="taxTerm" id="idTaxTermType" ng-options="taxTermType as taxTermType for taxTermType in ctrl.EnumService.enumTypes.TaxTermType" 
+                   ng-model="ctrl.jobRequirement.xtn.taxTerm" required></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblTargetDate" for="targetDate" class="col-md-2 control-label">Target Date</label>
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ctrl.dateOptions.format}}" 
+                      ng-model="ctrl.targetStartDate" is-open="ctrl.isTargetStartDatePickerOpened" min-date="ctrl.dateOptions.minStartDate" 
+                        datepicker-options="ctrl.dateOptions" close-text="Close" placeholder="{{ctrl.dateOptions.format}}"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openStartDatePicker($event)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-3">  
+              <div class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ctrl.dateOptions.format}}" 
+                      ng-model="ctrl.targetEndDate" is-open="ctrl.isTargetEndDatePickerOpened" min-date="ctrl.dateOptions.minEndDate" 
+                        datepicker-options="ctrl.dateOptions" close-text="Close" placeholder="{{ctrl.dateOptions.format}}"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="ctrl.openEndDatePicker($event)">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.backgroundCheck.$invalid}">
+          <label id="lblBackgroundCheck" for="backgroundCheck" class="col-md-2 control-label">Background Check</label>
+          <div class="col-md-4">
+            <select class="form-control" name="backgroundCheck" id="idBackgroundCheck" ng-options="backgroundCheckType as backgroundCheckType for backgroundCheckType in ctrl.EnumService.enumTypes.BackgroundCheckType" 
+                   ng-model="ctrl.jobRequirement.xtn.backgroundCheck" required></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.positions.$invalid}">
+          <label id="lblPositions" for="positions" class="col-md-2 control-label"># Of Positions</label>
+          <div class="col-md-2">
+            <input type="number" class="form-control" min="1" name="positions" id="idPosition" placeholder="Enter number of positions"
+                   ng-model="ctrl.jobRequirement.positions" required>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': EditJobForm.description.$invalid}">
+          <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+          <div class="col-md-10">
+            <textarea class="form-control" rows="12" name="description" id="description" placeholder="Enter description"
+                   ng-model="ctrl.jobRequirement.description" required>
+            </textarea>
+          </div>
+        </div>
+        <!-- <pre>{{ ctrl.jobRequirement | json }}</pre> -->
+        <pre>{{ EditJobForm.$error | json }}</pre>
+        <div class="form-group">
+          <div class="col-md-offset-1 col-md-8">
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!EditJobForm.$valid'>Update</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

@@ -12,30 +12,30 @@ class UserProfilePersonals(tag: Tag) extends Table[UserProfilePersonal](tag, "us
 
   def userProfilePersonalId = column[Long]("user_profile_personal_id", O.PrimaryKey, O.AutoInc)
   
-  def xrayTerms = column[String]("xray_terms", O.Nullable)
+  def xrayTerms = column[String]("xray_terms")
   
-  def aboutMe = column[Option[String]]("aboutMe", O.Nullable)
+  def aboutMe = column[Option[String]]("aboutMe")
   
-  def picture = column[Option[String]]("picture", O.Nullable)
+  def picture = column[Option[String]]("picture")
   
-  def mobile = column[Option[String]]("mobile", O.Nullable)
+  def mobile = column[Option[String]]("mobile")
   
-  def alternateEmail = column[Option[String]]("alternate_email", O.Nullable)
+  def alternateEmail = column[Option[String]]("alternate_email")
   
-  def gender = column[Option[GenderType]]("gender", O.Nullable)
+  def gender = column[Option[GenderType]]("gender")
   
-  def maritalStatus = column[Option[MaritalStatusType]]("marital_status", O.Nullable)
+  def maritalStatus = column[Option[MaritalStatusType]]("marital_status")
   
-  def birthYear = column[Option[Int]]("birth_year", O.Nullable)
+  def birthYear = column[Option[Int]]("birth_year")
   
-  def birthMonth = column[Option[Int]]("birth_month", O.Nullable)
+  def birthMonth = column[Option[Int]]("birth_month")
   
-  def birthDay = column[Option[Int]]("birth_day", O.Nullable)
+  def birthDay = column[Option[Int]]("birth_day")
   
 
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userProfilePersonalId.?, xrayTerms, aboutMe, picture, mobile, alternateEmail, gender, maritalStatus, birthYear, birthDay, birthMonth, createdAt, updatedAt) <> (UserProfilePersonal.tupled, UserProfilePersonal.unapply)
   

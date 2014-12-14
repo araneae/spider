@@ -1,25 +1,35 @@
 <div ng-controller="JobRequirementCtrl as ctrl">
+  <div class="alert alert-danger" ng-show="ctrl.deleteAlert">
+     <div><strong>Do you want to delete Job Requirement "{{ctrl.deleteObj.title}}"?</strong>
+        <button type='button' class="btn btn-danger display-inline col-md-offset-2" id="btnRemove" ng-click="ctrl.delete()">Yes</button>
+        <button type='button' class="btn btn-success display-inline" id="btnHideRemoveAlert" ng-click="ctrl.cancelDelete()">Cancel</button>
+     </div>
+  </div>
   <div class="row">
-    <div class="col-md-offset-2 col-md-8">
+    <div class="col-md-offset-1 col-md-8">
       <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
     </div>
   </div>
-  <table class="table table-striped">
-    <tr>
-       <th>Industry</th>
-       <th>Title</th>
-       <th>Code</th>
-       <th>RefNumber</th>
-       <td></td>
-    </tr>
-    <tr ng-repeat="jobRequirement in ctrl.jobRequirements">
-     <td>{{jobRequirement.industryName}}</td> 
-     <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(jobRequirement)">{{jobRequirement.title}}</a></td>
-     <td>{{jobRequirement.code}}</td>
-     <td>{{jobRequirement.refNumber}}</td>
-     <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(jobRequirement)"></a></td>
-    </tr>
-  </table>
-  <hr/>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">Job Requirements</div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <tr>
+          <th>Title</th>
+          <th>Code</th>
+          <th>RefNumber</th>
+          <td></td>
+        </tr>
+        <tr ng-repeat="jobRequirement in ctrl.jobRequirements">
+          <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(jobRequirement)">{{jobRequirement.title}}</a></td>
+          <td>{{jobRequirement.code}}</td>
+          <td>{{jobRequirement.refNumber}}</td>
+          <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.showDeleteAlert(jobRequirement)"></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 

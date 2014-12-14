@@ -27,8 +27,11 @@ object EnumController extends Controller with Secured {
     println("in EnumController.getAll()")
     val json = Json.obj("CurrencyType" -> Json.toJson(CurrencyType.values)) ++ 
                Json.obj("EmploymentType" -> Json.toJson(EmploymentType.values)) ++
-               Json.obj("SalaryTermType" -> Json.toJson(SalaryTermType.values)) ++
+               Json.obj("PaymentTermType" -> Json.toJson(PaymentTermType.values)) ++
+               Json.obj("SalaryType" -> Json.toJson(SalaryType.values)) ++
                Json.obj("JobStatusType" -> Json.toJson(JobStatusType.values)) ++
+               Json.obj("BackgroundCheckType" -> Json.toJson(BackgroundCheckType.values)) ++
+               Json.obj("TaxTermType" -> Json.toJson(TaxTermType.values)) ++
                Json.obj("GenderType" -> Json.toJson(GenderType.values)) ++
                Json.obj("MaritalStatusType" -> Json.toJson(MaritalStatusType.values)) ++
                Json.obj("CompanyUserStatusType" -> Json.toJson(CompanyUserStatusType.values)) ++

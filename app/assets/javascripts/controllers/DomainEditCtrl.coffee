@@ -32,14 +32,14 @@ class DomainEditCtrl
               (data) =>
                 @ErrorService.success("Successfully update domain #{@domain.name}")
                 @$log.debug "server returned #{data} Domain"
-                @$state.go("domain")
+                @$state.go("domains")
              (error) =>
                 @ErrorService.error("Oops, something wrong! Unable to update #{@domain.name}!")
-                @$log.error "Unable to get Industries: #{error}"
+                @$log.error "Unable to save Domain: #{error}"
         )
 
     cancel: () ->
         @$log.debug "DomainEditCtrl.cancel()"
-        @$state.go("domain")
+        @$state.go("domains")
 
 controllersModule.controller('DomainEditCtrl', DomainEditCtrl)

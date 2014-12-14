@@ -4,6 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import play.api.mvc.Controller
+import org.joda.time.DateTime
 import traits.Secured
 import play.api.libs.json._
 import models.tables._
@@ -18,14 +19,24 @@ object JobTitleController extends Controller with Secured {
   def create = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in JobTitleController.create...")
       println("in JobTitleController.create...")
-      val jsonObj = request.body.asInstanceOf[JsObject]
-      val optJobTitle = getObject(jsonObj, userId)
-      optJobTitle match {
-        case Some(jobTitle) =>
-              JobTitleRepository.create(jobTitle)
-              Ok(HttpResponseUtil.success("Created jobTitle!"))
+      val optCompany = CompanyRepository.findByUserId(userId)
+      optCompany match {
+        case Some(company) =>
+          val jsonObj = request.body.asInstanceOf[JsObject]
+          val jobTitleJsonObj = jsonObj ++ Json.obj("companyId" -> company.companyId)
+          jobTitleJsonObj.validate[JobTitleDTO].fold(
+                valid = { jobTitleDTO =>
+                    val jobTitle = JobTitle(jobTitleDTO, userId, new DateTime, None, None)
+                    JobTitleRepository.create(jobTitle)
+                    Ok(HttpResponseUtil.success("Successfully created Job Title!"))
+                },
+                invalid = {  
+                  errors =>
+                    BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+                }
+              )
         case None =>
-              Ok(HttpResponseUtil.error("Unable to parse payload!"))
+              BadRequest(HttpResponseUtil.error("Need to upgrade to be able to define Job Title!"))
       }
   }
   
@@ -33,14 +44,23 @@ object JobTitleController extends Controller with Secured {
       //logger.info("in JobTitleController.update...")
       println(s"in JobTitleController.update($jobTitleId)...")
       val jsonObj = request.body.asInstanceOf[JsObject]
-      val optJobTitle = getObject(jsonObj, userId)
-      optJobTitle match {
-        case Some(jobTitle) =>
-              JobTitleRepository.update(jobTitle, userId)
-              Ok(HttpResponseUtil.success("Updated jobTitle!"))
-         case None =>
-              Ok(HttpResponseUtil.error("Unable to parse payload!"))
-      }
+      jsonObj.validate[JobTitleDTO].fold(
+          valid = { jobTitleDTO =>
+              val optJobTitle = JobTitleRepository.find(jobTitleId);
+              optJobTitle match {
+                case Some(jobTitle) =>
+                  val updatedJobTitle = JobTitle(jobTitleDTO, jobTitle.createdUserId, jobTitle.createdAt, Some(userId), Some(new DateTime))
+                  JobTitleRepository.update(jobTitle)
+                  Ok(HttpResponseUtil.success("Successfully updated Job Title!"))
+                case None =>
+                  BadRequest(HttpResponseUtil.error("Unable to find Job Title!"))
+              }
+          },
+          invalid = {  
+            errors =>
+              BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+          }
+        )
   }
   
   def delete(jobTitleId: Long) = IsAuthenticated{ username => implicit request =>
@@ -53,34 +73,37 @@ object JobTitleController extends Controller with Secured {
   def getAll = IsAuthenticated{ username => implicit request =>
       //logger.info("in JobTitleController.getAll...")
       println("in JobTitleController.getAll...")
-      var list = JobTitleRepository.findAll
-      val text = Json.toJson(list)
-      Ok(text).as(JSON)
+      val optCompany = CompanyRepository.findByUserId(userId)
+      optCompany match {
+        case Some(company) =>
+          var list = JobTitleRepository.findAll(company.companyId.get)
+          val data = Json.toJson(list)
+          Ok(data).as(JSON)
+        case None =>
+          BadRequest(HttpResponseUtil.error("Need to upgrade to be able to fetch Job Titles!"))
+      }
   }
   
   def get(jobTitleId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in JobTitleController.get...")
       println("in JobTitleController.get(${jobTitleId})")
       var optJobTitle = JobTitleRepository.find(jobTitleId)
-      val text = Json.toJson(optJobTitle)
-      Ok(text).as(JSON)
+      val data = Json.toJson(optJobTitle)
+      Ok(data).as(JSON)
   }
   
   def getObject(jsonObj: JsObject, userId: Long): Option[JobTitle] = {
     val optJobTitleId = (jsonObj \ "jobTitleId").asOpt[Long]
     val optIndustryId = (jsonObj \ "industryId").asOpt[Long]
     val optName = (jsonObj \ "name").asOpt[String]
-    val optCode = (jsonObj \ "code").asOpt[String]
     val optDescrition = (jsonObj \ "description").asOpt[String]
     
     optName.map { name =>
-       optCode.map { code =>
-         optDescrition.map { description =>
-            optIndustryId.map { industryId =>
-              val jobTitle = JobTitle(optJobTitleId, industryId, code, name, Some(description), userId)
-              Some(jobTitle)
-            }.getOrElse(None)
-         }.getOrElse(None)
+       optDescrition.map { description =>
+          optIndustryId.map { industryId =>
+            val jobTitle = JobTitle(optJobTitleId, industryId, name, description, userId)
+            Some(jobTitle)
+          }.getOrElse(None)
        }.getOrElse(None)
     }.getOrElse(None)
   }

@@ -19,9 +19,9 @@ object EmailService {
      mail.sendHtml(content.body)
    }
    
-   def inviteAdviser(receiver: User, senderName:String, token: String) = {
+   def inviteSubject(receiver: User, senderName:String, token: String) = {
      println("in EmailService.inviteContact... ")
-     val content = views.html.email.inviteAdviser(receiver.firstName)(senderName)(token)(Configuration.applicationBaseUrl)
+     val content = views.html.email.inviteSubject(receiver.firstName)(senderName)(token)(Configuration.applicationBaseUrl)
      val mail = use[MailerPlugin].email
      mail.setSubject(s"Hello ${receiver.firstName}")
      mail.setRecipient(receiver.email)

@@ -32,7 +32,7 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     //logger.info(s"in SharedDocumentController.getAllByUserTagId(${userTagId})")
     println(s"in SharedDocumentController.getAll()")
     
-    val list = UserDocumentBoxRepository.findSharedDocuments(userId)
+    val list = UserDocumentFolderRepository.findSharedDocuments(userId)
     val text = Json.toJson(list)
     Ok(text).as(JSON)
   }
@@ -76,10 +76,10 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     println(s"in SharedDocumentController.search(${searchText})")
     
     if (searchText.length() > 0){
-      val documentBoxes = UserDocumentBoxRepository.findAllByOwnershipType(userId, OwnershipType.SHARED)
+      val documentFolders = UserDocumentFolderRepository.findAllByOwnershipType(userId, OwnershipType.SHARED)
       implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
       // send message to index searcher
-      val f = ask(indexSearcherActor, MessageDocumentSearch(documentBoxes.map(b => b.documentBoxId), searchText)).mapTo[MessageDocumentSearchResult]
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolders.map(b => b.documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
       val result = f.map {
            case MessageDocumentSearchResult(docIds) => {
                   val userDocuments = UserDocumentRepository.findAllByDocumentIds(docIds)
@@ -140,9 +140,9 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     // copy the document
     document match {
       case Some(doc) =>
-          val optDocumentBox = UserDocumentBoxRepository.findDefault(userId)
-          optDocumentBox match {
-            case Some(documentBox) =>
+          val optDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
+          optDocumentFolder match {
+            case Some(documentFolder) =>
                 val sourceFilePath = Configuration.uploadFilePath(doc.physicalName)
                 val physicalName = TokenGenerator.token
                 val targetFilePath = Configuration.uploadFilePath(physicalName)
@@ -153,7 +153,7 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
                 val copyName = UserDocumentRepository.getCopyName(userId, orgName)
                 
                 val copyDocument = Document(None,
-                                          documentBox.documentBoxId,
+                                          documentFolder.documentFolderId,
                                           copyName,
                                           doc.documentType,
                                           doc.fileType,

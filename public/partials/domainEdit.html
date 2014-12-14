@@ -1,42 +1,46 @@
 <div ng-controller="DomainEditCtrl as ctrl">
-  <form novalidate id="idEditDomainForm" name="EditDomainForm" class="form-horizontal" role="form"
-        ng-submit="ctrl.save()">
-    <legend class="col-md-12">Edit Domain</legend>
-    <div class="form-group">
-        <label id="lblParentIndustry" for="parentIndustry" class="col-md-2 control-label">Industry</label>
-        <div class="col-md-4">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+     <div class="panel-heading">
+        <div class="panel-title">Edit Domain</div>
+     </div>
+     <div class="panel-body">
+      <form novalidate id="idEditDomainForm" name="EditDomainForm" class="form-horizontal" role="form"
+           ng-submit="ctrl.save()">
+        <div class="form-group">
+          <label id="lblParentIndustry" for="parentIndustry" class="col-md-2 control-label">Industry</label>
+          <div class="col-md-4">
             <select class="form-control" name="industry" ng-options="industry.name for industry in ctrl.industries" 
                    ng-model="ctrl.industry" required></select>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
-        <div class="col-md-4">
+        <div class="form-group">
+          <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
+          <div class="col-md-4">
             <input type="text" class="form-control" name="name" id="name" placeholder="Enter name"
                    ng-model="ctrl.domain.name" required>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblCode" for="code" class="col-md-2 control-label">Code</label>
-        <div class="col-md-4">
-            <input type="text" class="form-control" name="code" id="code" placeholder="Enter code"
-                   ng-model="ctrl.domain.code" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
-        <div class="col-md-6">
+        <div class="form-group">
+          <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+          <div class="col-md-6">
             <input type="text" class="form-control" name="description" id="description" placeholder="Enter description"
                    ng-model="ctrl.domain.description" required>
+          </div>
         </div>
-    </div>
-    <!--  <pre>{{ ctrl.domain | json }}</pre>  -->
-    <div class="form-group">
-        <div class="col-md-offset-1 col-md-8">
-            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+        <!--  <pre>{{ ctrl.domain | json }}</pre>  -->
+        <div class="form-group">
+          <div class="col-md-offset-1 col-md-8">
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
             <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!EditDomainForm.$valid'>Save</button>
+          </div>
         </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
 

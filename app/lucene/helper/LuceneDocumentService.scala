@@ -12,10 +12,10 @@ object LuceneDocumentService extends LuceneConsts {
   def getTextDocument(doc: Document, contents: String) : LuceneDocument = {
     var luceneDocument = new LuceneDocument()
     val documentId = doc.documentId.get
-    val documentBoxId = doc.documentBoxId
+    val documentFolderId = doc.documentFolderId
     luceneDocument.add(new StringField(FIELD_DOC_ID, s"${DOC_TYPE_TEXT}-${documentId}", Field.Store.YES))
     luceneDocument.add(new StringField(FIELD_DOCUMENT_ID, documentId.toString, Field.Store.YES))
-    luceneDocument.add(new StringField(FIELD_DOCUMENT_BOX_ID, documentBoxId.toString, Field.Store.YES))
+    luceneDocument.add(new StringField(FIELD_DOCUMENT_BOX_ID, documentFolderId.toString, Field.Store.YES))
     luceneDocument.add(new StringField(FIELD_DOCUMENT_TYPE, DOC_TYPE_TEXT, Field.Store.YES))
     luceneDocument.add(new Field(FIELD_CONTENTS, contents, highlighterType))
     luceneDocument

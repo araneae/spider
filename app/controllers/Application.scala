@@ -108,8 +108,8 @@ object Application extends Controller with Secured with AkkaActor {
                           }
                           // create default message boxes
                           MessageBoxRepository.createDefaults(userId, userId)
-                          val documentBoxId = DocumentBoxRepository.create(DocumentBox(None, "Default", Some("Default Store"), true, userId))
-                          UserDocumentBoxRepository.create(UserDocumentBox(None, documentBoxId, userId, OwnershipType.OWNED, true, false, None, userId))
+                          val documentFolderId = DocumentFolderRepository.create(DocumentFolder(None, "Default", true, userId))
+                          UserDocumentFolderRepository.create(UserDocumentFolder(None, documentFolderId, userId, OwnershipType.OWNED, true, false, None, userId))
                           Redirect(routes.AuthController.login).flashing(Flash(formData.data) + ("success" -> "Activation email has been sent."))
                         case None =>
                           Redirect(routes.Application.signup).flashing(Flash(formData.data) + ("error" -> "Country is not available"))

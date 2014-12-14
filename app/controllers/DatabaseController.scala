@@ -60,10 +60,10 @@ object DatabaseController extends Controller with Secured with AkkaActor {
   def getRepositoryShareContacts = IsAuthenticated{ username => implicit request =>
     //logger.info(s"in DatabaseController.getRepositoryShareContacts()")
     println(s"in DatabaseController.getRepositoryShareContacts()")
-    val optDocumentBox = UserDocumentBoxRepository.findDefault(userId)
-    optDocumentBox match {
-      case Some(documentBox) =>
-          val list = ContactRepository.findAllWithDocumentBoxShareAttributes(userId, documentBox.documentBoxId)
+    val optDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
+    optDocumentFolder match {
+      case Some(documentFolder) =>
+          val list = ContactRepository.findAllWithDocumentFolderShareAttributes(userId, documentFolder.documentFolderId)
           val text = Json.toJson(list)
           Ok(text).as(JSON)
       case None =>
@@ -125,10 +125,10 @@ object DatabaseController extends Controller with Secured with AkkaActor {
       val filePath = Configuration.uploadUserTempFilePath(userId, sanitizedFileName)
       val physicalName = TokenGenerator.token
       val signature = FileUtil.getMD5Hash(filePath)
-      val optDocumentBox = UserDocumentBoxRepository.findDefault(userId)
-      optDocumentBox match {
-        case Some(documentBox) =>
-            val documentObj = Json.obj("userId" -> userId) ++Json.obj("documentBoxId" -> documentBox.documentBoxId) ++ 
+      val optDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
+      optDocumentFolder match {
+        case Some(documentFolder) =>
+            val documentObj = Json.obj("userId" -> userId) ++Json.obj("documentFolderId" -> documentFolder.documentFolderId) ++ 
                                 Json.obj("documentType" -> DocumentType.TEXT) ++
                                 Json.obj("fileType" -> fileType) ++ Json.obj("physicalName" -> physicalName) ++ 
                                 Json.obj("signature" -> signature) ++ Json.obj("createdUserId" -> userId) ++ 
@@ -246,10 +246,10 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.search(${userTagId}, ${searchText})")
     
     if (searchText.length() > 0){
-      val documentBoxes = UserDocumentBoxRepository.findAll(userId)
+      val documentFolderes = UserDocumentFolderRepository.findAll(userId)
       implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
       // send message to index searcher
-      val f = ask(indexSearcherActor, MessageDocumentSearch(documentBoxes.map(b => b.documentBoxId), searchText)).mapTo[MessageDocumentSearchResult]
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolderes.map(b => b.documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
       val result = f.map {
            case MessageDocumentSearchResult(docIds) => {
                   val userDocuments = if (userTagId > 0) {
@@ -355,9 +355,9 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     // copy the document
     document match {
       case Some(doc) =>
-          val optDocumentBox = UserDocumentBoxRepository.findDefault(userId)
-          optDocumentBox match {
-            case Some(documentBox) =>
+          val optDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
+          optDocumentFolder match {
+            case Some(documentFolder) =>
                 val sourceFilePath = Configuration.uploadFilePath(doc.physicalName)
                 val physicalName = TokenGenerator.token
                 val targetFilePath = Configuration.uploadFilePath(physicalName)
@@ -368,7 +368,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                 val copyName = UserDocumentRepository.getCopyName(userId, orgName)
                 
                 val copyDocument = Document(None,
-                                          documentBox.documentBoxId,
+                                          documentFolder.documentFolderId,
                                           copyName,
                                           doc.documentType,
                                           doc.fileType,
@@ -406,20 +406,20 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.shareRepository()")
     
     val jsonObj = request.body.asInstanceOf[JsArray]
-    jsonObj.validate[List[ContactWithDocumentBox]].fold(
+    jsonObj.validate[List[ContactWithDocumentFolder]].fold(
             valid = { shares =>
-                    val optDefaultUserDocumentBox = UserDocumentBoxRepository.findDefault(userId)
-                    optDefaultUserDocumentBox match {
-                      case Some(defaultUserDocumentBox) =>
-                        val documentBoxId = defaultUserDocumentBox.documentBoxId
+                    val optDefaultUserDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
+                    optDefaultUserDocumentFolder match {
+                      case Some(defaultUserDocumentFolder) =>
+                        val documentFolderId = defaultUserDocumentFolder.documentFolderId
                         shares.map { share =>
-                          val optUserDocumentBox = UserDocumentBoxRepository.find(share.id, documentBoxId)
-                          optUserDocumentBox match {
+                          val optUserDocumentFolder = UserDocumentFolderRepository.find(share.id, documentFolderId)
+                          optUserDocumentFolder match {
                             case Some(doc) =>
                                 if (share.shared) {
-                                  val userDocument = UserDocumentBox(
-                                                            doc.userDocumentBoxId,
-                                                            doc.documentBoxId, 
+                                  val userDocument = UserDocumentFolder(
+                                                            doc.userDocumentFolderId,
+                                                            doc.documentFolderId, 
                                                             doc.userId, 
                                                             doc.ownershipType, 
                                                             share.canCopy.getOrElse(doc.canCopy), 
@@ -430,16 +430,16 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                                                             Some(userId),
                                                             Some(new DateTime()))
       
-                                  UserDocumentBoxRepository.udate(userDocument)
+                                  UserDocumentFolderRepository.udate(userDocument)
                                 }
                                 else {
-                                  UserDocumentBoxRepository.delete(doc.userDocumentBoxId.get)
+                                  UserDocumentFolderRepository.delete(doc.userDocumentFolderId.get)
                                 }
                             case None =>
                                  if (share.shared) {
-                                   val userDocument = UserDocumentBox(
+                                   val userDocument = UserDocumentFolder(
                                                               None,
-                                                              documentBoxId, 
+                                                              documentFolderId, 
                                                               share.id, 
                                                               OwnershipType.SHARED, 
                                                               share.canCopy.getOrElse(false), 
@@ -447,7 +447,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                                                               share.shareUntilEOD,
                                                               userId)
         
-                                   UserDocumentBoxRepository.create(userDocument)
+                                   UserDocumentFolderRepository.create(userDocument)
                                  }
                           }
                         }

@@ -4,6 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import play.api.mvc.Controller
+import org.joda.time.DateTime
 import traits.Secured
 import play.api.libs.json._
 import models.tables._
@@ -18,71 +19,100 @@ object JobRequirementController extends Controller with Secured {
   def create = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in JobRequirementController.create...")
       println("in JobRequirementController.create...")
-      val jsonObj = request.body.asInstanceOf[JsObject]
-      val optJobRequirement = getObject(jsonObj, userId)
-      optJobRequirement match {
-        case Some(jobRequirement) =>
-              JobRequirementRepository.create(jobRequirement)
-              Ok(HttpResponseUtil.success("Created jobRequirement!"))
+      val optCompany = CompanyRepository.findByUserId(userId)
+      optCompany match {
+        case Some(company) =>
+          val jsonObj = request.body.asInstanceOf[JsObject]
+          val jobReqJsonObj = jsonObj ++ Json.obj("companyId" -> company.companyId)
+          jobReqJsonObj.validate[JobRequirementDTO].fold(
+                valid = { jobRequirementDTO =>
+                    val jobRequirementXtn = JobRequirementXtn(jobRequirementDTO.xtn, userId, new DateTime, None, None)
+                    val jobRequirementXtnId = JobRequirementXtnRepository.create(jobRequirementXtn)
+                    val jobRequirement = JobRequirement(jobRequirementDTO, jobRequirementXtnId, userId, new DateTime, None, None)
+                    JobRequirementRepository.create(jobRequirement)
+                    Ok(HttpResponseUtil.success("Successfully created Job Requirement!"))
+                },
+                invalid = {  
+                  errors =>
+                    BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+                }
+              )
         case None =>
-              Ok(HttpResponseUtil.error("Unable to parse payload!"))
+              BadRequest(HttpResponseUtil.error("Need to upgrade to be able to define Job Requirement!"))
       }
   }
   
   def update(jobRequirementId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in JobRequirementController.update...")
-      println(s"in JobRequirementController.update($jobRequirementId)...")
+      println(s"in JobRequirementController.update(${jobRequirementId})")
       val jsonObj = request.body.asInstanceOf[JsObject]
-      val optJobRequirement = getObject(jsonObj, userId)
-      optJobRequirement match {
-        case Some(jobRequirement) =>
-              JobRequirementRepository.update(jobRequirement, userId)
-              Ok(HttpResponseUtil.success("Updated jobRequirement!"))
-         case None =>
-              Ok(HttpResponseUtil.error("Unable to parse payload!"))
-      }
+      jsonObj.validate[JobRequirementDTO].fold(
+            valid = { jobRequirementDTO =>
+              val optJobRequirement = JobRequirementRepository.find(jobRequirementId)
+              optJobRequirement match {
+                case Some(jobRequirement) =>
+                    val updatedJobRequirement = JobRequirement(jobRequirementDTO,
+                                                               jobRequirementDTO.xtn.jobRequirementXtnId.get,
+                                                               jobRequirement.createdUserId, 
+                                                               jobRequirement.createdAt, 
+                                                               Some(userId), 
+                                                               Some(new DateTime))
+                    JobRequirementRepository.update(updatedJobRequirement)
+                    val optJobRequirementXtn = JobRequirementXtnRepository.find(jobRequirementDTO.xtn.jobRequirementXtnId.get)
+                    optJobRequirementXtn match {
+                      case Some(jobRequirementXtn) =>
+                         val updatedJobRequirementXtn = JobRequirementXtn(jobRequirementDTO.xtn,
+                                                               jobRequirementXtn.createdUserId, 
+                                                               jobRequirementXtn.createdAt, 
+                                                               Some(userId), 
+                                                               Some(new DateTime))
+                        JobRequirementXtnRepository.update(updatedJobRequirementXtn)
+                    }
+                    Ok(HttpResponseUtil.success("Successfully updated JobRequirement!"))
+                 case None =>
+                    BadRequest(HttpResponseUtil.error("Unable to find job requirment!"))
+              }
+            },
+            invalid = {
+                errors =>
+                  BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+            }
+      )
   }
   
   def delete(jobRequirementId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in JobRequirementController.delete...")
-      println("in JobRequirementController.delete(${jobRequirementId})")
-      JobRequirementRepository.delete(jobRequirementId);
-      Ok("Deleted")
+      println(s"in JobRequirementController.delete(${jobRequirementId})")
+      var optJobRequirement = JobRequirementRepository.find(jobRequirementId)
+      optJobRequirement match {
+        case Some(jobRequirement) =>
+                JobRequirementRepository.delete(jobRequirementId)
+                JobRequirementXtnRepository.delete(jobRequirement.jobRequirementXtnId)
+                Ok(HttpResponseUtil.success("Successfully deleted Job Requirement!"))
+        case None =>
+          BadRequest(HttpResponseUtil.error("Unable to find Job Requirement!"))
+      }
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
       //logger.info("in JobRequirementController.getAll...")
       println("in JobRequirementController.getAll...")
-      var list = JobRequirementRepository.findAll
-      val text = Json.toJson(list)
-      Ok(text).as(JSON)
+      val optCompany = CompanyRepository.findByUserId(userId)
+      optCompany match {
+        case Some(company) =>
+          var list = JobRequirementRepository.getAll(company.companyId.get)
+          val data = Json.toJson(list)
+          Ok(data).as(JSON)
+        case None =>
+          BadRequest(HttpResponseUtil.error("Need to upgrade to be able to define Job Requirement!"))
+      }
   }
   
   def get(jobRequirementId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in JobRequirementController.get...")
       println("in JobRequirementController.get(${jobRequirementId})")
-      var optJobRequirement = JobRequirementRepository.find(jobRequirementId)
-      val text = Json.toJson(optJobRequirement)
-      Ok(text).as(JSON)
-  }
-  
-  def getObject(jsonObj: JsObject, userId: Long): Option[JobRequirement] = {
-    val optJobRequirementId = (jsonObj \ "jobRequirementId").asOpt[Long]
-    val optIndustryId = (jsonObj \ "industryId").asOpt[Long]
-    val optName = (jsonObj \ "name").asOpt[String]
-    val optCode = (jsonObj \ "code").asOpt[String]
-    val optDescrition = (jsonObj \ "description").asOpt[String]
-    
-    optName.map { name =>
-       optCode.map { code =>
-         optDescrition.map { description =>
-            optIndustryId.map { industryId =>
-              //val jobRequirement = JobRequirement(optJobRequirementId, industryId, code, name, Some(description), userId)
-              //Some(jobRequirement)
-              None
-            }.getOrElse(None)
-         }.getOrElse(None)
-       }.getOrElse(None)
-    }.getOrElse(None)
+      var optJobRequirementDTO = JobRequirementRepository.get(jobRequirementId)
+      val data = Json.toJson(optJobRequirementDTO)
+      Ok(data).as(JSON)
   }
 }

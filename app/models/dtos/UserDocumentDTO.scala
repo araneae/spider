@@ -11,11 +11,11 @@ import enums.OwnershipType._
  * User document
  * 
  */
-case class UserDocumentFull(
+case class UserDocumentDTO(
                    userDocumentId: Long,
                    documentId: Long,
                    name: String,
-                   description: Option[String],
+                   description: String,
                    connected: Boolean,
                    ownershipType: OwnershipType,
                    signature: String,
@@ -26,13 +26,13 @@ case class UserDocumentFull(
                    createdAt: DateTime
                    )
 
-object UserDocumentFull extends Function12[Long, Long, String, Option[String], Boolean, OwnershipType, String, Boolean, Boolean, Boolean, String, DateTime, UserDocumentFull]
+object UserDocumentDTO extends Function12[Long, Long, String, String, Boolean, OwnershipType, String, Boolean, Boolean, Boolean, String, DateTime, UserDocumentDTO]
 {
-    implicit val documentWrites : Writes[UserDocumentFull] = (
+    implicit val documentWrites : Writes[UserDocumentDTO] = (
             (JsPath \ "userDocumentId").write[Long] and
             (JsPath \ "documentId").write[Long] and
             (JsPath \ "name").write[String] and
-            (JsPath \ "description").write[Option[String]] and
+            (JsPath \ "description").write[String] and
             (JsPath \ "connected").write[Boolean] and
             (JsPath \ "ownershipType").write[OwnershipType] and
             (JsPath \ "signature").write[String] and
@@ -41,13 +41,13 @@ object UserDocumentFull extends Function12[Long, Long, String, Option[String], B
             (JsPath \ "canView").write[Boolean] and
             (JsPath \ "createdBy").write[String] and
             (JsPath \ "createdAt").write[DateTime]
-    )(unlift(UserDocumentFull.unapply))
+    )(unlift(UserDocumentDTO.unapply))
 
-    implicit val documentReads : Reads[UserDocumentFull] = (
+    implicit val documentReads : Reads[UserDocumentDTO] = (
           (JsPath \ "userDocumentId").read[Long] and
           (JsPath \ "documentId").read[Long] and
           (JsPath \ "name").read[String] and
-          (JsPath \ "description").readNullable[String] and
+          (JsPath \ "description").read[String] and
           (JsPath \ "connected").read[Boolean] and
           (JsPath \ "ownershipType").read[OwnershipType] and
           (JsPath \ "signature").read[String] and
@@ -56,5 +56,5 @@ object UserDocumentFull extends Function12[Long, Long, String, Option[String], B
           (JsPath \ "canView").read[Boolean] and
           (JsPath \ "createdBy").read[String] and
           (JsPath \ "createdAt").read[DateTime]
-    )(UserDocumentFull)
+    )(UserDocumentDTO)
 }

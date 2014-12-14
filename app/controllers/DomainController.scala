@@ -19,14 +19,17 @@ object DomainController extends Controller with Secured {
       //logger.info("in DomainController.create...")
       println("in DomainController.create...")
       val jsonObj = request.body.asInstanceOf[JsObject]
-      val optDomain = getObject(jsonObj, userId)
-      optDomain match {
-        case Some(domain) =>
+      jsonObj.validate[DomainDTO].fold(
+          valid = { domainDTO =>
+              val domain = Domain(None, domainDTO.industryId, domainDTO.name, domainDTO.description, userId)
               DomainRepository.create(domain)
               Ok(HttpResponseUtil.success("Created domain!"))
-        case None =>
-              Ok(HttpResponseUtil.error("Unable to parse payload!"))
-      }
+          },
+          invalid = {  
+            errors =>
+              println(errors)
+              BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+          })
   }
   
   def update(domainId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
@@ -70,17 +73,14 @@ object DomainController extends Controller with Secured {
     val optDomainId = (jsonObj \ "domainId").asOpt[Long]
     val optIndustryId = (jsonObj \ "industryId").asOpt[Long]
     val optName = (jsonObj \ "name").asOpt[String]
-    val optCode = (jsonObj \ "code").asOpt[String]
     val optDescrition = (jsonObj \ "description").asOpt[String]
     
     optName.map { name =>
-       optCode.map { code =>
-         optDescrition.map { description =>
-            optIndustryId.map { industryId =>
-              val domain = Domain(optDomainId, industryId, code, name, Some(description), userId)
-              Some(domain)
-            }.getOrElse(None)
-         }.getOrElse(None)
+       optDescrition.map { description =>
+          optIndustryId.map { industryId =>
+            val domain = Domain(optDomainId, industryId, name, description, userId)
+            Some(domain)
+          }.getOrElse(None)
        }.getOrElse(None)
     }.getOrElse(None)
   }

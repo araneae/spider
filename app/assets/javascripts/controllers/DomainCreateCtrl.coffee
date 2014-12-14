@@ -25,19 +25,20 @@ class DomainCreateCtrl
     save: () ->
         @$log.debug "DomainCreateCtrl.save()"
         @domain.industryId = @industry.industryId
+        @domain.industryName = @industry.name
         domain = new @Domain(@domain)
         domain.$save().then( 
           (data) =>
             @$log.debug "server returned #{data} Domain"
-            @$state.go("domain")
+            @$state.go("domains")
           ,
           (error) =>
             @ErrorService.error("Oops, something wrong! Unable to create #{@domain.name}")
-            @$log.error "Unable to create Industry: #{error}"
+            @$log.error "Unable to create Domain: #{error}"
         )
 
     cancel: () ->
         @$log.debug "DomainCreateCtrl.cancel()"
-        @$state.go("domain")
+        @$state.go("domains")
 
 controllersModule.controller('DomainCreateCtrl', DomainCreateCtrl)

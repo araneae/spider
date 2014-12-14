@@ -12,7 +12,7 @@ class IndustryCreateCtrl
             (data) =>
               @ErrorService.success("Successfully created industry #{@industry.name}")
               @$log.debug "Promise returned #{data} Industry"
-              @$state.go("industry")
+              @$state.go("industries")
             ,
             (error) =>
                 @ErrorService.error("Unable to create #{@industry.name}")
@@ -21,6 +21,6 @@ class IndustryCreateCtrl
 
     cancel: () ->
         @$log.debug "IndustryCreateCtrl.cancel()"
-        @$state.go("industry")
+        @$state.go("industries")
 
 controllersModule.controller('IndustryCreateCtrl', IndustryCreateCtrl)

@@ -33,7 +33,7 @@ object DocumentTagRepository {
     }
   }
   
-  def findDocumentByUserTagId(userId: Long, userTagId: Long): Seq[UserDocumentFull] = {
+  def findDocumentByUserTagId(userId: Long, userTagId: Long): Seq[UserDocumentDTO] = {
     DB.withSession {
       implicit session =>
        val q = for {
@@ -44,11 +44,11 @@ object DocumentTagRepository {
         } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
         
         q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
-                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   
-  def findDocumentByUserTagIdAndDocumentIds(userId: Long, userTagId: Long, documentIds : Seq[Long]): Seq[UserDocumentFull] = {
+  def findDocumentByUserTagIdAndDocumentIds(userId: Long, userTagId: Long, documentIds : Seq[Long]): Seq[UserDocumentDTO] = {
     DB.withSession {
       implicit session =>
        val q = for {
@@ -59,7 +59,7 @@ object DocumentTagRepository {
         } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
         
         q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
-                 => UserDocumentFull(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   

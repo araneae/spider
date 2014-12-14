@@ -52,7 +52,7 @@ object MessageBoxRepository {
     }
   }
   
-  def findAll(userId: Long): Seq[MessageBoxFull] = {
+  def findAll(userId: Long): Seq[MessageBoxDTO] = {
     DB.withSession {
       implicit session =>
         val q = for {
@@ -66,7 +66,7 @@ object MessageBoxRepository {
         
         q3.list.map {
                 case(messageBoxId, messageBoxType, name, createdAt, messageCount) 
-                          => MessageBoxFull(messageBoxId, messageBoxType, name, createdAt, messageCount)
+                          => MessageBoxDTO(messageBoxId, messageBoxType, name, createdAt, messageCount)
                 }
     }
   }

@@ -5,7 +5,6 @@ import play.api.libs.json._
 import org.joda.time.DateTime
 import enums.EmploymentType._
 import enums.JobStatusType._
-import enums.SalaryTermType._
 import enums.CurrencyType._
 
 /**
@@ -21,21 +20,43 @@ case class JobRequirement(
                  employmentType: EmploymentType,
                  industryId: Long,
                  location: String,
-                 salaryMin: Double,
-                 salaryMax: Double,
-                 currency: CurrencyType,
-                 salaryTerm: SalaryTermType,
                  description: String,
                  status: JobStatusType,
                  positions: Int,
                  jobTitleId: Long,
+                 jobRequirementXtnId: Long,
                  createdUserId: Long,
                  createdAt: DateTime = new DateTime(),
                  updatedUserId: Option[Long] = None,
-                 updatedAt: Option[DateTime] = None)
+                 updatedAt: Option[DateTime] = None) {
+   def this(jobRequirementDTO: JobRequirementDTO,
+            jobRequirementXtnId: Long,
+            createdUserId: Long, 
+            createdAt: DateTime, 
+            updatedUserId: Option[Long], 
+            updatedAt: Option[DateTime]) {
+       this(jobRequirementDTO.jobRequirementId,
+           jobRequirementDTO.companyId,
+           jobRequirementDTO.code,
+           jobRequirementDTO.refNumber,
+           jobRequirementDTO.title,
+           jobRequirementDTO.employmentType,
+           jobRequirementDTO.industryId,
+           jobRequirementDTO.location,
+           jobRequirementDTO.description,
+           jobRequirementDTO.status,
+           jobRequirementDTO.positions,
+           jobRequirementDTO.jobTitleId,
+           jobRequirementXtnId,
+           createdUserId, 
+           createdAt, 
+           updatedUserId, 
+           updatedAt)
+   }
+}
 
-object JobRequirement extends Function20[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, Double, Double, CurrencyType, 
-                            SalaryTermType, String, JobStatusType, Int, Long, Long, DateTime, Option[Long], Option[DateTime], JobRequirement]
+object JobRequirement extends Function17[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String,
+                            String, JobStatusType, Int, Long, Long, Long, DateTime, Option[Long], Option[DateTime], JobRequirement]
 {
     implicit val jobRequirementWrites : Writes[JobRequirement] = (
             (JsPath \ "jobRequirementId").write[Option[Long]] and
@@ -46,14 +67,11 @@ object JobRequirement extends Function20[Option[Long], Long, String, Option[Stri
             (JsPath \ "employmentType").write[EmploymentType] and
             (JsPath \ "industryId").write[Long] and
             (JsPath \ "location").write[String] and
-            (JsPath \ "salaryMin").write[Double] and
-            (JsPath \ "salaryMax").write[Double] and
-            (JsPath \ "currency").write[CurrencyType] and
-            (JsPath \ "salaryTerm").write[SalaryTermType] and
             (JsPath \ "description").write[String] and
             (JsPath \ "status").write[JobStatusType] and
             (JsPath \ "positions").write[Int] and
             (JsPath \ "jobTitleId").write[Long] and
+            (JsPath \ "jobRequirementXtnId").write[Long] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -69,18 +87,21 @@ object JobRequirement extends Function20[Option[Long], Long, String, Option[Stri
           (JsPath \ "employmentType").read[EmploymentType] and
           (JsPath \ "industryId").read[Long] and
           (JsPath \ "location").read[String] and
-          (JsPath \ "salaryMin").read[Double] and
-          (JsPath \ "salaryMax").read[Double] and
-          (JsPath \ "currency").read[CurrencyType] and
-          (JsPath \ "salaryTerm").read[SalaryTermType] and
           (JsPath \ "description").read[String] and
           (JsPath \ "status").read[JobStatusType] and
           (JsPath \ "positions").read[Int] and
           (JsPath \ "jobTitleId").read[Long] and
+          (JsPath \ "jobRequirementXtnId").read[Long] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
     )(JobRequirement)
     
+    def apply(jobRequirementDTO: JobRequirementDTO,
+              jobRequirementXtnId: Long,
+              createdUserId: Long,
+              createdAt: DateTime,
+              updatedUserId: Option[Long],
+              updatedAt: Option[DateTime]) = new JobRequirement(jobRequirementDTO, jobRequirementXtnId, createdUserId, createdAt, updatedUserId, updatedAt)
 }

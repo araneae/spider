@@ -6,7 +6,6 @@ import utils.JodaToSqlMapper._
 import org.joda.time.DateTime
 import enums.EmploymentType._
 import enums.CurrencyType._
-import enums.SalaryTermType._
 import enums.JobStatusType._
 
 /**
@@ -18,46 +17,40 @@ class JobRequirements(tag: Tag) extends Table[JobRequirement](tag, "job_requirem
 
   def jobRequirementId = column[Long]("job_requirement_id", O.PrimaryKey, O.AutoInc)
   
-  def companyId = column[Long]("company_id", O.NotNull)
+  def companyId = column[Long]("company_id")
   
-  def code = column[String]("code", O.NotNull)
+  def code = column[String]("code")
   
-  def refNumber = column[Option[String]]("ref_number", O.Nullable)
+  def refNumber = column[Option[String]]("ref_number")
   
-  def title = column[String]("title", O.NotNull)
+  def title = column[String]("title")
   
-  def employmentType = column[EmploymentType]("employment_type", O.NotNull)
+  def employmentType = column[EmploymentType]("employment_type")
   
-  def industryId = column[Long]("industry_id", O.NotNull)
+  def industryId = column[Long]("industry_id")
   
-  def location = column[String]("location", O.NotNull)
+  def location = column[String]("location")
   
-  def salaryMin = column[Double]("salary_min", O.NotNull)
-  
-  def salaryMax = column[Double]("salary_max", O.NotNull)
+  def description = column[String]("description", O.DBType("TEXT"))
 
-  def currency = column[CurrencyType]("currency", O.NotNull)
-
-  def salaryTerm = column[SalaryTermType]("salary_term", O.NotNull)
+  def status = column[JobStatusType]("status")
   
-  def description = column[String]("description", O.NotNull, O.DBType("TEXT"))
-
-  def status = column[JobStatusType]("status", O.Nullable)
+  def positions = column[Int]("positions")
   
-  def positions = column[Int]("positions", O.NotNull)
+  def jobTitleId = column[Long]("job_title_id")
   
-  def jobTitleId = column[Long]("job_title_id", O.NotNull)
+  def jobRequirementXtnId = column[Long]("job_requirement_xtn_id")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (jobRequirementId.?, companyId, code, refNumber, title, employmentType, industryId, location, salaryMin, salaryMax, currency, 
-      salaryTerm, description, status, positions, jobTitleId, createdUserId, createdAt, updatedUserId, updatedAt) <> (JobRequirement.tupled, JobRequirement.unapply)
+  override def * = (jobRequirementId.?, companyId, code, refNumber, title, employmentType, industryId, location, description, status,
+      positions, jobTitleId, jobRequirementXtnId, createdUserId, createdAt, updatedUserId, updatedAt) <> (JobRequirement.tupled, JobRequirement.unapply)
   
   // foreign keys and indexes
   def company = foreignKey("fk_job_requirement_on_company_id", companyId, TableQuery[Companies])(_.companyId)
@@ -67,6 +60,8 @@ class JobRequirements(tag: Tag) extends Table[JobRequirement](tag, "job_requirem
   def uniqueCode = index("idx_job_requirement_on_code_unique", (companyId, code), unique = true)
   
   def jobTitle = foreignKey("fk_job_requirement_jon_on_title_id", jobTitleId, TableQuery[JobTitles])(_.jobTitleId)
+  
+  def xtn = foreignKey("fk_job_requirement_on_job_requirement_xtn_id", jobRequirementXtnId, TableQuery[JobRequirementXtns])(_.jobRequirementXtnId)
   
   def createdBy = foreignKey("fk_job_requirement_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   

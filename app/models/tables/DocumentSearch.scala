@@ -18,19 +18,19 @@ class DocumentSearches(tag: Tag) extends Table[DocumentSearch](tag, "document_se
 
   def documentSearchId = column[Long]("document_search_id", O.PrimaryKey, O.AutoInc)
   
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
   
-  def searchText = column[String]("search_text", O.NotNull)
+  def searchText = column[String]("search_text")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (documentSearchId.?, userId, name, searchText, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentSearch.tupled, DocumentSearch.unapply)
   

@@ -20,17 +20,17 @@ class UserTags(tag: Tag) extends Table[UserTag](tag, "user_tag") {
 
   def userTagId = column[Long]("user_tag_Id", O.PrimaryKey, O.AutoInc)
   
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userTagId.?, userId, name, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserTag.tupled, UserTag.unapply)
   

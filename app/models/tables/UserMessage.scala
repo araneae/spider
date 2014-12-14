@@ -12,27 +12,27 @@ import org.joda.time.DateTime
 
 class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
 
-  def userId = column[Long]("user_id", O.NotNull)
+  def userId = column[Long]("user_id")
   
-  def messageId = column[Long]("message_id", O.NotNull)
+  def messageId = column[Long]("message_id")
   
-  def messageBoxId = column[Long]("message_box_id", O.NotNull)
+  def messageBoxId = column[Long]("message_box_id")
   
-  def read = column[Boolean]("read", O.NotNull, O.Default(false))
+  def read = column[Boolean]("read", O.Default(false))
   
-  def replied = column[Boolean]("replied", O.NotNull, O.Default(false))
+  def replied = column[Boolean]("replied", O.Default(false))
   
-  def important = column[Boolean]("important", O.NotNull, O.Default(false))
+  def important = column[Boolean]("important", O.Default(false))
   
-  def star = column[Boolean]("star", O.NotNull, O.Default(false))
+  def star = column[Boolean]("star", O.Default(false))
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (userId, messageId, messageBoxId, read, replied, important, star, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserMessage.tupled, UserMessage.unapply)
   

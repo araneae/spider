@@ -18,34 +18,34 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
 
   def documentId = column[Long]("document_id", O.PrimaryKey, O.AutoInc)
   
-  def documentBoxId = column[Long]("document_box_id", O.NotNull)
+  def documentFolderId = column[Long]("document_folder_id")
   
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
   
-  def documentType = column[DocumentType]("document_type", O.NotNull)
+  def documentType = column[DocumentType]("document_type")
   
-  def fileType = column[FileType]("file_type", O.NotNull)
+  def fileType = column[FileType]("file_type")
   
-  def fileName = column[String]("file_name", O.NotNull)
+  def fileName = column[String]("file_name")
   
-  def physicalName = column[String]("physical_name", O.NotNull)
+  def physicalName = column[String]("physical_name")
   
-  def description = column[Option[String]]("description", O.Nullable)
+  def description = column[String]("description")
   
-  def signature = column[String]("signature", O.NotNull)
+  def signature = column[String]("signature")
   
-  def createdUserId = column[Long]("created_user_id", O.NotNull)
+  def createdUserId = column[Long]("created_user_id")
   
-  def createdAt = column[DateTime]("created_at", O.NotNull)
+  def createdAt = column[DateTime]("created_at")
   
-  def updatedUserId = column[Option[Long]]("updated_user_id", O.Nullable)
+  def updatedUserId = column[Option[Long]]("updated_user_id")
   
-  def updatedAt = column[Option[DateTime]]("updated_at", O.Nullable)
+  def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (documentId.?, documentBoxId, name, documentType, fileType, fileName, physicalName, description, signature, createdUserId, createdAt, updatedUserId, updatedAt) <> (Document.tupled, Document.unapply)
+  override def * = (documentId.?, documentFolderId, name, documentType, fileType, fileName, physicalName, description, signature, createdUserId, createdAt, updatedUserId, updatedAt) <> (Document.tupled, Document.unapply)
   
   // foreign keys and indexes
-  def documentBox = foreignKey("fk_document_on_document_box_id", documentBoxId, TableQuery[DocumentBoxes])(_.documentBoxId)
+  def documentBox = foreignKey("fk_document_on_document_folder_id", documentFolderId.?, TableQuery[DocumentFolders])(_.documentFolderId)
   
   def createdBy = foreignKey("fk_on_document_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   

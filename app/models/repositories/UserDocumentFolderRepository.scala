@@ -10,45 +10,45 @@ import org.joda.time.DateTime
 import enums._
 import enums.OwnershipType._
 
-object UserDocumentBoxRepository {
+object UserDocumentFolderRepository {
   
-  val query = TableQuery[UserDocumentBoxes]
+  val query = TableQuery[UserDocumentFolders]
   val documentQuery = TableQuery[Documents]
   
-  def create(userDocumentBox: UserDocumentBox) = {
+  def create(userDocumentFolder: UserDocumentFolder) = {
     DB.withSession {
        implicit session: Session =>
-         query insert userDocumentBox
+         query insert userDocumentFolder
     }
   }
   
-  def find(userId: Long, documentBoxId: Long): Option[UserDocumentBox] = { 
+  def find(userId: Long, documentFolderId: Long): Option[UserDocumentFolder] = { 
     DB.withSession {
        implicit session: Session =>
-          query filter( d => d.userId === userId && d.documentBoxId === documentBoxId ) firstOption
+          query filter( d => d.userId === userId && d.documentFolderId === documentFolderId ) firstOption
     }
   }
   
-  def findAll(userId: Long): Seq[UserDocumentBox] = { 
+  def findAll(userId: Long): Seq[UserDocumentFolder] = { 
     DB.withSession {
        implicit session: Session =>
           query filter(_.userId === userId) list
     }
   }
   
-  def findAllByOwnershipType(userId: Long, ownershipType: OwnershipType): Seq[UserDocumentBox] = { 
+  def findAllByOwnershipType(userId: Long, ownershipType: OwnershipType): Seq[UserDocumentFolder] = { 
     DB.withSession {
        implicit session: Session =>
           query filter(ud => ud.userId === userId && ud.ownershipType === ownershipType) list
     }
   }
   
-  def findDefault(userId: Long): Option[UserDocumentBox] = { 
+  def findDefault(userId: Long): Option[UserDocumentFolder] = { 
     DB.withSession {
        implicit session: Session =>
          val q = for {
             ud <- query filter(d => d.userId === userId)
-            ds <- ud.documentBox if ud.ownershipType === OwnershipType.OWNED
+            ds <- ud.documentFolder if ud.ownershipType === OwnershipType.OWNED
             if ds.default === true
          } yield (ud)
          
@@ -68,30 +68,30 @@ object UserDocumentBoxRepository {
              db <- query
              u <- db.createdBy
              d <- documentQuery
-             if (db.documentBoxId === d.documentBoxId &&
+             if (db.documentFolderId === d.documentFolderId &&
                  db.ownershipType === OwnershipType.SHARED &&
                  db.userId === userId)
-             //(db, d) <- query innerJoin documentQuery on ( _.documentBoxId === _.documentBoxId && _.userId === userId) 
+             //(db, d) <- query innerJoin documentQuery on ( _.documentFolderId === _.documentFolderId && _.userId === userId) 
          } yield(db, d, u)
          
          q.list.map { case (db, d, u) => 
-             SharedUserDocumentDTO(db.documentBoxId, d.documentId.get, d.name, d.description, db.canCopy, u.firstName)
+             SharedUserDocumentDTO(db.documentFolderId, d.documentId.get, d.name, d.description, db.canCopy, u.firstName)
          }
     }
   }
   
   
-  def udate(userDocumentBox: UserDocumentBox) = {
+  def udate(userDocumentFolder: UserDocumentFolder) = {
     DB.withSession {
        implicit session: Session =>
-          query filter(d => d.userId === userDocumentBox.userId && d.documentBoxId === userDocumentBox.documentBoxId) update userDocumentBox
+          query filter(d => d.userId === userDocumentFolder.userId && d.documentFolderId === userDocumentFolder.documentFolderId) update userDocumentFolder
     }
   }
   
-  def delete(userDocumentBoxId: Long) = {
+  def delete(userDocumentFolderId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(d => d.userDocumentBoxId === userDocumentBoxId) delete
+          query.filter(d => d.userDocumentFolderId === userDocumentFolderId) delete
     }
   }
   

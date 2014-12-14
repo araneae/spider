@@ -10,7 +10,7 @@ import enums.MessageBoxType._
  *  
  */
 
-case class UserMessageFull(
+case class UserMessageDTO(
                    messageId: Long,
                    messageBoxId: Long,
                    messageBoxType: MessageBoxType,
@@ -25,9 +25,9 @@ case class UserMessageFull(
                    createdAt: DateTime
                    )
 
-object UserMessageFull extends Function12[Long, Long, MessageBoxType, String, Option[String], String, Boolean, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageFull]
+object UserMessageDTO extends Function12[Long, Long, MessageBoxType, String, Option[String], String, Boolean, Boolean, Boolean, Boolean, Boolean, DateTime, UserMessageDTO]
 {
-    implicit val jsonWrites : Writes[UserMessageFull] = (
+    implicit val jsonWrites : Writes[UserMessageDTO] = (
             (JsPath \ "messageId").write[Long] and
             (JsPath \ "messageBoxId").write[Long] and
             (JsPath \ "messageBoxType").write[MessageBoxType] and
@@ -40,9 +40,9 @@ object UserMessageFull extends Function12[Long, Long, MessageBoxType, String, Op
             (JsPath \ "star").write[Boolean] and
             (JsPath \ "outBound").write[Boolean] and
             (JsPath \ "createdAt").write[DateTime]
-    )(unlift(UserMessageFull.unapply))
+    )(unlift(UserMessageDTO.unapply))
       
-    implicit val jsonReads : Reads[UserMessageFull] = (
+    implicit val jsonReads : Reads[UserMessageDTO] = (
           (JsPath \ "messageId").read[Long] and
           (JsPath \ "messageBoxId").read[Long] and
           (JsPath \ "messageBoxType").read[MessageBoxType] and
@@ -55,6 +55,6 @@ object UserMessageFull extends Function12[Long, Long, MessageBoxType, String, Op
           (JsPath \ "star").read[Boolean] and
           (JsPath \ "outBound").read[Boolean] and
           (JsPath \ "createdAt").read[DateTime]
-    )(UserMessageFull)
+    )(UserMessageDTO)
 }
 

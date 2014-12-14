@@ -58,7 +58,7 @@ object ContactController extends Controller with Secured with AkkaActor {
       val f = ask(indexSearcherActor, MessageUserSearch(searchText)).mapTo[MessageUserSearchResult]
       val result = f.map {
            case MessageUserSearchResult(userIds) => {
-                 var list = new ListBuffer[ContactFull]()
+                 var list = new ListBuffer[ContactDTO]()
                   userIds.map { uId =>
                     if (uId != userId) {
                       // check if the user is already connected
@@ -70,7 +70,7 @@ object ContactController extends Controller with Secured with AkkaActor {
                           val user = UserRepository.find(uId)
                           user match {
                             case Some(u) =>
-                              val contact = ContactFull(u.userId.get, u.firstName, u.lastName, u.email, ContactStatus.NOTCONNECTED)
+                              val contact = ContactDTO(u.userId.get, u.firstName, u.lastName, u.email, ContactStatus.NOTCONNECTED)
                               list += contact
                             case _ =>    
                           }

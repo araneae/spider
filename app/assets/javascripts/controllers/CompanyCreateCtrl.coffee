@@ -6,23 +6,10 @@ class CompanyCreateCtrl
         @company = {}
         
         # fetch data from server
-        @loadCompany()
-
-    loadCompany: () ->
-        @$log.debug "CompanyCreateCtrl.loadCompany()"
-        @CompanyService.getCompany().then( 
-          (data) =>
-            @company = data if data
-            @company.status = "ACTIVE" if !data.status
-            @$log.debug "server returned #{data} Company"
-          ,
-          (error) =>
-            @ErrorService.error
-            @$log.error "Unable to fetch company settings: #{error}"
-        )
 
     save: () ->
         @$log.debug "CompanyCreateCtrl.save()"
+        @company.status='ACTIVE'
         @CompanyService.save(@company).then( 
           (data) =>
             @$log.debug "server returned #{data} Company"

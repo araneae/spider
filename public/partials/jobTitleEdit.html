@@ -1,42 +1,34 @@
 <div ng-controller="JobTitleEditCtrl as ctrl">
-  <form novalidate id="idEditJobTitleForm" name="EditJobTitleForm" class="form-horizontal" role="form"
-        ng-submit="ctrl.save()">
-    <legend class="col-md-12">Edit JobTitle</legend>
-    <div class="form-group">
-        <label id="lblParentIndustry" for="parentIndustry" class="col-md-2 control-label">Industry</label>
-        <div class="col-md-4">
-            <select class="form-control" name="industry" ng-options="industry.name for industry in ctrl.industries" 
-                   ng-model="ctrl.industry" required></select>
-        </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Edit Job Title</div>
     </div>
-    <div class="form-group">
-        <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
-        <div class="col-md-4">
+    <div class="panel-body">
+      <form novalidate id="idEditJobTitleForm" name="EditJobTitleForm" class="form-horizontal" role="form"
+            ng-submit="ctrl.save()">
+        <div class="form-group">
+          <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
+          <div class="col-md-4">
             <input type="text" class="form-control" name="name" id="name" placeholder="Enter name"
                    ng-model="ctrl.jobTitle.name" required>
+          </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label id="lblCode" for="code" class="col-md-2 control-label">Code</label>
-        <div class="col-md-4">
-            <input type="text" class="form-control" name="code" id="code" placeholder="Enter code"
-                   ng-model="ctrl.jobTitle.code" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
-        <div class="col-md-6">
+        <div class="form-group">
+          <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+          <div class="col-md-6">
             <input type="text" class="form-control" name="description" id="description" placeholder="Enter description"
                    ng-model="ctrl.jobTitle.description" required>
+          </div>
         </div>
-    </div>
-    <!--  <pre>{{ ctrl.jobTitle | json }}</pre>  -->
-    <div class="form-group">
-        <div class="col-md-offset-1 col-md-8">
-            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+      <!--  <pre>{{ ctrl.jobTitle | json }}</pre>  -->
+        <div class="form-group">
+          <div class="col-md-offset-1 col-md-8">
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
             <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!EditJobTitleForm.$valid'>Save</button>
+          </div>
         </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
 
