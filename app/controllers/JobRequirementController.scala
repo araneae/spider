@@ -67,10 +67,12 @@ object JobRequirementController extends Controller with Secured {
                                                                Some(userId), 
                                                                Some(new DateTime))
                         JobRequirementXtnRepository.update(updatedJobRequirementXtn)
+                        Ok(HttpResponseUtil.success("Successfully updated JobRequirement!"))
+                      case None =>
+                        BadRequest(HttpResponseUtil.error("Unable to find job requirment xtn!"))
                     }
-                    Ok(HttpResponseUtil.success("Successfully updated JobRequirement!"))
                  case None =>
-                    BadRequest(HttpResponseUtil.error("Unable to find job requirment!"))
+                 BadRequest(HttpResponseUtil.error("Unable to find job requirment!"))
               }
             },
             invalid = {
