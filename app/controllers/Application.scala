@@ -43,21 +43,7 @@ object Application extends Controller with Secured with AkkaActor {
   }
   
   def home = IsAuthenticated { username => implicit request =>
-    val upgradeContent = if (!hasUpgraded) 
-                              "<br/> " +
-                              "<br/> "+
-                              "<br/>" +
-                              "<br/>" +
-                              "<div class=\"panel panel-primary\">" +
-                                "<div class=\"panel-body\">" +
-                                  "<h2>" +
-                                    "Click <a ui-sref=\"companyCreate\" class=\"text-primary\">here</a> to upgrade your account." +
-                                  "</h2>" +
-                                "</div>" +
-                              "</div>"
-                      else ""
-                          
-    Ok(views.html.home(Configuration.applicationTitle)(s"Welcome back ${name}")(upgradeContent))
+    Ok(views.html.home(Configuration.applicationTitle)(s"Welcome back ${name}"))
   }
   
   def signup = Action { implicit request =>

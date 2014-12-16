@@ -1,9 +1,11 @@
-@(title: String)(message: String)(upgradeContent: String)(implicit flash: Flash)
+@(title: String)(message: String)(implicit flash: Flash)
 
 @contentsSingnIn = {
   <div ui-view="viewHeaderBar"></div>
 }
-@contentsLeft = {}
+@contentsLeft = {
+  <div ui-view="viewLeftBar"></div>
+}
 @contentsMain = {
   <div ui-view="viewMenuBar"></div>
   
@@ -11,7 +13,7 @@
 }
 
 @contentsRight = {
-  @Html(upgradeContent)
+  <div ui-view="viewRightBar"></div> 
 }
 
 @main(title)(message)(contentsSingnIn)(contentsLeft)(contentsMain)(contentsRight)

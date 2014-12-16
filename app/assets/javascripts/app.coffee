@@ -61,10 +61,13 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 }
+                'viewRightBar': {
+                  templateUrl: '/assets/partials/rightBar.html'
+                }
               }
           })
           .state('industries', {
-              url: '/industry',
+              url: '/admin/industry',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -81,7 +84,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('industryCreate', {
-              url: '/industry/create'
+              url: '/admin/industry/create'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -95,7 +98,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('industryEdit', {
-              url: '/industry/edit/:industryId'
+              url: '/admin/industry/:industryId/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -126,7 +129,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('domains', {
-              url: '/domain',
+              url: '/admin/domain',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -143,7 +146,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('domainCreate', {
-              url: '/domain/create'
+              url: '/admin/domain/create'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -157,7 +160,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('domainEdit', {
-              url: '/domain/edit/:domainId'
+              url: '/admin/domain/:domainId/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -179,7 +182,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('companyView', {
-              url: '/company/view'
+              url: '/admin/company/view'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -193,7 +196,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('companyEdit', {
-              url: '/company/edit'
+              url: '/admin/company/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -207,7 +210,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('companyUsers', {
-              url: '/companyUser'
+              url: '/admin/company/user'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -224,7 +227,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('companyUserCreate', {
-              url: '/companyUser/create'
+              url: '/admin/company/user/create'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -241,7 +244,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('companyUserView', {
-              url: '/companyUser/:companyUserId/view'
+              url: '/admin/company/user/:companyUserId/view'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -258,7 +261,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('companyUserEdit', {
-              url: '/companyUser/:companyUserId/edit'
+              url: '/company/user/:companyUserId/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -275,7 +278,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobTitles', {
-              url: '/jobTitle',
+              url: '/admin/jobTitle',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -292,7 +295,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobTitleCreate', {
-              url: '/jobTitle/create'
+              url: '/admin/jobTitle/create'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -306,10 +309,13 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobTitleEdit', {
-              url: '/jobTitle/edit/:jobTitleId'
+              url: '/admin/jobTitle/:jobTitleId/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
                 },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitleEdit.html'
@@ -351,7 +357,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobRequirementEdit', {
-              url: '/jobs/edit/:jobRequirementId'
+              url: '/jobs/:jobRequirementId/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -365,7 +371,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('userSkillCreate', {
-              url: '/userSkillCreate',
+              url: '/user/skill/create',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -376,7 +382,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('userSkillEdit/:skillId', {
-              url: '/userSkillEdit/:skillId',
+              url: '/user/skill/:skillId/edit',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -387,7 +393,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('userSkill', {
-              url: '/userSkill',
+              url: '/user/skill',
               views: {
                 'viewMain': {
                     templateUrl: '/assets/partials/userSkill.html'
@@ -395,7 +401,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('userSkillEmpty', {
-              url: '/userSkillEmpty',
+              url: '/user/skill/empty',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -434,8 +440,14 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('contactInvite', {
-              url: '/contact/invite/:contactId',
+              url: '/contact/:contactId/invite',
               views: {
+               'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+               'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
                'viewMain': {
                     templateUrl: '/assets/partials/contactInvite.html'
                 }
@@ -450,7 +462,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database', {
-              url: '/database/tag/:userTagId',
+              url: '/document/tag/:userTagId',
               'abstract': true,
               views: {
                 'viewHeaderBar': {
@@ -490,7 +502,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseUpload', {
-              url: '/database/document/upload',
+              url: '/document/upload',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -504,7 +516,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseSearch', {
-              url: '/database/document/search',
+              url: '/document/search',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -512,7 +524,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
-                'viewGlobalSearch': {
+                'viewGlobalSearch@databaseSearch': {
                     templateUrl: '/assets/partials/globalSearch.html'
                 },
                 'viewMain': {
@@ -521,7 +533,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseDocumentTag', {
-              url: '/document/tag/:documentId',
+              url: '/document/:documentId/tag',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -535,7 +547,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseDocumentEdit', {
-              url: '/document/edit/:documentId',
+              url: '/document/:documentId/edit',
               views: {
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
@@ -546,7 +558,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseDocumentXRay', {
-              url: '/document/xray/:documentId',
+              url: '/document/:documentId/xray',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -560,7 +572,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('sharedDocumentXRay', {
-              url: '/shared/document/xray/:documentId',
+              url: '/shared/document/:documentId/xray',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -574,7 +586,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseDocumentView', {
-              url: '/document/view/:documentId',
+              url: '/document/:documentId/view',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -588,7 +600,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('sharedDocumentView', {
-              url: '/shared/document/view/:documentId',
+              url: '/shared/document/:documentId/view',
               views: {
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
@@ -599,7 +611,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseDocumentShare', {
-              url: '/document/share/:documentId',
+              url: '/document/:documentId/share',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -613,7 +625,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseManageShares', {
-              url: '/document/share/:documentId/manage',
+              url: '/document/:documentId/share/manage',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -641,7 +653,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('database.userTagManagement', {
-              url: '/database/tags',
+              url: '/document/tags/manage',
               views: {
                 'viewDocument': {
                     templateUrl: '/assets/partials/userTagManagement.html'
@@ -649,7 +661,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('sharedRepositories', {
-              url: '/repository/shared/document',
+              url: '/shared/document',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'

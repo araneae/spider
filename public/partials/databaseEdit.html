@@ -1,26 +1,37 @@
 <div ng-controller="DatabaseEditCtrl as ctrl">
-    <form id="DatabaseEditForm" name="DatabaseEditForm" class="form-horizontal" role="form">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+     <div class="panel-heading">
+        <div class="panel-title">Edit Document</div>
+     </div>
+     <div class="panel-body">
+      <form id="DatabaseEditForm" name="DatabaseEditForm" class="form-horizontal" role="form"
+              ng-submit="ctrl.save()">
         <div class="form-group">
-            <label id="lblName" for="name" class="col-sm-2 control-label">Name</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" name="name" id="name" placeholder=""
-                       ng-model="ctrl.document.name">
-            </div>
+          <label id="lblName" for="name" class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-5">
+            <input type="text" class="form-control" name="name" id="name" placeholder=""
+                   ng-model="ctrl.document.name">
+          </div>
         </div>
         <div class="form-group">
-            <label id="lblDesc" for="descLong" class="col-sm-2 control-label">Description</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" name="description" id="description" placeholder=""
-                       ng-model="ctrl.document.description">
-            </div>
+          <label id="lblDesc" for="descLong" class="col-sm-2 control-label">Description</label>
+          <div class="col-sm-5">
+              <input type="text" class="form-control" name="description" id="description" placeholder=""
+                     ng-model="ctrl.document.description">
+          </div>
         </div>
         <!-- <pre>{{ ctrl.document | json }}</pre> -->
-        <div class="form-group clearfix">
-            <div class="col-sm-offset-4 col-sm-8 text-right">
-                <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-                <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
-            </div>
+        <div class="col-md-offset-1">
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave">Save</button>
         </div>
-    </form>
+      </form>
+    </div>
+  </div>
 </div>
 

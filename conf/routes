@@ -32,6 +32,14 @@ POST   /signup                                                  controllers.Appl
 # Enum Types support
 GET    /enum                                                    controllers.EnumController.getAll
 
+# RightBar
+
+GET    /rightBar/contents                                      controllers.RightBarController.getCotents
+
+# MenuBar
+
+GET    /menuBar/contents                                       controllers.MenuBarController.getCotents
+
 # Settings
 
 GET    /userProfile                                             controllers.UserProfileController.get
