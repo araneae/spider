@@ -11,6 +11,8 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def firstName = column[String]("first_name")
   
+  def middleName = column[Option[String]]("middle_name")
+  
   def lastName = column[String]("last_name")
   
   def email = column[String]("email")
@@ -35,7 +37,7 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (userId.?, firstName, lastName, email, password, countryId, activationToken, verified, lastLogon, userProfilePersonalId, otp, otpExpiredAt, createdAt, updatedAt) <> (User.tupled, User.unapply)
+  override def * = (userId.?, firstName, middleName, lastName, email, password, countryId, activationToken, verified, lastLogon, userProfilePersonalId, otp, otpExpiredAt, createdAt, updatedAt) <> (User.tupled, User.unapply)
   
   // foreign keys and indexes
   def uniqueEmail = index("idx_user_on_email_unique", email, unique = true)

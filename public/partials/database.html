@@ -8,12 +8,16 @@
     <div class="col-md-3">
       <div class="panel panel-default">
          <div class="panel-heading">
-            <div class="panel-title">Tags</div>
+            <div class="panel-title">
+              
+              <button type="button" ng-disabled="true" class="btn btn-primary">Tags</button>
+              <button type="button" class="btn btn-primary" data-placement="left" title="Switch to Folders view" ng-click="ctrl.goToFolder()">Folders</button>
+            </div>
          </div>
          <div class="panel-body">
             <table class="table table-striped">
               <tr ng-repeat="tag in ctrl.userTags">
-                <td><a href="" ng-click="ctrl.goToTag(tag.userTagId)">{{tag.name}}</a></td>
+                <td ng-drop="tag.userTagId > 0" ng-drop-success="ctrl.onDropComplete($data, $event, tag)"><a href="" ng-click="ctrl.goToTag(tag.userTagId)">{{tag.name}}</a></td>
               </tr>
             </table>
             <hr>

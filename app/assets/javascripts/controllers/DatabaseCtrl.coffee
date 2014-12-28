@@ -1,14 +1,17 @@
 
 class DatabaseCtrl
 
-    constructor: (@$log, @$scope, @DatabaseService, @$state, @$stateParams, @Document, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @DatabaseService, @$state, @$stateParams, @Document, @UserTag,
+                                          @UtilityService, @ErrorService, @ConfigService) ->
         @$log.debug "constructing DatabaseCtrl"
-        @userTagId
-        @userTagId = parseInt(@$stateParams.userTagId) if @$stateParams.userTagId
-        @userTagId = 0 if !@userTagId
+        @userTagId = 0
+        @userTagId = parseInt(@$stateParams.userTagId) if @UtilityService.isNumber(@$stateParams.userTagId)
         @documents = []
+        @displayCollection = []
         @removeId
         @removeAlert = false
+        @userTag = {}
+        @title = "All Documents"
         @$scope.$on('globalSearch', (event, data) =>
                                     @$log.debug "received message globalSearch(#{data.searchText})"
                                     @search(@userTagId, data.searchText)
@@ -18,18 +21,32 @@ class DatabaseCtrl
                                     @refresh() if data.menuItem is "refresh"
                                     @goToUpload() if data.menuItem is "uploadFile"
                                     @goToSearch() if data.menuItem is "advancedSearch"
-                                    @goToShareRepository() if data.menuItem is "shareRepository"
         )
         
         # load list of documents from server
+        @loadUserTag(@userTagId) if (@userTagId > 0)
         @listDocuments()
     
+    loadUserTag: (userTagId) ->
+        @$log.debug "DatabaseCtrl.loadUserTag(#{userTagId})"
+        @UserTag.get({userTagId: userTagId}).$promise.then(
+            (data) =>
+                @$log.debug "Promise returned #{data} tag"
+                @userTag = data
+                @title = "Documents in #{data.name}"
+            ,
+            (error) =>
+                @$log.error "Unable to fetch tag: #{error}"
+                @ErrorService.error("Unable to fetch tag from server!")
+            )
+            
     listDocuments: () ->
         @$log.debug "DatabaseCtrl.listDocuments()"
         @DatabaseService.getDocumentByUserTagId(@userTagId).then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} documents"
                 @documents = data
+                @displayCollection = angular.copy(data)
                 # update scope to refresh ui
                 #@$scope.$apply()
             ,
@@ -68,10 +85,6 @@ class DatabaseCtrl
         @$log.debug "DatabaseCtrl.goToSearch()"
         @$state.go("databaseSearch")
   
-    goToShareRepository: () ->
-        @$log.debug "DatabaseCtrl.goToShareRepository()"
-        @$state.go("shareRepository")
-
     showRemoveAlert: (documentId) ->
         @$log.debug "DatabaseCtrl.showRemoveAlert(#{documentId})"
         @removeId = documentId
@@ -91,7 +104,7 @@ class DatabaseCtrl
             )
 
     getUrl: (documentId) ->
-        @$log.debug "DatabaseCtrl.getUrl(#{documentId})"
+        #@$log.debug "DatabaseCtrl.getUrl(#{documentId})"
         "/database/download/#{documentId}"
 
     cancelRemove: () ->

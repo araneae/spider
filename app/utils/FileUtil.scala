@@ -23,7 +23,7 @@ object FileUtil {
   def move(filePath: String, newFilePath: String) = {
     val oldName = Paths.get(filePath);
     val newName = Paths.get(newFilePath);
-    Files.move(oldName, newName)
+    Files.move(oldName, newName, REPLACE_EXISTING)
   }
   
   def createPath(filePath: String) = {

@@ -21,7 +21,7 @@ object DocumentTagController extends Controller with Secured {
     //logger.info(s"in DocumentTagController.getAll(${documentId})")
     println(s"in DocumentTagController.getAll(${documentId})")
     
-    var list = DocumentTagRepository.findAll(userId, documentId)
+    var list = DocumentTagRepository.getAll(userId, documentId)
     val text = Json.toJson(list)
     Ok(text).as(JSON)
   }
@@ -29,27 +29,24 @@ object DocumentTagController extends Controller with Secured {
   def create(documentId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
     //logger.info(s"in DocumentTagController.create(${documentId})")
     println(s"in DocumentTagController.create(${documentId})")
-    val jsonObj = request.body.asInstanceOf[JsObject]
     
-    val optUserDocument = UserDocumentRepository.find(userId, documentId)
-    optUserDocument match {
-      case Some(userDocument) => 
-        // merge userId with the request object
-        val userTagObj = Json.obj("userId" -> userId) ++ Json.obj("createdUserId" -> userId) ++
-                     Json.obj("createdAt" -> new DateTime()) ++ Json.obj("userDocumentId" -> userDocument.userDocumentId) ++ jsonObj
-        println("userTagObj "+userTagObj)
-        userTagObj.validate[DocumentTag].fold(
-          valid = { documentTag =>
-                  DocumentTagRepository.create(documentTag)
-                  Ok(HttpResponseUtil.success("Successfully created tag!"))
+    val jsonObj = request.body.asInstanceOf[JsObject]
+    jsonObj.validate[DocumentTagDTO].fold(
+      valid = { documentTagDTO =>
+                  val optUserDocument = DocumentTagRepository.findByUserTagIdDocumentId(documentTagDTO.userTagId, documentTagDTO.documentId)
+                  optUserDocument match {
+                    case None =>
+                      val documentTag = DocumentTag(userId, documentTagDTO, userId, new DateTime, None, None)
+                      DocumentTagRepository.create(documentTag)
+                      Ok(HttpResponseUtil.success("Successfully created tag!"))
+                    case Some(userDocument) => 
+                      BadRequest(HttpResponseUtil.error("Document tag already exists!"))
+            }
           },
-          invalid = {
-              errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
-          }
-        )
-      case None =>
-        BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
-    }
+      invalid = {
+          errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+      }
+    )
   }
 
   def delete(documentId: Int, userTagId: Int) = IsAuthenticated{ username => implicit request =>

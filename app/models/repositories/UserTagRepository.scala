@@ -25,6 +25,13 @@ object UserTagRepository {
     }
   }
   
+  def get(userTagId: Long): Option[UserTagDTO] = {
+    DB.withSession {
+      implicit session =>
+       query.filter(_.userTagId === userTagId).firstOption.map {x => UserTagDTO(x)}
+    }
+  }
+  
   def udate(userTag: UserTag, userId: Long) = {
     DB.withSession {
        implicit session: Session =>

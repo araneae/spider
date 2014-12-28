@@ -12,7 +12,7 @@ import org.joda.time.DateTime
  */
 case class ContactWithDocument(
                  id: Long,  // userId
-                 text: String, // email
+                 text: String, // name
                  documentId: Option[Long],
                  canShare: Option[Boolean],
                  canCopy: Option[Boolean],

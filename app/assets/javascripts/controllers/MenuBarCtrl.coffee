@@ -5,7 +5,6 @@ class MenuBarCtrl
         @$log.debug "constructing MenuBarCtrl"
         @contents
         @currentPath = @$location.path()
-        @$log.debug "current state #{angular.toJson(@$state)}"
         
         # fetch data from server
         @loadContents()

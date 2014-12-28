@@ -25,13 +25,14 @@ object Application extends Controller with Secured with AkkaActor {
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   val tup = tuple(
       "first_name" -> nonEmptyText,
+      "last_name" -> optional(text),
       "last_name" -> nonEmptyText,
       "email" -> nonEmptyText,
       "password" -> text(minLength=6, maxLength=16),
       "confirmPassword" -> text,
       "countryCode" -> nonEmptyText
     ).verifying (
-        "Passwords don't match", data => data._4 == data._5
+        "Passwords don't match", data => data._5 == data._6
     )
   
   val signupForm = Form (tup)
@@ -68,7 +69,7 @@ object Application extends Controller with Secured with AkkaActor {
           success = { value => 
             //logger.info(s"register $value") 
             value match {
-              case Tuple6(first_name, last_name, email, password, confirmPassword, countryCode) => {
+              case Tuple7(first_name, middle_name, last_name, email, password, confirmPassword, countryCode) => {
                 // find if the user already exists
                 val existingUser = UserRepository findByEmail email
                 existingUser match {
@@ -82,7 +83,7 @@ object Application extends Controller with Secured with AkkaActor {
                           val token = TokenGenerator.token
                           val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                           val userProfilePersonalId = UserProfilePersonalRepository.create(UserProfilePersonal(None, Configuration.defaultXrayTerms))
-                          val user = User(None, first_name, last_name, email, encryptedPassword, country.countryId.get, token, false, new DateTime(), Some(userProfilePersonalId))
+                          val user = User(None, first_name, middle_name, last_name, email, encryptedPassword, country.countryId.get, token, false, new DateTime(), Some(userProfilePersonalId))
                           val userId = UserRepository create user
                         
                           val savedUser = UserRepository find userId
@@ -94,8 +95,8 @@ object Application extends Controller with Secured with AkkaActor {
                           }
                           // create default message boxes
                           MessageBoxRepository.createDefaults(userId, userId)
-                          val documentFolderId = DocumentFolderRepository.create(DocumentFolder(None, "Default", true, userId))
-                          UserDocumentFolderRepository.create(UserDocumentFolder(None, documentFolderId, userId, OwnershipType.OWNED, true, false, None, userId))
+                          val documentFolderId = DocumentFolderRepository.create(DocumentFolder(None, "Documents", true, userId))
+                          UserDocumentFolderRepository.create(UserDocumentFolder(None, documentFolderId, userId, OwnershipType.OWNED, true, true, true, false, None, userId))
                           Redirect(routes.AuthController.login).flashing(Flash(formData.data) + ("success" -> "Activation email has been sent."))
                         case None =>
                           Redirect(routes.Application.signup).flashing(Flash(formData.data) + ("error" -> "Country is not available"))

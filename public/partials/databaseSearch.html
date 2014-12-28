@@ -29,14 +29,15 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2">
-        <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Done</button>
-      </div>
     </div>
     <div class="col-md-9">
       <div class="panel panel-default">
          <div class="panel-heading">
-            <div class="panel-title">Search Results</div>
+            <b class="panel-title">Search Results</b>
+            <div class="pull-right">
+              <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.done()">Done</button>
+            </div>
+            <div class="clearfix"></div>
          </div>
          <div class="panel-body">
           <table class="table table-striped">

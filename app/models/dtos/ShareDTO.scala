@@ -8,7 +8,7 @@ import org.joda.time.DateTime
  * Used by document share POST action
  * 
  */
-case class Share(
+case class ShareDTO(
                  subject: String,
                  message: String,
                  canCopy: Boolean,
@@ -16,12 +16,12 @@ case class Share(
                  canView: Boolean,
                  isLimitedShare: Boolean,
                  shareUntilEOD: Option[DateTime],
-                 receivers: List[Connection]
+                 receivers: List[ConnectionDTO]
                  )
 
-object Share extends Function8[String, String, Boolean, Boolean, Boolean, Boolean, Option[DateTime], List[Connection], Share]
+object ShareDTO extends Function8[String, String, Boolean, Boolean, Boolean, Boolean, Option[DateTime], List[ConnectionDTO], ShareDTO]
 {
-    implicit val shareWrites : Writes[Share] = (
+    implicit val shareWrites : Writes[ShareDTO] = (
             (JsPath \ "subject").write[String] and
             (JsPath \ "message").write[String] and
             (JsPath \ "canCopy").write[Boolean] and
@@ -29,10 +29,10 @@ object Share extends Function8[String, String, Boolean, Boolean, Boolean, Boolea
             (JsPath \ "canView").write[Boolean] and
             (JsPath \ "isLimitedShare").write[Boolean] and
             (JsPath \ "shareUntilEOD").write[Option[DateTime]] and
-            (JsPath \ "receivers").write[List[Connection]]
-    )(unlift(Share.unapply))
+            (JsPath \ "receivers").write[List[ConnectionDTO]]
+    )(unlift(ShareDTO.unapply))
 
-    implicit val shareReads : Reads[Share] = (
+    implicit val shareReads : Reads[ShareDTO] = (
           (JsPath \ "subject").read[String] and
           (JsPath \ "message").read[String] and
           (JsPath \ "canCopy").read[Boolean] and
@@ -40,6 +40,6 @@ object Share extends Function8[String, String, Boolean, Boolean, Boolean, Boolea
           (JsPath \ "canView").read[Boolean] and
           (JsPath \ "isLimitedShare").read[Boolean] and
           (JsPath \ "shareUntilEOD").readNullable[DateTime] and
-          (JsPath \ "receivers").read[List[Connection]]
-    )(Share)
+          (JsPath \ "receivers").read[List[ConnectionDTO]]
+    )(ShareDTO)
 }

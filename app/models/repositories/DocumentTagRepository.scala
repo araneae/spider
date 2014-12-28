@@ -25,11 +25,26 @@ object DocumentTagRepository {
     }
   }
   
+  def getAll(userId: Long, documentId: Long): Seq[DocumentTagDTO] = {
+    DB.withSession {
+      implicit session =>
+       query.filter( d => d.userId === userId &&
+                          d.documentId === documentId).list.map{ dt => DocumentTagDTO(dt) }
+    }
+  }
+  
   def findByUserTagId(userId: Long, userTagId: Long): Seq[DocumentTag] = {
     DB.withSession {
       implicit session =>
        query.filter( d => d.userId === userId &&
                           d.userTagId === userTagId).list
+    }
+  }
+  
+  def findByUserTagIdDocumentId( userTagId: Long, documentId: Long): Option[DocumentTag] = {
+    DB.withSession {
+      implicit session =>
+       query.filter( d => d.userTagId === userTagId && d.documentId === documentId) firstOption
     }
   }
   
@@ -41,7 +56,7 @@ object DocumentTagRepository {
             ud <- docTag.userDocument
             doc <- ud.document
             u  <- ud.createdBy
-        } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+        } yield (ud.userDocumentId.?, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
         
         q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
@@ -56,7 +71,7 @@ object DocumentTagRepository {
             ud <- docTag.userDocument
             doc <- ud.document
             u  <- ud.createdBy
-        } yield (ud.userDocumentId, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+        } yield (ud.userDocumentId.?, ud.documentId, doc.name, doc.description, true, ud.ownershipType, doc.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
         
         q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}

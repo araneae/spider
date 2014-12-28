@@ -3,6 +3,7 @@ class ContactCtrl
 
     constructor: (@$log, @$scope,  @$state, @ContactService, @ErrorService, @Contact, @$location, @UtilityService) ->
         @$log.debug "constructing ContactCtrl"
+        @profileImageUrl = "/assets/images/default_user.jpg"
         @contacts = []
         @$scope.$on('globalSearch', (event, data) =>
                                     @$log.debug "received message globalSearch(#{data.searchText})"

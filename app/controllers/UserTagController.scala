@@ -19,9 +19,11 @@ object UserTagController extends Controller with Secured {
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
   def get(userTagId: Int) = IsAuthenticated{ username => implicit request =>
-    //logger.info("in UserTagController.get(${userTagId})")
-    println("in UserTagController.get(${userTagId})")
-    Ok("")
+    //logger.info(s"in UserTagController.get(${userTagId})")
+    println(s"in UserTagController.get(${userTagId})")
+    val optUserTagDTO = UserTagRepository.get(userTagId)
+    val data = Json.toJson(optUserTagDTO)
+    Ok(data).as(JSON)
   }
   
   def getAll = IsAuthenticated{ username => implicit request =>
@@ -29,8 +31,8 @@ object UserTagController extends Controller with Secured {
     println("in UserTagController.getAll()")
     
     var list = UserTagRepository.findAll(userId)
-    val text = Json.toJson(list)
-    Ok(text).as(JSON)
+    val data = Json.toJson(list)
+    Ok(data).as(JSON)
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>

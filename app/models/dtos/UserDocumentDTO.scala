@@ -12,7 +12,7 @@ import enums.OwnershipType._
  * 
  */
 case class UserDocumentDTO(
-                   userDocumentId: Long,
+                   userDocumentId: Option[Long],
                    documentId: Long,
                    name: String,
                    description: String,
@@ -24,12 +24,12 @@ case class UserDocumentDTO(
                    canView: Boolean,
                    createdBy: String,
                    createdAt: DateTime
-                   )
+                   ) 
 
-object UserDocumentDTO extends Function12[Long, Long, String, String, Boolean, OwnershipType, String, Boolean, Boolean, Boolean, String, DateTime, UserDocumentDTO]
+object UserDocumentDTO extends Function12[Option[Long], Long, String, String, Boolean, OwnershipType, String, Boolean, Boolean, Boolean, String, DateTime, UserDocumentDTO]
 {
     implicit val documentWrites : Writes[UserDocumentDTO] = (
-            (JsPath \ "userDocumentId").write[Long] and
+            (JsPath \ "userDocumentId").write[Option[Long]] and
             (JsPath \ "documentId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "description").write[String] and
@@ -44,7 +44,7 @@ object UserDocumentDTO extends Function12[Long, Long, String, String, Boolean, O
     )(unlift(UserDocumentDTO.unapply))
 
     implicit val documentReads : Reads[UserDocumentDTO] = (
-          (JsPath \ "userDocumentId").read[Long] and
+          (JsPath \ "userDocumentId").readNullable[Long] and
           (JsPath \ "documentId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "description").read[String] and

@@ -6,7 +6,14 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title">Profile Settings</div>
+      <div class="row">
+      <div class="col-md-1">
+        <img ng-src="{{ctrl.profileImageUrl}}" height="42" width="42">
+      </div>
+      <div class="col-md-4">
+        <div class="panel-title">Profile Settings</div>
+      </div>
+      </div>
     </div>
     <div class="panel-body">
       <form novalidate id="idUserSettingsForm" name="UserSettingsForm" class="form-horizontal" role="form"
@@ -38,10 +45,16 @@
           </div>
         </div>
         <div class="form-group">
-          <label id="lblPicture" for="picture" class="col-md-2 control-label">Picture</label>
+          <label id="lblPicture" for="pictureFile" class="col-md-2 control-label">Picture</label>
           <div class="col-md-6">
-            <input type="text" class="form-control" name="email" id="idPicture" placeholder="Enter picture url"
-                   ng-model="ctrl.userProfile.picture">
+            <div class="input-group">
+              <input type="text" class="form-control" name="pictureFile" id="idPicture" placeholder="Enter picture url"
+                   ng-model="ctrl.userProfile.pictureFile">
+              <span class="input-group-btn">
+                <input type="file" id="selectedFile" ng-show="false" ng-file-select="ctrl.onFileSelect($files)"/></input>
+                <input type="button" class='btn btn-default' value="Browse..." onclick="document.getElementById('selectedFile').click();" /></input>
+              </span>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -98,7 +111,7 @@
         <!-- <pre>{{ ctrl.userProfile | json }}</pre> -->
         <div class="form-group">
           <div class="col-md-offset-1 col-md-8">
-            <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
             <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!UserSettingsForm.$valid || ctrl.emailChanged'>Save</button>
           </div>
         </div>

@@ -32,9 +32,10 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     //logger.info(s"in SharedDocumentController.getAllByUserTagId(${userTagId})")
     println(s"in SharedDocumentController.getAll()")
     
-    val list = UserDocumentFolderRepository.findSharedDocuments(userId)
-    val text = Json.toJson(list)
-    Ok(text).as(JSON)
+    val list = UserDocumentRepository.getAllSharedDocuments(userId)
+    val data = Json.toJson(list)
+    println(data)
+    Ok(data).as(JSON)
   }
   
   def get(documentId: Long) = IsAuthenticated{ username => implicit request =>
@@ -58,9 +59,9 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     val f = ask(indexSearcherActor, MessageDocumentGetContents(documentId)).mapTo[MessageDocumentContents]
     val result = f.map{
          case MessageDocumentContents(documentId, contents) => {
-                    val text = Json.toJson(contents)
-                    //println(text)
-                    Ok(text).as(JSON)
+                    val data = Json.toJson(contents)
+                    //println(data)
+                    Ok(data).as(JSON)
           }
          case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
@@ -82,9 +83,9 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
       val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolders.map(b => b.documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
       val result = f.map {
            case MessageDocumentSearchResult(docIds) => {
-                  val userDocuments = UserDocumentRepository.findAllByDocumentIds(docIds)
-                  val text = Json.toJson(userDocuments)
-                  Ok(text).as(JSON)
+                  val userDocuments = UserDocumentRepository.findAllByDocumentIds(userId, docIds)
+                  val data = Json.toJson(userDocuments)
+                  Ok(data).as(JSON)
             }
            case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
@@ -104,7 +105,7 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     
     val optUserProfile = UserRepository.findUserProfilePersonal(userId)
     optUserProfile match {
-      case Some(userProfile) =>
+      case Some((user, userProfile)) =>
         val searchText = userProfile.xrayTerms
         if (searchText.length() > 0){
           implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
@@ -112,9 +113,9 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
           val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
           val result = f.map{
                case MessageSearchResultWithHighlighter(documentId, results) => {
-                          val text = Json.toJson(results)
-                          //println(text)
-                          Ok(text).as(JSON)
+                          val data = Json.toJson(results)
+                          //println(data)
+                          Ok(data).as(JSON)
                 }
                case _ => Ok("").as(JSON)
     //                case Failure(failure) =>
@@ -165,7 +166,7 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
                 val docId = DocumentRepository.create(copyDocument)
                 
                 // add DocumentUser entry
-                val userDocument = UserDocument(None, userId, docId, OwnershipType.OWNED, true, true, true, false, false, false, userId)
+                val userDocument = UserDocument(None, userId, docId, OwnershipType.OWNED, true, true, true, false, false, false, None, userId)
                 UserDocumentRepository.create(userDocument)
                           
                 // find the saved document

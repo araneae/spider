@@ -17,10 +17,12 @@ case class SharedUserDocumentDTO(
                    name: String,
                    description: String,
                    canCopy: Boolean,
+                   canShare: Boolean,
+                   canView: Boolean,
                    sharedBy: String
                    )
 
-object SharedUserDocumentDTO extends Function6[Long, Long, String, String, Boolean, String, SharedUserDocumentDTO]
+object SharedUserDocumentDTO extends Function8[Long, Long, String, String, Boolean, Boolean, Boolean, String, SharedUserDocumentDTO]
 {
     implicit val sharedDocumentWrites : Writes[SharedUserDocumentDTO] = (
             (JsPath \ "userDocumentBoxId").write[Long] and
@@ -28,6 +30,8 @@ object SharedUserDocumentDTO extends Function6[Long, Long, String, String, Boole
             (JsPath \ "name").write[String] and
             (JsPath \ "description").write[String] and
             (JsPath \ "canCopy").write[Boolean] and
+            (JsPath \ "canShare").write[Boolean] and
+            (JsPath \ "canView").write[Boolean] and
             (JsPath \ "sharedBy").write[String]
     )(unlift(SharedUserDocumentDTO.unapply))
 
@@ -37,6 +41,8 @@ object SharedUserDocumentDTO extends Function6[Long, Long, String, String, Boole
           (JsPath \ "name").read[String] and
           (JsPath \ "description").read[String] and
           (JsPath \ "canCopy").read[Boolean] and
+          (JsPath \ "canShare").read[Boolean] and
+          (JsPath \ "canView").read[Boolean] and
           (JsPath \ "sharedBy").read[String]
     )(SharedUserDocumentDTO)
 }

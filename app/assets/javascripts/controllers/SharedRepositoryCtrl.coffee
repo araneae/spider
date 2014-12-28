@@ -1,9 +1,11 @@
 
 class SharedRepositoryCtrl
 
-    constructor: (@$log, @$scope, @SharedRepositoryService, @$state, @$stateParams, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @SharedRepositoryService, @$state, @$stateParams,
+                          @UtilityService, @ErrorService, @ConfigService) ->
         @$log.debug "constructing SharedRepositoryCtrl"
         @documents = []
+        @displayCollection = []
         
         @$scope.$on('globalSearch', (event, data) =>
                                     @$log.debug "received message globalSearch(#{data.searchText})"
@@ -23,6 +25,7 @@ class SharedRepositoryCtrl
             (data) =>
                 @$log.debug "Promise returned #{data.length} documents"
                 @documents = data
+                @displayCollection = angular.copy(data)
             ,
             (error) =>
                 @ErrorService.error

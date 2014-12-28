@@ -46,4 +46,6 @@ class DocumentTags(tag: Tag) extends Table[DocumentTag](tag, "document_tag") {
   def createdBy = foreignKey("fk_on_document_tag_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
   def updatedBy = foreignKey("fk_on_document_tag_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  
+  def uniqueUserTagDocument = index("idx_document_tag_on_user_tag_document_unique", (userTagId, documentId), unique = true)
 }

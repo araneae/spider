@@ -38,9 +38,9 @@ class DatabaseSearchCtrl
         @searchText = text
         @search()
 
-    cancel: () ->
-        @$log.debug "DatabaseSearchCtrl.cancel()"
-        @$state.go('database.documents')
+    done: () ->
+        @$log.debug "DatabaseSearchCtrl.done()"
+        @$state.go('folder.documents')
 
     search: (searchText) ->
         @$log.debug "DatabaseSearchCtrl.search()"

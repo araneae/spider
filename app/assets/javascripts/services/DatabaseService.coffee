@@ -8,36 +8,6 @@ class DatabaseService
     constructor: (@$log, @$http, @$upload, @$q) ->
         @$log.debug "constructing DatabaseService"
 
-    upload: (selectedFile, successFn, errFn, progressFn) ->
-        @$log.debug "DatabaseService.upload(#{selectedFile})"
-        @$upload.upload({
-            url: '/database/upload',
-            method: 'POST',
-            #headers: {'Content-type': 'application/text'},
-            #withCredentials: true,
-            #data: {data: selectedFile},
-            file: selectedFile,
-            # set the file formData name ('Content-Desposition'). Default is 'file'
-            # fileFormDataName: myFile, //or a list of names for multiple files (html5).
-            # customize how data is added to formData. See #40#issuecomment-28612000 for sample code 
-            # formDataAppender: function(formData, key, val){}
-        })
-        .progress( (evt) =>
-           @$log.debug "percent: #{parseInt(100.0 * evt.loaded / evt.total)}"
-           progressFn(evt) if progressFn
-        )
-        .success( (data, status, headers, config) =>
-            # file is uploaded successfully
-            @$log.debug "#{data}"
-            successFn(data, status, headers, config) if successFn
-        )
-        .error( (err) =>
-              @$log.error "error in uploading file #{err}"
-              errFn(err) if errFn
-        )
-        #.then(success, error, progress); 
-        #.xhr(function(xhr){xhr.upload.addEventListener(...)})// access and attach any event listener to XMLHttpRequest.
-
     search: (userTagId, searchText) ->
         @$log.debug "DatabaseService.search(#{userTagId}, #{searchText})"
         deferred = @$q.defer()
@@ -98,6 +68,21 @@ class DatabaseService
            )
         deferred.promise
 
+    getDocumentByDocumentFolderId: (documentFolderId) ->
+        @$log.debug "DatabaseService.getDocumentByDocumentFolderId(#{documentFolderId})"
+        deferred = @$q.defer()
+        
+        @$http.get("/database/document/folder/#{documentFolderId}")
+           .success((data, status, headers) =>
+                 @$log.info("Successfully searched - status #{status}")
+                 deferred.resolve(data)
+           )
+           .error((data, status, headers) =>
+                 @$log.error("Failed to search - status #{status}")
+                 deferred.reject(data);
+           )
+        deferred.promise
+
     getShareContacts: (documentId) ->
         @$log.debug "DatabaseService.getContacts(#{documentId})"
         deferred = @$q.defer()
@@ -112,20 +97,6 @@ class DatabaseService
             )
         deferred.promise
     
-    getRepositoryShareContacts: () ->
-        @$log.debug "DatabaseService.getRepositoryShareContacts()"
-        deferred = @$q.defer()
-        @$http.get("/database/repository/contact")
-        .success((data, status, headers) =>
-                @$log.info("Successfully fetched contacts - status #{status}")
-                deferred.resolve(data)
-            )
-        .error((data, status, headers) =>
-                @$log.error("Failed to fetch contacts - status #{status}")
-                deferred.reject(data);
-            )
-        deferred.promise
-
     copyDocument: (documentId) ->
         @$log.debug " DatabaseService.copyDocument(#{documentId})"
         deferred = @$q.defer()
@@ -164,20 +135,6 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to update shares - status #{status}")
-                deferred.reject(data);
-            )
-        deferred.promise
-    
-    shareRepository: (share) ->
-        @$log.debug "DatabaseService.shareRepository(#{share})"
-        deferred = @$q.defer()
-        @$http.post("/database/repository/share", share)
-        .success((data, status, headers) =>
-                @$log.info("Successfully shared repository - status #{status}")
-                deferred.resolve(data)
-            )
-        .error((data, status, headers) =>
-                @$log.error("Failed to share repository - status #{status}")
                 deferred.reject(data);
             )
         deferred.promise

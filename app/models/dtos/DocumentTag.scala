@@ -17,7 +17,23 @@ case class DocumentTag(userId: Long,
                        createdUserId: Long,
                        createdAt: DateTime = new DateTime(),
                        updatedUserId: Option[Long] = None,
-                       updatedAt: Option[DateTime] = None)
+                       updatedAt: Option[DateTime] = None) {
+  def this(userId: Long,
+           documentTagDTO: DocumentTagDTO,
+           createdUserId: Long,
+           createdAt: DateTime,
+           updatedUserId: Option[Long],
+           updatedAt: Option[DateTime]) {
+    this(userId,
+         documentTagDTO.userTagId,
+         documentTagDTO.documentId,
+         documentTagDTO.userDocumentId,
+         createdUserId,
+         createdAt,
+         updatedUserId,
+         updatedAt)
+  }
+}
 
 object DocumentTag extends Function8[Long, Long, Long, Long, Long, DateTime, Option[Long], Option[DateTime], DocumentTag]
 {
@@ -42,4 +58,16 @@ object DocumentTag extends Function8[Long, Long, Long, Long, Long, DateTime, Opt
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
     )(DocumentTag)
+    
+    def apply(userId: Long,
+              documentTagDTO: DocumentTagDTO,
+              createdUserId: Long,
+              createdAt: DateTime,
+              updatedUserId: Option[Long],
+              updatedAt: Option[DateTime]) = new DocumentTag(userId,
+                                                          documentTagDTO,
+                                                          createdUserId,
+                                                          createdAt,
+                                                          updatedUserId,
+                                                          updatedAt)
 }

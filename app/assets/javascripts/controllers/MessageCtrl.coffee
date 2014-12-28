@@ -1,7 +1,8 @@
 
 class MessageCtrl
 
-    constructor: (@$log, @$scope, @ConnectionService, @MessageService, @MessageBox, @$state, @$stateParams, @Message, @UtilityService, @ErrorService) ->
+    constructor: (@$log, @$scope, @ConnectionService, @MessageService, @MessageBox, @$state, @$stateParams, 
+                        @Message, @UtilityService, @ErrorService, @ConfigService, @$filter) ->
         @$log.debug "constructing MessageCtrl"
         @messageBoxes = []
         @inbox={}
@@ -9,11 +10,14 @@ class MessageCtrl
         @trash={}
         @newMessage
         @messages = []
+        @rawCollection = []
+        @displayCollection = []
         @connections = []
         @select2Options = {
            data : @connections,
            multiple: true
         }
+
         @filterMessageBoxId
         @selectedMessageBoxName
         # load list of messages from server
@@ -47,6 +51,8 @@ class MessageCtrl
             (data) =>
                 @$log.debug "Promise returned #{data.length} messages"
                 @messages = data
+                @rawCollection = angular.copy(data)
+                @displayCollection = angular.copy(data)
             ,
             (error) =>
                 @$log.error "Unable to get messages: #{error}"
@@ -122,6 +128,7 @@ class MessageCtrl
       @$log.debug "MessageCtrl.filterMessage(#{messageBoxId})"
       @filterMessageBoxId = messageBoxId
       @selectedMessageBoxName = @getMessageBoxName(messageBoxId)
+      @rawCollection = @messages.filter( (item) => item.messageBoxId is messageBoxId)
       @discard()
 
     goToLabelCreate: () ->

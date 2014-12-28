@@ -12,7 +12,8 @@ case class UserProfilePersonal(
                 userProfilePersonalId: Option[Long],
                 xrayTerms: String,
                 aboutMe: Option[String] = None,
-                picture: Option[String]  = None,
+                pictureFile: Option[String]  = None,
+                physicalFile: Option[String]  = None,
                 mobile: Option[String] = None,
                 alternateEmail: Option[String] = None,
                 gender: Option[GenderType] = None,
@@ -22,16 +23,36 @@ case class UserProfilePersonal(
                 birthDay: Option[Int] = None,
                 createdAt: DateTime = new DateTime(),
                 updatedAt: Option[DateTime] = None
-                )
+                ) {
+  def this(userProfileDTO: UserProfileDTO,
+          createdAt: DateTime,
+          updatedAt: Option[DateTime]) {
+      this(userProfileDTO.userProfilePersonalId,
+           userProfileDTO.xrayTerms,
+           userProfileDTO.aboutMe,
+           userProfileDTO.pictureFile,
+           userProfileDTO.physicalFile,
+           userProfileDTO.mobile,
+           userProfileDTO.alternateEmail,
+           userProfileDTO.gender,
+           userProfileDTO.maritalStatus,
+           userProfileDTO.birthYear,
+           userProfileDTO.birthMonth,
+           userProfileDTO.birthDay,
+           createdAt,
+           updatedAt)
+  }
+}
 
-object UserProfilePersonal extends Function13[Option[Long], String, Option[String], Option[String], Option[String], Option[String], Option[GenderType],
+object UserProfilePersonal extends Function14[Option[Long], String, Option[String], Option[String], Option[String], Option[String], Option[String], Option[GenderType],
                                        Option[MaritalStatusType], Option[Int], Option[Int], Option[Int], DateTime, Option[DateTime], UserProfilePersonal]
 {
     implicit val userProfilePersonalWrites : Writes[UserProfilePersonal] = (
             (JsPath \ "userProfilePersonalId").write[Option[Long]] and
             (JsPath \ "xrayTerms").write[String] and
             (JsPath \ "aboutMe").write[Option[String]] and
-            (JsPath \ "picture").write[Option[String]] and
+            (JsPath \ "pictureFile").write[Option[String]] and
+            (JsPath \ "physicalFile").write[Option[String]] and
             (JsPath \ "mobile").write[Option[String]] and
             (JsPath \ "alternateEmail").write[Option[String]] and
             (JsPath \ "gender").write[Option[GenderType]] and
@@ -47,7 +68,8 @@ object UserProfilePersonal extends Function13[Option[Long], String, Option[Strin
             (JsPath \ "userProfilePersonalId").readNullable[Long] and
             (JsPath \ "xrayTerms").read[String] and
             (JsPath \ "aboutMe").readNullable[String] and
-            (JsPath \ "picture").readNullable[String] and
+            (JsPath \ "pictureFile").readNullable[String] and
+            (JsPath \ "physicalFile").readNullable[String] and
             (JsPath \ "mobile").readNullable[String] and
             (JsPath \ "alternateEmail").readNullable[String] and
             (JsPath \ "gender").readNullable[GenderType] and
@@ -58,4 +80,8 @@ object UserProfilePersonal extends Function13[Option[Long], String, Option[Strin
             (JsPath \ "createdAt").read[DateTime] and
             (JsPath \ "updatedAt").readNullable[DateTime]
     )(UserProfilePersonal)
+    
+    def apply(userProfileDTO: UserProfileDTO,
+              createdAt: DateTime,
+              updatedAt: Option[DateTime]) = new UserProfilePersonal(userProfileDTO, createdAt, updatedAt)
 }

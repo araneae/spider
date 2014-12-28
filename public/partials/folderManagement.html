@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">Manage Folders</div>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <tr ng-repeat="folder in ctrl.foldersMgm" ng-disabled="true">
+        <td>
+          <input type="text" ng-model="folder.name" ng-disabled="ctrl.isRenameDisabled(folder)">
+          <img src="/assets/images/icon-shared.png" with="20" height="20" ng-show="folder.shared"  data-placement="left" title="Shared" />
+        </td>
+        <td>
+          <a href="" class="glyphicon glyphicon-trash" ng-hide="ctrl.isHideDelete(folder)" data-placement="left" title="Remove" ng-click="ctrl.remove(folder)"></a>
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <div class="form-group clearfix">
+      <div class="text-left">
+        <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,6 +25,13 @@ object DocumentFolderRepository {
     }
   }
   
+  def get(documentFolderId: Long): Option[DocumentFolderDTO] = {
+    DB.withSession {
+      implicit session =>
+        query.filter(d => d.documentFolderId === documentFolderId).firstOption.map { d => DocumentFolderDTO(d) }
+    }
+  }
+  
   def udate(documentFolder: DocumentFolder) = {
     DB.withSession {
        implicit session: Session =>

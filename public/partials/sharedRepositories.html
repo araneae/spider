@@ -9,23 +9,39 @@
       <div class="panel-title">Shared Documents</div>
     </div>
     <div class="panel-body">
-      <table class="table table-striped table-fixed">
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th class="col-md-2">Shared By</th>
-          <th class="col-md-3"></th>
-        </tr>
-        <tr ng-repeat="document in ctrl.documents">
-          <td><a href="" data-placement="left" title="{{document.name}}">{{document.name}}</a></td>
-          <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
-          <td data-placement="left" title="{{document.sharedBy}}">{{document.sharedBy}}</td>
-          <td> 
-            <a href="" class="glyphicon glyphicon-folder-open" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
-            <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy to my repository" ng-click="ctrl.copyDocument(document.documentId)"></a>
-            <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a> 
-          </td>
-        </tr>
+      <table st-table="ctrl.displayCollection" st-safe-src="ctrl.documents" class="table table-striped table-fixed">
+        <thead>
+          <tr>
+            <th st-sort="name" class="col-md-3"><a href="">Name</a></th>
+            <th st-sort="description" class="col-md-3"><a href="">Description</a></th>
+            <th st-sort="sharedBy" class="col-md-3"><a href="">Shared By</a></th>
+            <th class="col-md-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="document in ctrl.displayCollection">
+            <td><a href="" data-placement="left" title="{{document.name}}">{{document.name}}</a></td>
+            <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
+            <td data-placement="left" title="{{document.sharedBy}}">{{document.sharedBy}}</td>
+            <td> 
+              <a href="" class="glyphicon glyphicon-folder-open" ng-show="document.canView" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
+              <a href="" class="glyphicon glyphicon-share" ng-show="document.canShare" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
+              <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>
+              <a class="glyphicon glyphicon-save" ng-show="document.canCopy" file-download url="ctrl.getUrl({{document.documentId}})" data-placement="left" title="Download"></a>
+              <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td class="text-center">
+              <div st-pagination="" st-items-by-page="ctrl.ConfigService.documentTablePageSize"></div>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>

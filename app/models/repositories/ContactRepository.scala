@@ -8,37 +8,43 @@ import models.dtos._
 import enums.ContactStatus._
 import org.joda.time.DateTime
 import enums._
+import utils._
 
 object ContactRepository {
   
-  val query = TableQuery[Contacts]
-  val userDocument = TableQuery[UserDocuments]
-  val userDocumentFolder = TableQuery[UserDocumentFolders]
+  val contactQuery = TableQuery[Contacts]
+  val userDocumentQuery = TableQuery[UserDocuments]
+  val userDocumentFolderQuery = TableQuery[UserDocumentFolders]
   
   def create(contact: Contact) = {
     DB.withSession {
        implicit session: Session =>
-         query.insert(contact)
+         contactQuery.insert(contact)
     }
   }
   
   def find(userId: Long, friendId: Long): Option[Contact] = {
     DB.withSession {
       implicit session =>
-        query.filter(s => s.userId === userId && s.friendId === friendId).firstOption
+        contactQuery.filter(s => s.userId === userId && s.friendId === friendId).firstOption
     }
   }
   
-  def findAll(userId: Long): Seq[ContactDTO] = {
+  def getAll(userId: Long): Seq[ContactDTO] = {
     DB.withSession {
       implicit session =>
         val q = for {
-            c <- query.filter(_.userId === userId)
-            a <- c.contact
-        } yield (c.friendId, a.firstName, a.lastName, a.email, c.status)
+            c <- contactQuery.filter(_.userId === userId)
+            u <- c.contact
+            up <- u.userProfilePersonal
+        } yield (c.friendId, up.physicalFile, u.firstName, u.lastName, c.status)
          
-        q.list.map{case (friendId, firstName, lastName, email, status) 
-                => ContactDTO(friendId, firstName, lastName, email, status)}
+        q.list.map{case (friendId, optPhysicalFile, firstName, lastName, status)
+                => {
+                      val pictureUrl = getPictureUrl(optPhysicalFile)
+                      ContactDTO(friendId, pictureUrl, firstName, lastName, status)
+                  }
+        }
     }
   }
   
@@ -46,21 +52,24 @@ object ContactRepository {
     DB.withSession {
       implicit session =>
         val q = for {
-            c <-query.filter(s => s.userId === userId && s.friendId === friendId)
-            a <- c.contact
-        } yield (c.friendId, a.firstName, a.lastName, a.email, c.status)
+            c <-contactQuery.filter(s => s.userId === userId && s.friendId === friendId)
+            u <- c.contact
+            up <- u.userProfilePersonal
+        } yield (c.friendId, up.physicalFile, u.firstName, u.lastName, c.status)
          
-        val result = q.list.map{case (friendId, firstName, lastName, email, status) 
-                => ContactDTO(friendId, firstName, lastName, email, status)}
-        if (result.length > 0) Some(result(0))
-        else None
+        q.firstOption.map{case (friendId, optPhysicalFile, firstName, lastName, status) 
+                => {
+                      val pictureUrl = getPictureUrl(optPhysicalFile)
+                      ContactDTO(friendId, pictureUrl, firstName, lastName, status)
+                    }
+                }
     }
   }
   
   def findByToken(token: String): Option[Contact] = {
     DB.withSession {
       implicit session =>
-        query.filter(s => s.token === token).firstOption
+        contactQuery.filter(s => s.token === token).firstOption
     }
   }
   
@@ -68,7 +77,7 @@ object ContactRepository {
     DB.withSession {
        implicit session: Session =>
          val q = for { 
-                     cu <- query.filter (u => u.userId === userId && u.friendId === friendId)
+                     cu <- contactQuery.filter (u => u.userId === userId && u.friendId === friendId)
                  } yield (cu.token, cu.updatedUserId, cu.updatedAt)
                  
          q.update((Some(token), Some(userId), Some(new DateTime())))
@@ -79,7 +88,7 @@ object ContactRepository {
     DB.withSession {
        implicit session: Session =>
          val q = for { 
-                     u <- query if u.userId === userId && u.friendId === friendId 
+                     u <- contactQuery if u.userId === userId && u.friendId === friendId 
                   } yield (u.status, u.token, u.updatedUserId, u.updatedAt)
          q.update((status, token, Some(friendId), Some(new DateTime())))
     }
@@ -88,7 +97,7 @@ object ContactRepository {
   def delete(userId: Long, friendId: Long) = {
     DB.withSession {
        implicit session: Session =>
-          query.filter( u => u.userId === userId && u.friendId === friendId).delete
+          contactQuery.filter( u => u.userId === userId && u.friendId === friendId).delete
     }
   }
   
@@ -96,19 +105,21 @@ object ContactRepository {
     DB.withSession {
       implicit session =>
         val q = for {
-          (c, d) <- query leftJoin userDocument on ((c, d) =>
+          (c, d) <- contactQuery leftJoin userDocumentQuery on ((c, d) =>
                                           c.friendId === d.userId &&
                                           d.documentId === documentId) if c.userId === userId
-          cu <- c.contact
-        } yield (cu.userId, cu.email, d.?)
+          u <- c.contact
+        } yield (u, d.?)
         
-        q.list.map{case (userId, email, d) 
+        q.list.map{case (u, d) 
                    => {
+                        val friendId = u.userId.get
+                        val name = s"${u.firstName} ${u.lastName}"
                         d match {
                           case (userDpocumentId, usrId, documentId, ownershipType, canCopy, canShare, canView, important, star, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) =>
-                            ContactWithDocument(userId, email, documentId, canShare, canCopy, canView, isLimitedShare, shareUntilEOD)
+                            ContactWithDocument(friendId, name, documentId, canShare, canCopy, canView, isLimitedShare, shareUntilEOD)
                           case _ =>
-                            ContactWithDocument(userId, email, None, None, None, None, None, None)
+                            ContactWithDocument(friendId, name, None, None, None, None, None, None)
                         }
                    }
         }
@@ -119,27 +130,36 @@ object ContactRepository {
     DB.withSession {
       implicit session =>
         val q = for {
-          (c, d) <- query leftJoin userDocumentFolder on ((c, d) =>
+          (c, d) <- contactQuery leftJoin userDocumentFolderQuery on ((c, d) =>
                                           c.friendId === d.userId &&
                                           d.documentFolderId === documentFolderId) if c.userId === userId
-          cu <- c.contact
-        } yield (cu.userId, cu.email, d.?)
+          u <- c.contact
+        } yield (u, d.?)
         
-        q.list.map{case (userId, email, d) 
+        q.list.map{case (u, d) 
                    => {
+                        val friendId = u.userId.get
+                        val name = s"${u.firstName} ${u.lastName}"
                         d match {
-                          case (userDocumentFolderId, documentFolderId, usrId, ownershipType, canCopy, isLimitedShare, shareUntilEOD, createdUserId, createdAt, updatedUserId, updatedAt) =>
+                          case (userDocumentFolderId, documentFolderId, usrId, ownershipType, canCopy, canShare, canView, isLimitedShare, shareUntilEOD, createdUserId, createdAt, updatedUserId, updatedAt) =>
                             val shared = userDocumentFolderId match {
                               case Some(id) => true
                               case None => false
                             }
-                            ContactWithDocumentFolder(userId, email, shared, canCopy, isLimitedShare, shareUntilEOD)
+                            ContactWithDocumentFolder(friendId, name, shared, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
                           case _ =>
-                            ContactWithDocumentFolder(userId, email, false, None, None, None)
+                            ContactWithDocumentFolder(friendId, name, false, None, None, None, None, None)
                         }
                    }
         }
     }
+  }
+  
+  def getPictureUrl(optPhysicalFile: Option[String]): String = {
+    optPhysicalFile match {
+                        case Some(physicalFile) => Configuration.userProfilePictureUrl(physicalFile)
+                        case None => Configuration.defaultProfilePictureUrl
+                    }
   }
 }
 

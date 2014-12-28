@@ -53,22 +53,8 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.getShareContacts(${documentId})")
     
     val list = ContactRepository.findAllWithDocumentShareAttributes(userId, documentId)
-    val text = Json.toJson(list)
-    Ok(text).as(JSON)
-  }
-  
-  def getRepositoryShareContacts = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.getRepositoryShareContacts()")
-    println(s"in DatabaseController.getRepositoryShareContacts()")
-    val optDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
-    optDocumentFolder match {
-      case Some(documentFolder) =>
-          val list = ContactRepository.findAllWithDocumentFolderShareAttributes(userId, documentFolder.documentFolderId)
-          val text = Json.toJson(list)
-          Ok(text).as(JSON)
-      case None =>
-         Ok("").as(JSON)
-    }
+    val data = Json.toJson(list)
+    Ok(data).as(JSON)
   }
   
   def download(documentId: Long) = IsAuthenticated{ username => implicit request =>
@@ -103,13 +89,22 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     
     if (userTagId > 0) {
       val list = DocumentTagRepository.findDocumentByUserTagId(userId, userTagId)
-      val text = Json.toJson(list)
-                  Ok(text).as(JSON)
+      val data = Json.toJson(list)
+                  Ok(data).as(JSON)
     } else {  
-      val list = UserDocumentRepository.findAll(userId)
-      val text = Json.toJson(list)
-      Ok(text).as(JSON)
+      val list = UserDocumentRepository.getAll(userId)
+      val data = Json.toJson(list)
+      Ok(data).as(JSON)
     }
+  }
+  
+  def getAllByDocumentFolderId(documentFolderId: Long) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.getAllByDocumentFolderId(${documentFolderId})")
+    println(s"in DatabaseController.getAllByDocumentFolderId(${documentFolderId})")
+    
+    val list = UserDocumentFolderRepository.getAllDocumentsByDocumentFolderId(userId, documentFolderId)
+    val data = Json.toJson(list)
+    Ok(data).as(JSON)
   }
 
   def create = IsAuthenticated(parse.json){ username => implicit request =>
@@ -125,40 +120,36 @@ object DatabaseController extends Controller with Secured with AkkaActor {
       val filePath = Configuration.uploadUserTempFilePath(userId, sanitizedFileName)
       val physicalName = TokenGenerator.token
       val signature = FileUtil.getMD5Hash(filePath)
-      val optDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
-      optDocumentFolder match {
-        case Some(documentFolder) =>
-            val documentObj = Json.obj("userId" -> userId) ++Json.obj("documentFolderId" -> documentFolder.documentFolderId) ++ 
-                                Json.obj("documentType" -> DocumentType.TEXT) ++
-                                Json.obj("fileType" -> fileType) ++ Json.obj("physicalName" -> physicalName) ++ 
-                                Json.obj("signature" -> signature) ++ Json.obj("createdUserId" -> userId) ++ 
-                                Json.obj("createdAt" -> new DateTime()) ++ jsonObj
-            documentObj.validate[Document].fold(
-                    valid = { document =>
-                            // rename the filename
-                            val newFilePath = Configuration.uploadFilePath(physicalName)
-                            FileUtil.move(filePath, newFilePath)
-                            val documentId = DocumentRepository.create(document)
-                            
-                            // add DocumentUser entry
-                            val userDocument = UserDocument(None, userId, documentId, OwnershipType.OWNED, true, true, true, false, false, false, userId)
-                            UserDocumentRepository.create(userDocument)
-                            
-                            // find the saved document
-                            val savedDocument = DocumentRepository.find(documentId)
-                            // add the document in the lucene index
-                            savedDocument match {
-                            case Some(doc) => indexWriterActor ! MessageAddDocument(doc)
-                            case None =>
-                            }
-                            Ok(HttpResponseUtil.success()).as(JSON)
-                    },
-                    invalid = {
-                        errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
-                    }
-              )
-        case None =>  BadRequest(HttpResponseUtil.error("Unable to find document box!"))
-      }
+      val documentObj = Json.obj("userId" -> userId) ++ 
+                        Json.obj("documentType" -> DocumentType.TEXT) ++
+                        Json.obj("fileType" -> fileType) ++ Json.obj("physicalName" -> physicalName) ++ 
+                        Json.obj("signature" -> signature) ++ Json.obj("createdUserId" -> userId) ++ 
+                        Json.obj("createdAt" -> new DateTime()) ++ jsonObj
+      documentObj.validate[Document].fold(
+              valid = { document =>
+                      // rename the filename
+                      val newFilePath = Configuration.uploadFilePath(physicalName)
+                      FileUtil.move(filePath, newFilePath)
+                      val documentId = DocumentRepository.create(document)
+                      
+                      // add DocumentUser entry
+                      val userDocument = UserDocument(None, userId, documentId, OwnershipType.OWNED, false, true, true, false, false, false, None, userId)
+                      UserDocumentRepository.create(userDocument)
+                      
+                      // find the saved document
+                      val savedDocument = DocumentRepository.find(documentId)
+                      // add the document in the lucene index
+                      savedDocument match {
+                      case Some(doc) => indexWriterActor ! MessageAddDocument(doc)
+                      case None =>
+                      }
+                      Ok(HttpResponseUtil.success()).as(JSON)
+              },
+              invalid = {
+                  errors =>
+                    BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+              }
+      )
    } catch {
      case error: Throwable => BadRequest(HttpResponseUtil.error("Something is wrong, please try again!")).as(JSON)
    }
@@ -169,7 +160,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.share(${documentId})")
     
     val jsonObj = request.body.asInstanceOf[JsObject]
-    jsonObj.validate[Share].fold(
+    jsonObj.validate[ShareDTO].fold(
             valid = { share =>
                     val recipientUserIds = share.receivers.map(r => r.id)
                     MessageService.send(userId, None, share.subject, share.message, recipientUserIds)
@@ -177,7 +168,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                     // create shared link
                     share.receivers.map(r => {
                                         val sharedDoc = UserDocument(None, r.id, documentId, OwnershipType.SHARED, share.canCopy, share.canShare, 
-                                                  share.canView, false, false, share.isLimitedShare, userId, new DateTime(), share.shareUntilEOD)
+                                                  share.canView, false, false, share.isLimitedShare, share.shareUntilEOD, userId, new DateTime())
                                         UserDocumentRepository.create(sharedDoc)
                                     })
                     Ok(HttpResponseUtil.success("Successfully shared!"))
@@ -208,9 +199,9 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                                                       false,
                                                       false,
                                                       share.isLimitedShare.getOrElse(doc.isLimitedShare), 
+                                                      share.shareUntilEOD,
                                                       doc.createdUserId,
                                                       doc.createdAt,
-                                                      share.shareUntilEOD,
                                                       Some(userId),
                                                       Some(new DateTime()))
 
@@ -257,8 +248,8 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                                       } else {
                                           UserDocumentRepository.findAllByDocumentIds(userId, docIds)
                                       }
-                  val text = Json.toJson(userDocuments)
-                  Ok(text).as(JSON)
+                  val data = Json.toJson(userDocuments)
+                  Ok(data).as(JSON)
             }
            case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
@@ -278,7 +269,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     
     val optUserProfile = UserRepository.findUserProfilePersonal(userId)
     optUserProfile match {
-      case Some(userProfile) =>
+      case Some((user, userProfile)) =>
         val searchText = userProfile.xrayTerms
         if (searchText.length() > 0){
           implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
@@ -286,9 +277,9 @@ object DatabaseController extends Controller with Secured with AkkaActor {
           val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
           val result = f.map{
                case MessageSearchResultWithHighlighter(documentId, results) => {
-                          val text = Json.toJson(results)
-                          //println(text)
-                          Ok(text).as(JSON)
+                          val data = Json.toJson(results)
+                          //println(data)
+                          Ok(data).as(JSON)
                 }
                case _ => Ok("").as(JSON)
     //                case Failure(failure) =>
@@ -315,9 +306,9 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     val f = ask(indexSearcherActor, MessageDocumentGetContents(documentId)).mapTo[MessageDocumentContents]
     val result = f.map{
          case MessageDocumentContents(documentId, contents) => {
-                    val text = Json.toJson(contents)
-                    //println(text)
-                    Ok(text).as(JSON)
+                    val data = Json.toJson(contents)
+                    //println(data)
+                    Ok(data).as(JSON)
           }
          case _ => Ok("").as(JSON)
 //                case Failure(failure) =>
@@ -344,6 +335,20 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                     Ok(HttpResponseUtil.success("Successfully deleted!"))
       case None => 
                     BadRequest(HttpResponseUtil.error("Unable to find document!"))
+    }
+  }
+  
+  def moveToFolder(documentId: Long, documentFolderId: Long) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.moveToFolder(${documentId}, ${documentFolderId})")
+    println(s"in DatabaseController.moveToFolder(${documentId}, ${documentFolderId})")
+    
+    val optDocument = DocumentRepository.find(documentId)
+    optDocument match {
+      case Some(document) =>
+          DocumentRepository.udateFolder(documentId, documentFolderId, userId)
+          Ok(HttpResponseUtil.success("Successfully shared!"))
+      case None =>
+          BadRequest(HttpResponseUtil.error("Unable to update document!"))
     }
   }
   
@@ -380,7 +385,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
                 val docId = DocumentRepository.create(copyDocument)
                 
                 // add DocumentUser entry
-                val userDocument = UserDocument(None, userId, docId, OwnershipType.OWNED, true, true, true, false, false, false, userId)
+                val userDocument = UserDocument(None, userId, docId, OwnershipType.OWNED, false, true, true, false, false, false, None, userId)
                 UserDocumentRepository.create(userDocument)
                           
                 // find the saved document
@@ -399,66 +404,5 @@ object DatabaseController extends Controller with Secured with AkkaActor {
       case None =>
             Ok(HttpResponseUtil.error("Unable to find the document"))
     }
-  }
-  
-  def shareRepository = IsAuthenticated(parse.json){ username => implicit request =>
-    //logger.info(s"in DatabaseController.shareRepository")
-    println(s"in DatabaseController.shareRepository()")
-    
-    val jsonObj = request.body.asInstanceOf[JsArray]
-    jsonObj.validate[List[ContactWithDocumentFolder]].fold(
-            valid = { shares =>
-                    val optDefaultUserDocumentFolder = UserDocumentFolderRepository.findDefault(userId)
-                    optDefaultUserDocumentFolder match {
-                      case Some(defaultUserDocumentFolder) =>
-                        val documentFolderId = defaultUserDocumentFolder.documentFolderId
-                        shares.map { share =>
-                          val optUserDocumentFolder = UserDocumentFolderRepository.find(share.id, documentFolderId)
-                          optUserDocumentFolder match {
-                            case Some(doc) =>
-                                if (share.shared) {
-                                  val userDocument = UserDocumentFolder(
-                                                            doc.userDocumentFolderId,
-                                                            doc.documentFolderId, 
-                                                            doc.userId, 
-                                                            doc.ownershipType, 
-                                                            share.canCopy.getOrElse(doc.canCopy), 
-                                                            share.isLimitedShare.getOrElse(doc.isLimitedShare), 
-                                                            share.shareUntilEOD,
-                                                            doc.createdUserId,
-                                                            doc.createdAt,
-                                                            Some(userId),
-                                                            Some(new DateTime()))
-      
-                                  UserDocumentFolderRepository.udate(userDocument)
-                                }
-                                else {
-                                  UserDocumentFolderRepository.delete(doc.userDocumentFolderId.get)
-                                }
-                            case None =>
-                                 if (share.shared) {
-                                   val userDocument = UserDocumentFolder(
-                                                              None,
-                                                              documentFolderId, 
-                                                              share.id, 
-                                                              OwnershipType.SHARED, 
-                                                              share.canCopy.getOrElse(false), 
-                                                              share.isLimitedShare.getOrElse(false), 
-                                                              share.shareUntilEOD,
-                                                              userId)
-        
-                                   UserDocumentFolderRepository.create(userDocument)
-                                 }
-                          }
-                        }
-                        Ok(HttpResponseUtil.success("Successfully shared!"))
-                      case None =>
-                        BadRequest(HttpResponseUtil.error("Unable to find payload!"))
-                    }
-            },
-            invalid = {
-                errors => BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
-            }
-      )
   }
 }

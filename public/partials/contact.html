@@ -11,16 +11,16 @@
     <div class="panel-body">
       <table class="table table-striped">
       <tr>
+        <th></th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Email</th>
         <th>Status</th>
         <th class="col-md-1"></th>
       </tr>
       <tr ng-repeat="contact in ctrl.contacts">
+        <td><img ng-src="{{contact.pictureUrl}}" height="20" width="20"></td>
         <td>{{contact.firstName}}</td>
         <td>{{contact.lastName}}</td>
-        <td>{{contact.email}}</td>
         <td>{{ctrl.getStatusDisplayName(contact.status)}}</td>
         <td>
           <a href="" class="glyphicon glyphicon-send" data-placement="left" title="{{ctrl.getInviteTitle(contact.status)}}"  ng-show="ctrl.showSendInvite(contact)" ng-click="ctrl.goToInvite(contact)">

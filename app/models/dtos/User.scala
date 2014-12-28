@@ -6,6 +6,7 @@ import org.joda.time.DateTime
 
 case class User(userId: Option[Long],
                 firstName: String,
+                middleName: Option[String],
                 lastName: String,
                 email: String,
                 password: String,
@@ -19,11 +20,12 @@ case class User(userId: Option[Long],
                 createdAt: DateTime = new DateTime(),
                 updatedAt: Option[DateTime] = None)
 
-object User extends Function14[Option[Long], String, String, String, String, Long, String, Boolean, DateTime, Option[Long], Option[String], Option[DateTime], DateTime, Option[DateTime], User]
+object User extends Function15[Option[Long], String, Option[String], String, String, String, Long, String, Boolean, DateTime, Option[Long], Option[String], Option[DateTime], DateTime, Option[DateTime], User]
 {
     implicit val userWrites : Writes[User] = (
             (JsPath \ "userId").write[Option[Long]] and
             (JsPath \ "firstName").write[String] and
+            (JsPath \ "middleName").write[Option[String]] and
             (JsPath \ "lastName").write[String] and
             (JsPath \ "email").write[String] and
             (JsPath \ "password").write[String] and
@@ -41,6 +43,7 @@ object User extends Function14[Option[Long], String, String, String, String, Lon
     implicit val userReads : Reads[User] = (
           (JsPath \ "userId").readNullable[Long] and
           (JsPath \ "firstName").read[String] and
+          (JsPath \ "middleName").readNullable[String] and
           (JsPath \ "lastName").read[String] and
           (JsPath \ "email").read[String] and
           (JsPath \ "password").read[String] and

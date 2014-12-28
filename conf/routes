@@ -50,6 +50,10 @@ POST   /userProfile/email/sendCode                              controllers.User
 
 PUT    /userProfile/email                                       controllers.UserProfileController.updateEmail
 
+POST   /userProfile/picture/upload                              controllers.UserProfileController.uploadPicture
+
+GET    /userProfile/picture/:fileName                           controllers.UserProfileController.getPicture(fileName: String)
+
 # Company
 
 GET    /company                                                 controllers.CompanyController.get
@@ -173,19 +177,21 @@ POST   /database/upload                                         controllers.Data
 
 GET    /database/document/:documentId/contact                   controllers.DatabaseController.getShareContacts(documentId: Long)
 
-GET    /database/repository/contact                             controllers.DatabaseController.getRepositoryShareContacts
-
 GET    /database/download/:documentId                           controllers.DatabaseController.download(documentId: Long)
 
 GET    /database/document/:documentId                           controllers.DatabaseController.get(documentId: Long)
 
 GET    /database/document/usertag/:userTagId                    controllers.DatabaseController.getAllByUserTagId(userTagId: Long)
 
+GET    /database/document/folder/:documentFolderId              controllers.DatabaseController.getAllByDocumentFolderId(documentFolderId: Long)
+
 POST   /database/document                                       controllers.DatabaseController.create
 
 PUT    /database/document/:documentId                           controllers.DatabaseController.update(documentId: Long)
 
 DELETE /database/document/:documentId                           controllers.DatabaseController.delete(documentId: Long)
+
+PUT    /database/document/:documentId/move/:documentFolderId    controllers.DatabaseController.moveToFolder(documentId: Long, documentFolderId: Long)
 
 GET    /database/search/:userTagId/:searchText                  controllers.DatabaseController.search(userTagId: Long, searchText: String)
 
@@ -198,8 +204,6 @@ POST   /database/document/:documentId/share                     controllers.Data
 PUT    /database/document/:documentId/share                     controllers.DatabaseController.updateShare(documentId: Long)
 
 POST   /database/document/:documentId/copy                      controllers.DatabaseController.copy(documentId: Long)
-
-POST   /database/repository/share                               controllers.DatabaseController.shareRepository
 
 # Shared Repository
 GET    /shared/repository/document                              controllers.SharedDocumentController.getAll
@@ -224,6 +228,21 @@ GET    /userTag                                                 controllers.User
 PUT    /userTag/:userTagId                                      controllers.UserTagController.update(userTagId: Int)
 
 DELETE /userTag/:userTagId                                      controllers.UserTagController.delete(userTagId: Int)
+
+# Folder specific routes
+POST   /documents/folder                                        controllers.DocumentFolderController.create
+
+GET    /documents/folder/:documentFolderId                      controllers.DocumentFolderController.get(documentFolderId: Long)
+
+GET    /documents/folder                                        controllers.DocumentFolderController.getAll
+
+PUT    /documents/folder/:documentFolderId                      controllers.DocumentFolderController.update(documentFolderId: Long)
+
+DELETE /documents/folder/:documentFolderId                      controllers.DocumentFolderController.delete(documentFolderId: Long)
+
+GET    /documents/folder/contact/:documentFolderId              controllers.DocumentFolderController.getFolderShareContacts(documentFolderId: Long)
+
+POST   /documents/folder/:documentFolderId/share                controllers.DocumentFolderController.shareFolder(documentFolderId: Long)
 
 # DocumentTag specific routes
 POST   /database/documentTag/:documentId                        controllers.DocumentTagController.create(documentId: Int)

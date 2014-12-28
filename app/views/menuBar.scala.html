@@ -4,11 +4,11 @@
 <div class="navbar-header">
   <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
     <li ng-class="{active: ctrl.isMenuActive('/contact')}"><a ui-sref="contact" data-toggle="tab">Contacts</a></li>
-    <li ng-class="{active: ctrl.isMenuActive('/document')}"><a ui-sref="database.documents">My Folder</a></li>
-    <li ng-class="{active: ctrl.isMenuActive('/shared')}"><a ui-sref="sharedRepositories">Shared Folder</a></li>
+    <li ng-class="{active: ctrl.isMenuActive('/document')}"><a ui-sref="folder.documents">Folders</a></li>
+    <li ng-class="{active: ctrl.isMenuActive('/shared')}"><a ui-sref="sharedRepositories">Shared Documents</a></li>
     <li ng-class="{active: ctrl.isMenuActive('/message')}"><a ui-sref="messages.messageList" data-toggle="tab">Messages</a></li>
     @if(hasUpgraded) {
-      <li ng-class="{active: ctrl.isMenuActive('/jobs')}"><a ui-sref="jobRequirements">Job Requirement</a></li>
+      <li ng-class="{active: ctrl.isMenuActive('/jobs')}"><a ui-sref="jobRequirements">Jobs</a></li>
     }
     <li class="dropdown" ng-class="{active: ctrl.isMenuActive('/admin')}">
       <a href="" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>

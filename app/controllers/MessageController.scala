@@ -41,7 +41,7 @@ object MessageController extends Controller with Secured {
       val jsonObj = request.body.asInstanceOf[JsObject]
       val optSubject = (jsonObj \ "subject").asOpt[String]
       val optBody = (jsonObj \ "body").asOpt[String]
-      val optReceivers = (jsonObj \ "receivers").asOpt[List[Connection]]
+      val optReceivers = (jsonObj \ "receivers").asOpt[List[ConnectionDTO]]
       
       optSubject match {
         case Some(subject) =>

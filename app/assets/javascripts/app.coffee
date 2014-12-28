@@ -8,6 +8,8 @@ dependencies = [
     'ui.router',
     'ui.select2',
     'angularFileUpload',
+    'smart-table',
+    'ngDraggable',
     'myApp.filters',
     'myApp.services',
     'myApp.controllers',
@@ -487,6 +489,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               url: '',
               views: {
                 'viewDocument': {
+                    controller: 'DatabaseCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseDocuments.html'
                 }
               }
@@ -497,6 +500,49 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     templateUrl: '/assets/partials/userTagCreate.html'
                 },
                 'viewDocument': {
+                    controller: 'DatabaseCtrl as ctrl',
+                    templateUrl: '/assets/partials/databaseDocuments.html'
+                }
+              }
+          })
+          .state('folder', {
+              url: '/document/folder/:documentFolderId',
+              'abstract': true,
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewGlobalSearch@folder': {
+                    templateUrl: '/assets/partials/globalSearch.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/folder.html'
+                },
+                'viewContextMenu@folder': {
+                    templateUrl: '/assets/partials/contextMenuFolderView.html'
+                }
+              }
+          })
+          .state('folder.documents', {
+             # child of 'folder' state
+              url: '',
+              views: {
+                'viewDocument': {
+                    controller: 'FolderDocumentCtrl as ctrl',
+                    templateUrl: '/assets/partials/databaseDocuments.html'
+                }
+              }
+          })
+          .state('folder.folderCreate', {
+              views: {
+                'viewTag': {
+                    templateUrl: '/assets/partials/folderCreate.html'
+                },
+                'viewDocument': {
+                    controller: 'FolderDocumentCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseDocuments.html'
                 }
               }
@@ -638,25 +684,32 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('shareRepository', {
-              url: '/document/repository/share',
+          .state('folder.shareFolder', {
+              url: '/share',
               views: {
-                'viewHeaderBar': {
-                  templateUrl: '/assets/partials/headerBarHome.html'
+                'viewGlobalSearch': {
                 },
-                'viewMenuBar': {
-                   templateUrl: '/assets/partials/menuBar.html'
+                'viewContextMenu@folder': {
+                    templateUrl: '/assets/partials/contextMenuGeneric.html'
                 },
-                'viewMain': {
-                    templateUrl: '/assets/partials/shareRepository.html'
+                'viewDocument': {
+                    templateUrl: '/assets/partials/shareFolder.html'
                 }
               }
           })
           .state('database.userTagManagement', {
-              url: '/document/tags/manage',
+              url: '/manage',
               views: {
                 'viewDocument': {
                     templateUrl: '/assets/partials/userTagManagement.html'
+                }
+              }
+          })
+          .state('folder.documentFolderManagement', {
+              url: '/manage',
+              views: {
+                'viewDocument': {
+                    templateUrl: '/assets/partials/folderManagement.html'
                 }
               }
           })

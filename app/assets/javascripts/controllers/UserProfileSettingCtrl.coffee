@@ -1,7 +1,7 @@
 
 class UserProfileSettingCtrl
 
-    constructor: (@$log, @$scope, @$state, @ErrorService, @EnumService, @UserProfileSettingService) ->
+    constructor: (@$log, @$scope, @$state, @ErrorService, @EnumService, @UserProfileSettingService, @UtilityService) ->
         @$log.debug "constructing UserProfileSettingCtrl"
         @userProfile = {}
         @verifyCode
@@ -9,6 +9,8 @@ class UserProfileSettingCtrl
         @emailReadOnly = true
         @emailOrg
         @emailVerify = false
+        @selectedFile
+        @profileImageUrl = "/assets/images/default_user.jpg"
         
         # method to be used in "watch" method
         @$scope.inputEmail = () =>  
@@ -30,11 +32,15 @@ class UserProfileSettingCtrl
                 @$log.debug "Promise returned #{data} user profile"
                 @emailOrg = data.email 
                 @userProfile = data
+                @setImageUrl(@userProfile.physicalFile)
             ,
             (error) =>
                 @ErrorService.error
-                @$log.error "Unable to get documents: #{error}"
+                @$log.error "Unable to get user profile: #{error}"
             )
+    
+    setImageUrl: (picture) ->
+        @profileImageUrl = "/userProfile/picture/#{picture}" if (picture)
     
     changeEmail: () ->
         @$log.debug "UserProfileSettingCtrl.changeEmail()"
@@ -68,7 +74,7 @@ class UserProfileSettingCtrl
             ,
             (error) =>
                 @ErrorService.error("Unable to send validation email!")
-                @$log.error "Unable to get documents: #{error}"
+                @$log.error "Unable to update email: #{error}"
             )
 
     updateEmail: () ->
@@ -86,12 +92,30 @@ class UserProfileSettingCtrl
               @$log.error "Unable to update email: #{error}"
           )
 
+    cancel: () ->
+        @$log.debug "UserProfileSettingCtrl.cancel()"
+        @$state.go("index")
+    
+    onFileSelect: ($files) ->
+      @$log.debug "UserProfileSettingCtrl.onFileSelect()"
+      for file in $files
+        @userProfile.pictureFile = file.name
+        @selectedFile = file
+        break
+    
     save: () ->
         @$log.debug "UserProfileSettingCtrl.save()"
+        if (@userProfile.pictureFile and @userProfile.pictureFile.length > 0)
+          @UtilityService.uploadFile('/userProfile/picture/upload', 'application/text', @selectedFile, @updateUserProfile, @onUploadError)
+        else
+          @userProfile.pictureFile = undefined
+          @updateUserProfile()
+
+    updateUserProfile: (data, status, headers, config) =>
+        @$log.debug "UserProfileSettingCtrl.updateUserProfile()"
         @userProfile.birthYear = parseInt(@userProfile.birthYear) if @userProfile.birthYear
         @userProfile.birthMonth = parseInt(@userProfile.birthMonth) if @userProfile.birthMonth
         @userProfile.birthDay = parseInt(@userProfile.birthDay) if @userProfile.birthDay
-        
         @UserProfileSettingService.save(@userProfile).then( 
             (data) =>
               @ErrorService.success("Successfully saved profile settings")
@@ -103,8 +127,8 @@ class UserProfileSettingCtrl
                 @$log.error "Unable to save user profile"
             )
 
-    cancel: () ->
-        @$log.debug "UserProfileSettingCtrl.cancel()"
-        @$state.go("industry")
+    onUploadError : (error) =>
+      @ErrorService.error("Failed to upload picture!")
+      @$log.debug "UserProfileSettingCtrl.onUploadError(#{error})"
 
 controllersModule.controller('UserProfileSettingCtrl', UserProfileSettingCtrl)

@@ -9,26 +9,27 @@
        <div class="panel-title">Upload Resume</div>
     </div>
     <div class="panel-body">
-      <form id="DatabaseUploadForm" name="DatabaseUploadForm" class="form-horizontal" role="form">
+      <form novalidate id="idDatabaseUploadForm" name="DatabaseUploadForm" class="form-horizontal" role="form"
+          ng-submit="ctrl.save()">
         <div class="form-group">
          <label id="lblName" for="name" class="col-sm-2 control-label">Name</label>
          <div class="col-sm-6">
-             <input type="text" class="form-control" name="name" id="name" placeholder=""
-                    ng-model="ctrl.document.name">
+             <input type="text" class="form-control" name="name" id="name" placeholder="Enter a descriptive name"
+                    ng-model="ctrl.document.name" required>
          </div>
         </div>
          <div class="form-group">
              <label id="lblDesc" for="descLong" class="col-sm-2 control-label">Description</label>
              <div class="col-sm-6">
-                 <input type="text" class="form-control" name="description" id="description" placeholder=""
-                        ng-model="ctrl.document.description">
+                 <input type="text" class="form-control" name="description" id="description" placeholder="Enter description"
+                        ng-model="ctrl.document.description" required>
              </div>
          </div>
          <div class="form-group">
            <label id="lblSelectedFile" for="fileName" class="col-sm-2 control-label">File Name</label>
            <div class="col-sm-6">
              <div class="input-group">
-             <input type="text" class='form-control' name="fileName" id="fileName" ng-model="ctrl.document.fileName">
+             <input type="text" class='form-control' name="fileName" id="fileName" ng-model="ctrl.document.fileName" placeholder="File name" required>
              <span class="input-group-btn">
                <input type="file" id="selectedFile" ng-show="false" ng-file-select="ctrl.onFileSelect($files)"/></input>
                <input type="button" class='btn btn-default' value="Browse..." onclick="document.getElementById('selectedFile').click();" /></input>
@@ -36,11 +37,20 @@
              </div>
            </div>
          </div>
+         <div class="form-group">
+          <label id="lblFolder for="folder" class="col-md-2 control-label">Upload Folder</label>
+          <div class="col-md-4">
+            <select class="form-control" name="folder" id="idFolder" ng-options="folder.name for folder in ctrl.folders" 
+                   ng-model="ctrl.folder" required>
+                   <option value="">-- choose upload folder --</option>
+            </select>
+          </div>
+        </div>
          <!-- <pre>{{ ctrl.document | json }}</pre>  -->
          <div class="form-group clearfix">
              <div class="col-sm-8 text-right">
-                 <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-                 <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Upload</button>
+                 <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+                 <button type="submit" class="btn btn-success" id="btnSave" ng-disabled="!DatabaseUploadForm.$valid">Upload</button>
              </div>
          </div>
       </form>

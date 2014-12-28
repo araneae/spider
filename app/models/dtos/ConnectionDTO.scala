@@ -9,19 +9,19 @@ import enums.FileType._
  * All connections - contacts and followers
  * 
  */
-case class Connection(id: Long,
+case class ConnectionDTO(id: Long,
                  text: String
                  )
 
-object Connection extends Function2[Long, String, Connection]
+object ConnectionDTO extends Function2[Long, String, ConnectionDTO]
 {
-    implicit val connectionWrites : Writes[Connection] = (
+    implicit val connectionWrites : Writes[ConnectionDTO] = (
             (JsPath \ "id").write[Long] and
             (JsPath \ "text").write[String]
-    )(unlift(Connection.unapply))
+    )(unlift(ConnectionDTO.unapply))
 
-    implicit val connectionReads : Reads[Connection] = (
+    implicit val connectionReads : Reads[ConnectionDTO] = (
           (JsPath \ "id").read[Long] and
           (JsPath \ "text").read[String]
-    )(Connection)
+    )(ConnectionDTO)
 }

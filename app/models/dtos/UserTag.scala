@@ -18,7 +18,21 @@ case class UserTag(userTagId: Option[Long],
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
-                   updatedAt: Option[DateTime] = None)
+                   updatedAt: Option[DateTime] = None) {
+  def this(userTagDTO: UserTagDTO,
+           createdUserId: Long,
+           createdAt: DateTime,
+           updatedUserId: Option[Long],
+           updatedAt: Option[DateTime]) {
+      this(userTagDTO.userTagId,
+           userTagDTO.userId,
+           userTagDTO.name,
+           createdUserId,
+           createdAt,
+           updatedUserId,
+           updatedAt)
+  }
+}
 
 object UserTag extends Function7[Option[Long], Long, String, Long, DateTime, Option[Long], Option[DateTime], UserTag]
 {
@@ -41,4 +55,10 @@ object UserTag extends Function7[Option[Long], Long, String, Long, DateTime, Opt
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
     )(UserTag)
+    
+    def apply(userTagDTO: UserTagDTO,
+           createdUserId: Long,
+           createdAt: DateTime,
+           updatedUserId: Option[Long],
+           updatedAt: Option[DateTime]) = new UserTag(userTagDTO, createdUserId, createdAt, updatedUserId, updatedAt)
 }

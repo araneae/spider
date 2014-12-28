@@ -6,6 +6,7 @@ import play.api.Play.current
 import models.tables._
 import models.dtos._
 import enums.DocumentType._
+import org.joda.time.DateTime
 
 object DocumentRepository {
   
@@ -32,10 +33,28 @@ object DocumentRepository {
     }
   }
   
+  def udateFolder(documentId: Long, documentFolderId: Long, userId: Long) = {
+    DB.withSession {
+       implicit session: Session =>
+         val q = for {
+            d <- query filter(_.documentId === documentId) 
+         } yield(d.documentFolderId, d.updatedUserId, d.updatedAt)
+         
+         q update ((documentFolderId, Some(userId), Some(new DateTime)))
+    }
+  }
+  
   def delete(documentId: Long) = {
     DB.withSession {
        implicit session: Session =>
           query.filter( u => u.documentId === documentId).delete
+    }
+  }
+  
+  def getDocumentCount(documentFolderId: Long): Int = {
+    DB.withSession {
+       implicit session: Session =>
+          query.filter( u => u.documentFolderId === documentFolderId).list.length
     }
   }
 }

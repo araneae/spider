@@ -4,6 +4,10 @@ import org.mindrot.jbcrypt.BCrypt
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import play.api.mvc.MultipartFormData
+import play.api.mvc.MultipartFormData.FilePart
+import play.api.libs.Files.TemporaryFile
+import java.io.File
 import play.api.data.Form
 import play.api.data.Forms.nonEmptyText
 import play.api.data.Forms.tuple
@@ -34,18 +38,7 @@ object UserProfileController extends Controller with Secured {
                 val optUserProfile = UserProfilePersonalRepository.find(userProfilePersonalId)
                 optUserProfile match {
                   case Some(userProfile) =>
-                    val userProfileDTO = UserProfileDTO(userProfile.userProfilePersonalId, 
-                                            user.email, 
-                                            userProfile.xrayTerms,
-                                            userProfile.aboutMe,
-                                            userProfile.picture,
-                                            userProfile.mobile,
-                                            userProfile.alternateEmail,
-                                            userProfile.gender,
-                                            userProfile.maritalStatus,
-                                            userProfile.birthYear,
-                                            userProfile.birthMonth,
-                                            userProfile.birthDay)
+                    val userProfileDTO = UserProfileDTO(user, userProfile)
                     val text = Json.toJson(userProfileDTO)
                     Ok(text).as(JSON)
                   case None =>
@@ -72,11 +65,13 @@ object UserProfileController extends Controller with Secured {
             val optUserProfile = UserProfilePersonalRepository.find(userProfileDTO.userProfilePersonalId.get)
             optUserProfile match {
               case Some(userProfile) =>
+                  val physicalFile = movePictureFile(userId, userProfileDTO, userProfile)
                   val updatedUserProfile = UserProfilePersonal(
                                   userProfileDTO.userProfilePersonalId,
                                   userProfileDTO.xrayTerms,
                                   userProfileDTO.aboutMe,
-                                  userProfileDTO.picture,
+                                  userProfileDTO.pictureFile,
+                                  physicalFile,
                                   userProfileDTO.mobile,
                                   userProfileDTO.alternateEmail,
                                   userProfileDTO.gender,
@@ -169,5 +164,80 @@ object UserProfileController extends Controller with Secured {
         // unable to parse payload
         BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
     }
+  }
+  
+  def uploadPicture = IsAuthenticated(parse.multipartFormData) { username => implicit request =>
+      //logger.info("in UserProfileController.uploadPicture()")
+      println("in UserProfileController.uploadPicture()")
+      request.body match {
+        case MultipartFormData(dataParts, fileParts, badParts, missingFileParts) =>
+             fileParts.map { case FilePart(key, filename, contentType, ref) =>
+                 val file = ref.asInstanceOf[TemporaryFile]
+                 val uploadFilePath = Configuration.uploadUserTempFilePath(userId, filename)
+                 val uploadDir = Configuration.uploadUserTempPath(userId)
+                 FileUtil.createPath(uploadDir)
+                 file.moveTo(new File(uploadFilePath), true)
+             }
+             Ok(HttpResponseUtil.success("Successfully Uploaded!"))
+        case _ =>  
+            BadRequest(HttpResponseUtil.error("Unable to upload file, please try again!"))
+      }
+  }
+  
+  def getPicture(physicalFile: String) = IsAuthenticated { username => implicit request =>
+      //logger.info("in UserProfileController.getPicture(${fileName})")
+      println(s"in UserProfileController.getPicture(${physicalFile})")
+      
+      val filePath = Configuration.uploadImageFilePath(physicalFile)
+      Ok.sendFile(new File(filePath), fileName = _ => physicalFile)
+  }
+  
+  def movePictureFile(userId: Long, userProfileDTO: UserProfileDTO, userProfile:  UserProfilePersonal): Option[String] = {
+      val physicalFileName = (userProfileDTO.pictureFile, userProfile.pictureFile) match {
+                        case (Some(newPictureFile), Some(oldPictureFile)) =>
+                            if (newPictureFile == oldPictureFile) {
+                              userProfile.physicalFile
+                            }
+                            else {
+                              // move the new file
+                              val physicalName = TokenGenerator.token
+                              val tempFilePath = Configuration.uploadUserTempFilePath(userId, newPictureFile)
+                              val newFilePath = Configuration.uploadImageFilePath(physicalName)
+                              val uploadDir = Configuration.uploadImageBasePath
+                              FileUtil.createPath(uploadDir)
+                              FileUtil.move(tempFilePath, newFilePath)
+                              
+                              // delete the old file
+                              userProfile.physicalFile match {
+                                case Some(oldPhysicalFile) =>
+                                      val oldFilePath = Configuration.uploadImageFilePath(oldPhysicalFile)
+                                      FileUtil.delete(oldFilePath)
+                                case None =>
+                              }
+                              Some(physicalName)
+                            }
+                       case (Some(newPictureFile), None) =>
+                              // move the new file
+                              val physicalName = TokenGenerator.token
+                              val tempFilePath = Configuration.uploadUserTempFilePath(userId, newPictureFile)
+                              val newFilePath = Configuration.uploadImageFilePath(physicalName)
+                              val uploadDir = Configuration.uploadImageBasePath
+                              FileUtil.createPath(uploadDir)
+                              FileUtil.move(tempFilePath, newFilePath)
+                              Some(physicalName)
+                       case (None, Some(oldPictureFile)) =>
+                              // delete the old file
+                              userProfile.physicalFile match {
+                                case Some(oldPhysicalFile) =>
+                                      val oldFilePath = Configuration.uploadImageFilePath(oldPhysicalFile)
+                                      FileUtil.delete(oldFilePath)
+                                case None =>
+                              }
+                              None
+                       case _ => 
+                             // nothing to be done
+                             None
+                  }
+      physicalFileName
   }
 }

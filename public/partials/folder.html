@@ -1,0 +1,42 @@
+<div ng-controller="FolderCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <div class="panel-title">Folders
+              <!-- <button type="button" class="btn btn-primary" data-placement="left" title="Switch to Tags view" ng-click="ctrl.goToUserTags()">Tags</button>
+              <button type="button" ng-disabled="true" class="btn btn-primary">Folders</button> -->
+            </div>
+         </div>
+         <div class="panel-body">
+            <table class="table table-striped">
+              <tr ng-repeat="folder in ctrl.folders">
+                <td ng-drop="folder.documentFolderId > 0" ng-drop-success="ctrl.onDropComplete($data, $event, folder)">
+                    <a href="" ng-click="ctrl.goToDocumentFolder(folder)">{{folder.name}}</a>
+                    <img src="/assets/images/icon-shared.png" with="20" height="20" ng-show="folder.shared"  data-placement="left" title="Shared" />
+                </td>
+              </tr>
+            </table>
+            <hr>
+            <div>
+              <a href="" ng-show="ctrl.showDocumentFolderManagement()"  ng-click="ctrl.goToDocumentFolderManagement()">Manage folders</a>
+            </div>
+            <div>
+              <a href="" ng-click="ctrl.goToDocumentFolderCreate()">Create new folder</a>
+            </div>
+            <hr>
+            <div ui-view="viewTag"></div>
+         </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div ui-view="viewDocument"></div>
+     </div>
+  </div>
+</div>
+

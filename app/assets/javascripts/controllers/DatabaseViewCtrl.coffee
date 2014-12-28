@@ -40,7 +40,7 @@ class DatabaseViewCtrl
 
     done: () ->
       @$log.debug "DatabaseViewCtrl.done()"
-      @$state.go('database.documents')
+      @$state.go('folder.documents')
 
 
 controllersModule.controller('DatabaseViewCtrl', DatabaseViewCtrl)

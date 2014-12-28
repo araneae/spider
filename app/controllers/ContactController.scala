@@ -29,7 +29,7 @@ object ContactController extends Controller with Secured with AkkaActor {
   def getAll = IsAuthenticated{ username => implicit request =>
       //logger.info("in ContactController.getAll...")
       println("in ContactController.getAll")
-      var list = ContactRepository.findAll(userId)
+      var list = ContactRepository.getAll(userId)
       val data = Json.toJson(list)
       Ok(data).as(JSON)
   }
@@ -67,10 +67,14 @@ object ContactController extends Controller with Secured with AkkaActor {
                         case Some(contact) =>
                     	    list += contact
                         case None =>
-                          val user = UserRepository.find(uId)
-                          user match {
-                            case Some(u) =>
-                              val contact = ContactDTO(u.userId.get, u.firstName, u.lastName, u.email, ContactStatus.NOTCONNECTED)
+                          val optUserProfilePersonal = UserRepository.findUserProfilePersonal(uId)
+                          optUserProfilePersonal match {
+                            case Some((u, up)) =>
+                              val pictureUrl = up.physicalFile match {
+                                                    case Some(physicalFile) => Configuration.userProfilePictureUrl(physicalFile)
+                                                    case None => Configuration.defaultProfilePictureUrl
+                                                }
+                              val contact = ContactDTO(u.userId.get, pictureUrl, u.firstName, u.lastName, ContactStatus.NOTCONNECTED)
                               list += contact
                             case _ =>    
                           }

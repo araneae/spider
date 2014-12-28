@@ -12,14 +12,18 @@
       </div>
       <div class="clearfix"></div>
     </div>
-    <div ng-repeat="result in ctrl.results">
-      <table class="table table-striped">
-        <tr ng-repeat="snippet in result.snippets">
-          <td>
-            <p class="text-primary" ng-bind-html="snippet"></p>
-          </td>
-        </tr>
-      </table>
+    <div class="panel-body">
+      <div ng-repeat="result in ctrl.results">
+        <table class="table table-striped">
+          <tbody>
+            <tr ng-repeat="snippet in result.snippets">
+              <td>
+                <p class="text-primary" ng-bind-html="snippet"></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

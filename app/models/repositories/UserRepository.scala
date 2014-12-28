@@ -110,17 +110,15 @@ object UserRepository {
     }
   }
   
-  def findUserProfilePersonal(userId: Long): Option[UserProfilePersonal] = {
+  def findUserProfilePersonal(userId: Long): Option[(User, UserProfilePersonal)] = {
     DB.withSession {
       implicit session =>
         val q = for {
           u <- query filter (_.userId === userId)
           up <- u.userProfilePersonal
-        } yield (up)
+        } yield(u, up)
         
-        val result = q.list.map{case u => u}
-        if (result.length > 0) Some(result(0))
-        else None
+        q.firstOption.map{ case(u, up) => (u, up)}
     }
   }
 }

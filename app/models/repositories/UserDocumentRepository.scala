@@ -5,6 +5,7 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import models.tables._
 import models.dtos._
+import enums._
 import enums.DocumentType._
 import org.joda.time.DateTime
 
@@ -19,15 +20,30 @@ object UserDocumentRepository {
     }
   }
   
-  def findAll(userId: Long): Seq[UserDocumentDTO] = { 
+  def getAll(userId: Long): Seq[UserDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
           val q = for {
-              ud <- query.filter(_.userId === userId)
+              ud <- query.filter(x => x.userId === userId && x.ownershipType === OwnershipType.OWNED)
               d  <- ud.document
               u  <- ud.createdBy
           } 
-          yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+          yield (ud.userDocumentId.?, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+         
+          q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
+                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+    }
+  }
+  
+  def getAllSharedDocuments(userId: Long): Seq[UserDocumentDTO] = { 
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+              ud <- query.filter(x => x.userId === userId && x.ownershipType === OwnershipType.SHARED)
+              d  <- ud.document
+              u  <- ud.createdBy
+          } 
+          yield (ud.userDocumentId.?, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
           q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
@@ -38,36 +54,37 @@ object UserDocumentRepository {
     DB.withSession {
        implicit session: Session =>
           val q = for {
-              ud <- query.filter(d => d.userId === userId && (d.documentId inSet documentIds))
+              ud <- query.filter(x => x.userId === userId && (x.documentId inSet documentIds) && x.ownershipType === OwnershipType.OWNED)
               d  <- ud.document
               u  <- ud.createdBy
           } 
-          yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+          yield (ud.userDocumentId.?, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
           q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   
-  def findAllByDocumentIds(documentIds : Seq[Long]): Seq[UserDocumentDTO] = { 
+  def getAllByDocumentFolderId(userId: Long, documentFolderId : Long): Seq[UserDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
           val q = for {
-              ud <- query.filter(d => d.documentId inSet documentIds)
+              ud <- query
               d  <- ud.document
               u  <- ud.createdBy
+              if d.documentFolderId === documentFolderId
           } 
-          yield (ud.userDocumentId, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+          yield (ud.userDocumentId.?, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
          
           q.list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
                  => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
     }
   }
   
-  def findAllByDocumentId(documentId: Long): Seq[UserDocument] = {
+  def findAllByDocumentId(userId: Long, documentId: Long): Seq[UserDocument] = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(d => d.documentId === documentId) list
+          query.filter(d => d.documentId === documentId && d.userId === userId && d.ownershipType === OwnershipType.OWNED) list
     }
   }
   
@@ -75,7 +92,7 @@ object UserDocumentRepository {
     DB.withSession {
        implicit session: Session =>
           val q = for {
-              ud <- query.filter(d => d.userId === userId)
+              ud <- query.filter(d => d.userId === userId && d.ownershipType === OwnershipType.OWNED)
           }
           yield (ud.documentId)
           
@@ -86,7 +103,7 @@ object UserDocumentRepository {
   def find(userId: Long, documentId: Long): Option[UserDocument] = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(d => d.userId === userId && d.documentId === documentId) firstOption
+          query.filter(d => d.userId === userId && d.documentId === documentId && d.ownershipType === OwnershipType.OWNED) firstOption
     }
   }
   

@@ -39,7 +39,7 @@ class DatabaseXRayCtrl
 
     done: () ->
       @$log.debug "DatabaseXRayCtrl.done()"
-      @$state.go('database.documents')
+      @$state.go('folder.documents')
 
 
 controllersModule.controller('DatabaseXRayCtrl', DatabaseXRayCtrl)

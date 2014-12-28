@@ -37,19 +37,19 @@ class UserDocuments(tag: Tag) extends Table[UserDocument](tag, "user_document") 
   
   def isLimitedShare = column[Boolean]("is_limited_share", O.Default(true))
   
+  def shareUntilEOD = column[Option[DateTime]]("share_until_eod")
+
   def createdUserId = column[Long]("created_user_id")
   
   def createdAt = column[DateTime]("created_at")
-  
-  def shareUntilEOD = column[Option[DateTime]]("share_until_eod")
   
   def updatedUserId = column[Option[Long]]("updated_user_id")
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (userDocumentId.?, userId, documentId, ownershipType, canCopy, canShare, canView, important, star, isLimitedShare, createdUserId, createdAt, shareUntilEOD, updatedUserId, updatedAt) <> (UserDocument.tupled, UserDocument.unapply)
+  override def * = (userDocumentId.?, userId, documentId, ownershipType, canCopy, canShare, canView, important, star, isLimitedShare, shareUntilEOD, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserDocument.tupled, UserDocument.unapply)
   
-  def ? = (userDocumentId.?, userId.?, documentId.?, ownershipType.?, canCopy.?, canShare.?, canView.?, important.?, star.?, isLimitedShare.?, createdUserId.?, createdAt.?, shareUntilEOD, updatedUserId, updatedAt)
+  def ? = (userDocumentId.?, userId.?, documentId.?, ownershipType.?, canCopy.?, canShare.?, canView.?, important.?, star.?, isLimitedShare.?, shareUntilEOD, createdUserId.?, createdAt.?, updatedUserId, updatedAt)
 
 //  def optionUnapply(oc: Option[Supplier]): Option[(Option[Int], Option[String], Option[String])] = None)
   
@@ -61,4 +61,6 @@ class UserDocuments(tag: Tag) extends Table[UserDocument](tag, "user_document") 
   def createdBy = foreignKey("fk_on_user_document_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
   def updatedBy = foreignKey("fk_on_user_document_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  
+  def uniqueDocument = index("idx_user_document_on_user_id_document_id", (userId, documentId), unique = true)
 }

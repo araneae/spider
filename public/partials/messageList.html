@@ -28,10 +28,20 @@
     </div>
   </div>
 </form>
-<table class="table table-striped">
-  <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}">
-    <td>
-      <message-bar ng-model="message" message-box="ctrl.messageBoxes"></message-bar>
-    </td>
-  </tr>
+<table st-table="ctrl.displayCollection" st-safe-src="ctrl.rawCollection" class="table table-striped">
+  <tbody>
+    <!--  <tr ng-repeat="message in ctrl.messages | filter:{messageBoxId: ctrl.filterMessageBoxId}"> -->
+    <tr ng-repeat="message in ctrl.displayCollection">
+      <td>
+        <message-bar ng-model="message" message-box="ctrl.messageBoxes"></message-bar>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td class="text-center">
+        <div st-pagination="" st-items-by-page="ctrl.ConfigService.messageTablePageSize"></div>
+      </td>
+    </tr>
+  </tfoot>
 </table>

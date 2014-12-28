@@ -1,33 +1,51 @@
 
 class DatabaseUploadCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @Document, @ErrorService) ->
+    constructor: (@$log, @$state, @DatabaseService, @Document, @ErrorService, @DocumentFolder, @UtilityService) ->
         @$log.debug "constructing DatabaseUploadCtrl"
+        @folders = []
+        @folder
         @document = {}
         @fileUpload = {}
         @selectedFile
+        
+        # load data from server
+        @loadFolders()
 
     onFileSelect: ($files) ->
       @$log.debug "DatabaseUploadCtrl.onFileSelect()"
       for file in $files
-        name = @getName(file.name)
+        name = @UtilityService.getFileName(file.name)
         @document.fileName = file.name
         @document.name = name
         @document.description = name 
         @selectedFile = file
         break
 
+    loadFolders: () ->
+        @$log.debug "DatabaseUploadCtrl.loadFolders()"
+        @DocumentFolder.query().$promise.then(
+          (data) =>
+              @$log.debug "Promise returned #{data} folder"
+              @folders = data
+          ,
+          (error) =>
+              @$log.error "Unable to fetch folder: #{error}"
+              @ErrorService.error("Unable to fetch folder from server!")
+          )
+
     save: () ->
         @$log.debug "DatabaseUploadCtrl.save()"
-        @DatabaseService.upload(@selectedFile, @onUploadSuccess, @onUploadError)
+        @UtilityService.uploadFile('/database/upload', 'application/text', @selectedFile, @onUploadSuccess, @onUploadError)
 
     onUploadSuccess: (data, status, headers, config) =>
         @$log.debug "DatabaseUploadCtrl.onUploadSuccess()"
+        @document.documentFolderId = @folder.documentFolderId
         @Document.save(@document).$promise.then(
             (data) =>
                 @ErrorService.success("Successfully uploaded document!")
                 @$log.debug "Promise returned #{data} document"
-                @$state.go('database.documents')
+                @$state.go('folder.documents')
             ,
             (error) =>
                 @ErrorService.error("Failed to upload document!")
@@ -40,13 +58,6 @@ class DatabaseUploadCtrl
 
     cancel: () ->
         @$log.debug "DatabaseUploadCtrl.cancel()"
-        @$state.go('database.documents')
-
-    getName: (fileName) ->
-      index = fileName.lastIndexOf('.')
-      if (index > 0) 
-        fileName.substring(0, index)
-      else
-        fileName
+        @$state.go('folder.documents')
 
 controllersModule.controller('DatabaseUploadCtrl', DatabaseUploadCtrl)

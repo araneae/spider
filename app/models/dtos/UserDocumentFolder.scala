@@ -17,15 +17,38 @@ case class UserDocumentFolder(
                    userId: Long,
                    ownershipType: OwnershipType,
                    canCopy: Boolean,
+                   canShare: Boolean,
+                   canView: Boolean,
                    isLimitedShare: Boolean,
                    shareUntilEOD: Option[DateTime],
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
                    updatedAt: Option[DateTime] = None
-                   )
+                   ) {
+  def this(userDocumentFolderDTO: UserDocumentFolderDTO,
+           createdUserId: Long,
+           createdAt: DateTime,
+           updatedUserId: Option[Long],
+           updatedAt: Option[DateTime]) {
+      this(userDocumentFolderDTO.userDocumentFolderId,
+           userDocumentFolderDTO.documentFolderId,
+           userDocumentFolderDTO.userId,
+           userDocumentFolderDTO.ownershipType,
+           userDocumentFolderDTO.canCopy,
+           userDocumentFolderDTO.canShare,
+           userDocumentFolderDTO.canView,
+           userDocumentFolderDTO.isLimitedShare,
+           userDocumentFolderDTO.shareUntilEOD,
+           createdUserId,
+           createdAt,
+           updatedUserId,
+           updatedAt
+           )
+  }
+}
 
-object UserDocumentFolder extends Function11[Option[Long], Long, Long, OwnershipType, Boolean, Boolean, Option[DateTime], Long, DateTime, Option[Long], Option[DateTime], UserDocumentFolder]
+object UserDocumentFolder extends Function13[Option[Long], Long, Long, OwnershipType, Boolean, Boolean, Boolean, Boolean, Option[DateTime], Long, DateTime, Option[Long], Option[DateTime], UserDocumentFolder]
 {
     implicit val userDocumentFolderWrites : Writes[UserDocumentFolder] = (
             (JsPath \ "userDocumentFolderId").write[Option[Long]] and
@@ -33,6 +56,8 @@ object UserDocumentFolder extends Function11[Option[Long], Long, Long, Ownership
             (JsPath \ "userId").write[Long] and
             (JsPath \ "ownershipType").write[OwnershipType] and
             (JsPath \ "canCopy").write[Boolean] and
+            (JsPath \ "canShare").write[Boolean] and
+            (JsPath \ "canView").write[Boolean] and
             (JsPath \ "isLimitedShare").write[Boolean] and
             (JsPath \ "shareUntilEOD").write[Option[DateTime]] and
             (JsPath \ "createdUserId").write[Long] and
@@ -47,6 +72,8 @@ object UserDocumentFolder extends Function11[Option[Long], Long, Long, Ownership
           (JsPath \ "userId").read[Long] and
           (JsPath \ "ownershipType").read[OwnershipType] and
           (JsPath \ "canCopy").read[Boolean] and
+          (JsPath \ "canShare").read[Boolean] and
+          (JsPath \ "canView").read[Boolean] and
           (JsPath \ "isLimitedShare").read[Boolean] and
           (JsPath \ "shareUntilEOD").readNullable[DateTime] and
           (JsPath \ "createdUserId").read[Long] and
@@ -54,4 +81,10 @@ object UserDocumentFolder extends Function11[Option[Long], Long, Long, Ownership
           (JsPath \ "updatedUserId").readNullable[Long] and
           (JsPath \ "updatedAt").readNullable[DateTime]
     )(UserDocumentFolder)
+    
+    def apply(userDocumentFolderDTO: UserDocumentFolderDTO,
+              createdUserId: Long,
+              createdAt: DateTime,
+              updatedUserId: Option[Long],
+              updatedAt: Option[DateTime]) = new UserDocumentFolder(userDocumentFolderDTO, createdUserId, createdAt, updatedUserId, updatedAt)
 }

@@ -16,7 +16,9 @@ class UserProfilePersonals(tag: Tag) extends Table[UserProfilePersonal](tag, "us
   
   def aboutMe = column[Option[String]]("aboutMe")
   
-  def picture = column[Option[String]]("picture")
+  def pictureFile = column[Option[String]]("picture_file")
+  
+  def physicalFile = column[Option[String]]("physical_file")
   
   def mobile = column[Option[String]]("mobile")
   
@@ -32,12 +34,11 @@ class UserProfilePersonals(tag: Tag) extends Table[UserProfilePersonal](tag, "us
   
   def birthDay = column[Option[Int]]("birth_day")
   
-
   def createdAt = column[DateTime]("created_at")
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (userProfilePersonalId.?, xrayTerms, aboutMe, picture, mobile, alternateEmail, gender, maritalStatus, birthYear, birthDay, birthMonth, createdAt, updatedAt) <> (UserProfilePersonal.tupled, UserProfilePersonal.unapply)
+  override def * = (userProfilePersonalId.?, xrayTerms, aboutMe, pictureFile, physicalFile, mobile, alternateEmail, gender, maritalStatus, birthYear, birthDay, birthMonth, createdAt, updatedAt) <> (UserProfilePersonal.tupled, UserProfilePersonal.unapply)
   
   // foreign keys and indexes
 

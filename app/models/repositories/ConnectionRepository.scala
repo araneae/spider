@@ -5,27 +5,30 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import models.tables._
 import models.dtos._
+import utils._
 
 object ConnectionRepository {
   
   val followers = TableQuery[Followers]
   val contacts = TableQuery[Contacts]
   
-  def findAll(userId: Long): Seq[Connection] = {
+  def findAll(userId: Long): Seq[ConnectionDTO] = {
     DB.withSession {
        implicit session: Session =>
          val q1 = for {
-            u <- followers.filter(a => a.followerId ===  userId)
-            a <- u.subject
-         } yield (a.userId, a.email)
+            f <- followers.filter(a => a.followerId ===  userId)
+            u <- f.subject
+         } yield (u.userId, u.firstName, u.lastName)
         
          val q2 = for {
-            u <- contacts.filter(a => a.userId ===  userId)
-            c <- u.contact
-         } yield (c.userId, c.email)
+            c <- contacts.filter(a => a.userId ===  userId)
+            u <- c.contact
+         } yield (u.userId, u.firstName, u.lastName)
         
          val unionQuery = q1 union q2
-         unionQuery.list.map{case (userId, email) => Connection(userId, email)}
+         unionQuery.list.map{case (userId, firstName, lastName) 
+                             => ConnectionDTO(userId, s"${firstName} ${lastName}")
+                           }
     }
   }
   

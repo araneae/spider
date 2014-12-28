@@ -15,17 +15,21 @@ case class ContactWithDocumentFolder(
                  text: String, // email
                  shared: Boolean,
                  canCopy: Option[Boolean],
+                 canShare: Option[Boolean],
+                 canView: Option[Boolean],
                  isLimitedShare: Option[Boolean],
                  shareUntilEOD: Option[DateTime]
                  )
 
-object ContactWithDocumentFolder extends Function6[Long, String, Boolean, Option[Boolean], Option[Boolean], Option[DateTime], ContactWithDocumentFolder]
+object ContactWithDocumentFolder extends Function8[Long, String, Boolean, Option[Boolean], Option[Boolean], Option[Boolean], Option[Boolean], Option[DateTime], ContactWithDocumentFolder]
 {
     implicit val connectionWrites : Writes[ContactWithDocumentFolder] = (
             (JsPath \ "id").write[Long] and
             (JsPath \ "text").write[String] and
             (JsPath \ "shared").write[Boolean] and
             (JsPath \ "canCopy").write[Option[Boolean]] and
+            (JsPath \ "canShare").write[Option[Boolean]] and
+            (JsPath \ "canView").write[Option[Boolean]] and
             (JsPath \ "isLimitedShare").write[Option[Boolean]] and
             (JsPath \ "shareUntilEOD").write[Option[DateTime]]
     )(unlift(ContactWithDocumentFolder.unapply))
@@ -35,6 +39,8 @@ object ContactWithDocumentFolder extends Function6[Long, String, Boolean, Option
           (JsPath \ "text").read[String] and
           (JsPath \ "shared").read[Boolean] and
           (JsPath \ "canCopy").readNullable[Boolean] and
+          (JsPath \ "canShare").readNullable[Boolean] and
+          (JsPath \ "canView").readNullable[Boolean] and
           (JsPath \ "isLimitedShare").readNullable[Boolean] and
           (JsPath \ "shareUntilEOD").readNullable[DateTime]
     )(ContactWithDocumentFolder)

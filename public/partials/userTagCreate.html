@@ -1,15 +1,15 @@
 <div ng-controller="UserTagCreateCtrl as ctrl">
   <div class="col-md-12">
-    <form id="idCreateSkillForm" name="CreateSkillForm" class="form-horizontal" role="form"
+    <form id="idCreateUserTagForm" name="CreateUserTagForm" class="form-horizontal" role="form"
               ng-submit="ctrl.create()">
      <div class="form-group">
        <input type="text" class="form-control" name="name" id="txtName" placeholder="Enter tag name"
-                  ng-model="ctrl.userTag.name">
+                  ng-model="ctrl.userTag.name" required>
      </div>
      <div class="form-group">
        <div class="text-left">
            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-           <button type="submit" class="btn btn-success" id="btnSave">Save</button>
+           <button type="submit" class="btn btn-success" id="btnSave" ng-disabled="!CreateUserTagForm.$valid">Save</button>
        </div>
      </div>
    </form>

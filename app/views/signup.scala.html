@@ -1,6 +1,6 @@
 @* login Template File *@
 @import models.dtos._
-@(title: String)(message: String)(countries: Seq[Country])(signupForm: Form[(String, String, String, String, String, String)])(implicit flash: Flash)
+@(title: String)(message: String)(countries: Seq[Country])(signupForm: Form[(String, Option[String], String, String, String, String, String)])(implicit flash: Flash)
 
 @contentSignIn={
   <div class="col-lg-8">
@@ -20,23 +20,25 @@
           @message
       </p>
     }
-    <input class="form-control" type="first_name" name="first_name" autofocus="" required="true" placeholder="First Name" value="@signupForm("first_name").value">
+    <input class="form-control" type="first_name" name="first_name" autofocus="" required placeholder="First Name" value="@signupForm("first_name").value">
     <br>
-    <input class="form-control" type="last_name" name="last_name" autofocus="" required="true" placeholder="Last Name" value="@signupForm("last_name").value">
+    <input class="form-control" type="middle_name" name="middle_name" autofocus="" placeholder="Middle Name" value="@signupForm("middle_name").value">
     <br>
-    <input class="form-control" type="email" name="email" autofocus="" required="true" placeholder="Email address" value="@signupForm("email").value">
+    <input class="form-control" type="last_name" name="last_name" autofocus="" required placeholder="Last Name" value="@signupForm("last_name").value">
     <br>
-    <input class="form-control" type="password" name="password" required="true" placeholder="Password, minimum 6 characters">
+    <input class="form-control" type="email" name="email" autofocus="" required placeholder="Email address" value="@signupForm("email").value">
+    <br>
+    <input class="form-control" type="password" name="password" required placeholder="Password, minimum 6 characters">
     @if(!signupForm.errors("password").isEmpty) {
        <span class="error">@Messages(signupForm.errors("password")(0).message,6)</span>
      }
     <br>
-    <input class="form-control" type="password" name="confirmPassword" required="true" placeholder="Confirm Password">
+    <input class="form-control" type="password" name="confirmPassword" required placeholder="Confirm Password">
     @if(!signupForm.errors("").isEmpty) {
        <span class="error">@Messages(signupForm.errors("")(0).message)</span>
     }
     <br>
-    <select class="form-control" name="countryCode" required="true">
+    <select class="form-control" name="countryCode" required>
        <option value="" selected>Select country</option>
        @for(country <- countries) {
          <option value="@country.code">@country.name</option>

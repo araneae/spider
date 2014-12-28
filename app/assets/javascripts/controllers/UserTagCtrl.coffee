@@ -1,7 +1,7 @@
 
 class UserTagCtrl
 
-    constructor: (@$log, @$q, @$scope, @$state, @UserTagService, @UtilityService, @UserTag, @ErrorService) ->
+    constructor: (@$log, @$q, @$scope, @$state, @UserTagService, @UtilityService, @UserTag, @DocumentTag, @ErrorService) ->
         @$log.debug "constructing UserTagCtrl"
         @userTags = []
         @userTagsMgm = []
@@ -23,7 +23,7 @@ class UserTagCtrl
             )
   
     isDisabled: (userTag) ->
-      @$log.debug "UserTagCtrl.isEditable(#{userTag})"
+      @$log.debug "UserTagCtrl.isDisabled(#{userTag})"
       userTag.userTagId == 0
       
     goToTag: (userTagId) ->
@@ -38,6 +38,10 @@ class UserTagCtrl
     goToUserTagCreate: () ->
         @$log.debug "UserTagCtrl.goToUserTagCreate()"
         @$state.go("database.userTagCreate")
+   
+    goToFolder: () ->
+        @$log.debug "UserTagCtrl.goToFolder()"
+        @$state.go("folder.documents")
 
     showUserTagManagement: () ->
         @$log.debug "UserTagCtrl.showUserTagManagement()"
@@ -62,19 +66,37 @@ class UserTagCtrl
         
         # TBD: only update the dirty ones
         for tag in @userTagsMgm
-            promise = @UserTag.update(tag).$promise
-            promises.push(promise)
+            orgObj = @UtilityService.findByProperty(@userTags, 'userTagId', tag.userTagId)
+            equals = angular.equals(folder, orgObj)
+            if (!equals)
+              promise = @UserTag.update(tag).$promise
+              promises.push(promise)
         # wait for all the promises to complete
-        @$q.all(promises).then(
-            () =>
+        if (promises.length > 0)
+          @$q.all(promises).then(
+            (data) =>
                  @$log.debug "Successfully updated all the tags!"
                  @listUserTags()
                  @$state.go('database.documents')
-           ,
-           () =>
+            ,
+            (error) =>
                 @$log.debug "one of the promise failed"
                 @listUserTags()
-                @ErrorService.error("Unable to update tag!")
-        )
+                @ErrorService.error("Unable to update tag #{angular.toJson(error)}!")
+          )
+
+    onDropComplete: (document, evt, tag) ->
+        @$log.debug "UserTagCtrl.onDropComplete(#{document}, #{tag})"
+        if (tag.userTagId > 0)
+          @DocumentTag.save({documentId: document.documentId, userTagId: tag.userTagId, userDocumentId: document.userDocumentId}).$promise
+            .then(
+              (data) =>
+                  @ErrorService.success("Successfully attached tag #{tag.name} to document #{document.name}.")
+                  @$log.debug "Successfully added tag #{data}"
+              ,
+              (error) =>
+                  @ErrorService.error(error.data.message)
+                  @$log.debug("Unable to attach tag #{error}.")
+            )
 
 controllersModule.controller('UserTagCtrl', UserTagCtrl)
