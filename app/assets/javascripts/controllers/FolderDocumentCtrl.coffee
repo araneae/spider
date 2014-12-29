@@ -1,7 +1,7 @@
 
 class FolderDocumentCtrl
 
-    constructor: (@$log, @$scope, @FolderService, @$state, @$stateParams, @Document, @DocumentFolder,
+    constructor: (@$log, @$scope, @FolderService, @$state, @$stateParams, @Document, @DocumentFolder, @$previousState,
                                             @DatabaseService, @UtilityService, @ErrorService, @ConfigService) ->
         @$log.debug "constructing FolderDocumentCtrl"
         @documentFolderId = 0
@@ -23,6 +23,8 @@ class FolderDocumentCtrl
                                     @goToSearch() if data.menuItem is "advancedSearch"
                                     @goToShareFolder() if data.menuItem is "shareFolder"
         )
+        
+        @$previousState.memo("FolderDocumentCtrl")
         
         # load list of documents from server
         @loadFolder(@documentFolderId) if (@documentFolderId > 0)
@@ -100,7 +102,7 @@ class FolderDocumentCtrl
     
     copyDocument: (documentId) ->
         @$log.debug "FolderDocumentCtrl.copyDocument(#{documentId})"
-        @FolderDocumentService.copyDocument(documentId).then(
+        @DocumentService.copyDocument(documentId).then(
             (data) =>
                 # show status
                 @$log.debug "Successfully copied document"
@@ -137,7 +139,7 @@ class FolderDocumentCtrl
         @$log.debug "FolderDocumentCtrl.search(#{documentFolderId}, #{searchText})"
         if (searchText)
           @documents = []
-          @FolderDocumentService.search(documentFolderId, searchText).then(
+          @FolderService.search(documentFolderId, searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @documents = data

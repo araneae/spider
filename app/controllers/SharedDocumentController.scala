@@ -34,7 +34,6 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     
     val list = UserDocumentRepository.getAllSharedDocuments(userId)
     val data = Json.toJson(list)
-    println(data)
     Ok(data).as(JSON)
   }
   
@@ -77,10 +76,10 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     println(s"in SharedDocumentController.search(${searchText})")
     
     if (searchText.length() > 0){
-      val documentFolders = UserDocumentFolderRepository.findAllByOwnershipType(userId, OwnershipType.SHARED)
+      val documentFolderIds = UserDocumentRepository.getSharedDocumentFolderIds(userId)
       implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
       // send message to index searcher
-      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolders.map(b => b.documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolderIds, searchText)).mapTo[MessageDocumentSearchResult]
       val result = f.map {
            case MessageDocumentSearchResult(docIds) => {
                   val userDocuments = UserDocumentRepository.findAllByDocumentIds(userId, docIds)

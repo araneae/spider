@@ -45,7 +45,7 @@ class DatabaseUploadCtrl
             (data) =>
                 @ErrorService.success("Successfully uploaded document!")
                 @$log.debug "Promise returned #{data} document"
-                @$state.go('folder.documents')
+                @UtilityService.goBack('folder.documents')
             ,
             (error) =>
                 @ErrorService.error("Failed to upload document!")
@@ -58,6 +58,6 @@ class DatabaseUploadCtrl
 
     cancel: () ->
         @$log.debug "DatabaseUploadCtrl.cancel()"
-        @$state.go('folder.documents')
+        @UtilityService.goBack('folder.documents')
 
 controllersModule.controller('DatabaseUploadCtrl', DatabaseUploadCtrl)

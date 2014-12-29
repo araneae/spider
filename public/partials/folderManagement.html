@@ -6,7 +6,7 @@
     <table class="table table-striped">
       <tr ng-repeat="folder in ctrl.foldersMgm" ng-disabled="true">
         <td>
-          <input type="text" ng-model="folder.name" ng-disabled="ctrl.isRenameDisabled(folder)">
+          <input type="text" ng-model="folder.name" ng-disabled="ctrl.isRenameDisabled(folder)" required>
           <img src="/assets/images/icon-shared.png" with="20" height="20" ng-show="folder.shared"  data-placement="left" title="Shared" />
         </td>
         <td>

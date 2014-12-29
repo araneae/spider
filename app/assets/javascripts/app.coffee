@@ -7,6 +7,7 @@ dependencies = [
     'ui.bootstrap.datepicker',
     'ui.router',
     'ui.select2',
+    'ct.ui.router.extras',
     'angularFileUpload',
     'smart-table',
     'ngDraggable',
@@ -666,6 +667,22 @@ angular.module('myApp.routeConfig', ['ui.router'])
                   templateUrl: '/assets/partials/menuBar.html'
                 },
                 'viewMain': {
+                    controller: 'DatabaseShareCtrl as ctrl',
+                    templateUrl: '/assets/partials/databaseShare.html'
+                }
+              }
+          })
+          .state('sharedDocumentShare', {
+              url: '/shared/document/:documentId/share',
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                  templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    controller: 'SharedDocumentShareCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseShare.html'
                 }
               }
@@ -680,6 +697,22 @@ angular.module('myApp.routeConfig', ['ui.router'])
                   templateUrl: '/assets/partials/menuBar.html'
                 },
                 'viewMain': {
+                    controller: 'DatabaseManageShareCtrl as ctrl',
+                    templateUrl: '/assets/partials/databaseManageShares.html'
+                }
+              }
+          })
+           .state('sharedDocumentManageShares', {
+              url: '/shared/document/:documentId/share/manage',
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                  templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    controller: 'SharedDocumentShareCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseManageShares.html'
                 }
               }

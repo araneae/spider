@@ -7,6 +7,7 @@ class DatabaseViewCtrl
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
         @contents = ""
+
         # load objects from server
         @loadDocument(@documentId)
         @loadDocumentContents(@documentId)
@@ -40,7 +41,6 @@ class DatabaseViewCtrl
 
     done: () ->
       @$log.debug "DatabaseViewCtrl.done()"
-      @$state.go('folder.documents')
-
+      @UtilityService.goBack('folder.documents')
 
 controllersModule.controller('DatabaseViewCtrl', DatabaseViewCtrl)

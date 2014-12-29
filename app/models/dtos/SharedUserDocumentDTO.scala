@@ -12,7 +12,7 @@ import enums.OwnershipType._
  * 
  */
 case class SharedUserDocumentDTO(
-                   userDocumentBoxId: Long,
+                   userDocumentId: Long,
                    documentId: Long,
                    name: String,
                    description: String,
@@ -25,7 +25,7 @@ case class SharedUserDocumentDTO(
 object SharedUserDocumentDTO extends Function8[Long, Long, String, String, Boolean, Boolean, Boolean, String, SharedUserDocumentDTO]
 {
     implicit val sharedDocumentWrites : Writes[SharedUserDocumentDTO] = (
-            (JsPath \ "userDocumentBoxId").write[Long] and
+            (JsPath \ "userDocumentId").write[Long] and
             (JsPath \ "documentId").write[Long] and
             (JsPath \ "name").write[String] and
             (JsPath \ "description").write[String] and
@@ -36,7 +36,7 @@ object SharedUserDocumentDTO extends Function8[Long, Long, String, String, Boole
     )(unlift(SharedUserDocumentDTO.unapply))
 
     implicit val sharedDocumentReads : Reads[SharedUserDocumentDTO] = (
-          (JsPath \ "userDocumentBoxId").read[Long] and
+          (JsPath \ "userDocumentId").read[Long] and
           (JsPath \ "documentId").read[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "description").read[String] and

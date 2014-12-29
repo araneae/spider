@@ -1,7 +1,7 @@
 
 class DatabaseSearchCtrl
 
-    constructor: (@$log, @$scope, @$state, @DatabaseService, @DatabaseSearch, @Document, 
+    constructor: (@$log, @$scope, @$state, @DatabaseService, @DatabaseSearch, @Document, @FolderService,
                               @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing DatabaseSearchCtrl"
         @savedSearchTexts = []
@@ -40,15 +40,15 @@ class DatabaseSearchCtrl
 
     done: () ->
         @$log.debug "DatabaseSearchCtrl.done()"
-        @$state.go('folder.documents')
+        @UtilityService.goBack('folder.documents')
 
-    search: (searchText) ->
+    search: () ->
         @$log.debug "DatabaseSearchCtrl.search()"
-        if (@UtilityService.isEmpty(@searchText))
+        if (@UtilityService.isStringEmpty(@searchText))
           @listDocuments()
         else
           @searchResults = []
-          @DatabaseService.search(@searchText).then(
+          @FolderService.search(@searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @searchResults = data

@@ -51,6 +51,36 @@ class FolderService
             )
         deferred.promise
 
+    search: (documentFolderId, searchText) ->
+        @$log.debug "FolderService.search(#{documentFolderId}, #{searchText})"
+        deferred = @$q.defer()
+
+        @$http.get("/documents/folder/#{documentFolderId}/search/#{searchText}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully searched - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to search - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+    
+    search: (searchText) ->
+        @$log.debug "FolderService.search(#{searchText})"
+        deferred = @$q.defer()
+
+        @$http.get("/documents/folder/search/#{searchText}")
+        .success((data, status, headers) =>
+                @$log.info("Successfully searched - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to search - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
 servicesModule.service('FolderService', FolderService)
 
 # define the factories

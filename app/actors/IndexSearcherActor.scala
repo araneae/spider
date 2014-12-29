@@ -11,11 +11,11 @@ import lucene.helper._
 class IndexSearcherActor extends Actor with LuceneConsts {
   
   def receive = {
-      case MessageDocumentSearch(documentBoxIds, searchText) => {
+      case MessageDocumentSearch(documentFolderIds, searchText) => {
           try {
             val searcher = getSearcher
             val query = DocumentQueryGenerator.getQuery(searchText)
-            val filter = DocumentQueryGenerator.getFilter(FIELD_DOCUMENT_BOX_ID, documentBoxIds)
+            val filter = DocumentQueryGenerator.getFilter(FIELD_DOCUMENT_BOX_ID, documentFolderIds)
             // search in lucene index
             val optDocuments = searcher.getDocuments(query, filter)
             // get the return message

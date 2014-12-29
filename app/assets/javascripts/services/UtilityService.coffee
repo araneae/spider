@@ -5,7 +5,7 @@ class UtilityService
     @headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
     @defaultConfig = { headers: @headers }
 
-    constructor: (@$log, @$upload) ->
+    constructor: (@$log, @$upload, @$state, @$previousState) ->
         @$log.debug "constructing UtilityService"
 
     findByProperty: (list, prop, value) ->
@@ -19,6 +19,12 @@ class UtilityService
            index = index + 1
            return index if obj[prop] is value
        index
+
+    isStringEmpty: (obj) ->
+      if (obj)
+        obj?.length is 0
+      else
+        true
 
     isEmpty: (obj) ->
       empty = true
@@ -81,5 +87,12 @@ class UtilityService
         )
         #.then(success, error, progress); 
         #.xhr(function(xhr){xhr.upload.addEventListener(...)})// access and attach any event listener to XMLHttpRequest.
+
+    goBack: (defaultState) ->
+        previous = @$previousState.get()
+        if (@isStringEmpty(previous.state.name))
+          @$state.go(defaultState)
+        else
+          @$previousState.go()
 
 servicesModule.service('UtilityService', UtilityService)

@@ -18,12 +18,12 @@
           </table>
           <hr/>
           <div class="col-md-12">
-            <form class="form-horizontal">
+            <form id="idFormSearch" name="FormSearch" class="form-horizontal" role="form">
               <div class="form-group">
-                <button type="button" class="btn btn-primary" id="btnSaveQuery" ng-click="ctrl.saveQuery()">Save Query As</button>
+                <button type="button" class="btn btn-primary" id="btnSaveQuery" ng-click="ctrl.saveQuery()" ng-disabled="!FormSearch.$valid">Save Query As</button>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="name" id="txtQueryName" ng-model='ctrl.searchName' placeholder="Enter a name">
+                <input type="text" class="form-control" name="name" id="txtQueryName" ng-model='ctrl.searchName' placeholder="Enter a name" required>
               </div> 
             </form>
           </div>

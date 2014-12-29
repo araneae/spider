@@ -35,7 +35,7 @@ object UserDocumentRepository {
     }
   }
   
-  def getAllSharedDocuments(userId: Long): Seq[UserDocumentDTO] = { 
+  def getAllSharedDocuments(userId: Long): Seq[SharedUserDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
           val q = for {
@@ -43,10 +43,25 @@ object UserDocumentRepository {
               d  <- ud.document
               u  <- ud.createdBy
           } 
-          yield (ud.userDocumentId.?, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+          //yield (ud.userDocumentId.?, ud.documentId, d.name, d.description, false, ud.ownershipType, d.signature, ud.canCopy, ud.canShare, ud.canView, u.firstName, ud.createdAt)
+          yield (ud, d, u)
          
-          q.sortBy(_._12.desc).list.map{case (userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt) 
-                 => UserDocumentDTO(userDocumentId, documentId, name, description, connected, ownershipType, signature, canCopy, canShare, canView, createdBy, createdAt)}
+          q.sortBy(x => x._3.createdAt.desc).list.map{case (ud, d, u) 
+                 => SharedUserDocumentDTO(ud.userDocumentId.get, ud.documentId, d.name, d.description,
+                               ud.canCopy, ud.canShare, ud.canView, s"${u.firstName} ${u.lastName}")}
+    }
+  }
+  
+  def getSharedDocumentFolderIds(userId: Long): Seq[Long] = { 
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+              ud <- query.filter(x => x.userId === userId && x.ownershipType === OwnershipType.SHARED)
+              d  <- ud.document
+          } 
+          yield (d.documentFolderId)
+         
+         q.groupBy( x => x).map { _._1 }.list.map { x => x}
     }
   }
   
@@ -54,7 +69,7 @@ object UserDocumentRepository {
     DB.withSession {
        implicit session: Session =>
           val q = for {
-              ud <- query.filter(x => x.userId === userId && (x.documentId inSet documentIds) && x.ownershipType === OwnershipType.OWNED)
+              ud <- query.filter(x => x.userId === userId && (x.documentId inSet documentIds))
               d  <- ud.document
               u  <- ud.createdBy
           } 

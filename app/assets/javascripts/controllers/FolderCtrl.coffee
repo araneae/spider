@@ -7,6 +7,7 @@ class FolderCtrl
         @folders = []
         @foldersMgm = []
         @removedIds = []
+        
         # fetch data from server
         @listFolders()
 
@@ -69,13 +70,13 @@ class FolderCtrl
             promise = @DocumentFolder.remove({documentFolderId: documentFolderId}).$promise
             promises.push(promise)
         
-        # TBD: only update the dirty ones
         for folder in @foldersMgm
             orgObj = @UtilityService.findByProperty(@folders, 'documentFolderId', folder.documentFolderId)
             equals = angular.equals(folder, orgObj)
-            if (!equals)
+            if (!equals and @UtilityService.isStringEmpty(folder.name))
               promise = @DocumentFolder.update(folder).$promise
               promises.push(promise)
+
         # wait for all the promises to complete
         if (promises.length > 0)
           @$q.all(promises).then(

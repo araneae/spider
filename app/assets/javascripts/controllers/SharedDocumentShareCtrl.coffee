@@ -1,9 +1,9 @@
 
-class DatabaseShareCtrl
+class SharedDocumentShareCtrl
 
-    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, 
+    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, @$previousState,
                               @DatabaseService, @UtilityService, @$location, @ErrorService) ->
-        @$log.debug "constructing DatabaseShareCtrl"
+        @$log.debug "constructing SharedDocumentShareCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
         today = new Date()
@@ -37,12 +37,14 @@ class DatabaseShareCtrl
                        @share.canShare = false if newVal
                       )
         @isDatePickerOpened = false
+        @$previousState.memo('SharedDocumentShareCtrl')
+        
         # load objects from server
         @loadDocument(@documentId)
         @loadShareContacts(@documentId)
 
     loadDocument: (documentId) ->
-        @$log.debug "DatabaseShareCtrl.loadDocument(#{documentId})"
+        @$log.debug "SharedDocumentShareCtrl.loadDocument(#{documentId})"
         #delay = @$q.defer()
         @Document.get({documentId: documentId}).$promise.then(
           (data) =>
@@ -56,7 +58,7 @@ class DatabaseShareCtrl
           )
 
     loadShareContacts: (documentId) ->
-        @$log.debug "DatabaseShareCtrl.loadShareContacts(#{documentId})"
+        @$log.debug "SharedDocumentShareCtrl.loadShareContacts(#{documentId})"
         @DatabaseService.getShareContacts(documentId).then(
             (data) => 
               @$log.debug "Promise returned #{data} contacts"
@@ -77,7 +79,7 @@ class DatabaseShareCtrl
       @isDatePickerOpened = true
   
     sendShare: () ->
-      @$log.debug "DatabaseShareCtrl.sendShare()"
+      @$log.debug "SharedDocumentShareCtrl.sendShare()"
       @share.shareUntilEOD = @formatDate(@share.shareUntilEOD)
       @DatabaseService.share(@documentId, @share).then(
             (data) => 
@@ -91,8 +93,8 @@ class DatabaseShareCtrl
       )
     
     goToManageShares: () ->
-      @$log.debug "DatabaseShareCtrl.goToManageShares()"
-      @$state.go("databaseManageShares", {documentId: @documentId})
+      @$log.debug "SharedDocumentShareCtrl.goToManageShares()"
+      @$state.go("sharedDocumentManageShares", {documentId: @documentId})
     
     formatDate: (date) ->
       dateString = null
@@ -104,7 +106,7 @@ class DatabaseShareCtrl
       dateString
 
     cancel: () ->
-      @$log.debug "DatabaseShareCtrl.cancel()"
+      @$log.debug "SharedDocumentShareCtrl.cancel()"
       @UtilityService.goBack('folder.documents')
 
-controllersModule.controller('DatabaseShareCtrl', DatabaseShareCtrl)
+controllersModule.controller('SharedDocumentShareCtrl', SharedDocumentShareCtrl)

@@ -237,10 +237,10 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     println(s"in DatabaseController.search(${userTagId}, ${searchText})")
     
     if (searchText.length() > 0){
-      val documentFolderes = UserDocumentFolderRepository.findAll(userId)
+      val documentFolders = UserDocumentFolderRepository.findAll(userId)
       implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
       // send message to index searcher
-      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolderes.map(b => b.documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolders.map(b => b.documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
       val result = f.map {
            case MessageDocumentSearchResult(docIds) => {
                   val userDocuments = if (userTagId > 0) {

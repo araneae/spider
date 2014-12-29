@@ -244,6 +244,10 @@ GET    /documents/folder/contact/:documentFolderId              controllers.Docu
 
 POST   /documents/folder/:documentFolderId/share                controllers.DocumentFolderController.shareFolder(documentFolderId: Long)
 
+GET    /documents/folder/:documentFolderId/search/:searchText   controllers.DocumentFolderController.searchInFolder(documentFolderId: Long, searchText: String)
+
+GET    /documents/folder/search/:searchText                     controllers.DocumentFolderController.search(searchText: String)
+
 # DocumentTag specific routes
 POST   /database/documentTag/:documentId                        controllers.DocumentTagController.create(documentId: Int)
 

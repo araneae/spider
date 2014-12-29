@@ -39,7 +39,7 @@ class DatabaseXRayCtrl
 
     done: () ->
       @$log.debug "DatabaseXRayCtrl.done()"
-      @$state.go('folder.documents')
+      @UtilityService.goBack('folder.documents')
 
 
 controllersModule.controller('DatabaseXRayCtrl', DatabaseXRayCtrl)

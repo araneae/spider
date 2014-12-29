@@ -8,14 +8,22 @@ import models.repositories._
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsArray
 import play.api.libs.json.Json
+import akka.pattern.ask
+import akka.util.Timeout
+import scala.concurrent.Await
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import java.util.concurrent.TimeUnit
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Controller
 import traits.Secured
 import utils.HttpResponseUtil
 import org.joda.time.DateTime
 import enums._
+import traits._
+import models.dtos._
+import actors._
 
-object DocumentFolderController extends Controller with Secured {
+object DocumentFolderController extends Controller with Secured  with AkkaActor {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
@@ -60,7 +68,6 @@ object DocumentFolderController extends Controller with Secured {
     println(s"in DocumentFolderController.getFolderShareContacts(${documentFolderId})")
     val list = ContactRepository.findAllWithDocumentFolderShareAttributes(userId, documentFolderId)
     val data = Json.toJson(list)
-    println(data)
     Ok(data).as(JSON)
   }
   
@@ -164,5 +171,57 @@ object DocumentFolderController extends Controller with Secured {
             }
       )
   }
-
+  
+  def searchInFolder(documentFolderId: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.searchInFolder(${documentFolderId}, ${searchText})")
+    println(s"in DatabaseController.searchInFolder(${documentFolderId}, ${searchText})")
+    
+    if (searchText.length() > 0) {
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageDocumentSearch(List(documentFolderId), searchText)).mapTo[MessageDocumentSearchResult]
+      val result = f.map {
+           case MessageDocumentSearchResult(docIds) => {
+                  val userDocuments = UserDocumentFolderRepository.getDocumentsByDocumentIds(userId, docIds)
+                  val data = Json.toJson(userDocuments)
+                  Ok(data).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
+//                case Failure(failure) =>
+//                        println(s"Failrure ${failure}")
+//                        Ok("")
+      }
+      Await.result(result, timeout.duration)
+    }
+    else {
+      Ok(HttpResponseUtil.reponseEmptyObject())
+    }
+  }
+  
+  def search(searchText: String) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in DatabaseController.search(${searchText})")
+    println(s"in DatabaseController.search(${searchText})")
+    
+    if (searchText.length() > 0) {
+      val documentFolders = UserDocumentFolderRepository.findAll(userId)
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolders.map{f => f.documentFolderId}, searchText)).mapTo[MessageDocumentSearchResult]
+      val result = f.map {
+           case MessageDocumentSearchResult(docIds) => {
+                  val userDocuments = UserDocumentFolderRepository.getDocumentsByDocumentIds(userId, docIds)
+                  val data = Json.toJson(userDocuments)
+                  Ok(data).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
+//                case Failure(failure) =>
+//                        println(s"Failrure ${failure}")
+//                        Ok("")
+      }
+      Await.result(result, timeout.duration)
+    }
+    else {
+      Ok(HttpResponseUtil.reponseEmptyObject())
+    }
+  }
 }

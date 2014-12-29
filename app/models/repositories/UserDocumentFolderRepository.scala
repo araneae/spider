@@ -92,29 +92,44 @@ object UserDocumentFolderRepository {
     }
   }
   
-  def getSharedDocuments(userId: Long): Seq[SharedUserDocumentDTO] = { 
+  def getDocumentsByDocumentIds(userId: Long, documentIds : Seq[Long]): Seq[FolderDocumentDTO] = { 
     DB.withSession {
        implicit session: Session =>
-         val now = new DateTime()
-         val q = for {
-             db <- userDocumentFolderQuery filter (x => x.userId === userId && x.ownershipType === OwnershipType.SHARED)
-             u <- db.createdBy
-             d <- documentQuery filter (x => x.documentFolderId === db.documentFolderId)
-             ud <- userDocumentQuery filter (x => x.userId === userId && x.documentId =!= d.documentId)
-         } yield(d, db.canCopy, db.canShare, db.canView, u)
+          val q = for {
+              df <- userDocumentFolderQuery filter (x => x.userId === userId)
+              d  <- documentQuery filter (x => (x.documentFolderId === df.documentFolderId) && (x.documentId inSet documentIds))
+              u  <- d.createdBy
+          } 
+          yield (df, d, u)
          
-         val q2 = for {
-              ud <- userDocumentQuery filter(x => x.userId === userId && x.ownershipType === OwnershipType.SHARED)
-              d  <- ud.document
-              u  <- ud.createdBy
-          } yield(d, ud.canCopy, ud.canShare, ud.canView, u)
-         
-         val unionQuery = q union q2
-         unionQuery.list.map{case (d, canCopy, canShare, canView, u) =>
-                             SharedUserDocumentDTO(d.documentFolderId, d.documentId.get, d.name, d.description, canCopy, canShare, canView, u.firstName)
-                           }
+          q.list.map{case (df, d, u) 
+                 => FolderDocumentDTO(df.documentFolderId, d.documentId.get, d.name, d.description, df.ownershipType, d.signature, df.canCopy, df.canShare, df.canView, u.firstName, d.createdAt)}
     }
   }
+  
+//  def getSharedDocuments(userId: Long): Seq[SharedUserDocumentDTO] = { 
+//    DB.withSession {
+//       implicit session: Session =>
+//         val now = new DateTime()
+//         val q = for {
+//             db <- userDocumentFolderQuery filter (x => x.userId === userId && x.ownershipType === OwnershipType.SHARED)
+//             u <- db.createdBy
+//             d <- documentQuery filter (x => x.documentFolderId === db.documentFolderId)
+//             ud <- userDocumentQuery filter (x => x.userId === userId && x.documentId =!= d.documentId)
+//         } yield(d, db.canCopy, db.canShare, db.canView, u)
+//         
+//         val q2 = for {
+//              ud <- userDocumentQuery filter(x => x.userId === userId && x.ownershipType === OwnershipType.SHARED)
+//              d  <- ud.document
+//              u  <- ud.createdBy
+//          } yield(d, ud.canCopy, ud.canShare, ud.canView, u)
+//         
+//         val unionQuery = q union q2
+//         unionQuery.list.map{case (d, canCopy, canShare, canView, u) =>
+//                             SharedUserDocumentDTO(d.documentFolderId, d.documentId.get, d.name, d.description, canCopy, canShare, canView, u.firstName)
+//                           }
+//    }
+//  }
   
   def udate(userDocumentFolder: UserDocumentFolder) = {
     DB.withSession {
