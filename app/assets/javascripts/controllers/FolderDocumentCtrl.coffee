@@ -113,7 +113,7 @@ class FolderDocumentCtrl
                 @ErrorService.error
             )
 
-    getUrl: (documentId) ->
+    getDownloadUrl: (documentId) ->
         #@$log.debug "FolderDocumentCtrl.getUrl(#{documentId})"
         "/database/download/#{documentId}"
 

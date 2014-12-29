@@ -47,6 +47,9 @@ class SharedRepositoryCtrl
         @$log.debug "SharedRepositoryCtrl.goToShare(#{documentId})"
         @$state.go("sharedDocumentShare", {documentId: documentId})
 
+    getDownloadUrl: (documentId) ->
+        "/database/download/#{documentId}"
+
     copyDocument: (documentId) ->
         @$log.debug "SharedRepositoryCtrl.copyDocument(#{documentId})"
         @SharedRepositoryService.copyDocument(documentId).then(

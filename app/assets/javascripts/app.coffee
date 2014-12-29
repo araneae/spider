@@ -712,7 +712,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                   templateUrl: '/assets/partials/menuBar.html'
                 },
                 'viewMain': {
-                    controller: 'SharedDocumentShareCtrl as ctrl',
+                    controller: 'SharedDocumentManageShareCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseManageShares.html'
                 }
               }

@@ -80,8 +80,7 @@ class SharedDocumentManageShareCtrl
 
     cancel: () ->
       @$log.debug "SharedDocumentManageShareCtrl.cancel()"
-      #@$state.go("databaseDocumentShare", {documentId: @documentId})
-      @UtilityService.goBack('sharedDocumentShare')
+      @$state.go("sharedDocumentShare", {documentId: @documentId})
    
     update: () ->
       @$log.debug "SharedDocumentManageShareCtrl.update()"
@@ -94,7 +93,7 @@ class SharedDocumentManageShareCtrl
                 (data) => 
                   @$log.debug "Promise returned #{data} contacts"
                   @ErrorService.success("Successfully updated shares!")
-                  @UtilityService.goBack('folder.documents')
+                  @$state.go("sharedDocumentShare", {documentId: @documentId})
                 ,
                 (error) =>
                   @$log.error "Unable to share contacts: #{error}"

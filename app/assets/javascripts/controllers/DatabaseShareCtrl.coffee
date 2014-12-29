@@ -83,7 +83,8 @@ class DatabaseShareCtrl
             (data) => 
               @$log.debug "Promise returned #{data} contacts"
               @ErrorService.success("Successfully shared document!")
-              @UtilityService.goBack('folder.documents')
+              @$state.go('folder.documents')
+              #@UtilityService.goBack('FolderDocumentCtrl', 'folder.documents')
             ,
             (error) =>
               @$log.error "Unable to share contacts: #{error}"
@@ -105,6 +106,7 @@ class DatabaseShareCtrl
 
     cancel: () ->
       @$log.debug "DatabaseShareCtrl.cancel()"
-      @UtilityService.goBack('folder.documents')
+      @$state.go('folder.documents')
+      #@UtilityService.goBack('FolderDocumentCtrl', 'folder.documents')
 
 controllersModule.controller('DatabaseShareCtrl', DatabaseShareCtrl)

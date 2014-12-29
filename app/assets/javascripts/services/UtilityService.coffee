@@ -90,9 +90,11 @@ class UtilityService
 
     goBack: (defaultState) ->
         previous = @$previousState.get()
+        @$log.debug "previous : #{angular.toJson(previous)}"
         if (@isStringEmpty(previous.state.name))
           @$state.go(defaultState)
         else
           @$previousState.go()
+          #@$previousState.forget(previous.state.name)
 
 servicesModule.service('UtilityService', UtilityService)

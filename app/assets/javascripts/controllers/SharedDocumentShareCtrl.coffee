@@ -1,7 +1,7 @@
 
 class SharedDocumentShareCtrl
 
-    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document, @$previousState,
+    constructor: (@$log, @$scope, @$state, @$stateParams, @$q, @Document,
                               @DatabaseService, @UtilityService, @$location, @ErrorService) ->
         @$log.debug "constructing SharedDocumentShareCtrl"
         @documentId = parseInt(@$stateParams.documentId)
@@ -37,7 +37,6 @@ class SharedDocumentShareCtrl
                        @share.canShare = false if newVal
                       )
         @isDatePickerOpened = false
-        @$previousState.memo('SharedDocumentShareCtrl')
         
         # load objects from server
         @loadDocument(@documentId)
@@ -85,7 +84,7 @@ class SharedDocumentShareCtrl
             (data) => 
               @$log.debug "Promise returned #{data} contacts"
               @ErrorService.success("Successfully shared document!")
-              @UtilityService.goBack('folder.documents')
+              @$state.go('sharedRepositories')
             ,
             (error) =>
               @$log.error "Unable to share contacts: #{error}"
@@ -107,6 +106,6 @@ class SharedDocumentShareCtrl
 
     cancel: () ->
       @$log.debug "SharedDocumentShareCtrl.cancel()"
-      @UtilityService.goBack('folder.documents')
+      @$state.go('sharedRepositories')
 
 controllersModule.controller('SharedDocumentShareCtrl', SharedDocumentShareCtrl)

@@ -27,7 +27,7 @@
               <a href="" class="glyphicon glyphicon-folder-open" ng-show="document.canView" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
               <a href="" class="glyphicon glyphicon-share" ng-show="document.canShare" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
               <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>
-              <a class="glyphicon glyphicon-save" ng-show="document.canCopy" file-download url="ctrl.getUrl({{document.documentId}})" data-placement="left" title="Download"></a>
+              <a class="glyphicon glyphicon-save" ng-show="document.canCopy" file-download url="ctrl.getDownloadUrl({{document.documentId}})" data-placement="left" title="Download"></a>
               <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a>
             </td>
           </tr>
