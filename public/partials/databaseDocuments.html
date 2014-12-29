@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="document in ctrl.displayCollection">
-            <td ng-drag="true" ng-drag-data="{{document}}"><a href="" data-placement="left" title="{{document.name}}" ng-click="ctrl.goToDocumentEdit(document.documentId)">{{document.name}}</a></td>
+            <td ng-drag="ctrl.isAllowDragDrop(document)" ng-drag-data="{{document}}"><a href="" data-placement="left" title="{{document.name}}" ng-click="ctrl.goToDocumentEdit(document.documentId)">{{document.name}}</a></td>
             <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
             <td>{{document.createdAt  | date : 'shortDate'}}</td>
             <td> 

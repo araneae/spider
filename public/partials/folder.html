@@ -16,7 +16,7 @@
          <div class="panel-body">
             <table class="table table-striped">
               <tr ng-repeat="folder in ctrl.folders">
-                <td ng-drop="folder.documentFolderId > 0" ng-drop-success="ctrl.onDropComplete($data, $event, folder)">
+                <td ng-drop="ctrl.isAllowDragDrop(folder)" ng-drop-success="ctrl.onDropComplete($data, $event, folder)">
                     <a href="" ng-click="ctrl.goToDocumentFolder(folder)">{{folder.name}}</a>
                     <img src="/assets/images/icon-shared.png" with="20" height="20" ng-show="folder.shared"  data-placement="left" title="Shared" />
                 </td>

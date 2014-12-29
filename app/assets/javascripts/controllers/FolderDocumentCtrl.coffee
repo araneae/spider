@@ -95,6 +95,10 @@ class FolderDocumentCtrl
         else
           @ErrorService.error("Select a folder to share!")
 
+    isAllowDragDrop: (document) ->
+        @$log.debug "FolderDocumentCtrl.isAllowDragDrp(#{document})"
+        document.ownershipType is 'OWNED' 
+
     showRemoveAlert: (documentId) ->
         @$log.debug "FolderDocumentCtrl.showRemoveAlert(#{documentId})"
         @removeId = documentId

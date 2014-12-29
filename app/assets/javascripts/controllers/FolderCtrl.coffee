@@ -49,6 +49,10 @@ class FolderCtrl
         @$log.debug "FolderCtrl.goToUserTags()"
         @$state.go("database.documents")
 
+    isAllowDragDrop: (folder) ->
+        @$log.debug "FolderCtrl.isAllowDragDrp(#{angular.toJson(folder)})"
+        !folder.shared 
+
     showDocumentFolderManagement: () ->
         @$log.debug "FolderCtrl.showDocumentFolderManagement()"
         @folders.length > 0
