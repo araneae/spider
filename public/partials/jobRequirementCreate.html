@@ -6,25 +6,27 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-       <div class="panel-title">Create Job Requirement</div>
+       <div class="panel-title">Create Job</div>
     </div>
     <div class="panel-body">
       <form novalidate id="idCreateJobForm" name="CreateJobForm" class="form-horizontal" role="form"
           ng-submit="ctrl.save()">
         <div class="form-group" ng-class="{'has-error': CreateJobForm.title.$invalid}">
-          <label id="lblTitle" for="title" class="col-md-2 control-label">Job Title</label>
+          <label id="lblTitle" for="title" class="col-md-2 control-label">Title</label>
           <div class="col-md-6">
             <input type="text" class="form-control" name="title" id="idTitle" placeholder="Enter title"
                    ng-model="ctrl.jobRequirement.title" required>
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': CreateJobForm.jobTitle.$invalid}">
-          <label id="lblJobTitle" for="jobTitle" class="col-md-2 control-label">Job Title</label>
+          <label id="lblJobTitle" for="jobTitle" class="col-md-2 control-label">Position</label>
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-6">
                 <select class="form-control" name="jobTitle" id="idJobTitle" ng-options="jobTitle.name for jobTitle in ctrl.jobTitles" 
-                     ng-model="ctrl.jobTitle" required></select>
+                     ng-model="ctrl.jobTitle" required>
+                  <option value="">-- select a value --</option>
+                </select>
               </div>
               <div>
                 <div class="col-md-4">
@@ -38,7 +40,9 @@
           <label id="lblIndustry" for="industry" class="col-md-2 control-label">Job Industry</label>
           <div class="col-md-4">
             <select class="form-control" name="industry" id="idIndustry" ng-options="industry.name for industry in ctrl.industries" 
-                   ng-model="ctrl.industry" required></select>
+                   ng-model="ctrl.industry" required>
+              <option value="">-- select a value --</option>
+            </select>
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': CreateJobForm.code.$invalid}">
@@ -66,7 +70,7 @@
           <label id="lblLocation" for="location" class="col-md-2 control-label">Location</label>
           <div class="col-md-6">
             <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter location"
-                   ng-model="ctrl.jobRequirement.location" required>
+                   ng-model="ctrl.jobRequirement.location" google-places options="ctrl.placesOptions" details="ctrl.locDetails" required>
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': CreateJobForm.salaryType.$invalid || CreateJobForm.currencyType.$invalid}">

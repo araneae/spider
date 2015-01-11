@@ -6,20 +6,20 @@
   </div>
     <div class="panel panel-default">
     <div class="panel-heading">
-       <div class="panel-title">Edit Job Requirement</div>
+       <div class="panel-title">Edit Job</div>
     </div>
     <div class="panel-body">
       <form novalidate id="idEditJobForm" name="EditJobForm" class="form-horizontal" role="form"
           ng-submit="ctrl.save()">
         <div class="form-group" ng-class="{'has-error': EditJobForm.title.$invalid}">
-          <label id="lblTitle" for="title" class="col-md-2 control-label">Job Title</label>
+          <label id="lblTitle" for="title" class="col-md-2 control-label">Title</label>
           <div class="col-md-6">
             <input type="text" class="form-control" name="title" id="idTitle" placeholder="Enter title"
                    ng-model="ctrl.jobRequirement.title" required>
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': EditJobForm.jobTitle.$invalid}">
-          <label id="lblJobTitle" for="jobTitle" class="col-md-2 control-label">Job Title</label>
+          <label id="lblJobTitle" for="jobTitle" class="col-md-2 control-label">Position</label>
           <div class="col-md-8">
             <div class="row">
               <div class="col-md-6">
@@ -66,7 +66,7 @@
           <label id="lblLocation" for="location" class="col-md-2 control-label">Location</label>
           <div class="col-md-6">
             <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter location"
-                   ng-model="ctrl.jobRequirement.location" required>
+                   ng-model="ctrl.jobRequirement.location" google-places options="ctrl.placesOptions" details="ctrl.locDetails" required>
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': EditJobForm.salaryType.$invalid || EditJobForm.currencyType.$invalid}">
@@ -160,7 +160,7 @@
           </div>
         </div>
         <!-- <pre>{{ ctrl.jobRequirement | json }}</pre> -->
-        <pre>{{ EditJobForm.$error | json }}</pre>
+        <!-- <pre>{{ EditJobForm.$error | json }}</pre> -->
         <div class="form-group">
           <div class="col-md-offset-1 col-md-8">
             <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>

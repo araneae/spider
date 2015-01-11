@@ -15,8 +15,8 @@ import enums.BackgroundCheckType._
  * Defines job requirements
  *  
  */
-case class JobRequirementDTO(  
-                 jobRequirementId: Option[Long],
+case class JobApplicationDTO(  
+                 jobApplicationId: Option[Long],
                  companyId: Long,
                  code: String,
                  refNumber: Option[String],
@@ -28,31 +28,29 @@ case class JobRequirementDTO(
                  status: JobStatusType,
                  positions: Int,
                  jobTitleId: Long,
-                 postDate: Option[DateTime],
-                 xtn: JobRequirementXtnDTO) {
-  def this(jobRequirement: JobRequirement, xtn: JobRequirementXtn) {
-      this(jobRequirement.jobRequirementId,
-           jobRequirement.companyId,
-           jobRequirement.code,
-           jobRequirement.refNumber,
-           jobRequirement.title,
-           jobRequirement.employmentType,
-           jobRequirement.industryId,
-           jobRequirement.location,
-           jobRequirement.description,
-           jobRequirement.status,
-           jobRequirement.positions,
-           jobRequirement.jobTitleId,
-           jobRequirement.postDate,
-           JobRequirementXtnDTO(xtn))
+                 postDate: Option[DateTime]) {
+  def this(jobApplication: JobApplication) {
+      this(jobApplication.jobApplicationId,
+           jobApplication.companyId,
+           jobApplication.code,
+           jobApplication.refNumber,
+           jobApplication.title,
+           jobApplication.employmentType,
+           jobApplication.industryId,
+           jobApplication.location,
+           jobApplication.description,
+           jobApplication.status,
+           jobApplication.positions,
+           jobApplication.jobTitleId,
+           jobApplication.postDate)
   }
 }
 
-object JobRequirementDTO extends Function14[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, 
-                            String, JobStatusType, Int, Long, Option[DateTime], JobRequirementXtnDTO, JobRequirementDTO]
+object JobApplicationDTO extends Function13[Option[Long], Long, String, Option[String], String, EmploymentType, Long, String, 
+                            String, JobStatusType, Int, Long, Option[DateTime], JobApplicationDTO]
 {
-    implicit val jobRequirementWrites : Writes[JobRequirementDTO] = (
-            (JsPath \ "jobRequirementId").write[Option[Long]] and
+    implicit val jobApplicationWrites : Writes[JobApplicationDTO] = (
+            (JsPath \ "jobApplicationId").write[Option[Long]] and
             (JsPath \ "companyId").write[Long] and
             (JsPath \ "code").write[String] and
             (JsPath \ "refNumber").write[Option[String]] and
@@ -64,12 +62,11 @@ object JobRequirementDTO extends Function14[Option[Long], Long, String, Option[S
             (JsPath \ "status").write[JobStatusType] and
             (JsPath \ "positions").write[Int] and
             (JsPath \ "jobTitleId").write[Long] and
-            (JsPath \ "postDate").write[Option[DateTime]] and
-            (JsPath \ "xtn").write[JobRequirementXtnDTO]
-    )(unlift(JobRequirementDTO.unapply))
+            (JsPath \ "postDate").write[Option[DateTime]]
+    )(unlift(JobApplicationDTO.unapply))
       
-    implicit val jobRequirementReads : Reads[JobRequirementDTO] = (
-          (JsPath \ "jobRequirementId").readNullable[Long] and
+    implicit val jobApplicationReads : Reads[JobApplicationDTO] = (
+          (JsPath \ "jobApplicationId").readNullable[Long] and
           (JsPath \ "companyId").read[Long] and
           (JsPath \ "code").read[String] and
           (JsPath \ "refNumber").readNullable[String] and
@@ -81,9 +78,8 @@ object JobRequirementDTO extends Function14[Option[Long], Long, String, Option[S
           (JsPath \ "status").read[JobStatusType] and
           (JsPath \ "positions").read[Int] and
           (JsPath \ "jobTitleId").read[Long] and
-          (JsPath \ "postDate").readNullable[DateTime] and
-          (JsPath \ "xtn").read[JobRequirementXtnDTO]
-    )(JobRequirementDTO)
+          (JsPath \ "postDate").readNullable[DateTime]
+    )(JobApplicationDTO)
     
-    def apply(jobRequirement: JobRequirement, jobRequirementXtn: JobRequirementXtn) = new JobRequirementDTO(jobRequirement, jobRequirementXtn)
+    def apply(jobApplication: JobApplication) = new JobApplicationDTO(jobApplication)
 }

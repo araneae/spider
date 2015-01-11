@@ -39,6 +39,8 @@ class JobRequirements(tag: Tag) extends Table[JobRequirement](tag, "job_requirem
   
   def jobTitleId = column[Long]("job_title_id")
   
+  def postDate = column[Option[DateTime]]("post_date")
+  
   def jobRequirementXtnId = column[Long]("job_requirement_xtn_id")
   
   def createdUserId = column[Long]("created_user_id")
@@ -50,7 +52,7 @@ class JobRequirements(tag: Tag) extends Table[JobRequirement](tag, "job_requirem
   def updatedAt = column[Option[DateTime]]("updated_at")
   
   override def * = (jobRequirementId.?, companyId, code, refNumber, title, employmentType, industryId, location, description, status,
-      positions, jobTitleId, jobRequirementXtnId, createdUserId, createdAt, updatedUserId, updatedAt) <> (JobRequirement.tupled, JobRequirement.unapply)
+      positions, jobTitleId, postDate, jobRequirementXtnId, createdUserId, createdAt, updatedUserId, updatedAt) <> (JobRequirement.tupled, JobRequirement.unapply)
   
   // foreign keys and indexes
   def company = foreignKey("fk_job_requirement_on_company_id", companyId, TableQuery[Companies])(_.companyId)

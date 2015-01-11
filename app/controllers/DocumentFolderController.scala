@@ -173,8 +173,8 @@ object DocumentFolderController extends Controller with Secured  with AkkaActor 
   }
   
   def searchInFolder(documentFolderId: Long, searchText: String) = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.searchInFolder(${documentFolderId}, ${searchText})")
-    println(s"in DatabaseController.searchInFolder(${documentFolderId}, ${searchText})")
+    //logger.info(s"in DocumentFolderController.searchInFolder(${documentFolderId}, ${searchText})")
+    println(s"in DocumentFolderController.searchInFolder(${documentFolderId}, ${searchText})")
     
     if (searchText.length() > 0) {
       implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
@@ -199,8 +199,8 @@ object DocumentFolderController extends Controller with Secured  with AkkaActor 
   }
   
   def search(searchText: String) = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.search(${searchText})")
-    println(s"in DatabaseController.search(${searchText})")
+    //logger.info(s"in DocumentFolderController.search(${searchText})")
+    println(s"in DocumentFolderController.search(${searchText})")
     
     if (searchText.length() > 0) {
       val documentFolders = UserDocumentFolderRepository.findAll(userId)

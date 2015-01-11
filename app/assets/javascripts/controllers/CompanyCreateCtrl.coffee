@@ -5,6 +5,12 @@ class CompanyCreateCtrl
         @$log.debug "constructing CompanyCreateCtrl"
         @company = {}
         
+        # google places options
+        @placesOptions = {
+                country: '',
+                types: 'geocode'
+        }
+        
         # fetch data from server
 
     save: () ->

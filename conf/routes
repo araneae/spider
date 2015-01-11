@@ -125,7 +125,15 @@ GET    /jobRequirement/:jobRequirementId                        controllers.JobR
 
 PUT    /jobRequirement/:jobRequirementId                        controllers.JobRequirementController.update(jobRequirementId: Long)
 
+PUT    /jobRequirement/:jobRequirementId/status/post            controllers.JobRequirementController.post(jobRequirementId: Long)
+
+PUT    /jobRequirement/:jobRequirementId/status/draft           controllers.JobRequirementController.makeDraft(jobRequirementId: Long)
+
 DELETE /jobRequirement/:jobRequirementId                        controllers.JobRequirementController.delete(jobRequirementId: Long)
+
+POST   /jobRequirement/search                                   controllers.JobRequirementController.search
+
+GET    /jobRequirement/:jobRequirementId/preview                controllers.JobRequirementController.preview(jobRequirementId: Long)
 
 # UserSkill specific routes
 POST   /userSkill/:skillId                                      controllers.UserSkillController.create(skillId: Int)
@@ -193,7 +201,7 @@ DELETE /database/document/:documentId                           controllers.Data
 
 PUT    /database/document/:documentId/move/:documentFolderId    controllers.DatabaseController.moveToFolder(documentId: Long, documentFolderId: Long)
 
-GET    /database/search/:userTagId/:searchText                  controllers.DatabaseController.search(userTagId: Long, searchText: String)
+GET    /database/userTag/:userTagId/search/:searchText          controllers.DatabaseController.search(userTagId: Long, searchText: String)
 
 GET    /database/document/:documentId/search                    controllers.DatabaseController.searchDocument(documentId: Long)
 

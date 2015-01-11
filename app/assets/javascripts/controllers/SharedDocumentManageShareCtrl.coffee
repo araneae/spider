@@ -69,15 +69,6 @@ class SharedDocumentManageShareCtrl
       event.stopPropagation()
       @datePickerOpenedFlag[contact.id] = true
    
-    formatDate: (date) ->
-      dateString = null
-      if (date)
-        year = date.getFullYear()
-        month = date.getMonth() + 1
-        day = date.getDate()
-        dateString = year + "-" + month + "-" + day
-      dateString
-
     cancel: () ->
       @$log.debug "SharedDocumentManageShareCtrl.cancel()"
       @$state.go("sharedDocumentShare", {documentId: @documentId})
@@ -88,7 +79,7 @@ class SharedDocumentManageShareCtrl
         orgObj = @sharedContactsOrg[obj.id]
         equals = angular.equals(obj, orgObj)
         if (!equals)
-            obj.shareUntilEOD = @formatDate(obj.shareUntilEOD)
+            obj.shareUntilEOD = @UtilityService.formatDate(obj.shareUntilEOD)
             @DatabaseService.updateShare(@documentId, obj).then(
                 (data) => 
                   @$log.debug "Promise returned #{data} contacts"

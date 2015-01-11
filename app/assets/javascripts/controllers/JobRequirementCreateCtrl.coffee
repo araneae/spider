@@ -15,6 +15,14 @@ class JobRequirementCreateCtrl
            minStartDate : @today,
            minEndDate : @today
         }
+        
+        # google places options
+        @placesOptions = {
+                country: '',
+                types: 'geocode'
+        }
+        @locDetails
+        
         @targetStartDate
         @targetEndDate
         @jobRequirement = {}
@@ -23,6 +31,10 @@ class JobRequirementCreateCtrl
         @jobRequirement.positions=1
         @jobRequirement.employmentType="CONTRACT"
         @jobRequirement.status="DRAFT"
+        @jobRequirement.xtn.salaryType="MINMAX"
+        @jobRequirement.xtn.paymentTerm="MONTHLY"
+        @jobRequirement.xtn.taxTerm="W2"
+        @jobRequirement.xtn.backgroundCheck="NONE"
         @isTargetStartDatePickerOpened = false
         @isTargetEndDatePickerOpened = false
         
@@ -84,7 +96,9 @@ class JobRequirementCreateCtrl
         @jobRequirement.jobTitleId = @jobTitle.jobTitleId
         @jobRequirement.xtn.targetStartDate = @UtilityService.formatDate(@targetStartDate) if @targetStartDate
         @jobRequirement.xtn.targetStartDate = @UtilityService.formatDate(@targetEndDate) if @targetEndDate
-
+        if (@locDetails)
+          @jobRequirement.xtn.locationLat = @locDetails.lat
+          @jobRequirement.xtn.locationLng = @locDetails.lng
         @JobRequirement.save(@jobRequirement).$promise.then( 
           (data) =>
             @$log.debug "server returned #{data} JobRequirement"

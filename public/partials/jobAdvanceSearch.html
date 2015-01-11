@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-offset-1 col-md-8">
+    <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">Job Search</div>
+  </div>
+  <div class="panel-body">
+    <div class="col-md-4">
+      <form novalidate id="idJobSearch" name="JobSearch" role="form" ng-submit="ctrl.search()">
+        <div class="form-group">
+          <label for="" class="control-label">Title</label>
+          <input type="text" class="form-control" name="title" id="idTitle" placeholder="Enter job title"
+                   ng-model="ctrl.jobSearch.title">
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Location</label>
+          <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter job location"
+                   ng-model="ctrl.jobSearch.location" google-places options="ctrl.placesOptions" details="ctrl.locDetails" required>
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Company</label>
+          <input type="text" class="form-control" name="company" id="idCompany" placeholder="Enter company"
+                   ng-model="ctrl.jobSearch.company">
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Job Posted</label>
+            <div class="input-group">
+            <input type="text" class="form-control" datepicker-popup="{{ctrl.dateOptions.format}}" 
+                ng-model="ctrl.postDate" is-open="ctrl.isDatePickerOpened" min-date="{{ctrl.dateOptions.minDate}}" max-date="{{ctrl.dateOptions.maxDate}}" 
+                  datepicker-options="ctrl.dateOptions" close-text="Close" placeholder="{{ctrl.dateOptions.format}}" required/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="ctrl.openDatePicker($event)">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+        <!-- <pre>{{ ctrl.jobSearch | json }}</pre> -->
+        <div class="form-group">
+          <button type="submit" class="btn btn-success" id="btnSearch" ng-disabled='!JobSearch.$valid'>Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <div ui-view="viewSearchResults"></div>
+    </div>
+  </div>
+</div>
+

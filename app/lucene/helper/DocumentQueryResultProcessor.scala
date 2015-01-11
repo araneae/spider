@@ -14,10 +14,9 @@ object DocumentQueryResultProcessor extends LuceneConsts {
       optDocuments match {
         case Some (documents) =>
           documents.map { doc =>
-              list += doc.get(FIELD_DOCUMENT_ID).toLong
+            list += doc.get(FIELD_DOCUMENT_ID).toLong
           }
-      
-      case None => 
+        case None => 
       }
       MessageDocumentSearchResult(list.toList)
   }

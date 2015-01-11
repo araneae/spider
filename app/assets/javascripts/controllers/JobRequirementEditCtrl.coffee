@@ -3,7 +3,7 @@ class JobRequirementEditCtrl
 
     constructor: (@$log, @$scope, @$state, @$stateParams,  @Industry, @JobRequirement, @JobTitle, 
                     @EnumService, @ErrorService, @UtilityService, @$location) ->
-        @$log.debug "constructing JobRequirementController"
+        @$log.debug "constructing JobRequirementEditCtrl"
         @jobRequirementId = parseInt(@$stateParams.jobRequirementId)
         @jobTitle = {}
         @jobTitles = []
@@ -16,6 +16,14 @@ class JobRequirementEditCtrl
            minStartDate : @today,
            minEndDate : @today
         }
+        
+        # google places options
+        @placesOptions = {
+                country: '',
+                types: 'geocode'
+        }
+        @locDetails
+        
         @jobRequirement = {}
         @targetStartDate
         @targetEndDate
@@ -101,7 +109,9 @@ class JobRequirementEditCtrl
         @jobRequirement.jobTitleId = @jobTitle.jobTitleId
         @jobRequirement.xtn.targetStartDate = @UtilityService.formatDate(@targetStartDate)
         @jobRequirement.xtn.targetEndDate = @UtilityService.formatDate(@targetEndDate)
-        
+        if (@locDetails)
+          @jobRequirement.xtn.locationLat = @locDetails.lat
+          @jobRequirement.xtn.locationLng = @locDetails.lng
         @JobRequirement.update(@jobRequirement).$promise.then( 
               (data) =>
                 @ErrorService.success("Successfully update jobRequirement #{@jobRequirement.title}")

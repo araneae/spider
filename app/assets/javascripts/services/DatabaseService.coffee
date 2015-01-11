@@ -12,14 +12,14 @@ class DatabaseService
         @$log.debug "DatabaseService.search(#{userTagId}, #{searchText})"
         deferred = @$q.defer()
 
-        @$http.get("/database/search/#{userTagId}/#{searchText}")
+        @$http.get("/database/userTag/#{userTagId}/search/#{searchText}")
         .success((data, status, headers) =>
                 @$log.info("Successfully searched - status #{status}")
                 deferred.resolve(data)
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to search - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
 
@@ -34,7 +34,7 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to search - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
     
@@ -49,7 +49,7 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to search - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
    
@@ -64,7 +64,7 @@ class DatabaseService
            )
            .error((data, status, headers) =>
                  @$log.error("Failed to search - status #{status}")
-                 deferred.reject(data);
+                 deferred.reject(data)
            )
         deferred.promise
 
@@ -79,7 +79,7 @@ class DatabaseService
            )
            .error((data, status, headers) =>
                  @$log.error("Failed to search - status #{status}")
-                 deferred.reject(data);
+                 deferred.reject(data)
            )
         deferred.promise
 
@@ -93,7 +93,7 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to fetch contacts - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
     
@@ -107,7 +107,7 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to copy document - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
     
@@ -121,7 +121,7 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to share contacts - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
 
@@ -135,7 +135,7 @@ class DatabaseService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to update shares - status #{status}")
-                deferred.reject(data);
+                deferred.reject(data)
             )
         deferred.promise
 

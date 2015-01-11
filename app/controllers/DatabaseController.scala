@@ -264,8 +264,8 @@ object DatabaseController extends Controller with Secured with AkkaActor {
   }
   
   def searchDocument(documentId: Long) = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in DatabaseController.search(${documentId})")
-    println(s"in DatabaseController.search(${documentId})")
+    //logger.info(s"in DatabaseController.searchDocument(${documentId})")
+    println(s"in DatabaseController.searchDocument(${documentId})")
     
     val optUserProfile = UserRepository.findUserProfilePersonal(userId)
     optUserProfile match {

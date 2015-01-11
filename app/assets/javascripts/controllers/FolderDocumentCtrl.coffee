@@ -143,7 +143,7 @@ class FolderDocumentCtrl
         @$log.debug "FolderDocumentCtrl.search(#{documentFolderId}, #{searchText})"
         if (searchText)
           @documents = []
-          @FolderService.search(documentFolderId, searchText).then(
+          @FolderService.searchInFolder(documentFolderId, searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @documents = data

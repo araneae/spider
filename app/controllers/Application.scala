@@ -15,6 +15,7 @@ import models.repositories._
 import models.dtos._
 import actors._
 import utils._
+import enums._
 import services._
 import enums.OwnershipType._
 import enums.OwnershipType
@@ -83,7 +84,7 @@ object Application extends Controller with Secured with AkkaActor {
                           val token = TokenGenerator.token
                           val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                           val userProfilePersonalId = UserProfilePersonalRepository.create(UserProfilePersonal(None, Configuration.defaultXrayTerms))
-                          val user = User(None, first_name, middle_name, last_name, email, encryptedPassword, country.countryId.get, token, false, new DateTime(), Some(userProfilePersonalId))
+                          val user = User(None, first_name, middle_name, last_name, email, encryptedPassword, country.countryId.get, token, false, new DateTime(), UserStatusType.PENDING, Some(userProfilePersonalId))
                           val userId = UserRepository create user
                         
                           val savedUser = UserRepository find userId

@@ -7,18 +7,18 @@ import scala.collection.mutable.ListBuffer
 import lucene.LuceneConsts
 import actors._
 
-object HighlighterResultProcessor extends LuceneConsts {
+object JobQueryResultProcessor extends LuceneConsts {
 
   def getMessage(optDocuments: Option[Seq[Document]]) : Message = {
       var list = new ListBuffer[Long]()
       optDocuments match {
         case Some (documents) =>
           documents.map { doc =>
-            list += doc.get(FIELD_DOCUMENT_ID).toLong
+            list += doc.get(FIELD_JOB_ID).toLong
           }
         case None => 
       }
-      MessageDocumentSearchResult(list.toList)
+      MessageJobSearchResult(list.toList)
   }
-
+  
 }

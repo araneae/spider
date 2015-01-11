@@ -73,15 +73,6 @@ class FolderShareCtrl
       event.stopPropagation()
       @datePickerOpenedFlag[contact.id] = true
    
-    formatDate: (date) ->
-      dateString = null
-      if (date)
-        year = date.getFullYear()
-        month = date.getMonth() + 1
-        day = date.getDate()
-        dateString = year + "-" + month + "-" + day
-      dateString
-
     cancel: () ->
       @$log.debug "FolderShareCtrl.cancel()"
       @$state.go("folder.documents")
@@ -93,7 +84,7 @@ class FolderShareCtrl
         orgObj = @sharedContactsOrg[obj.id]
         equals = angular.equals(obj, orgObj)
         if (!equals)
-            obj.shareUntilEOD = @formatDate(obj.shareUntilEOD)
+            obj.shareUntilEOD = @UtilityService.formatDate(obj.shareUntilEOD)
             dirtyObjs.push(obj)
 
       if (dirtyObjs.length > 0)

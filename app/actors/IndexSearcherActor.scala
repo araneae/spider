@@ -15,7 +15,7 @@ class IndexSearcherActor extends Actor with LuceneConsts {
           try {
             val searcher = getSearcher
             val query = DocumentQueryGenerator.getQuery(searchText)
-            val filter = DocumentQueryGenerator.getFilter(FIELD_DOCUMENT_BOX_ID, documentFolderIds)
+            val filter = DocumentQueryGenerator.getFilter(FIELD_DOCUMENT_FOLDER_ID, documentFolderIds)
             // search in lucene index
             val optDocuments = searcher.getDocuments(query, filter)
             // get the return message
@@ -84,6 +84,25 @@ class IndexSearcherActor extends Actor with LuceneConsts {
               case _ =>
                   MessageDocumentContents(documentId, TEXT_EMPTY)
             }
+            
+            searcher.close
+            sender ! message
+          } catch {
+            case e: Exception =>
+              sender ! akka.actor.Status.Failure(e)
+              throw e
+          }
+      }
+      
+      case MessageJobSearch(jobSearchDTO) => {
+          try {
+            val searcher = getSearcher
+            val query = JobQueryGenerator.getQuery(jobSearchDTO)
+            val filter = JobQueryGenerator.getFilter()
+            // search in lucene index
+            val optDocuments = searcher.getDocuments(query, filter)
+            // get the return message
+            val message = JobQueryResultProcessor.getMessage(optDocuments)
             
             searcher.close
             sender ! message

@@ -1,8 +1,6 @@
 package actors
 
-import models.dtos.Document
-import models.dtos.DocumentSearchResult
-import models.dtos.User
+import models.dtos._
 
 abstract class Message
 
@@ -30,3 +28,11 @@ case class MessageAddUser(user: User) extends Message
 case class MessageUserSearch(searchText: String) extends Message
 
 case class MessageUserSearchResult(userIds: List[Long]) extends Message
+
+// jobs related
+
+case class MessageAddJob(company: Company, jobRequirement: JobRequirement, jobRequirementXtn: JobRequirementXtn) extends Message
+
+case class MessageJobSearch(jobSearchDTO: JobSearchDTO) extends Message
+
+case class MessageJobSearchResult(jobRequirementIds: List[Long]) extends Message

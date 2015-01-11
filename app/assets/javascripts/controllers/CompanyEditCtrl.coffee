@@ -5,6 +5,12 @@ class CompanyEditCtrl
         @$log.debug "constructing CompanyEditCtrl"
         @company = {}
         
+        # google places options
+        @placesOptions = {
+                country: '',
+                types: 'geocode'
+        }
+        
         # fetch data from server
         @loadCompany()
 

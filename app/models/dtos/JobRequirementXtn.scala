@@ -17,6 +17,8 @@ case class JobRequirementXtn(
                  jobRequirementXtnId: Option[Long],
                  targetStartDate: Option[DateTime],
                  targetEndDate: Option[DateTime],
+                 locationLat: Option[Double],
+                 locationLng: Option[Double],
                  salaryType: SalaryType,
                  salaryMin: Option[Double],
                  salaryMax: Option[Double],
@@ -36,6 +38,8 @@ case class JobRequirementXtn(
        this(jobRequirementXtnDTO.jobRequirementXtnId,
            jobRequirementXtnDTO.targetStartDate,
            jobRequirementXtnDTO.targetEndDate,
+           jobRequirementXtnDTO.locationLat,
+           jobRequirementXtnDTO.locationLng,
            jobRequirementXtnDTO.salaryType,
            jobRequirementXtnDTO.salaryMin,
            jobRequirementXtnDTO.salaryMax,
@@ -50,9 +54,11 @@ case class JobRequirementXtn(
    }
 }
 
-object JobRequirementXtn extends Function14[Option[Long],
+object JobRequirementXtn extends Function16[Option[Long],
                  Option[DateTime],
                  Option[DateTime],
+                 Option[Double],
+                 Option[Double],
                  SalaryType,
                  Option[Double],
                  Option[Double],
@@ -69,6 +75,8 @@ object JobRequirementXtn extends Function14[Option[Long],
             (JsPath \ "jobRequirementXtnId").write[Option[Long]] and
             (JsPath \ "targetStartDate").write[Option[DateTime]] and
             (JsPath \ "targetEndDate").write[Option[DateTime]] and
+            (JsPath \ "locationLat").write[Option[Double]] and
+            (JsPath \ "locationLng").write[Option[Double]] and
             (JsPath \ "salaryType").write[SalaryType] and
             (JsPath \ "salaryMin").write[Option[Double]] and
             (JsPath \ "salaryMax").write[Option[Double]] and
@@ -86,6 +94,8 @@ object JobRequirementXtn extends Function14[Option[Long],
             (JsPath \ "jobRequirementXtnId").readNullable[Long] and
             (JsPath \ "targetStartDate").readNullable[DateTime] and
             (JsPath \ "targetEndDate").readNullable[DateTime] and
+            (JsPath \ "locationLat").readNullable[Double] and
+            (JsPath \ "locationLng").readNullable[Double] and
             (JsPath \ "salaryType").read[SalaryType] and
             (JsPath \ "salaryMin").readNullable[Double] and
             (JsPath \ "salaryMax").readNullable[Double] and

@@ -12,18 +12,36 @@ import org.apache.lucene.document._
 
 trait LuceneConsts {
   
+	val TEXT_EMPTY = ""
+  // common fields
   val FIELD_DOC_ID = "docId"
+  
+  // document related fields
+  val DOC_TYPE_TEXT = "text"
   val FIELD_DOCUMENT_ID = "documentId"
-  val FIELD_DOCUMENT_BOX_ID = "documentBoxId"
-  val FIELD_USER_ID = "userId"
+  val FIELD_DOCUMENT_FOLDER_ID = "documentFolderId"
   val FIELD_DOCUMENT_TYPE = "documentType"
   val FIELD_CONTENTS = "contents"
+  
+  // user related fields
+  val DOC_TYPE_USER = "user"
+  val FIELD_USER_ID = "userId"
   val FIELD_FIRST_NAME = "firstName"
   val FIELD_LAST_NAME = "lastName"
   val FIELD_EMAIL = "email"
-  val DOC_TYPE_TEXT = "text"
-  val DOC_TYPE_USER = "user"
-  val TEXT_EMPTY = ""
+  
+  // job related fields
+  val DOC_TYPE_JOB = "job"
+  val FIELD_JOB_ID = "jobRequirementId"
+  val FIELD_JOB_TITLE = "title"
+  val FIELD_JOB_COMPANY_ID = "companyId"
+  val FIELD_JOB_COMPANY_NAME = "companyName"
+  val FIELD_JOB_STATUS = "status"
+  val FIELD_JOB_LOCATION = "location"
+  val FIELD_JOB_LOCATION_LAT = "locationLat"
+  val FIELD_JOB_LOCATION_LNG = "locationLng"
+  val FIELD_JOB_POST_DATE = "postDate"
+  val FIELD_JOB_DESCRIPTION = "description"
     
   val highlighterType = new FieldType()
   highlighterType.setIndexed(true)

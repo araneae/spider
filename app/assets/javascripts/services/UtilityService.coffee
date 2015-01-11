@@ -51,6 +51,14 @@ class UtilityService
         dateString = year + "-" + month + "-" + day
       dateString
 
+    addDays: (date, days) ->
+      newDate = date
+      if (date)
+        daysInMillis = days * (1000 * 60 * 60 * 24)
+        newDate = new Date()
+        newDate.setTime(date.getTime() + daysInMillis)
+      newDate
+
     getFileName: (fileName) ->
       index = fileName.lastIndexOf('.')
       if (index > 0) 

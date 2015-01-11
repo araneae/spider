@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-md-offset-1 col-md-8">
+    <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <form novalidate ng-submit="ctrl.search()" class="form-inline" role="form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <input type="text" class="form-control" name="location" id="idLocation" placeholder="Enter an address"
+              ng-model="ctrl.jobSearch.location" google-places options="ctrl.placesOptions" details="ctrl.locDetails" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-btn" data-placement="left" title="Clear search text">
+                <button type="button" class="btn btn-default" id="idClearSearchTextBtn" ng-click="ctrl.clearSearchText()">Clear</button>
+              </div>
+              <input type="text" class="form-control" name="searchBox" id="idSearchBox" ng-model="ctrl.searchText" placeholder="Job title, technology etc.">
+              <div class="input-group-btn" data-placement="left" title="Search">
+                <button type="submit" class="btn btn-default" id="idSearchBtn">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <tbody>
+        <tr ng-repeat="job in ctrl.searchResults">
+          <td>
+            <h2 class="col-md-12">
+              <a href="" class="text-color-red" ng-click="ctrl.goToView(job)">{{job.jobTitle}}</a>
+            </h2>
+            <div>
+              <label class="col-md-4 text-primary">{{job.companyName}}</label>
+              <label class="col-md-4 text-primary">{{job.location}}</label>
+              <label class="col-md-2 text-primary">{{job.employmentType}}</label>
+              <label class="col-md-2 text-primary">{{job.postDate | timeago}}</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

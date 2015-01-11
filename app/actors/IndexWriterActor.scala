@@ -38,6 +38,16 @@ class IndexWriterActor extends Actor with LuceneConsts {
               case None =>
             }
           }
+      case MessageAddJob(company, jobRequirement, jobRequirementXtn) => {
+            jobRequirement.jobRequirementId match {
+              case Some(jobRequirementId) =>
+                val writer = getWriter
+                val document = LuceneDocumentService.getJobDocument(company, jobRequirement, jobRequirementXtn)
+                writer.addOrUpdateDocument(DOC_TYPE_JOB, jobRequirementId, document)
+                writer.close
+              case None =>
+            }
+          }
       case _ => 
     }
   

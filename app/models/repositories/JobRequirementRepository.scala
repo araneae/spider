@@ -6,6 +6,8 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import models.dtos._
 import org.joda.time.DateTime
+import enums.JobStatusType._
+import enums._
 
 object JobRequirementRepository {
   
@@ -22,6 +24,18 @@ object JobRequirementRepository {
     DB.withSession {
        implicit session: Session =>
           query filter(_.jobRequirementId === jobRequirement.jobRequirementId) update jobRequirement
+    }
+  }
+  
+  def updateStatus(jobRequirementId: Long, userId: Long, status: JobStatusType) = {
+    DB.withSession {
+       implicit session: Session =>
+          val q = for {
+            r <- query filter(_.jobRequirementId === jobRequirementId)
+          } yield (r.status, r.updatedUserId, r.postDate, r.updatedAt)
+          
+          val postDate = if (status == JobStatusType.POSTED) Some(new DateTime()) else None
+          q update ((status, Some(userId), postDate, Some(new DateTime())))
     }
   }
   
@@ -48,6 +62,36 @@ object JobRequirementRepository {
          } yield (r, rx)
            
          q.list.map{case (r, rx) => JobRequirementDTO(r, rx)}
+    }
+  }
+  
+  def getAllJobDTOByRequirementIds(jobRequirementIds: Seq[Long]): Seq[JobDTO] = {
+    DB.withSession {
+       implicit session: Session =>
+         val q = for {
+             r <- query filter(_.jobRequirementId inSet jobRequirementIds)
+             c <- r.company
+             i <- r.industry
+             j <- r.jobTitle
+             rx <- r.xtn
+         } yield (c, i, j, r, rx)
+           
+         q.list.map{case (c, i, j, r, rx) => JobDTO(c, i, j, r, rx)}
+    }
+  }
+  
+  def getJobDTOByRequirementId(jobRequirementId: Long): Option[JobDTO] = {
+    DB.withSession {
+       implicit session: Session =>
+         val q = for {
+             r <- query filter(_.jobRequirementId === jobRequirementId)
+             c <- r.company
+             i <- r.industry
+             j <- r.jobTitle
+             rx <- r.xtn
+         } yield (c, i, j, r, rx)
+           
+         q.firstOption.map{case (c, i, j, r, rx) => JobDTO(c, i, j, r, rx)}
     }
   }
   

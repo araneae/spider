@@ -23,6 +23,10 @@ class JobRequirementXtns(tag: Tag) extends Table[JobRequirementXtn](tag, "job_re
   
   def targetEndDate = column[Option[DateTime]]("target_end_date")
   
+  def locationLat = column[Option[Double]]("location_lat")
+  
+  def locationLng = column[Option[Double]]("location_lng")
+  
   def salaryType = column[SalaryType]("salary_type")
   
   def salaryMin = column[Option[Double]]("salary_min")
@@ -45,7 +49,7 @@ class JobRequirementXtns(tag: Tag) extends Table[JobRequirementXtn](tag, "job_re
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (jobRequirementXtnId.?, targetStartDate, targetEndDate, salaryType, salaryMin, salaryMax, currency, taxTerm, paymentTerm,
+  override def * = (jobRequirementXtnId.?, targetStartDate, targetEndDate, locationLat, locationLng, salaryType, salaryMin, salaryMax, currency, taxTerm, paymentTerm,
       backgroundCheck, createdUserId, createdAt, updatedUserId, updatedAt) <> (JobRequirementXtn.tupled, JobRequirementXtn.unapply)
   
   // foreign keys and indexes

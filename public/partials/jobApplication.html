@@ -1,0 +1,99 @@
+<div ng-controller="JobApplicationCtrl as ctrl">
+  <div class="row">
+   <div class="col-md-offset-1 col-md-8">
+     <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+   </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <h2 class="text-color-red">{{ctrl.job.jobTitle}}</h2>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label class="col-md-3 text-primary">{{ctrl.job.companyName}}</label>
+          <label class="col-md-3 text-primary">{{ctrl.job.location}}</label>
+          <label class="col-md-2 text-primary">{{ctrl.job.employmentType}}</label>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <!-- <pre>{{ ctrl.job | json }}</pre> -->
+      <form novalidate id="idJobApplicationForm" name="JobApplicationForm" class="form-horizontal" role="form"
+              ng-submit="ctrl.apply()">
+        <div class="form-group">
+          <label id="lblPhone" for="phone" class="col-md-2 control-label">My Phone</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control" name="title" id="idPhone" placeholder="Enter your contact number"
+                 ng-model="ctrl.jobApplication.phone" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblPhone" for="phone" class="col-md-2 control-label">Availability</label>
+          <div class="col-md-2">
+            <select class="form-control" name="availability" id="idAvailability" ng-options="week.name for week in ctrl.weeks" 
+                      ng-model="ctrl.jobApplication.availability" required>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblPhone" for="phone" class="col-md-2 control-label">Relocation</label>
+          <div class="col-md-6">
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Ready
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Not Ready
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Some What
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblPhone" for="phone" class="col-md-2 control-label">Traveling</label>
+          <div class="col-md-6">
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> OK
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Not OK
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Some What
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblPhone" for="phone" class="col-md-2 control-label">My Resume</label>
+          <div class="col-md-3">
+            <select class="form-control" name="folder" id="idFolder" ng-options="folder.name for folder in ctrl.folders" 
+                    ng-model="ctrl.folder" required>
+              <option value="">-- select a folder --</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select class="form-control" name="document" id="idDocument" ng-show="ctrl.documents.length > 0" ng-options="document.name for document in ctrl.documents" 
+                    ng-model="ctrl.document" required>
+              <option value="">-- select a document --</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="lblMessage" for="message" class="col-md-2 control-label">Message</label>
+          <div class="col-md-8">
+            <textarea class="form-control" rows="6" name="message" id="idMessage" placeholder="Enter a message"
+                   ng-model="ctrl.jobApplication.message" required>
+            </textarea>
+          </div>
+        </div>
+        <hr/>
+        <button type="button" class="btn btn-warning" data-placement="left" title="Cancel" ng-click="ctrl.cancel()">Cancel</button>
+        <button type="button" class="btn btn-success" data-placement="left" title="Apply" ng-disabled="!JobApplicationForm.$valid" ng-click="ctrl.apply()">Apply</button>
+      </form>
+    </div>
+  </div>
+</div>
+

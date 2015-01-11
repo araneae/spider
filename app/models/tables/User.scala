@@ -4,6 +4,7 @@ import play.api.db.slick.Config.driver.simple._
 import models.dtos._
 import utils.JodaToSqlMapper._
 import org.joda.time.DateTime
+import enums.UserStatusType._
 
 class Users(tag: Tag) extends Table[User](tag, "user") {
 
@@ -27,6 +28,8 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def lastLogon = column[DateTime]("last_logon")
   
+  def status = column[UserStatusType]("status")
+  
   def userProfilePersonalId = column[Option[Long]]("user_profile_personal_id")
   
   def otp = column[Option[String]]("otp")
@@ -37,7 +40,7 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (userId.?, firstName, middleName, lastName, email, password, countryId, activationToken, verified, lastLogon, userProfilePersonalId, otp, otpExpiredAt, createdAt, updatedAt) <> (User.tupled, User.unapply)
+  override def * = (userId.?, firstName, middleName, lastName, email, password, countryId, activationToken, verified, lastLogon, status, userProfilePersonalId, otp, otpExpiredAt, createdAt, updatedAt) <> (User.tupled, User.unapply)
   
   // foreign keys and indexes
   def uniqueEmail = index("idx_user_on_email_unique", email, unique = true)

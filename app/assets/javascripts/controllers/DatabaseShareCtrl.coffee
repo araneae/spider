@@ -78,7 +78,7 @@ class DatabaseShareCtrl
   
     sendShare: () ->
       @$log.debug "DatabaseShareCtrl.sendShare()"
-      @share.shareUntilEOD = @formatDate(@share.shareUntilEOD)
+      @share.shareUntilEOD = @UtilityService.formatDate(@share.shareUntilEOD)
       @DatabaseService.share(@documentId, @share).then(
             (data) => 
               @$log.debug "Promise returned #{data} contacts"
@@ -95,15 +95,6 @@ class DatabaseShareCtrl
       @$log.debug "DatabaseShareCtrl.goToManageShares()"
       @$state.go("databaseManageShares", {documentId: @documentId})
     
-    formatDate: (date) ->
-      dateString = null
-      if (date)
-        year = date.getFullYear()
-        month = date.getMonth() + 1
-        day = date.getDate()
-        dateString = year + "-" + month + "-" + day
-      dateString
-
     cancel: () ->
       @$log.debug "DatabaseShareCtrl.cancel()"
       @$state.go('folder.documents')

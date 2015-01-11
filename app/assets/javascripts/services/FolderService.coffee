@@ -51,7 +51,7 @@ class FolderService
             )
         deferred.promise
 
-    search: (documentFolderId, searchText) ->
+    searchInFolder: (documentFolderId, searchText) ->
         @$log.debug "FolderService.search(#{documentFolderId}, #{searchText})"
         deferred = @$q.defer()
 

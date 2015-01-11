@@ -2,7 +2,7 @@
 class JobRequirementCtrl
 
     constructor: (@$log, @$scope, @$state, @JobRequirementService, @JobRequirement, @Industry, @ErrorService, @UtilityService, @$location) ->
-        @$log.debug "constructing JobRequirementController"
+        @$log.debug "constructing JobRequirementCtrl"
         @jobRequirement = {}
         @jobRequirements = []
         @industry = {}
@@ -77,7 +77,11 @@ class JobRequirementCtrl
         @$log.debug "JobRequirementCtrl.cancelDelete()"
         @deleteAlert = false
         @deleteObj
-        
+    
+    preview: (jobRequirement) ->
+        @$log.debug "JobRequirementCtrl.preview(#{jobRequirement.jobRequirementId})"
+        @$state.go("jobRequirementPreview", {jobRequirementId: jobRequirement.jobRequirementId})
+
     goToEdit: (jobRequirement) ->
         @$log.debug "IndustryCtrl.goToEdit(#{jobRequirement})"
         @$state.go("jobRequirementEdit", {jobRequirementId: jobRequirement.jobRequirementId})

@@ -21,14 +21,14 @@ object UserQueryGenerator extends QueryGenerator with LuceneConsts {
   }
   
   override def getFilter(fieldName: String, ids : Seq[Long]) : Filter = {
-    val booleanQuery = new BooleanQuery();
+    val booleanQuery = new BooleanQuery()
     if (ids.length > 0) booleanQuery.setMinimumNumberShouldMatch(1)
     ids.map { userId =>
-        booleanQuery.add(new TermQuery(new Term(fieldName, userId.toString)), BooleanClause.Occur.SHOULD);
+        booleanQuery.add(new TermQuery(new Term(fieldName, userId.toString)), BooleanClause.Occur.SHOULD)
     }
     
     val term = new TermQuery(new Term(FIELD_DOCUMENT_TYPE, DOC_TYPE_USER))
-    booleanQuery.add(term, BooleanClause.Occur.MUST);
+    booleanQuery.add(term, BooleanClause.Occur.MUST)
     
     val filter = new QueryWrapperFilter(booleanQuery)
     filter

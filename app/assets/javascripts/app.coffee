@@ -326,7 +326,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobRequirements', {
-              url: '/jobs'
+              url: '/jobs/list'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -346,7 +346,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobRequirementCreate', {
-              url: '/jobs/create'
+              url: '/jobs/job/create'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -360,7 +360,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('jobRequirementEdit', {
-              url: '/jobs/:jobRequirementId/edit'
+              url: '/jobs/job/:jobRequirementId/edit'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -370,6 +370,71 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementEdit.html'
+                }
+              }
+          })
+          .state('jobRequirementPreview', {
+              url: '/jobs/job/:jobRequirementId/preview'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/jobRequirementPreview.html'
+                }
+              }
+          })
+          .state('jobRequirementView', {
+              url: '/job/search/:jobRequirementId/view'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/jobRequirementView.html'
+                }
+              }
+          })
+          .state('jobApplication', {
+              url: '/job/search/:jobRequirementId/apply'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/jobApplication.html'
+                }
+              }
+          })
+          .state('jobSearch', {
+              url: '/job/search',
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    controller: 'JobSearchCtrl as ctrl',
+                    templateUrl: '/assets/partials/jobSearch.html'
+                }
+              }
+          })
+          .state('jobAdvanceSearch', {
+              url: ''
+              views: {
+                'viewSearchResults': {
+                    templateUrl: '/assets/partials/jobAdvanceSearch.html'
                 }
               }
           })
@@ -767,7 +832,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('messages', {
-              url: '/message',
+              url: '/messages',
               'abstract': true,
               views: {
                 'viewHeaderBar': {
@@ -786,7 +851,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
           })
           .state('messages.messageList', {
               # child of 'message' state
-              url: '',
+              url: '/list',
               views: {
                 'viewMessageList': {
                   templateUrl: '/assets/partials/messageList.html'
@@ -794,7 +859,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('messages.createMessageBox', {
-              url: '/create',
+              url: '/message-box/create',
               views: {
                 'viewLabel': {
                     templateUrl: '/assets/partials/messageBoxCreate.html'
@@ -805,7 +870,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('messages.manageMessageBox', {
-              url: '/manage',
+              url: '/message-box/manage',
               views: {
                 'viewMessageList': {
                   templateUrl: '/assets/partials/messageBoxManagement.html'
