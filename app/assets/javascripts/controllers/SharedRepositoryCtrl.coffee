@@ -6,11 +6,8 @@ class SharedRepositoryCtrl
         @$log.debug "constructing SharedRepositoryCtrl"
         @documents = []
         @displayCollection = []
+        @searchText
         
-        @$scope.$on('globalSearch', (event, data) =>
-                                    @$log.debug "received message globalSearch(#{data.searchText})"
-                                    @search(data.searchText)
-        )
         @$scope.$on('contextMenu', (event, data) =>
                                     @$log.debug "received message contextMenu(#{data.menuItem})"
                                     @refresh() if data.menuItem is "refresh"
@@ -64,11 +61,15 @@ class SharedRepositoryCtrl
                 @$log.error "Unable to copy document: #{error}"
             )
     
-    search: (searchText) ->
-        @$log.debug "SharedRepositoryCtrl.search(#{searchText})"
-        if (searchText)
+    clearSearchText: () ->
+        @searchText = ""
+        @search()
+
+    search: () ->
+        @$log.debug "SharedRepositoryCtrl.search()"
+        if (@searchText)
           @documents = []
-          @SharedRepositoryService.search(searchText).then(
+          @SharedRepositoryService.search(@searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @documents = data

@@ -225,6 +225,30 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
           )
   }
   
+  def apply(jobRequirementId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
+      //logger.info("in JobRequirementController.apply(${jobRequirementId}))")
+      println("in JobRequirementController.apply(${jobRequirementId})")
+      
+      val jsonObj = request.body.asInstanceOf[JsObject]
+      jsonObj.validate[JobApplicationDTO].fold(
+            valid = { jobApplicationDTO =>
+                      val jobApplication = JobApplication(jobApplicationDTO, userId, new DateTime, None, None)
+                      val jobApplicationId = JobApplicationRepository.create(jobApplication)
+                      
+                      jobApplicationDTO.attachments.map { attachment =>
+                                val jobApplicationAttachment = JobApplicationAttachment(attachment, jobApplicationId, userId, new DateTime, None, None)
+                                val jobApplicationAttachmentId = JobApplicationAttachmentRepository.create(jobApplicationAttachment)
+                      }
+                      Ok(HttpResponseUtil.success("Successfully created job application!"))
+            },
+            invalid = {  
+              errors =>
+                println(errors)
+                BadRequest(HttpResponseUtil.error("Unable to parse payload!"))
+            }
+          )
+  }
+  
   def updateIndex(company: Company, jobRequirementId: Long, jobRequirementXtnId: Long) = {
       val optJobRequirement = JobRequirementRepository.find(jobRequirementId)
       val optJobRequirementXtn = JobRequirementXtnRepository.find(jobRequirementXtnId)

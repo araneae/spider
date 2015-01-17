@@ -79,7 +79,7 @@ class DatabaseManageShareCtrl
         orgObj = @sharedContactsOrg[obj.id]
         equals = angular.equals(obj, orgObj)
         if (!equals)
-            obj.shareUntilEOD = @UtilityService.formatDate(obj.shareUntilEOD)
+            obj.shareUntilEOD = @UtilityService.formatDate(new Date(obj.shareUntilEOD))
             @DatabaseService.updateShare(@documentId, obj).then(
                 (data) => 
                   @$log.debug "Promise returned #{data} contacts"

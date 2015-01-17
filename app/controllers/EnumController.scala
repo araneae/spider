@@ -35,6 +35,7 @@ object EnumController extends Controller with Secured {
                Json.obj("GenderType" -> Json.toJson(GenderType.values)) ++
                Json.obj("MaritalStatusType" -> Json.toJson(MaritalStatusType.values)) ++
                Json.obj("CompanyUserStatusType" -> Json.toJson(CompanyUserStatusType.values)) ++
+               Json.obj("AttachmentType" -> Json.toJson(AttachmentType.values)) ++
                Json.obj("CompanyUserType" -> Json.toJson(CompanyUserType.values));
       Ok(json).as(JSON)
   }

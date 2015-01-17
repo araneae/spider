@@ -186,6 +186,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     val jsonObj = request.body.asInstanceOf[JsObject]
     jsonObj.validate[ContactWithDocument].fold(
             valid = { share =>
+                    println(share)
                     val optUserDocument = UserDocumentRepository.find(share.id, documentId)
                     optUserDocument match {
                       case Some(doc) =>

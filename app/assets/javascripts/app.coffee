@@ -37,11 +37,13 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     $q.reject(rejection)
               }
        ])
-       $urlRouterProvider.otherwise( ($injector, $location) ->
+       $urlRouterProvider
+          .when("", "/")
+          .otherwise( ($injector, $location) ->
                                           $state = $injector.get('$state')
                                           $log = $injector.get('$log')
-                                          #$log.debug "in otherwise..."
-                                          $state.go('index')
+                                          $log.debug "in otherwise..."
+                                          $state.go('folder.documents')
                                     )
        $stateProvider
           .state('settings', {
@@ -334,9 +336,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
-                'viewGlobalSearch@jobRequirements': {
-                    templateUrl: '/assets/partials/globalSearch.html'
-                },
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirements.html'
                 },
@@ -499,9 +498,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                'viewContextMenu@contact': {
                     templateUrl: '/assets/partials/contextMenuGeneric.html'
                 },
-               'viewGlobalSearch@contact': {
-                    templateUrl: '/assets/partials/globalSearch.html'
-                },
                'viewMain': {
                     templateUrl: '/assets/partials/contact.html'
                 }
@@ -580,9 +576,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 },
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
-                },
-                'viewGlobalSearch@folder': {
-                    templateUrl: '/assets/partials/globalSearch.html'
                 },
                 'viewMain': {
                     templateUrl: '/assets/partials/folder.html'
@@ -822,9 +815,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 },
                 'viewContextMenu@sharedRepositories': {
                     templateUrl: '/assets/partials/contextMenuGeneric.html'
-                },
-                'viewGlobalSearch@sharedRepositories': {
-                    templateUrl: '/assets/partials/globalSearch.html'
                 },
                 'viewMain': {
                     templateUrl: '/assets/partials/sharedRepositories.html'

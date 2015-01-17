@@ -46,6 +46,13 @@
                        ng-model="ctrl.company.website">
             </div>
         </div>
+        <div class="form-group">
+            <label id="lblOverview" for="overview" class="col-md-2 control-label">Overview</label>
+            <div class="col-md-6">
+            <textarea class="form-control" rows="6" name="overview" id="idOverview" placeholder="Enter company overview"
+                       ng-model="ctrl.company.overview" required></textarea>
+            </div>
+        </div>
         <!-- <pre>{{ ctrl.company | json }}</pre> -->
         <div class="form-group">
             <div class="col-md-offset-1 col-md-8">

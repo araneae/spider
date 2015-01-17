@@ -9,24 +9,24 @@
       <div class="row">
         <div class="col-md-12">
           <div class="col-md-6">
-            <h2 class="text-color-red">{{ctrl.job.jobTitle}}</h2>
+            <h2 class="text-color-red">{{ctrl.jobDef.jobTitle}}</h2>
           </div>
         </div>
         <div class="col-md-12">
-          <label class="col-md-3 text-primary">{{ctrl.job.companyName}}</label>
-          <label class="col-md-3 text-primary">{{ctrl.job.location}}</label>
-          <label class="col-md-2 text-primary">{{ctrl.job.employmentType}}</label>
+          <label class="col-md-3 text-primary">{{ctrl.jobDef.companyName}}</label>
+          <label class="col-md-3 text-primary">{{ctrl.jobDef.location}}</label>
+          <label class="col-md-2 text-primary">{{ctrl.jobDef.employmentType}}</label>
         </div>
       </div>
     </div>
     <div class="panel-body">
-      <!-- <pre>{{ ctrl.job | json }}</pre> -->
+      <!-- <pre>{{ ctrl.jobDef | json }}</pre> -->
       <form novalidate id="idJobApplicationForm" name="JobApplicationForm" class="form-horizontal" role="form"
               ng-submit="ctrl.apply()">
         <div class="form-group">
           <label id="lblPhone" for="phone" class="col-md-2 control-label">My Phone</label>
           <div class="col-md-3">
-            <input type="text" class="form-control" name="title" id="idPhone" placeholder="Enter your contact number"
+            <input type="text" class="form-control" name="phone" id="idPhone" placeholder="Enter your contact number"
                  ng-model="ctrl.jobApplication.phone" required>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <label id="lblPhone" for="phone" class="col-md-2 control-label">Availability</label>
           <div class="col-md-2">
             <select class="form-control" name="availability" id="idAvailability" ng-options="week.name for week in ctrl.weeks" 
-                      ng-model="ctrl.jobApplication.availability" required>
+                      ng-model="ctrl.availability" required>
             </select>
           </div>
         </div>
@@ -42,13 +42,13 @@
           <label id="lblPhone" for="phone" class="col-md-2 control-label">Relocation</label>
           <div class="col-md-6">
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Ready
+              <input type="radio" name="relocationOk" ng-model="ctrl.jobApplication.relocation" id="idRelocationOk" value="OK"> Ok
             </label>
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Not Ready
+              <input type="radio" name="relocationNotOk" ng-model="ctrl.jobApplication.relocation" id="idRelocationNotOk" value="NOTOK"> Not Ok
             </label>
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Some What
+              <input type="radio" name="relocationSomeWhat" ng-model="ctrl.jobApplication.relocation" id="idRelocationSomeWhat" value="SOMEWHAT"> Some What
             </label>
           </div>
         </div>
@@ -56,29 +56,37 @@
           <label id="lblPhone" for="phone" class="col-md-2 control-label">Traveling</label>
           <div class="col-md-6">
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> OK
+              <input type="radio" name="travelingOk" ng-model="ctrl.jobApplication.traveling" id="idTravelingOk" value="OK"> OK
             </label>
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Not OK
+              <input type="radio" name="travelingNotOk" ng-model="ctrl.jobApplication.traveling" id="idTravelingNotOk" value="NOTOK"> Not OK
             </label>
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Some What
+              <input type="radio" name="travelingSomeWhat" ng-model="ctrl.jobApplication.traveling" id="idTravelingSomeWhat" value="SOMEWHAT"> Some What
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label id="lblPhone" for="phone" class="col-md-2 control-label">My Resume</label>
-          <div class="col-md-3">
-            <select class="form-control" name="folder" id="idFolder" ng-options="folder.name for folder in ctrl.folders" 
-                    ng-model="ctrl.folder" required>
+        <div class="form-group" ng-repeat="attachment in ctrl.attachments">
+          <label for="name" class="col-md-2 control-label">{{attachment.label}}</label>
+          <div class="col-md-2">
+            <select class="form-control" name="attachmentType" ng-options="attachmentType as attachmentType for attachmentType in ctrl.EnumService.enumTypes.AttachmentType" 
+                   ng-model="attachment.attachmentType" required></select>
+          </div>
+          <div class="col-md-2">
+            <select class="form-control" name="folder" ng-options="folder.name for folder in attachment.folders" 
+                    ng-model="attachment.folder" ng-change="ctrl.folderChange(attachment)" required>
               <option value="">-- select a folder --</option>
             </select>
           </div>
           <div class="col-md-3">
-            <select class="form-control" name="document" id="idDocument" ng-show="ctrl.documents.length > 0" ng-options="document.name for document in ctrl.documents" 
-                    ng-model="ctrl.document" required>
+            <select class="form-control" name="document" ng-show="attachment.folder.documents.length > 0" ng-options="document.name for document in attachment.folder.documents" 
+                    ng-model="attachment.document" required>
               <option value="">-- select a document --</option>
             </select>
+          </div>
+          <div class="col-md-1">
+            <a href="" class="glyphicon glyphicon-plus" ng-show="attachment.document && $last && ($index < 4)" data-placement="left" title="Add another attachment" ng-click="ctrl.addAttachment()"></a>
+            <a href="" class="glyphicon glyphicon-minus" ng-show="attachment.document && !$first" data-placement="left" title="Remove" ng-click="ctrl.removeAttachment($index)"></a>
           </div>
         </div>
         <div class="form-group">
@@ -90,6 +98,7 @@
           </div>
         </div>
         <hr/>
+        <pre>{{ ctrl.jobApplication | json }}</pre>
         <button type="button" class="btn btn-warning" data-placement="left" title="Cancel" ng-click="ctrl.cancel()">Cancel</button>
         <button type="button" class="btn btn-success" data-placement="left" title="Apply" ng-disabled="!JobApplicationForm.$valid" ng-click="ctrl.apply()">Apply</button>
       </form>

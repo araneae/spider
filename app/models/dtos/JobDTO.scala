@@ -17,6 +17,7 @@ import enums.BackgroundCheckType._
  */
 case class JobDTO(  
                  jobRequirementId: Long,
+                 companyId: Long,
                  companyName: String,
                  employmentType: EmploymentType,
                  industryName: String,
@@ -37,6 +38,7 @@ case class JobDTO(
                  backgroundCheck: BackgroundCheckType) {
   def this(company: Company, industry: Industry, jobTitle: JobTitle, jobRequirement: JobRequirement, xtn: JobRequirementXtn) {
       this(jobRequirement.jobRequirementId.get,
+           company.companyId.get,
            company.name,
            jobRequirement.employmentType,
            industry.name,
@@ -58,12 +60,13 @@ case class JobDTO(
   }
 }
 
-object JobDTO extends Function19[Long, String, EmploymentType, String, String, String, Int, String, Option[DateTime], Option[DateTime], 
+object JobDTO extends Function20[Long, Long, String, EmploymentType, String, String, String, Int, String, Option[DateTime], Option[DateTime], 
                                         Option[DateTime], SalaryType, Option[Double], Option[Double], CurrencyType, TaxTermType, JobStatusType,
                                               PaymentTermType, BackgroundCheckType, JobDTO]
 {
     implicit val jobWrites : Writes[JobDTO] = (
             (JsPath \ "jobRequirementId").write[Long] and
+            (JsPath \ "companyId").write[Long] and
             (JsPath \ "companyName").write[String] and
             (JsPath \ "employmentType").write[EmploymentType] and
             (JsPath \ "industryName").write[String] and
@@ -86,6 +89,7 @@ object JobDTO extends Function19[Long, String, EmploymentType, String, String, S
       
     implicit val jobReads : Reads[JobDTO] = (
           (JsPath \ "jobRequirementId").read[Long] and
+          (JsPath \ "companyId").read[Long] and
           (JsPath \ "companyName").read[String] and
           (JsPath \ "employmentType").read[EmploymentType] and
           (JsPath \ "industryName").read[String] and

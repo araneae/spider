@@ -50,7 +50,7 @@ class UtilityService
         day = date.getDate()
         dateString = year + "-" + month + "-" + day
       dateString
-
+  
     addDays: (date, days) ->
       newDate = date
       if (date)

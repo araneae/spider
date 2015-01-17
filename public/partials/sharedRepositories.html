@@ -6,7 +6,23 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title">Shared Documents</div>
+      <div class="panel-title clearfix">Shared Documents
+        <div class="col-md-6 pull-right">
+          <form name="FormSharedRepositories" ng-submit="ctrl.search()">
+            <div class="input-group">
+              <div class="input-group-btn" data-placement="left" title="Clear search text">
+                <button type="button" class="btn btn-default" id="idClearSearchTextBtn" ng-click="ctrl.clearSearchText()">Clear</button>
+              </div>
+              <input type="text" class="form-control" name="searchBox" id="idSearchBox" ng-model="ctrl.searchText" placeholder="Enter search query" required>
+              <div class="input-group-btn" data-placement="left" title="Search">
+                <button type="submit" class="btn btn-default" id="idSearchBtn" ng-disabled="!FormSharedRepositories.$valid">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <table st-table="ctrl.displayCollection" st-safe-src="ctrl.documents" class="table table-striped table-fixed">
@@ -20,7 +36,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="document in ctrl.displayCollection">
-            <td><a href="" data-placement="left" title="{{document.name}}">{{document.name}}</a></td>
+            <td data-placement="left" title="{{document.name}}">{{document.name}}</td>
             <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
             <td data-placement="left" title="{{document.sharedBy}}">{{document.sharedBy}}</td>
             <td> 

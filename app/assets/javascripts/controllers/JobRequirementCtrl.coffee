@@ -85,5 +85,5 @@ class JobRequirementCtrl
     goToEdit: (jobRequirement) ->
         @$log.debug "IndustryCtrl.goToEdit(#{jobRequirement})"
         @$state.go("jobRequirementEdit", {jobRequirementId: jobRequirement.jobRequirementId})
-        
+
 controllersModule.controller('JobRequirementCtrl', JobRequirementCtrl)

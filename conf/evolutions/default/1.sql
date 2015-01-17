@@ -5,7 +5,7 @@
 
 create table `company_user` (`company_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(254) NOT NULL,`middle_name` VARCHAR(254),`last_name` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`status` INTEGER NOT NULL,`user_type` INTEGER NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create unique index `idx_company_user_on_email_unique` on `company_user` (`company_id`,`email`);
-create table `company` (`company_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(254) NOT NULL,`status` INTEGER NOT NULL,`address` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`website` VARCHAR(254),`telephone` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create table `company` (`company_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(254) NOT NULL,`status` INTEGER NOT NULL,`address` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`overview` TEXT NOT NULL,`website` VARCHAR(254),`telephone` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create unique index `idx_company_on_name_unique` on `company` (`name`);
 create table `contact` (`user_id` BIGINT NOT NULL,`friend_id` BIGINT NOT NULL,`status` INTEGER DEFAULT 1 NOT NULL,`token` VARCHAR(254),`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 alter table `contact` add constraint `pk_on_contact_user_id_friend_id` primary key(`user_id`,`friend_id`);
@@ -22,6 +22,8 @@ create table `follower` (`subject_id` BIGINT NOT NULL,`follower_id` BIGINT NOT N
 alter table `follower` add constraint `pk_on_follower_subject_id_follower_id` primary key(`subject_id`,`follower_id`);
 create table `industry` (`industry_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(254) NOT NULL,`description` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create unique index `idx_unique_on_industry_name` on `industry` (`name`);
+create table `job_application_attachment` (`job_application_attachment_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`job_application_id` BIGINT NOT NULL,`attachment_type` INTEGER NOT NULL,`document_id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create table `job_application` (`job_application_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_id` BIGINT NOT NULL,`job_requirement_id` BIGINT NOT NULL,`phone` VARCHAR(254) NOT NULL,`available_in_weeks` INTEGER NOT NULL,`relocation` INTEGER NOT NULL,`traveling` INTEGER NOT NULL,`message` TEXT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create table `job_requirement_xtn` (`job_requirement_xtn_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`target_start_date` TIMESTAMP NULL,`target_end_date` TIMESTAMP NULL,`location_lat` DOUBLE,`location_lng` DOUBLE,`salary_type` INTEGER NOT NULL,`salary_min` DOUBLE,`salary_max` DOUBLE,`currency` INTEGER NOT NULL,`tax_term` INTEGER NOT NULL,`payment_term` INTEGER NOT NULL,`background_check` INTEGER NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create table `job_requirement` (`job_requirement_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_id` BIGINT NOT NULL,`code` VARCHAR(254) NOT NULL,`ref_number` VARCHAR(254),`title` VARCHAR(254) NOT NULL,`employment_type` INTEGER NOT NULL,`industry_id` BIGINT NOT NULL,`location` VARCHAR(254) NOT NULL,`description` TEXT NOT NULL,`status` INTEGER NOT NULL,`positions` INTEGER NOT NULL,`job_title_id` BIGINT NOT NULL,`post_date` TIMESTAMP NULL,`job_requirement_xtn_id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create unique index `idx_job_requirement_on_code_unique` on `job_requirement` (`company_id`,`code`);
@@ -45,7 +47,7 @@ create table `user_profile_personal` (`user_profile_personal_id` BIGINT NOT NULL
 create table `user_skill` (`user_id` BIGINT NOT NULL,`skill_id` BIGINT NOT NULL,`skill_level` INTEGER NOT NULL,`description_short` VARCHAR(254),`description_long` VARCHAR(254),`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 alter table `user_skill` add constraint `pk_on_user_skill_user_id_skill_id` primary key(`user_id`,`skill_id`);
 create table `user_tag` (`user_tag_Id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
-create table `user` (`user_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(254) NOT NULL,`middle_name` VARCHAR(254),`last_name` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`password` VARCHAR(254) NOT NULL,`country_id` BIGINT NOT NULL,`activationToken` VARCHAR(254) NOT NULL,`verified` BOOLEAN NOT NULL,`last_logon` TIMESTAMP NOT NULL,`status` INTEGER NOT NULL,`user_profile_personal_id` BIGINT,`otp` VARCHAR(254),`otp_expired_at` TIMESTAMP NULL,`created_at` TIMESTAMP NOT NULL,`updated_at` TIMESTAMP NULL);
+create table `user` (`user_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(254) NOT NULL,`middle_name` VARCHAR(254),`last_name` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`second_email` VARCHAR(254),`password` VARCHAR(254) NOT NULL,`country_id` BIGINT NOT NULL,`activationToken` VARCHAR(254) NOT NULL,`verified` BOOLEAN NOT NULL,`last_logon` TIMESTAMP NOT NULL,`status` INTEGER NOT NULL,`user_profile_personal_id` BIGINT,`otp` VARCHAR(254),`otp_expired_at` TIMESTAMP NULL,`created_at` TIMESTAMP NOT NULL,`updated_at` TIMESTAMP NULL);
 create unique index `idx_user_on_email_unique` on `user` (`email`);
 alter table `company_user` add constraint `fk_company_user_company_id` foreign key(`company_id`) references `company`(`company_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_user` add constraint `fk_company_user_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
@@ -78,6 +80,14 @@ alter table `follower` add constraint `fk_on_follower_subject_id` foreign key(`s
 alter table `follower` add constraint `fk_on_follower_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `industry` add constraint `fk_on_industry_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `industry` add constraint `fk_on_industry_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application_attachment` add constraint `fk_job_application_attachment_on_application_id` foreign key(`job_application_id`) references `job_application`(`job_application_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application_attachment` add constraint `fk_job_application_attachment_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application_attachment` add constraint `fk_job_application_attachment_on_document_id` foreign key(`document_id`) references `document`(`document_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application_attachment` add constraint `fk_job_application_attachment_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application` add constraint `fk_job_application_on_company_id` foreign key(`company_id`) references `company`(`company_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application` add constraint `fk_job_application_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application` add constraint `fk_job_application_on_job_requirement_id` foreign key(`job_requirement_id`) references `job_requirement`(`job_requirement_id`) on update NO ACTION on delete NO ACTION;
+alter table `job_application` add constraint `fk_job_application_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `job_requirement_xtn` add constraint `fk_job_requirement_xtn_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `job_requirement_xtn` add constraint `fk_job_requirement_xtn_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `job_requirement` add constraint `fk_job_requirement_jon_on_title_id` foreign key(`job_title_id`) references `job_title`(`job_title_id`) on update NO ACTION on delete NO ACTION;
@@ -177,6 +187,14 @@ ALTER TABLE job_requirement DROP FOREIGN KEY fk_job_requirement_on_job_requireme
 ALTER TABLE job_requirement DROP FOREIGN KEY fk_job_requirement_on_updated_user_id;
 ALTER TABLE job_requirement_xtn DROP FOREIGN KEY fk_job_requirement_xtn_on_created_user_id;
 ALTER TABLE job_requirement_xtn DROP FOREIGN KEY fk_job_requirement_xtn_on_updated_user_id;
+ALTER TABLE job_application DROP FOREIGN KEY fk_job_application_on_company_id;
+ALTER TABLE job_application DROP FOREIGN KEY fk_job_application_on_created_user_id;
+ALTER TABLE job_application DROP FOREIGN KEY fk_job_application_on_job_requirement_id;
+ALTER TABLE job_application DROP FOREIGN KEY fk_job_application_on_updated_user_id;
+ALTER TABLE job_application_attachment DROP FOREIGN KEY fk_job_application_attachment_on_application_id;
+ALTER TABLE job_application_attachment DROP FOREIGN KEY fk_job_application_attachment_on_created_user_id;
+ALTER TABLE job_application_attachment DROP FOREIGN KEY fk_job_application_attachment_on_document_id;
+ALTER TABLE job_application_attachment DROP FOREIGN KEY fk_job_application_attachment_on_updated_user_id;
 ALTER TABLE industry DROP FOREIGN KEY fk_on_industry_created_user_id;
 ALTER TABLE industry DROP FOREIGN KEY fk_on_industry_updated_user_id;
 ALTER TABLE follower DROP FOREIGN KEY fk_on_follower_created_user_id;
@@ -226,6 +244,8 @@ drop table `message_box`;
 drop table `job_title`;
 drop table `job_requirement`;
 drop table `job_requirement_xtn`;
+drop table `job_application`;
+drop table `job_application_attachment`;
 drop table `industry`;
 ALTER TABLE follower DROP PRIMARY KEY;
 drop table `follower`;

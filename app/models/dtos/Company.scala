@@ -15,6 +15,7 @@ case class Company(
                  status: CompanyStatusType,
                  address: String,
                  email: String,
+                 overview: String,
                  website: Option[String],
                  telephone: String,
                  createdUserId: Long,
@@ -31,6 +32,7 @@ case class Company(
            companyDTO.status,
            companyDTO.address,
            companyDTO.email,
+           companyDTO.overview,
            companyDTO.website,
            companyDTO.telephone,
            createdUserId,
@@ -40,7 +42,7 @@ case class Company(
   }
 }
 
-object Company extends Function11[Option[Long], String, CompanyStatusType, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Company]
+object Company extends Function12[Option[Long], String, CompanyStatusType, String, String, String, Option[String], String, Long, DateTime, Option[Long], Option[DateTime], Company]
 {
     implicit val companyWrites : Writes[Company] = (
             (JsPath \ "companyId").write[Option[Long]] and
@@ -48,6 +50,7 @@ object Company extends Function11[Option[Long], String, CompanyStatusType, Strin
             (JsPath \ "status").write[CompanyStatusType] and
             (JsPath \ "address").write[String] and
             (JsPath \ "email").write[String] and
+            (JsPath \ "overview").write[String] and
             (JsPath \ "website").write[Option[String]] and
             (JsPath \ "telephone").write[String] and
             (JsPath \ "createdUserId").write[Long] and
@@ -62,6 +65,7 @@ object Company extends Function11[Option[Long], String, CompanyStatusType, Strin
             (JsPath \ "status").read[CompanyStatusType] and
             (JsPath \ "address").read[String] and
             (JsPath \ "email").read[String] and
+            (JsPath \ "overview").read[String] and
             (JsPath \ "website").readNullable[String] and
             (JsPath \ "telephone").read[String] and
             (JsPath \ "createdUserId").read[Long] and

@@ -28,6 +28,8 @@ class DatabaseUploadCtrl
           (data) =>
               @$log.debug "Promise returned #{data} folder"
               @folders = data
+              if (data && data.length > 0)
+                @folder =  data[0]
           ,
           (error) =>
               @$log.error "Unable to fetch folder: #{error}"

@@ -8,7 +8,7 @@ class JobRequirementService
         @$log.debug "constructing JobRequirementService"
 
     search: (jobSearch) ->
-        @$log.debug "JobRequirementService.advanceSearch(#{jobSearch})"
+        @$log.debug "JobRequirementService.search(#{jobSearch})"
         deferred = @$q.defer()
 
         @$http.post("/jobRequirement/search", jobSearch)
@@ -63,6 +63,21 @@ class JobRequirementService
             )
         .error((data, status, headers) =>
                 @$log.error("Failed to fetch job for preview - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
+    apply: (jobRequirementId, jobApplication) ->
+        @$log.debug "JobRequirementService.apply(#{jobRequirementId}, #{jobApplication})"
+        deferred = @$q.defer()
+
+        @$http.post("/jobRequirement/#{jobRequirementId}/apply", jobApplication)
+        .success((data, status, headers) =>
+                @$log.info("Successfully created job application - status #{status}")
+                deferred.resolve(data)
+            )
+        .error((data, status, headers) =>
+                @$log.error("Failed to submit job application - status #{status}")
                 deferred.reject(data);
             )
         deferred.promise

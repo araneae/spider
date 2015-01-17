@@ -5,10 +5,8 @@ class ContactCtrl
         @$log.debug "constructing ContactCtrl"
         @profileImageUrl = "/assets/images/default_user.jpg"
         @contacts = []
-        @$scope.$on('globalSearch', (event, data) =>
-                                    @$log.debug "received message globalSearch(#{data.searchText})"
-                                    @search(data.searchText)
-        )
+        @searchText
+
         @$scope.$on('contextMenu', (event, data) =>
                                     @$log.debug "received message contextMenu(#{data.menuItem})"
                                     @refresh() if data.menuItem is "refresh"
@@ -32,12 +30,16 @@ class ContactCtrl
     refresh: () ->
       @listContacts()
     
-    search: (searchText) ->
-      @$log.debug "ContactCtrl.search(#{searchText})"
-      if @UtilityService.isEmpty(searchText)
+    clearSearchText: () ->
+      @searchText = ""
+      @search()
+
+    search: () ->
+      @$log.debug "ContactCtrl.search()"
+      if @UtilityService.isEmpty(@searchText)
           @listContacts()
       else 
-        @ContactService.search(searchText).then(
+        @ContactService.search(@searchText).then(
           (data) =>
               @$log.debug "Successfully returned search result #{data}"
               @contacts = data

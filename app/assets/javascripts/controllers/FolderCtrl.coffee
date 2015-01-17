@@ -18,6 +18,8 @@ class FolderCtrl
               @$log.debug "Promise returned #{data.length} folders"
               @folders = data
               #@folders.unshift({documentFolderId: 0, name: 'All'})
+              if (data && data.length > 0)
+                @goToDocumentFolder(data[0])
           ,
           (error) =>
               @$log.error "Unable to fetch folders: #{error}"

@@ -23,6 +23,8 @@ class Companies(tag: Tag) extends Table[Company](tag, "company") {
   
   def email = column[String]("email")
   
+  def overview = column[String]("overview", O.DBType("TEXT"))
+  
   def website = column[Option[String]]("website")
   
   def telephone = column[String]("telephone")
@@ -35,7 +37,7 @@ class Companies(tag: Tag) extends Table[Company](tag, "company") {
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (companyId.?, name, status, address, email, website, telephone, createdUserId, createdAt, updatedUserId, updatedAt) <> (Company.tupled, Company.unapply)
+  override def * = (companyId.?, name, status, address, email, overview, website, telephone, createdUserId, createdAt, updatedUserId, updatedAt) <> (Company.tupled, Company.unapply)
   
   // foreign keys and indexes
   def uniqueName = index("idx_company_on_name_unique", name, unique = true)

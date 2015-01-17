@@ -99,7 +99,7 @@ object UserDocumentRepository {
   def findAllByDocumentId(userId: Long, documentId: Long): Seq[UserDocument] = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(d => d.documentId === documentId && d.userId === userId && d.ownershipType === OwnershipType.OWNED) list
+          query.filter(d => d.documentId === documentId && d.userId === userId) list
     }
   }
   
@@ -107,7 +107,7 @@ object UserDocumentRepository {
     DB.withSession {
        implicit session: Session =>
           val q = for {
-              ud <- query.filter(d => d.userId === userId && d.ownershipType === OwnershipType.OWNED)
+              ud <- query.filter(d => d.userId === userId)
           }
           yield (ud.documentId)
           
@@ -118,7 +118,7 @@ object UserDocumentRepository {
   def find(userId: Long, documentId: Long): Option[UserDocument] = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(d => d.userId === userId && d.documentId === documentId && d.ownershipType === OwnershipType.OWNED) firstOption
+          query.filter(d => d.userId === userId && d.documentId === documentId) firstOption
     }
   }
   

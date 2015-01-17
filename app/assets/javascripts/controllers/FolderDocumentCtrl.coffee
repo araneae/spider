@@ -12,10 +12,8 @@ class FolderDocumentCtrl
         @displayCollection = []
         @removeId
         @removeAlert = false
-        @$scope.$on('globalSearch', (event, data) =>
-                                    @$log.debug "received message globalSearch(#{data.searchText})"
-                                    @search(@documentFolderId, data.searchText)
-        )
+        @searchText
+        
         @$scope.$on('contextMenu', (event, data) =>
                                     @$log.debug "received message contextMenu(#{data.menuItem})"
                                     @refresh() if data.menuItem is "refresh"
@@ -139,11 +137,15 @@ class FolderDocumentCtrl
                 @$log.error "Unable to delete document: #{error}!"
             )
 
-    search: (documentFolderId, searchText) ->
-        @$log.debug "FolderDocumentCtrl.search(#{documentFolderId}, #{searchText})"
-        if (searchText)
+    clearSearchText: () ->
+        @searchText = ""
+        @search()
+    
+    search: () ->
+        @$log.debug "FolderDocumentCtrl.search()"
+        if (@searchText)
           @documents = []
-          @FolderService.searchInFolder(documentFolderId, searchText).then(
+          @FolderService.searchInFolder(@documentFolderId, @searchText).then(
             (data) =>
                 @$log.debug "Successfully returned search result #{data.length}"
                 @documents = data

@@ -75,12 +75,13 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     //logger.info(s"in SharedDocumentController.search(${searchText})")
     println(s"in SharedDocumentController.search(${searchText})")
     
-    if (searchText.length() > 0){
+    if (searchText.length() > 0) {
       val documentFolderIds = UserDocumentRepository.getSharedDocumentFolderIds(userId)
-      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-      // send message to index searcher
-      val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolderIds, searchText)).mapTo[MessageDocumentSearchResult]
-      val result = f.map {
+      if (documentFolderIds.length > 0) {
+        implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+        // send message to index searcher
+        val f = ask(indexSearcherActor, MessageDocumentSearch(documentFolderIds, searchText)).mapTo[MessageDocumentSearchResult]
+        val result = f.map {
            case MessageDocumentSearchResult(docIds) => {
                   val userDocuments = UserDocumentRepository.findAllByDocumentIds(userId, docIds)
                   val data = Json.toJson(userDocuments)
@@ -90,11 +91,15 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
 //                case Failure(failure) =>
 //                        println(s"Failrure ${failure}")
 //                        Ok("")
+        }
+        Await.result(result, timeout.duration)
       }
-      Await.result(result, timeout.duration)
+      else {
+        Ok(HttpResponseUtil.reponseEmptyList())
+      }
     }
     else {
-      Ok(HttpResponseUtil.reponseEmptyObject())
+      Ok(HttpResponseUtil.reponseEmptyList())
     }
   }
   

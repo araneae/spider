@@ -135,6 +135,8 @@ POST   /jobRequirement/search                                   controllers.JobR
 
 GET    /jobRequirement/:jobRequirementId/preview                controllers.JobRequirementController.preview(jobRequirementId: Long)
 
+POST    /jobRequirement/:jobRequirementId/apply                 controllers.JobRequirementController.apply(jobRequirementId: Long)
+
 # UserSkill specific routes
 POST   /userSkill/:skillId                                      controllers.UserSkillController.create(skillId: Int)
 

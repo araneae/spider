@@ -38,7 +38,7 @@ object CompanyController extends Controller with Secured {
             valid = { companyDTO =>
                   companyDTO.companyId match {
                     case Some(companyId) =>
-                      val optCompany = CompanyRepository.findByUserId(companyId)
+                      val optCompany = CompanyRepository.find(companyId)
                       optCompany match {
                         case Some(company) =>
                             val updatedCompany = Company(companyDTO,

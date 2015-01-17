@@ -15,6 +15,7 @@ case class CompanyDTO(
                  status: CompanyStatusType,
                  address: String,
                  email: String,
+                 overview: String,
                  website: Option[String],
                  telephone: String) {
   def this(company: Company) {
@@ -23,12 +24,13 @@ case class CompanyDTO(
            company.status,
            company.address,
            company.email,
+           company.overview,
            company.website,
            company.telephone)
   }
 }
 
-object CompanyDTO extends Function7[Option[Long], String, CompanyStatusType, String, String, Option[String], String, CompanyDTO]
+object CompanyDTO extends Function8[Option[Long], String, CompanyStatusType, String, String, String, Option[String], String, CompanyDTO]
 {
     implicit val companyWrites : Writes[CompanyDTO] = (
             (JsPath \ "companyId").write[Option[Long]] and
@@ -36,6 +38,7 @@ object CompanyDTO extends Function7[Option[Long], String, CompanyStatusType, Str
             (JsPath \ "status").write[CompanyStatusType] and
             (JsPath \ "address").write[String] and
             (JsPath \ "email").write[String] and
+            (JsPath \ "overview").write[String] and
             (JsPath \ "website").write[Option[String]] and
             (JsPath \ "telephone").write[String]
     )(unlift(CompanyDTO.unapply))
@@ -46,6 +49,7 @@ object CompanyDTO extends Function7[Option[Long], String, CompanyStatusType, Str
             (JsPath \ "status").read[CompanyStatusType] and
             (JsPath \ "address").read[String] and
             (JsPath \ "email").read[String] and
+            (JsPath \ "overview").read[String] and
             (JsPath \ "website").readNullable[String] and
             (JsPath \ "telephone").read[String]
     )(CompanyDTO)
