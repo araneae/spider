@@ -182,7 +182,7 @@
         <script src='@routes.Assets.at("javascripts/controllers/MessageBoxCtrl.js")' type="text/javascript"></script>
         <script src='@routes.Assets.at("javascripts/controllers/GlobalSearchCtrl.js")' type="text/javascript"></script>
     </head>
-    <body id="index" ng-controller="BodyCtrl as ctrl" ng-style="ctrl.bodyStyle">
+    <body id="index" ng-controller="BodyCtrl as ctrl" ng-style="ctrl.bodyStyle" scroll-to-top>
       <div ui-view></div>
       <div id="header" class="container-fluid header">
          <div class="row-fluid">
@@ -231,5 +231,8 @@
          <div class="col-lg-1"></div>
         </div><!-- /.row-fluid -->
       </div><!-- /.container footer -->
+      <div id="idScrollToTop" class="goto-top">
+        <i class="glyphicon glyphicon-plane" data-placement="left" title="Goto Top" ng-click="ctrl.goToTop()"></i>
+      </div>
     </body>
 </html>
