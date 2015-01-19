@@ -104,7 +104,6 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     
     val list = UserDocumentFolderRepository.getAllDocumentsByDocumentFolderId(userId, documentFolderId)
     val data = Json.toJson(list)
-    println(data)
     Ok(data).as(JSON)
   }
 
@@ -325,18 +324,37 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     //logger.info(s"in DatabaseController.delete(${documentId})")
     println(s"in DatabaseController.delete(${documentId})")
     // find document object from database
-    val userDocument = UserDocumentRepository.find(userId, documentId)
-    userDocument match {
-      case Some(userDoc) =>
+    val userDocuments = UserDocumentRepository.findAllByDocumentId(documentId)
+    val sharedDocuments = userDocuments.filter { x => x.ownershipType == OwnershipType.SHARED }
+    if (sharedDocuments.length > 0) {
+      BadRequest(HttpResponseUtil.error("Unable to delete the document, the document has been shared with one or more contacts!"))
+    }
+    else {
+      val attachments = JobApplicationAttachmentRepository.findByDocumentId(documentId)
+      if (attachments.length > 0) {
+        BadRequest(HttpResponseUtil.error("Unable to delete the document, the document has been attached in one or more job applications!"))
+      }
+      else {
+        val userDocument = UserDocumentRepository.find(userId, documentId)
+        userDocument match {
+          case Some(userDoc) =>
                     // delete all the tags
                     DocumentTagRepository.deleteByDocumentId(userId, documentId)
                     
                     // delete the database entry
                     UserDocumentRepository.delete(userId, documentId)
                     
+                    // delete the document
+                    DocumentRepository.delete(documentId)
+                    
+                    // delete from index
+                    indexWriterActor ! MessageDeleteDocument(documentId)
+                    
                     Ok(HttpResponseUtil.success("Successfully deleted!"))
-      case None => 
+          case None => 
                     BadRequest(HttpResponseUtil.error("Unable to find document!"))
+        }
+      }
     }
   }
   

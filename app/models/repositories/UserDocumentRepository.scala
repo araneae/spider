@@ -96,10 +96,10 @@ object UserDocumentRepository {
     }
   }
   
-  def findAllByDocumentId(userId: Long, documentId: Long): Seq[UserDocument] = {
+  def findAllByDocumentId(documentId: Long): Seq[UserDocument] = {
     DB.withSession {
        implicit session: Session =>
-          query.filter(d => d.documentId === documentId && d.userId === userId) list
+          query.filter(d => d.documentId === documentId) list
     }
   }
   

@@ -122,7 +122,7 @@ class FolderDocumentCtrl
                 @listDocuments()
             ,
             (error) =>
-                @ErrorService.error("Oops! Unable to delete document.")
+                @ErrorService.error(error.data.message)
                 @$log.error "Unable to delete document: #{error}!"
             )
 

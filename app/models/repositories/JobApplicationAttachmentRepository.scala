@@ -34,6 +34,13 @@ object JobApplicationAttachmentRepository {
     }
   }
   
+  def findByDocumentId(documentId: Long): Seq[JobApplicationAttachment] = {
+    DB.withSession {
+       implicit session: Session =>
+         query filter (_.documentId === documentId) list
+    }
+  }
+  
   def delete(jobApplicationAttachmentId: Long) = {
     DB.withSession {
        implicit session: Session =>
