@@ -37,6 +37,18 @@ object UserDocumentFolderRepository {
     }
   }
   
+  def getByDocumentFolderId(userId: Long, documentFolderId: Long): Option[FolderDTO] = { 
+    DB.withSession {
+       implicit session: Session =>
+         val q = for {
+            uf <- userDocumentFolderQuery filter(x => x.userId === userId && x.documentFolderId === documentFolderId)
+            f <- uf.documentFolder
+         } yield(uf, f)
+         
+         q.firstOption map { case(uf, f) => FolderDTO(uf, f) }
+    }
+  }
+  
   def getAll(userId: Long): Seq[FolderDTO] = { 
     DB.withSession {
        implicit session: Session =>

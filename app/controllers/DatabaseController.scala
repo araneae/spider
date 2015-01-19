@@ -104,6 +104,7 @@ object DatabaseController extends Controller with Secured with AkkaActor {
     
     val list = UserDocumentFolderRepository.getAllDocumentsByDocumentFolderId(userId, documentFolderId)
     val data = Json.toJson(list)
+    println(data)
     Ok(data).as(JSON)
   }
 

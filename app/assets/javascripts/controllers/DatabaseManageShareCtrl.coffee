@@ -64,6 +64,10 @@ class DatabaseManageShareCtrl
     disableUpdate: () ->
       @UtilityService.isArrayEmpty(@sharedContacts)
 
+    goToAddShare: () ->
+      @$log.debug "DatabaseManageShareCtrl.goToAddShare()"
+      @$state.go("databaseDocumentShare", {documentId: @documentId})
+
     openDatePicker: (event, contact) ->
       event.preventDefault()
       event.stopPropagation()
@@ -71,7 +75,7 @@ class DatabaseManageShareCtrl
    
     cancel: () ->
       @$log.debug "DatabaseManageShareCtrl.cancel()"
-      @$state.go("databaseDocumentShare", {documentId: @documentId})
+      @$state.go("folder.documents")
    
     update: () ->
       @$log.debug "DatabaseManageShareCtrl.update()"

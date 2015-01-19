@@ -31,7 +31,7 @@ object DocumentFolderController extends Controller with Secured  with AkkaActor 
     //logger.info(s"in DocumentFolderController.get(${documentFolderId})")
     println(s"in DocumentFolderController.get(${documentFolderId})")
     
-    val optDocumentFolderDTO = DocumentFolderRepository.get(documentFolderId)
+    val optDocumentFolderDTO = UserDocumentFolderRepository.getByDocumentFolderId(userId, documentFolderId)
     val data = Json.toJson(optDocumentFolderDTO)
     Ok(data).as(JSON)
   }
@@ -53,7 +53,7 @@ object DocumentFolderController extends Controller with Secured  with AkkaActor 
             valid = { folderDTO =>
                     val documentFolder = DocumentFolder(folderDTO, userId, new DateTime, None, None)
                     val documentFolderId = DocumentFolderRepository.create(documentFolder)
-                    val userDocumentFolder = UserDocumentFolder(None, documentFolderId, userId, OwnershipType.OWNED, false, true, true, false, None, userId)
+                    val userDocumentFolder = UserDocumentFolder(None, documentFolderId, userId, OwnershipType.OWNED, true, true, true, false, None, userId)
                     UserDocumentFolderRepository.create(userDocumentFolder)
                     Ok(HttpResponseUtil.success("Successfully created folder!"))
             },

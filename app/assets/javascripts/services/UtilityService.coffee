@@ -39,6 +39,10 @@ class UtilityService
           empty = obj.length is 0
       empty
 
+    parseInteger: (obj) ->
+       value = parseInt(obj) if @isNumber(obj)
+       value
+    
     isNumber: (obj) ->
       !isNaN(parseFloat(obj)) && isFinite(obj)
 

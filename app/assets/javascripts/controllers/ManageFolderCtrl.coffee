@@ -47,13 +47,15 @@ class ManageFolderCtrl
         promises = []
         for documentFolderId in @removedIds
             promise = @DocumentFolder.remove({documentFolderId: documentFolderId}).$promise
+            @$log.debug "Removed folder Id #{documentFolderId}"
             promises.push(promise)
         
         for folder in @foldersMgm
             orgObj = @UtilityService.findByProperty(@folders, 'documentFolderId', folder.documentFolderId)
             equals = angular.equals(folder, orgObj)
-            if (!equals and @UtilityService.isStringEmpty(folder.name))
+            if (!equals and !@UtilityService.isStringEmpty(folder.name))
               promise = @DocumentFolder.update(folder).$promise
+              @$log.debug "Updated folder #{folder.name}"
               promises.push(promise)
 
         # wait for all the promises to complete

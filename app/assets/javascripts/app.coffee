@@ -849,7 +849,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               },
               ncyBreadcrumb: {
-                    parent: 'folder.documents',
+                    parent: 'databaseManageShares',
                     label: 'Share Document'
               }
           })
@@ -887,7 +887,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               },
               ncyBreadcrumb: {
-                    parent: 'databaseDocumentShare',
+                    parent: 'folder.documents',
                     label: 'Manage Shares'
               }
           })

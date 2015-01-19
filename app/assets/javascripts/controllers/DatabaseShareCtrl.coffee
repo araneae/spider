@@ -91,13 +91,9 @@ class DatabaseShareCtrl
               @ErrorService.error("Unable to share document!")
       )
     
-    goToManageShares: () ->
-      @$log.debug "DatabaseShareCtrl.goToManageShares()"
-      @$state.go("databaseManageShares", {documentId: @documentId})
-    
     cancel: () ->
       @$log.debug "DatabaseShareCtrl.cancel()"
-      @$state.go('folder.documents')
+      @$state.go('databaseManageShares')
       #@UtilityService.goBack('FolderDocumentCtrl', 'folder.documents')
 
 controllersModule.controller('DatabaseShareCtrl', DatabaseShareCtrl)

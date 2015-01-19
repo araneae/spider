@@ -41,12 +41,12 @@
             <td>{{document.createdAt  | date : 'shortDate'}}</td>
             <td> 
               <a href="" class="glyphicon glyphicon-folder-open" ng-show="document.canView" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
-              <a href="" class="glyphicon glyphicon-share" ng-show="document.canShare" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
-              <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>
+              <a href="" class="glyphicon glyphicon-share" ng-show="ctrl.showShareLink(document)" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
+            <!-- <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>  -->
               <a class="glyphicon glyphicon-save" ng-show="document.canCopy" file-download url="ctrl.getDownloadUrl({{document.documentId}})" data-placement="left" title="Download"></a>
               <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a> 
             <!-- <a href="" class="glyphicon glyphicon-tags" data-placement="left" title="Tag" ng-click="ctrl.goToDocumentTag(document.documentId)"></a> -->
-              <a href="" class="glyphicon glyphicon-trash" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(document.documentId)"></a>
+              <a href="" class="glyphicon glyphicon-trash" ng-show="ctrl.showDeleteLink()" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(document.documentId)"></a>
             </td>
           </tr>
         </tbody>

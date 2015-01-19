@@ -5,7 +5,7 @@ class FolderDocumentCtrl
                                             @DatabaseService, @UtilityService, @ErrorService, @ConfigService) ->
         @$log.debug "constructing FolderDocumentCtrl"
         @documentFolderId = 0
-        @documentFolderId = parseInt(@$stateParams.documentFolderId) if @UtilityService.isNumber(@$stateParams.documentFolderId)
+        @documentFolderId = @UtilityService.parseInteger(@$stateParams.documentFolderId)
         @documents = []
         @folder = {}
         @title ="All Documents"
@@ -17,9 +17,6 @@ class FolderDocumentCtrl
         @$scope.$on('contextMenu', (event, data) =>
                                     @$log.debug "received message contextMenu(#{data.menuItem})"
                                     @refresh() if data.menuItem is "refresh"
-                                    @goToUpload() if data.menuItem is "uploadFile"
-                                    @goToSearch() if data.menuItem is "advancedSearch"
-                                    @goToShareFolder() if data.menuItem is "shareFolder"
         )
         
         @$previousState.memo("FolderDocumentCtrl")
@@ -32,7 +29,7 @@ class FolderDocumentCtrl
         @$log.debug "FolderDocumentCtrl.loadFolder(#{documentFolderId})"
         @DocumentFolder.get({documentFolderId: documentFolderId}).$promise.then(
           (data) =>
-              @$log.debug "Promise returned #{data} folder"
+              @$log.debug "Promise returned #{angular.toJson(data)} folder"
               @folder = data
               @title = "Documents in #{data.name}"
           ,
@@ -43,7 +40,8 @@ class FolderDocumentCtrl
           
     listDocuments: () ->
         @$log.debug "FolderDocumentCtrl.listDocuments()"
-        @DatabaseService.getDocumentByDocumentFolderId(@documentFolderId).then(
+        if (@documentFolderId)
+          @DatabaseService.getDocumentByDocumentFolderId(@documentFolderId).then(
             (data) =>
                 @$log.debug "Promise returned #{data.length} documents"
                 @documents = data
@@ -57,7 +55,13 @@ class FolderDocumentCtrl
         
     refresh: () ->
       @listDocuments()
+
+    showShareLink: (document) ->
+        (document.canShare and !@folder.shared)
     
+    showDeleteLink: () ->
+        !@folder.shared
+        
     goToDocumentTag: (documentId) ->
         @$log.debug "FolderDocumentCtrl.goToDocumentTag(#{documentId})"
         @$state.go("databaseDocumentTag", {documentId: documentId})
@@ -72,26 +76,11 @@ class FolderDocumentCtrl
 
     goToShare: (documentId) ->
         @$log.debug "FolderDocumentCtrl.goToShare(#{documentId})"
-        @$state.go("databaseDocumentShare", {documentId: documentId})
+        @$state.go("databaseManageShares", {documentId: documentId})
     
     goToView: (documentId) ->
         @$log.debug "FolderDocumentCtrl.goToView(#{documentId})"
         @$state.go("databaseDocumentView", {documentId: documentId})
-
-    goToUpload: () ->
-        @$log.debug "FolderDocumentCtrl.goToUpload()"
-        @$state.go("databaseUpload")
-
-    goToSearch: () ->
-        @$log.debug "FolderDocumentCtrl.goToSearch()"
-        @$state.go("databaseSearch")
-  
-    goToShareFolder: () ->
-        @$log.debug "FolderDocumentCtrl.goToShareFolder()"
-        if (@documentFolderId > 0)
-          @$state.go("folder.shareFolder")
-        else
-          @ErrorService.error("Select a folder to share!")
 
     isAllowDragDrop: (document) ->
         @$log.debug "FolderDocumentCtrl.isAllowDragDrp(#{document})"
