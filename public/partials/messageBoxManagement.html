@@ -1,17 +1,23 @@
 <div ng-controller="MessageBoxCtrl as ctrl">
-  <table class="table table-striped">
-    <tr ng-repeat="mbox in ctrl.messageBoxes">
-      <td><input type="text" ng-model="mbox.name"></td>
-      <td><button class="btn-md btn-link" ng-disabled="mbox.messageCount > 0" ng-click="ctrl.remove(mbox.messageBoxId)">Remove</button></td>
-    </tr>
-  </table>
-  <hr>
-  <div class="form-group clearfix">
-    <div class="col-sm-offset-4 col-sm-8 text-right">
-      <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-      <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Manage Mail Boxes</div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <tr ng-repeat="mbox in ctrl.messageBoxes">
+          <td><input type="text" ng-model="mbox.name"></td>
+          <td><button class="btn-md btn-link" ng-disabled="mbox.messageCount > 0" ng-click="ctrl.remove(mbox.messageBoxId)">Remove</button></td>
+        </tr>
+      </table>
+      <hr>
+      <div class="form-group">
+        <div>
+          <button class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+          <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.save()">Save</button>
+        </div>
+      </div>
     </div>
   </div>
-  <hr>
 </div>
 

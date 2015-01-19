@@ -142,6 +142,6 @@ class MessageCtrl
       
     goToMessageBoxManagement: () ->
       @$log.debug "MessageCtrl.goToMessageBoxManagement()"
-      @$state.go("messages.manageMessageBox")
+      @$state.go("manageMessageBox")
 
 controllersModule.controller('MessageCtrl', MessageCtrl)

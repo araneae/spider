@@ -9,7 +9,7 @@ body, input, div, button, select, option, textarea, a {
     background-color: @headerBackground;
     color: @headerColor;
     font: @defaultFont;
-    height : 60px;
+    height : 50px;
     width : 100%;
     position: fixed;
     z-index: 1000;
@@ -20,7 +20,7 @@ body, input, div, button, select, option, textarea, a {
     color: @bodyColor;
     font: @defaultFont;
     position: relative;
-    top: 60px;
+    top: 50px;
 }
 
 .footer {
@@ -256,4 +256,13 @@ table.table-fixed td {
   color: #fff;
   display: none;
   background: #428bca;
+}
+
+/* overrides bootstrap styles */
+.navbar{
+    margin-bottom: 10px !important;
+}
+
+.breadcrumb{
+    margin-bottom: 10px !important;
 }

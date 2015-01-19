@@ -11,6 +11,7 @@ dependencies = [
     'angularFileUpload',
     'smart-table',
     'ngDraggable',
+    'ncy-angular-breadcrumb',
     'myApp.filters',
     'myApp.services',
     'myApp.controllers',
@@ -86,6 +87,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/industry.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Industries'
               }
           })
           .state('industryCreate', {
@@ -100,6 +104,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/industryCreate.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'industries',
+                    label: 'Create Industry'
               }
           })
           .state('industryEdit', {
@@ -114,6 +122,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/industryEdit.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'industries',
+                    label: 'Edit Industry'
               }
           })
           .state('skill', {
@@ -131,6 +143,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/skill.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Skills'
               }
           })
           .state('domains', {
@@ -148,6 +163,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/domain.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Domains'
               }
           })
           .state('domainCreate', {
@@ -162,6 +180,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/domainCreate.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'domains',
+                    label: 'Create Domain'
               }
           })
           .state('domainEdit', {
@@ -173,6 +195,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/domainEdit.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'domains',
+                    label: 'Edit Domain'
               }
           })
           .state('companyCreate', {
@@ -198,6 +224,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/companyView.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Company'
               }
           })
           .state('companyEdit', {
@@ -212,6 +241,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/companyEdit.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'companyView',
+                    label: 'Edit Settings'
               }
           })
           .state('companyUsers', {
@@ -229,6 +262,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/companyUsers.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'companyView',
+                    label: 'Manage Users'
               }
           })
           .state('companyUserCreate', {
@@ -246,6 +283,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/companyUserCreate.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'companyUsers',
+                    label: 'Add User'
               }
           })
           .state('companyUserView', {
@@ -263,6 +304,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/companyUserView.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'companyUsers',
+                    label: 'View User'
               }
           })
           .state('companyUserEdit', {
@@ -280,6 +325,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/companyUserEdit.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'companyUsers',
+                    label: 'Edit User'
               }
           })
           .state('jobTitles', {
@@ -297,6 +346,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewContextMenu@jobTitles': {
                     templateUrl: '/assets/partials/contextMenuAdmin.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Job Titles'
               }
           })
           .state('jobTitleCreate', {
@@ -311,6 +363,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitleCreate.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobTitles',
+                    label: 'Create Job Title'
               }
           })
           .state('jobTitleEdit', {
@@ -325,6 +381,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobTitleEdit.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobTitles',
+                    label: 'Edit Job Title'
               }
           })
           .state('jobRequirements', {
@@ -342,6 +402,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewContextMenu@jobRequirements': {
                     templateUrl: '/assets/partials/contextMenuAdmin.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Jobs'
               }
           })
           .state('jobRequirementCreate', {
@@ -356,6 +419,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementCreate.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobRequirements',
+                    label: 'Create Job'
               }
           })
           .state('jobRequirementEdit', {
@@ -370,6 +437,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementEdit.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobRequirements',
+                    label: 'Edit Job'
               }
           })
           .state('jobRequirementPreview', {
@@ -384,6 +455,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementPreview.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobRequirements',
+                    label: 'Preview Job'
               }
           })
           .state('jobRequirementView', {
@@ -398,6 +473,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobRequirementView.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobSearch',
+                    label: 'View Job'
               }
           })
           .state('jobApplication', {
@@ -412,6 +491,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/jobApplication.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'jobRequirementView',
+                    label: 'Apply Job'
               }
           })
           .state('jobSearch', {
@@ -427,6 +510,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     controller: 'JobSearchCtrl as ctrl',
                     templateUrl: '/assets/partials/jobSearch.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Job Search'
               }
           })
           .state('jobAdvanceSearch', {
@@ -501,6 +587,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                'viewMain': {
                     templateUrl: '/assets/partials/contact.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Contacts'
               }
           })
           .state('contactInvite', {
@@ -593,6 +682,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     controller: 'FolderDocumentCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseDocuments.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Folders'
               }
           })
           .state('folder.folderCreate', {
@@ -604,6 +696,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     controller: 'FolderDocumentCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseDocuments.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Folders'
               }
           })
           .state('databaseUpload', {
@@ -618,6 +713,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseUpload.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'Upload'
               }
           })
           .state('databaseSearch', {
@@ -635,6 +734,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseSearch.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'Search'
               }
           })
           .state('databaseDocumentTag', {
@@ -674,6 +777,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseXRay.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'XRay Document'
               }
           })
           .state('sharedDocumentXRay', {
@@ -688,6 +795,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/sharedDocumentXRay.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'sharedRepositories',
+                    label: 'XRay Document'
               }
           })
           .state('databaseDocumentView', {
@@ -702,6 +813,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseView.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'View Document'
               }
           })
           .state('sharedDocumentView', {
@@ -713,6 +828,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/sharedDocumentView.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'sharedRepositories',
+                    label: 'View Document'
               }
           })
           .state('databaseDocumentShare', {
@@ -728,6 +847,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     controller: 'DatabaseShareCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseShare.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'Share Document'
               }
           })
           .state('sharedDocumentShare', {
@@ -743,6 +866,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     controller: 'SharedDocumentShareCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseShare.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'sharedRepositories',
+                    label: 'Share Document'
               }
           })
           .state('databaseManageShares', {
@@ -758,6 +885,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     controller: 'DatabaseManageShareCtrl as ctrl',
                     templateUrl: '/assets/partials/databaseManageShares.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'databaseDocumentShare',
+                    label: 'Manage Shares'
               }
           })
            .state('sharedDocumentManageShares', {
@@ -786,6 +917,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewDocument': {
                     templateUrl: '/assets/partials/shareFolder.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'Share Folder'
               }
           })
           .state('database.userTagManagement', {
@@ -796,12 +931,23 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 }
               }
           })
-          .state('folder.documentFolderManagement', {
-              url: '/manage',
+          .state('documentFolderManagement', {
+              url: '/folders/manage',
               views: {
-                'viewDocument': {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                  templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    controller: 'ManageFolderCtrl as ctrl',
                     templateUrl: '/assets/partials/folderManagement.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'folder.documents',
+                    label: 'Manage Folders'
               }
           })
           .state('sharedRepositories', {
@@ -819,6 +965,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/sharedRepositories.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Shared Documents'
               }
           })
           .state('messages', {
@@ -846,6 +995,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMessageList': {
                   templateUrl: '/assets/partials/messageList.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Messages'
               }
           })
           .state('messages.createMessageBox', {
@@ -857,14 +1009,27 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMessageList': {
                     templateUrl: '/assets/partials/messageList.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    label: 'Messages'
               }
           })
-          .state('messages.manageMessageBox', {
+          .state('manageMessageBox', {
               url: '/message-box/manage',
               views: {
-                'viewMessageList': {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
                   templateUrl: '/assets/partials/messageBoxManagement.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'messages.messageList',
+                    label: 'Manage Mail Boxes'
               }
           })
           .state('groups', {

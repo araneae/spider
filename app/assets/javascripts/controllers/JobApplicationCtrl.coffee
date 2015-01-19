@@ -97,6 +97,6 @@ class JobApplicationCtrl
 
     cancel: () ->
         @$log.debug "JobApplicationCtrl.cancel()"
-        @$state.go("jobSearch")
+        @$state.go("jobRequirementView", {jobRequirementId: @jobRequirementId})
 
 controllersModule.controller('JobApplicationCtrl', JobApplicationCtrl)
