@@ -1,6 +1,7 @@
 package utils
 
 import play.api.Play
+import collection.JavaConversions._
 
 object Configuration {
   
@@ -15,6 +16,13 @@ object Configuration {
   private val xrayTerms: String = Play.current.configuration.getString("default.xray.terms").getOrElse("")
   private val defaultPictureUrl = Play.current.configuration.getString("default.profile.picture.url").getOrElse("")
   private val profilePictureUrl = Play.current.configuration.getString("profile.picture.url").getOrElse("")
+  private val siteAdminUserIds = {
+                   val optList = Play.current.configuration.getLongList("site.admin.userIds")
+                   optList match {
+                     case Some(list) => list.toList
+                     case None => List[Long]()
+                   }
+              }
   private val timeoutInMillis = timeoutInMins * 1000 * 60
   
   def applicationTitle = appTitle
@@ -46,4 +54,6 @@ object Configuration {
   def defaultProfilePictureUrl = defaultPictureUrl
   
   def userProfilePictureUrl(fileName: String) = s"${profilePictureUrl}/${fileName}"
+  
+  def isSiteAdmin(userId: Long) = if (siteAdminUserIds.contains(userId)) "true" else "false"
 }

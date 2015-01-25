@@ -42,7 +42,7 @@ class Companies(tag: Tag) extends Table[Company](tag, "company") {
   // foreign keys and indexes
   def uniqueName = index("idx_company_on_name_unique", name, unique = true)
   
-  def createdBy = foreignKey("fk_company_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_company_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_company_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_company_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

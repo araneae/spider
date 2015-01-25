@@ -128,6 +128,62 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     label: 'Edit Industry'
               }
           })
+          .state('permissions', {
+              url: '/admin/permission',
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewContextMenu@industries': {
+                    templateUrl: '/assets/partials/contextMenuAdmin.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/permission.html'
+                }
+              },
+              ncyBreadcrumb: {
+                    label: 'Permissions'
+              }
+          })
+          .state('permissionCreate', {
+              url: '/admin/permission/create'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/permissionCreate.html'
+                }
+              },
+              ncyBreadcrumb: {
+                    parent: 'permissions',
+                    label: 'Create Permission'
+              }
+          })
+          .state('permissionEdit', {
+              url: '/admin/permission/:permissionId/edit'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/permissionEdit.html'
+                }
+              },
+              ncyBreadcrumb: {
+                    parent: 'permissions',
+                    label: 'Edit Permission'
+              }
+          })
           .state('skill', {
               url: '/skill',
               views: {

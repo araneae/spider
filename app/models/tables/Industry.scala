@@ -29,9 +29,9 @@ class Industries(tag: Tag) extends Table[Industry](tag, "industry") {
   override def * = (industryId.?, name, description, createdUserId, createdAt, updatedUserId, updatedAt) <> (Industry.tupled, Industry.unapply)
   
   // foreign keys and indexes
-  def uniqueName = index("idx_unique_on_industry_name", name, unique = true)
+  def uniqueName = index("idx_industry_on_name", name, unique = true)
   
-  def createdBy = foreignKey("fk_on_industry_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_industry_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_industry_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_industry_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

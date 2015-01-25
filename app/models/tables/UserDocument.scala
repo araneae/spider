@@ -58,9 +58,9 @@ class UserDocuments(tag: Tag) extends Table[UserDocument](tag, "user_document") 
   
   def document = foreignKey("fk_user_document_on_document_id", documentId, TableQuery[Documents])(_.documentId)
   
-  def createdBy = foreignKey("fk_on_user_document_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_user_document_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_user_document_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_user_document_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
   
   def uniqueDocument = index("idx_user_document_on_user_id_document_id", (userId, documentId), unique = true)
 }

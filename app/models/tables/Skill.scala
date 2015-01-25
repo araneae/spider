@@ -34,9 +34,9 @@ class Skills(tag: Tag) extends Table[Skill](tag, "skill") {
   // foreign keys and indexes
   def industry = foreignKey("fk_skill_on_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
-  def uniqueName = index("idx_skill_on_name_unique", name, unique = true)
+  def uniqueName = index("idx_skill_on_name", name, unique = true)
   
-  def createdBy = foreignKey("fk_on_skill_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_skill_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_skill_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_skill_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

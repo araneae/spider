@@ -17,6 +17,6 @@ class Countries(tag: Tag) extends Table[Country](tag, "country") {
   
   // foreign keys and indexes
   
-  def uniqueCode = index("idx_country_on_code_unique", code, unique = true)
+  def uniqueCode = index("idx_country_on_code", code, unique = true)
 }
  

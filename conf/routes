@@ -74,6 +74,17 @@ DELETE /companyUser/:companyUserId                              controllers.Comp
 # Admin specific routes
 GET    /admin                                                   controllers.AdminController.admin
 
+# Permission specific routes
+POST   /permission                                              controllers.PermissionController.create
+
+GET    /permission                                              controllers.PermissionController.getAll
+
+GET    /permission/:permissionId                                controllers.PermissionController.get(permissionId: Long)
+
+PUT    /permission/:permissionId                                controllers.PermissionController.update(permissionId: Long)
+
+DELETE /permission/:permissionId                                controllers.PermissionController.delete(permissionId: Long)
+
 # Industry specific routes
 POST   /industry                                                controllers.IndustryController.create
 
@@ -90,9 +101,9 @@ POST   /skill                                                   controllers.Skil
 
 GET    /skill                                                   controllers.SkillController.getAll
 
-PUT    /skill/:skillId                                          controllers.SkillController.update(skillId: Int)
+PUT    /skill/:skillId                                          controllers.SkillController.update(skillId: Long)
 
-DELETE /skill/:skillId                                          controllers.SkillController.delete(skillId: Int)
+DELETE /skill/:skillId                                          controllers.SkillController.delete(skillId: Long)
 
 # Domain specific routes
 POST   /domain                                                  controllers.DomainController.create
@@ -138,15 +149,15 @@ GET    /jobRequirement/:jobRequirementId/preview                controllers.JobR
 POST    /jobRequirement/:jobRequirementId/apply                 controllers.JobRequirementController.apply(jobRequirementId: Long)
 
 # UserSkill specific routes
-POST   /userSkill/:skillId                                      controllers.UserSkillController.create(skillId: Int)
+POST   /userSkill/:skillId                                      controllers.UserSkillController.create(skillId: Long)
 
-GET    /userSkill/:skillId                                      controllers.UserSkillController.get(skillId: Int)
+GET    /userSkill/:skillId                                      controllers.UserSkillController.get(skillId: Long)
 
 GET    /userSkill                                               controllers.UserSkillController.getAll
 
-PUT    /userSkill/:skillId                                      controllers.UserSkillController.update(skillId: Int)
+PUT    /userSkill/:skillId                                      controllers.UserSkillController.update(skillId: Long)
 
-DELETE /userSkill/:skillId                                      controllers.UserSkillController.delete(skillId: Int)
+DELETE /userSkill/:skillId                                      controllers.UserSkillController.delete(skillId: Long)
 
 GET    /skillLevel                                              controllers.UserSkillController.getSkillLevels
 
@@ -170,13 +181,13 @@ POST   /contact/invite/:friendId/accept                         controllers.Cont
 POST   /contact/invite/:friendId/reject                         controllers.ContactController.rejectInvitation(friendId: Long)
 
 # Follower specific routes
-POST   /adviser/:adviserUserId                                  controllers.FollowerController.create(adviserUserId: Int)
+POST   /adviser/:adviserUserId                                  controllers.FollowerController.create(adviserUserId: Long)
 
-GET    /adviser/:adviserUserId                                  controllers.FollowerController.get(adviserUserId: Int)
+GET    /adviser/:adviserUserId                                  controllers.FollowerController.get(adviserUserId: Long)
 
 GET    /adviser                                                 controllers.FollowerController.getAll
 
-DELETE /adviser/:adviserUserId                                  controllers.FollowerController.delete(adviserUserId: Int)
+DELETE /adviser/:adviserUserId                                  controllers.FollowerController.delete(adviserUserId: Long)
 
 GET    /adviser/search/:email                                   controllers.FollowerController.search(email: String)
 
@@ -231,13 +242,13 @@ POST   /shared/document/:documentId/copy                        controllers.Shar
 # UserTag specific routes
 POST   /userTag                                                 controllers.UserTagController.create
 
-GET    /userTag/:userTagId                                      controllers.UserTagController.get(userTagId: Int)
+GET    /userTag/:userTagId                                      controllers.UserTagController.get(userTagId: Long)
 
 GET    /userTag                                                 controllers.UserTagController.getAll
 
-PUT    /userTag/:userTagId                                      controllers.UserTagController.update(userTagId: Int)
+PUT    /userTag/:userTagId                                      controllers.UserTagController.update(userTagId: Long)
 
-DELETE /userTag/:userTagId                                      controllers.UserTagController.delete(userTagId: Int)
+DELETE /userTag/:userTagId                                      controllers.UserTagController.delete(userTagId: Long)
 
 # Folder specific routes
 POST   /documents/folder                                        controllers.DocumentFolderController.create
@@ -259,20 +270,20 @@ GET    /documents/folder/:documentFolderId/search/:searchText   controllers.Docu
 GET    /documents/folder/search/:searchText                     controllers.DocumentFolderController.search(searchText: String)
 
 # DocumentTag specific routes
-POST   /database/documentTag/:documentId                        controllers.DocumentTagController.create(documentId: Int)
+POST   /database/documentTag/:documentId                        controllers.DocumentTagController.create(documentId: Long)
 
-GET    /database/documentTag/:documentId                        controllers.DocumentTagController.getAll(documentId: Int)
+GET    /database/documentTag/:documentId                        controllers.DocumentTagController.getAll(documentId: Long)
 
-DELETE /database/documentTag/:documentId                        controllers.DocumentTagController.delete(documentId: Int, userTagId: Int)
+DELETE /database/documentTag/:documentId                        controllers.DocumentTagController.delete(documentId: Long, userTagId: Long)
 
 # Document Search specific routes
-GET    /database/documentSearch                                 controllers.DocumentSearchController.getAll
+GET    /database/documentSearch                                 controllers.SearchQueryController.getAll
 
-POST   /database/documentSearch                                 controllers.DocumentSearchController.create
+POST   /database/documentSearch                                 controllers.SearchQueryController.create
 
-PUT    /database/documentSearch/:documentSearchId               controllers.DocumentSearchController.update(documentSearchId: Int)
+PUT    /database/documentSearch/:documentSearchId               controllers.SearchQueryController.update(documentSearchId: Long)
 
-DELETE /database/documentSearch/:documentSearchId               controllers.DocumentSearchController.delete(documentSearchId: Int)
+DELETE /database/documentSearch/:documentSearchId               controllers.SearchQueryController.delete(documentSearchId: Long)
 
 # Share document related routes
 GET   /connection                                               controllers.ConnectionController.getAll
@@ -280,32 +291,32 @@ GET   /connection                                               controllers.Conn
 # message specific routes
 POST   /message                                                 controllers.MessageController.create
 
-GET    /message/:messageId                                      controllers.MessageController.get(messageId: Int)
+GET    /message/:messageId                                      controllers.MessageController.get(messageId: Long)
 
 GET    /message                                                 controllers.MessageController.getAll
 
-DELETE /message/:messageId                                      controllers.MessageController.delete(messageId: Int)
+DELETE /message/:messageId                                      controllers.MessageController.delete(messageId: Long)
 
-GET    /message/star/mark/:messageId                            controllers.MessageController.markStar(messageId: Int)
+GET    /message/star/mark/:messageId                            controllers.MessageController.markStar(messageId: Long)
 
-GET    /message/star/remove/:messageId                          controllers.MessageController.removeStar(messageId: Int)
+GET    /message/star/remove/:messageId                          controllers.MessageController.removeStar(messageId: Long)
 
-GET    /message/important/mark/:messageId                       controllers.MessageController.markImportant(messageId: Int)
+GET    /message/important/mark/:messageId                       controllers.MessageController.markImportant(messageId: Long)
 
-GET    /message/important/remove/:messageId                     controllers.MessageController.removeImportant(messageId: Int)
+GET    /message/important/remove/:messageId                     controllers.MessageController.removeImportant(messageId: Long)
 
-GET    /message/read/mark/:messageId                            controllers.MessageController.markRead(messageId: Int)
+GET    /message/read/mark/:messageId                            controllers.MessageController.markRead(messageId: Long)
 
-POST   /message/reply/:messageId                                controllers.MessageController.reply(messageId: Int)
+POST   /message/reply/:messageId                                controllers.MessageController.reply(messageId: Long)
 
-GET    /message/trash/:messageId                                controllers.MessageController.trash(messageId: Int)
+GET    /message/trash/:messageId                                controllers.MessageController.trash(messageId: Long)
 
-GET    /message/:messageId/move/:messageBoxId                   controllers.MessageController.move(messageId: Int, messageBoxId: Int)
+GET    /message/:messageId/move/:messageBoxId                   controllers.MessageController.move(messageId: Long, messageBoxId: Long)
 
 # message box specific routes
 GET    /messagebox                                              controllers.MessageBoxController.getAll
 
-PUT    /messagebox/:messageBoxId                                controllers.MessageBoxController.rename(messageBoxId: Int)
+PUT    /messagebox/:messageBoxId                                controllers.MessageBoxController.rename(messageBoxId: Long)
 
 POST   /messagebox                                              controllers.MessageBoxController.create
 

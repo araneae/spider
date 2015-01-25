@@ -30,11 +30,11 @@ class Contacts(tag: Tag) extends Table[Contact](tag, "contact") {
   override def * = (userId, friendId, status, token, createdUserId, createdAt, updatedUserId, updatedAt) <> (Contact.tupled, Contact.unapply)
   
   // foreign keys and indexes
-  def pk = primaryKey("pk_on_contact_user_id_friend_id", (userId, friendId))
+  def pk = primaryKey("pk_on_contact", (userId, friendId))
   
-  def contact = foreignKey("fk_on_contact_friend_id", friendId, TableQuery[Users])(_.userId)
+  def contact = foreignKey("fk_contact_on_friend_id", friendId, TableQuery[Users])(_.userId)
   
-  def createdBy = foreignKey("fk_on_contact_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_contact_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_contact_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_contact_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

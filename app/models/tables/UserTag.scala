@@ -35,9 +35,9 @@ class UserTags(tag: Tag) extends Table[UserTag](tag, "user_tag") {
   override def * = (userTagId.?, userId, name, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserTag.tupled, UserTag.unapply)
   
   // foreign keys and indexes
-  def user = foreignKey("fk_on_user_tag_user_id", userId, TableQuery[Users])(_.userId)
+  def user = foreignKey("fk_user_tag_on_user_id", userId, TableQuery[Users])(_.userId)
 
-  def createdBy = foreignKey("fk_on_user_tag_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_user_tag_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_user_tag_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_user_tag_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

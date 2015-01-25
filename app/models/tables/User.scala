@@ -45,11 +45,11 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
   override def * = (userId.?, firstName, middleName, lastName, email, secondEmail, password, countryId, activationToken, verified, lastLogon, status, userProfilePersonalId, otp, otpExpiredAt, createdAt, updatedAt) <> (User.tupled, User.unapply)
   
   // foreign keys and indexes
-  def uniqueEmail = index("idx_user_on_email_unique", email, unique = true)
+  def uniqueEmail = index("idx_user_on_email", email, unique = true)
   
-  def country = foreignKey("fk_on_user_country_id", countryId, TableQuery[Countries])(_.countryId)
+  def country = foreignKey("fk_user_on_country_id", countryId, TableQuery[Countries])(_.countryId)
   
-  def userProfilePersonal = foreignKey("fk_on_user_user_profile_personal_id", userProfilePersonalId, TableQuery[UserProfilePersonals])(_.userProfilePersonalId)
+  def userProfilePersonal = foreignKey("fk_user_user_on_profile_personal_id", userProfilePersonalId, TableQuery[UserProfilePersonals])(_.userProfilePersonalId)
   
    //def bs = AToB.filter(_.aId === id).flatMap(_.bFK)
   // https://groups.google.com/forum/#!topic/scalaquery/l-SMiyNOIJA

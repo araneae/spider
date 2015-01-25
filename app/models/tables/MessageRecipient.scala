@@ -31,11 +31,11 @@ class MessageRecipients(tag: Tag) extends Table[MessageRecipient](tag, "message_
   // foreign keys and indexes
   def pk = primaryKey("pk_on_message_recipient", (userId, messageId))
   
-  def recipient = foreignKey("fk_on_message_recipient_user_id", userId, TableQuery[Users])(_.userId)
+  def recipient = foreignKey("fk_message_recipient_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def message = foreignKey("fk_on_message_recipient_message_id", messageId, TableQuery[Messages])(_.messageId)
+  def message = foreignKey("fk_message_recipient_on_message_id", messageId, TableQuery[Messages])(_.messageId)
   
-  def createdBy = foreignKey("fk_on_message_recipient_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_message_recipient_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_message_recipient_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_message_recipient_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

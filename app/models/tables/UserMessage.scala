@@ -39,13 +39,13 @@ class UserMessages(tag: Tag) extends Table[UserMessage](tag, "user_message") {
   // foreign keys and indexes
   def pk = primaryKey("pk_on_user_message", (userId, messageId, messageBoxId))
   
-  def owner = foreignKey("fk_on_user_message_user_id",  userId, TableQuery[Users])(_.userId)
+  def owner = foreignKey("fk_user_message_on_user_id",  userId, TableQuery[Users])(_.userId)
   
-  def message = foreignKey("fk_on_user_message_message_id", messageId, TableQuery[Messages])(_.messageId)
+  def message = foreignKey("fk_user_message_on_message_id", messageId, TableQuery[Messages])(_.messageId)
   
-  def messageBox = foreignKey("fk_on_user_message_message_box_id", messageBoxId, TableQuery[MessageBoxes])(_.messageBoxId)
+  def messageBox = foreignKey("fk_user_message_on_message_box_id", messageBoxId, TableQuery[MessageBoxes])(_.messageBoxId)
   
-  def createdBy = foreignKey("fk_on_user_message_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_user_message_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_user_message_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_user_message_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

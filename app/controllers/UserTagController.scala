@@ -18,7 +18,7 @@ object UserTagController extends Controller with Secured {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
-  def get(userTagId: Int) = IsAuthenticated{ username => implicit request =>
+  def get(userTagId: Long) = IsAuthenticated{ username => implicit request =>
     //logger.info(s"in UserTagController.get(${userTagId})")
     println(s"in UserTagController.get(${userTagId})")
     val optUserTagDTO = UserTagRepository.get(userTagId)
@@ -53,7 +53,7 @@ object UserTagController extends Controller with Secured {
       )
   }
 
-  def update(userTagId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(userTagId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
     //logger.info(s"in UserTagController.update(${userTagId})")
     println(s"in UserTagController.update(${userTagId})")
     val json = request.body.asInstanceOf[JsObject]
@@ -68,7 +68,7 @@ object UserTagController extends Controller with Secured {
     )
   }
   
-  def delete(userTagId: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(userTagId: Long) = IsAuthenticated{ username => implicit request =>
     //logger.info(s"in UserTagController.delete(${userTagId})")
     println(s"in UserTagController.delete(${userTagId})")
     // first delete all the document tags

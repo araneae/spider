@@ -35,7 +35,7 @@ object MessageBoxController extends Controller with Secured {
       }
   }
   
-  def update(messageBoxId: Int) = IsAuthenticated{ username => implicit request =>
+  def update(messageBoxId: Long) = IsAuthenticated{ username => implicit request =>
     //logger.info("in MessageBoxController.update(${messageBoxId})")
     println("in MessageBoxController.update(${messageBoxId})")
     
@@ -44,7 +44,7 @@ object MessageBoxController extends Controller with Secured {
     Ok(text).as(JSON)
   }
   
-  def rename(messageBoxId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def rename(messageBoxId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
     //logger.info(s"in MessageBoxController.update(${messageBoxId})")
     println(s"in MessageBoxController.update(${messageBoxId})")
     val jsonObj = request.body.asInstanceOf[JsObject]

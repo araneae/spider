@@ -59,7 +59,7 @@ class JobRequirements(tag: Tag) extends Table[JobRequirement](tag, "job_requirem
   
   def industry = foreignKey("fk_job_requirement_on_industry_id", industryId, TableQuery[Industries])(_.industryId)
   
-  def uniqueCode = index("idx_job_requirement_on_code_unique", (companyId, code), unique = true)
+  def uniqueCode = index("idx_job_requirement_on_code", (companyId, code), unique = true)
   
   def jobTitle = foreignKey("fk_job_requirement_jon_on_title_id", jobTitleId, TableQuery[JobTitles])(_.jobTitleId)
   

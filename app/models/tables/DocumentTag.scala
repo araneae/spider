@@ -35,17 +35,17 @@ class DocumentTags(tag: Tag) extends Table[DocumentTag](tag, "document_tag") {
   override def * = (userId, userTagId, documentId, userDocumentId, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentTag.tupled, DocumentTag.unapply)
   
   // foreign keys and indexes
-  def user = foreignKey("fk_on_document_tag_user_id", userId, TableQuery[Users])(_.userId)
+  def user = foreignKey("fk_document_tag_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def userTag = foreignKey("fk_on_document_tag_tag_id", userTagId, TableQuery[UserTags])(_.userTagId)
+  def userTag = foreignKey("fk_document_tag_on_tag_id", userTagId, TableQuery[UserTags])(_.userTagId)
   
-  def document = foreignKey("fk_on_document_tag_document_id", documentId, TableQuery[Documents])(_.documentId)
+  def document = foreignKey("fk_document_tag_on_document_id", documentId, TableQuery[Documents])(_.documentId)
   
-  def userDocument = foreignKey("fk_on_document_tag_user_document_id", userDocumentId, TableQuery[UserDocuments])(_.userDocumentId)
+  def userDocument = foreignKey("fk_document_tag_on_user_document_id", userDocumentId, TableQuery[UserDocuments])(_.userDocumentId)
   
-  def createdBy = foreignKey("fk_on_document_tag_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_document_tag_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_document_tag_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_document_tag_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
   
-  def uniqueUserTagDocument = index("idx_document_tag_on_user_tag_document_unique", (userTagId, documentId), unique = true)
+  def uniqueUserTagDocument = index("idx_document_tag_on_user_tag_document", (userTagId, documentId), unique = true)
 }

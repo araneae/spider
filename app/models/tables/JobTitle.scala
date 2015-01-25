@@ -33,9 +33,9 @@ class JobTitles(tag: Tag) extends Table[JobTitle](tag, "job_title") {
   // foreign keys and indexes
   def company = foreignKey("fk_job_title_on_company_id", companyId, TableQuery[Companies])(_.companyId)
   
-  def uniqueName = index("idx_job_title_on_name_unique", (companyId, name), unique = true)
+  def uniqueName = index("idx_job_title_on_company_id_name", (companyId, name), unique = true)
   
-  def createdBy = foreignKey("fk_job_title_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_job_title_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_job_title_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_job_title_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

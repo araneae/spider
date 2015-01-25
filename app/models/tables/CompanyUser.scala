@@ -41,11 +41,11 @@ class CompanyUsers(tag: Tag) extends Table[CompanyUser](tag, "company_user") {
   override def * = (companyUserId.?, companyId, firstName, middleName, lastName, email, status, userType, createdUserId, createdAt, updatedUserId, updatedAt) <> (CompanyUser.tupled, CompanyUser.unapply)
   
   // foreign keys and indexes
-  def uniqueEmail = index("idx_company_user_on_email_unique", (companyId, email), unique = true)
+  def uniqueEmail = index("idx_company_user_on_email", (companyId, email), unique = true)
   
-  def company = foreignKey("fk_company_user_company_id", companyId, TableQuery[Companies])(_.companyId)
+  def company = foreignKey("fk_company_user_on_company_id", companyId, TableQuery[Companies])(_.companyId)
   
-  def createdBy = foreignKey("fk_company_user_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_company_user_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_company_user_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_company_user_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

@@ -32,9 +32,9 @@ class MessageBoxes(tag: Tag) extends Table[MessageBox](tag, "message_box") {
   override def * = (messageBoxId.?, userId, messageBoxType, name, createdUserId, createdAt, updatedUserId, updatedAt) <> (MessageBox.tupled, MessageBox.unapply _)
   
   // foreign keys and indexes
-  def owner = foreignKey("fk_on_message_box_user_id", userId, TableQuery[Users])(_.userId)
+  def owner = foreignKey("fk_message_box_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def createdBy = foreignKey("fk_on_message_box_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_message_box_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_message_box_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_message_box_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

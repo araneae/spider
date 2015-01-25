@@ -23,7 +23,7 @@ object UserSkillController extends Controller with Secured {
       Ok(text).as(JSON)
   }
   
-  def get(skillId: Int) = IsAuthenticated{ username => implicit request =>
+  def get(skillId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in SkillController.get(${skillId})...")
       println("in SkillController.get(${skillId})...")
       var skill = UserSkillRepository.find(userId, skillId)
@@ -31,7 +31,7 @@ object UserSkillController extends Controller with Secured {
       Ok(text).as(JSON)
   }
   
-  def create(skillId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def create(skillId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in SkillController.create...")
       println("in SkillController.create...")
       val jsonObj = request.body.asInstanceOf[JsObject]
@@ -49,7 +49,7 @@ object UserSkillController extends Controller with Secured {
       )
   }
   
-  def update(skillId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(skillId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in SkillController.update...")
       println("in SkillController.update...")
       val json = request.body.asInstanceOf[JsObject]
@@ -65,7 +65,7 @@ object UserSkillController extends Controller with Secured {
       )
   }
   
-  def delete(skillId: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(skillId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in SkillController.delete...")
       println("in deleteMySkill...")
       UserSkillRepository.delete(userId, skillId);

@@ -24,6 +24,7 @@ scalaVersion := "2.11.2"
  val scalaCheckVersion = "1.11.6"
  val scalaMockVersion = "3.2-RC1"
  val tikkaVersion = "1.6"
+ val deadboltVersion = "2.3.2"
 
 libraryDependencies ++= Seq( 
     javaCore,
@@ -54,8 +55,11 @@ libraryDependencies ++= Seq(
     "org.scalacheck" %% "scalacheck" % scalaCheckVersion % "test",
     "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % "test",
     "org.apache.tika" % "tika-core" % tikkaVersion,
-    "org.apache.tika" % "tika-parsers" % tikkaVersion
+    "org.apache.tika" % "tika-parsers" % tikkaVersion,
+    "be.objectify" %% "deadbolt-scala" % deadboltVersion
   )
+  
+resolvers += Resolver.url("Objectify Play Repository", url("http://deadbolt.ws/releases/"))(Resolver.ivyStylePatterns)
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
 

@@ -35,14 +35,14 @@ class UserSkills(tag: Tag) extends Table[UserSkill](tag, "user_skill") {
   override def * = (userId, skillId, skillLevel, descriptionShort, descriptionLong, createdUserId, createdAt, updatedUserId, updatedAt) <> (UserSkill.tupled, UserSkill.unapply)
   
   // foreign keys and indexes
-  def pk = primaryKey("pk_on_user_skill_user_id_skill_id", (userId, skillId))
+  def pk = primaryKey("pk_on_user_skill", (userId, skillId))
   
-  def user = foreignKey("fk_on_user_skill_user_id", userId, TableQuery[Users])(_.userId)
+  def user = foreignKey("fk_user_skill_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def skill = foreignKey("fk_on_user_skill_skill_id", skillId, TableQuery[Skills])(_.skillId)
+  def skill = foreignKey("fk_user_skill_on_skill_id", skillId, TableQuery[Skills])(_.skillId)
   
-  def createdBy = foreignKey("fk_on_user_skill_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_user_skill_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_user_skill_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_user_skill_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }
  

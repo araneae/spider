@@ -52,9 +52,9 @@ class UserDocumentFolders(tag: Tag) extends Table[UserDocumentFolder](tag, "user
   
   def owner = foreignKey("fk_user_document_folder_on_user_id", userId, TableQuery[Users])(_.userId)
   
-  def createdBy = foreignKey("fk_on_user_document_folder_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_user_document_folder_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_user_document_folder_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_user_document_folder_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
   
   def uniqueDocumentFolder = index("idx_user_document_folder_on_user_id_document_id", (userId, documentFolderId), unique = true)
 }

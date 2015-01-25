@@ -16,7 +16,7 @@ class States(tag: Tag) extends Table[State](tag, "state") {
   override def * = (stateId.?, code, name, countryId) <> (State.tupled, State.unapply)
   
   // foreign keys and indexes
-  def country = foreignKey("fk_on_states_country_id", countryId, TableQuery[Users])(_.userId)
+  def uniqueCode = index("idx_state_on_code", (countryId, code), unique = true)
   
-  def uniqueCode = index("idx_state_on_code_unique", (countryId, code), unique = true)
+  def country = foreignKey("fk_state_on_country_id", countryId, TableQuery[Users])(_.userId)
 }

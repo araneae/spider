@@ -26,7 +26,7 @@ object FollowerController extends Controller with Secured {
       Ok(data).as(JSON)
   }
   
-  def get(followerId: Int) = IsAuthenticated{ username => implicit request =>
+  def get(followerId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in FollowerController.get(${followerId})...")
       println("in FollowerController.get(${followerId})...")
       var follower = FollowerRepository.find(userId, followerId)
@@ -34,7 +34,7 @@ object FollowerController extends Controller with Secured {
       Ok(data).as(JSON)
   }
   
-  def create(followerId: Int) = IsAuthenticated(parse.json){ username => implicit request =>
+  def create(followerId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
       //logger.info("in FollowerController.creater...")
       println("in FollowerController.create...")
       UserRepository.find(followerId).map{ followerUser =>
@@ -63,7 +63,7 @@ object FollowerController extends Controller with Secured {
       .getOrElse(NotFound)
   }
   
-  def delete(followerId: Int) = IsAuthenticated{ username => implicit request =>
+  def delete(followerId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in FollowerController.delete...")
       println("in FollowerController.delete...")
       FollowerRepository.delete(userId, followerId);

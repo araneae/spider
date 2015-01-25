@@ -34,7 +34,7 @@ class DocumentFolders(tag: Tag) extends Table[DocumentFolder](tag, "document_fol
   
   // foreign keys and indexes
   
-  def createdBy = foreignKey("fk_on_document_folder_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_document_folder_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_document_folder_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_document_folder_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

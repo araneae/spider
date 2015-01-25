@@ -47,7 +47,7 @@ class Documents(tag: Tag) extends Table[Document](tag, "document") {
   // foreign keys and indexes
   def documentBox = foreignKey("fk_document_on_document_folder_id", documentFolderId.?, TableQuery[DocumentFolders])(_.documentFolderId)
   
-  def createdBy = foreignKey("fk_on_document_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_document_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_document_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_document_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }

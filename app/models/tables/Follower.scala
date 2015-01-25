@@ -30,13 +30,13 @@ class Followers(tag: Tag) extends Table[Follower](tag, "follower") {
   override def * = (subjectId, followerId, status, token, createdUserId, createdAt, updatedUserId, updatedAt) <> (Follower.tupled, Follower.unapply)
   
   // foreign keys and indexes
-  def pk = primaryKey("pk_on_follower_subject_id_follower_id", (subjectId, followerId))
+  def pk = primaryKey("pk_on_follower", (subjectId, followerId))
   
-  def subject = foreignKey("fk_on_follower_subject_id", subjectId, TableQuery[Users])(_.userId)
+  def subject = foreignKey("fk_follower_on_subject_id", subjectId, TableQuery[Users])(_.userId)
   
-  def follower = foreignKey("fk_on_follower_follower_id", followerId, TableQuery[Users])(_.userId)
+  def follower = foreignKey("fk_follower_on_follower_id", followerId, TableQuery[Users])(_.userId)
   
-  def createdBy = foreignKey("fk_on_follower_created_user_id", createdUserId, TableQuery[Users])(_.userId)
+  def createdBy = foreignKey("fk_follower_on_created_user_id", createdUserId, TableQuery[Users])(_.userId)
   
-  def updatedBy = foreignKey("fk_on_follower_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
+  def updatedBy = foreignKey("fk_follower_on_updated_user_id", updatedUserId, TableQuery[Users])(_.userId)
 }
