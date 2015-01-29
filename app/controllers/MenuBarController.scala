@@ -20,6 +20,7 @@ import play.api.mvc.Controller
 import scala.concurrent.Await
 import traits._
 import utils._
+import security._
 import play.api.mvc.MultipartFormData
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.libs.Files.TemporaryFile
@@ -32,12 +33,12 @@ object MenuBarController extends Controller with Secured {
     //logger.info(s"in MenuBarController.getCotents()")
     println(s"in MenuBarController.getCotents()")
     
-    val optCompany = CompanyRepository.findByUserId(userId)
-    val hasUpgraded = optCompany match {
-                          case Some(company) => true
-                          case None => false
-                      }
-     val content = views.html.menuBar(hasUpgraded)
+//    val optCompany = CompanyRepository.findByUserId(userId)
+//    val hasUpgraded = optCompany match {
+//                          case Some(company) => true
+//                          case None => false
+//                      }
+     val content = views.html.menuBar(new DefaultDeadboltHandler)
      Ok(content).as(HTML)
   }
 

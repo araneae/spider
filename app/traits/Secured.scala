@@ -3,12 +3,12 @@ package traits
 import controllers.routes
 import play.api.db.slick.DBAction
 import play.api.db.slick.DBSessionRequest
+import be.objectify.deadbolt.scala.DeadboltActions
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.mvc.BodyParser
 import play.api.mvc.Request
 import play.api.mvc.RequestHeader
-import play.api.mvc.Result
 import play.api.mvc.Results
 import play.api.mvc.Security
 import play.api.mvc.Result
@@ -17,16 +17,10 @@ import play.api.mvc.Flash
 import java.util.{Date, Locale}
 import scala.concurrent.Future
 import utils._
+import security._
 
-trait Secured {
+trait Secured extends DeadboltActions with GlobalConstnts {
   
-  private final val PARAM_USER_TIME = "userTime"
-  private final val PARAM_USER_ID = "userId"
-  private final val PARAM_NAME = "name"
-  private final val PARAM_PATH = "path"
-  private final val EMPTY = ""
-  private final val INVALID_USER_ID = "0"
- 
   //def username(request: RequestHeader) = request.session.get(Security.username)
   def username(request: RequestHeader) : Option[String] = {
      val optValue = request.session.get(Security.username)
@@ -57,14 +51,14 @@ trait Secured {
       id.toLong
   }
   
-  def name(implicit request : RequestHeader) = {
+  def name(implicit request: RequestHeader) = {
       request.session.get(PARAM_NAME).getOrElse(EMPTY)
   }
   
-  def path(implicit request : RequestHeader) = {
+  def path(implicit request: RequestHeader) = {
       request.session.get(PARAM_PATH).getOrElse(EMPTY)
   }
-
+  
   def onUnauthorized(request: RequestHeader) = {
     // check if the session has userId
     val id = request.session.get(PARAM_USER_ID)
@@ -99,6 +93,34 @@ trait Secured {
                             Future.successful(result)
                           }
                         )
+    }
+  }
+  
+  def IsAuthorized(role: String) (f: => String => Request[AnyContent] => Result) = {
+    Security.Authenticated(username, onUnauthorized) { 
+        user =>   Restrict(List(Array(role), Array(ROLE_SITE_ADMIN)), new DefaultDeadboltHandler()) {
+                          Action.async(request => {
+                            // update time in session
+                            val currentTicks = new Date().getTime()
+                            val result = f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString))
+                            Future.successful(result)
+                          }
+                      )
+                }
+     }
+  }
+  
+  def IsAuthorized(b: BodyParser[Any])(role: String)(f: => String => Request[Any] => Result) = {
+    Security.Authenticated(username, onUnauthorized) {
+      user =>  Restrict(List(Array(role), Array(ROLE_SITE_ADMIN)), new DefaultDeadboltHandler()) {
+                        Action.async(b)(request => {
+                            // update time in session
+                            val currentTicks = new Date().getTime()
+                            val result = f(user)(request).withSession(request.session + (PARAM_USER_TIME -> currentTicks.toString))
+                            Future.successful(result)
+                          }
+                        )
+            }
     }
   }
   

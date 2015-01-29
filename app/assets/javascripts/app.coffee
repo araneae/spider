@@ -27,14 +27,16 @@ angular.module('myApp.routeConfig', ['ui.router'])
        $httpProvider.interceptors.push(['$log', '$rootScope', '$q', 'ErrorService', ($log, $rootScope, $q, ErrorService) ->
               {
                 responseError: (rejection) =>
-                    $log.error("Intercepted response error #{angular.toJson(rejection)}")
+                    #$log.error("Intercepted response error #{angular.toJson(rejection)}")
                     if (rejection.status is 401)
-                        $q.reject(rejection)
                         window.location.href = '/logout'
-                        #$rootScope.$broadcast('event:loginRequired');
-                    else if (rejection.data)
+                        #$rootScope.$broadcast('event:loginRequired')
+                    else if (rejection.status is 403)
+                        window.location.href = '/logout'
+                    else 
+                      if (rejection.data)
                         ErrorService.error(rejection.data.message) if rejection.data.message 
-                    # otherwise, default behavior
+                      # otherwise, default behavior
                     $q.reject(rejection)
               }
        ])

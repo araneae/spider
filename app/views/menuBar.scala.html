@@ -1,32 +1,35 @@
+@(handler: be.objectify.deadbolt.scala.DeadboltHandler)(implicit request: Request[Any])
 @* Template File *@
 @import play.api.mvc._
-@(hasUpgraded: Boolean)
+@import be.objectify.deadbolt.scala.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+
 <div class="navbar-header">
   <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
     <li ng-class="{active: ctrl.isMenuActive('/document')}"><a ui-sref="folder.documents">Folders</a></li>
     <li ng-class="{active: ctrl.isMenuActive('/shared')}"><a ui-sref="sharedRepositories">Shared Documents</a></li>
     <li ng-class="{active: ctrl.isMenuActive('/messages')}"><a ui-sref="messages.messageList" data-toggle="tab">Messages</a></li>
     <li ng-class="{active: ctrl.isMenuActive('/job/search')}"><a ui-sref="jobSearch" data-toggle="tab">Job Search</a></li>
-    @if(hasUpgraded) {
+    @restrict(handler, List(as("site.admin"))) {
       <li ng-class="{active: ctrl.isMenuActive('/jobs')}"><a ui-sref="jobRequirements">Jobs</a></li>
     }
     <li ng-class="{active: ctrl.isMenuActive('/contact')}"><a ui-sref="contact" data-toggle="tab">Contacts</a></li>
-    @if(hasUpgraded) {
-    <li class="dropdown" ng-class="{active: ctrl.isMenuActive('/admin')}">
-      <a href="" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
-      <ul class="dropdown-menu" role="menu">
+    @restrict(handler, List(as("site.admin"))) {
+      <li class="dropdown" ng-class="{active: ctrl.isMenuActive('/admin')}">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
           <li ng-class="{active: ctrl.isMenuActive('/admin/permission')}"><a ui-sref="permissions">Permission</a></li>
           <li class="divider"></li>
-        <li ng-class="{active: ctrl.isMenuActive('/admin/industry')}"><a ui-sref="industries">Industry</a></li>
-        <!-- <li ng-class="{active: ctrl.isMenuActive('/admin/domain')}"><a ui-sref="domains">Domain</a></li>  -->
+          <li ng-class="{active: ctrl.isMenuActive('/admin/industry')}"><a ui-sref="industries">Industry</a></li>
+          <!-- <li ng-class="{active: ctrl.isMenuActive('/admin/domain')}"><a ui-sref="domains">Domain</a></li>  -->
           <li class="divider"></li>
           <li ng-class="{active: ctrl.isMenuActive('/admin/company')}"><a ui-sref="companyView">Company</a></li>
           <li ng-class="{active: ctrl.isMenuActive('/admin/jobTitle')}"><a ui-sref="jobTitles">Job Titles</a></li>
-        <!-- 
-        <li><a ui-sref="skill">Skills</a></li>
-        -->
-      </ul>
-    </li>
+          <!-- 
+            <li><a ui-sref="skill">Skills</a></li>
+          -->
+        </ul>
+      </li>
     }
   </ul>
 </div> <!-- "navbar-header -->
