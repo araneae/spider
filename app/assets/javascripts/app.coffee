@@ -130,6 +130,45 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     label: 'Edit Industry'
               }
           })
+          .state('subscriptions', {
+              url: '/admin/subscription',
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewContextMenu@industries': {
+                    templateUrl: '/assets/partials/contextMenuAdmin.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/subscription.html'
+                }
+              },
+              ncyBreadcrumb: {
+                    label: 'Subscriptions'
+              }
+          })
+          
+          .state('subscriptionCreate', {
+              url: '/admin/subscription/create'
+              views: {
+                'viewHeaderBar': {
+                  templateUrl: '/assets/partials/headerBarHome.html'
+                },
+                'viewMenuBar': {
+                   templateUrl: '/assets/partials/menuBar.html'
+                },
+                'viewMain': {
+                    templateUrl: '/assets/partials/subscriptionCreate.html'
+                }
+              },
+              ncyBreadcrumb: {
+                    parent: 'subscriptions',
+                    label: 'Create subscription'
+              }
+          })
           .state('permissions', {
               url: '/admin/permission',
               views: {

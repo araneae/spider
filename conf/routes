@@ -85,6 +85,17 @@ PUT    /permission/:permissionId                                controllers.Perm
 
 DELETE /permission/:permissionId                                controllers.PermissionController.delete(permissionId: Long)
 
+# Subscription specific routes
+POST   /subscription                                            controllers.SubscriptionController.create
+
+GET    /subscription                                            controllers.SubscriptionController.getAll
+
+GET    /subscription/:subscriptionId                            controllers.SubscriptionController.get(subscriptionId: Long)
+
+PUT    /subscription/:subscriptionId                            controllers.SubscriptionController.update(subscriptionId: Long)
+
+DELETE /subscription/:subscriptionId                            controllers.SubscriptionController.delete(subscriptionId: Long)
+
 # Industry specific routes
 POST   /industry                                                controllers.IndustryController.create
 
