@@ -1,0 +1,31 @@
+<div ng-controller="SubscriptionCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+      <div class="panel-title">Manage Subscriptions
+        <div class="btn-group pull-right">
+          <button type="button" class="btn btn-primary" ng-click="ctrl.goToCreate()">Create</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped">
+        <tr>
+          <th>Name</th>    
+          <th>Description</th>
+          <th></th>
+        </tr>
+        <tr ng-repeat="subscription in ctrl.subscriptions">
+          <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(subscription)">{{subscription.name}}</a></td>  
+          <td>{{subscription.description}}</td>
+          <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(subscription)"></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
