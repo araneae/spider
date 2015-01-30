@@ -78,10 +78,4 @@ object SubscriptionController extends Controller with DeadboltActions with Secur
       val data = Json.toJson(list)
       Ok(data).as(JSON)
   }
-  
-  def restrictOne = Restrict(Array("foo"), new MyDeadboltHandler) {
-                      Action {
-                        Ok("")
-                      }
-                    }
 }
