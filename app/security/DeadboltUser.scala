@@ -3,16 +3,16 @@ package security
 import play.libs.Scala
 import be.objectify.deadbolt.core.models.Subject
 
-class DeadboltUser(userName: String) extends Subject
-{
-  def getRoles: java.util.List[SecurityRole] = {
-    Scala.asJava(List(new SecurityRole("foo"),
-                      new SecurityRole("bar")))
-  }
+class DeadboltUser(userName: String, roles: Seq[String]) extends Subject {
+  
+  val securityRoles = Scala.asJava(roles.map { x => new SecurityRole(x) })
+  
+  def getRoles: java.util.List[SecurityRole] = securityRoles 
 
-  def getPermissions: java.util.List[UserPermission] = {
-    Scala.asJava(List(new UserPermission("printers.edit")))
+  def getPermissions: java.util.List[SecurityPermission] = {
+    Scala.asJava(List[SecurityPermission]())
   }
 
   def getIdentifier: String = userName
+  
 }

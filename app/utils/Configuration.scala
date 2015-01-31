@@ -17,10 +17,10 @@ object Configuration {
   private val defaultPictureUrl = Play.current.configuration.getString("default.profile.picture.url").getOrElse("")
   private val profilePictureUrl = Play.current.configuration.getString("profile.picture.url").getOrElse("")
   private val siteAdminUserIds = {
-                   val optList = Play.current.configuration.getLongList("site.admin.userIds")
+                   val optList = Play.current.configuration.getStringList("site.admin.usernames")
                    optList match {
                      case Some(list) => list.toList
-                     case None => List[Long]()
+                     case None => List[String]()
                    }
               }
   private val timeoutInMillis = timeoutInMins * 1000 * 60
@@ -55,5 +55,5 @@ object Configuration {
   
   def userProfilePictureUrl(fileName: String) = s"${profilePictureUrl}/${fileName}"
   
-  def isSiteAdmin(userId: Long) = if (siteAdminUserIds.contains(userId)) "true" else "false"
+  def isSiteAdmin(username: String) = if (siteAdminUserIds.contains(username)) true else false
 }

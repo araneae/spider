@@ -87,13 +87,11 @@ object AuthController extends Controller with Secured {
                         if (path.isEmpty())
                           Redirect(routes.Application.home).withSession(Security.username -> userName, 
                                                                         "userId" -> userId,
-                                                                        "name" -> firstName,
-                                                                        "isSiteAdmin" -> Configuration.isSiteAdmin(user.userId.get))
+                                                                        "name" -> firstName)
                         else
                           Redirect(path).withSession(Security.username -> userName, 
                                                      "userId" -> userId,
-                                                     "name" -> firstName,
-                                                     "isSiteAdmin" -> Configuration.isSiteAdmin(user.userId.get))
+                                                     "name" -> firstName)
                       }
                     }
                     else {

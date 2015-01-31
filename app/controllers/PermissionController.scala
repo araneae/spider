@@ -5,20 +5,18 @@ import org.slf4j.LoggerFactory
 
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
-import be.objectify.deadbolt.scala.DeadboltActions
 import traits.Secured
 import org.joda.time.DateTime
 import utils.HttpResponseUtil
 import models.tables._
 import models.repositories._
 import models.dtos._
-import security._
 
-object PermissionController extends Controller with DeadboltActions with Secured {
+object PermissionController extends Controller with Secured {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
-  def create = IsAuthenticated(parse.json){ username => implicit request =>
+  def create = IsAuthorized(parse.json)("job.create") { username => implicit request =>
       //logger.info("in PermissionController.create")
       println("in PermissionController.create")
       val json = request.body.asInstanceOf[JsObject]
@@ -33,7 +31,7 @@ object PermissionController extends Controller with DeadboltActions with Secured
       )
   }
   
-  def update(permissionId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(permissionId: Long) = IsAuthorized(parse.json)("job.update"){ username => implicit request =>
       //logger.info("in PermissionController.update(${permissionId})")
       println("in PermissionController.update(${permissionId})")
       val json = request.body.asInstanceOf[JsObject]
@@ -56,14 +54,14 @@ object PermissionController extends Controller with DeadboltActions with Secured
       )
   }
   
-  def delete(permissionId: Long) = IsAuthenticated{ username => implicit request =>
+  def delete(permissionId: Long) = IsAuthorized("job.delete"){ username => implicit request =>
       //logger.info("in PermissionController.delete(${permissionId})")
       println("in PermissionController.delete(${permissionId})")
       PermissionRepository.delete(permissionId);
       Ok(HttpResponseUtil.success("Successfully deleted permission!"))
   }
   
-  def get(permissionId: Long) = IsAuthenticated{ username => implicit request =>
+  def get(permissionId: Long) = IsAuthorized("job.fetch"){ username => implicit request =>
       //logger.info("in PermissionController.get(${permissionId})")
       println("in PermissionController.get(${permissionId})")
       var optPermission = PermissionRepository.get(permissionId)
@@ -71,17 +69,11 @@ object PermissionController extends Controller with DeadboltActions with Secured
       Ok(data).as(JSON)
   }
   
-  def getAll = IsAuthenticated{ username => implicit request =>
+  def getAll = IsAuthorized("job.fetch"){ username => implicit request =>
       //logger.info("in PermissionController.getAll...")
       println("in PermissionController.getAll")
       var list = PermissionRepository.getAll
       val data = Json.toJson(list)
       Ok(data).as(JSON)
   }
-  
-  def restrictOne = Restrict(Array("foo"), new MyDeadboltHandler) {
-                      Action {
-                        Ok("")
-                      }
-                    }
 }
