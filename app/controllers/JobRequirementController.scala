@@ -24,7 +24,7 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
-  def create = IsAuthenticated(parse.json){ username => implicit request =>
+  def create = IsAuthorized(parse.json)("job.create"){ username => implicit request =>
       //logger.info("in JobRequirementController.create...")
       println("in JobRequirementController.create...")
       val optCompany = CompanyRepository.findByUserId(userId)

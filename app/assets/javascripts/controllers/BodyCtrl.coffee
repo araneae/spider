@@ -1,7 +1,8 @@
 
 class BodyCtrl
 
-    constructor: (@$log, @$scope, @$state, @$window, @MenuBarService, @$location) ->
+    constructor: (@$log, @$scope, @$rootScope, @$state, @$window,
+                          @MenuBarService, @UserPermissionService, @ErrorService, @$location) ->
         @$log.debug "constructing BodyCtrl"
         
         # removing the background image for now
@@ -13,6 +14,16 @@ class BodyCtrl
            '-o-background-size': 'cover',
            'background-size': 'cover'
         }
+        
+        @$rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) =>
+            permission = toState.permission
+            if (permission)
+              name = permission.name
+              if (angular.isString(name) and !@UserPermissionService.hasPermission(name))
+                  @ErrorService.error("Not authorized to access!")
+                  @$state.go(fromState.name, toParams)
+          )
+  
         @window = angular.element($window)
         @gotoTopButton = angular.element('#idScrollToTop')
         

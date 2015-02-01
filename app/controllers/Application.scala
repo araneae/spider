@@ -40,6 +40,7 @@ object Application extends Controller with Secured with AkkaActor {
   
   def index = Action { implicit request =>
     //logger.info("Application.index...")
+    println("Application.index...")
     val countries = CountryRepository.findAllAvailable
     Ok(views.html.index(Configuration.applicationTitle)(Configuration.applicationName)(countries)(signupForm))
   }

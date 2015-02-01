@@ -24,7 +24,7 @@ app = angular.module('myApp', dependencies)
 
 angular.module('myApp.routeConfig', ['ui.router'])
     .config ($stateProvider, $urlRouterProvider, $httpProvider) ->
-       $httpProvider.interceptors.push(['$log', '$rootScope', '$q', 'ErrorService', ($log, $rootScope, $q, ErrorService) ->
+       $httpProvider.interceptors.push(['$log', '$rootScope', '$q', '$location', 'ErrorService', ($log, $rootScope, $q, $location, ErrorService) ->
               {
                 responseError: (rejection) =>
                     #$log.error("Intercepted response error #{angular.toJson(rejection)}")
@@ -32,7 +32,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
                         window.location.href = '/logout'
                         #$rootScope.$broadcast('event:loginRequired')
                     else if (rejection.status is 403)
-                        window.location.href = '/logout'
+                        $location.path = '/index'
                     else 
                       if (rejection.data)
                         ErrorService.error(rejection.data.message) if rejection.data.message 
@@ -146,11 +146,13 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     templateUrl: '/assets/partials/subscription.html'
                 }
               },
+              permission: {
+                name: 'site.admin'
+              },
               ncyBreadcrumb: {
                     label: 'Subscriptions'
               }
           })
-          
           .state('subscriptionCreate', {
               url: '/admin/subscription/create'
               views: {
@@ -163,6 +165,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/subscriptionCreate.html'
                 }
+              },
+              permission: {
+                name: 'site.admin'
               },
               ncyBreadcrumb: {
                     parent: 'subscriptions',
@@ -185,6 +190,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     templateUrl: '/assets/partials/permission.html'
                 }
               },
+              permission: {
+                name: 'site.admin'
+              },
               ncyBreadcrumb: {
                     label: 'Permissions'
               }
@@ -201,6 +209,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/permissionCreate.html'
                 }
+              },
+              permission: {
+                name: 'site.admin'
               },
               ncyBreadcrumb: {
                     parent: 'permissions',
@@ -219,6 +230,9 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMain': {
                     templateUrl: '/assets/partials/permissionEdit.html'
                 }
+              },
+              permission: {
+                name: 'site.admin'
               },
               ncyBreadcrumb: {
                     parent: 'permissions',

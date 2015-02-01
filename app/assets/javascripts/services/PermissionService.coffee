@@ -7,10 +7,6 @@ class PermissionService
     constructor: (@$log, @$http, @$q) ->
         @$log.debug "constructing PermissionService"
 
-    deletePermission: (permissionId) ->
-        @$log.debug "PermissionService.delete #{permissionId}"
-        @$http.delete("/permission/#{permissionId}")
-
 
 servicesModule.service('PermissionService', PermissionService)
 

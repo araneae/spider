@@ -3,14 +3,14 @@
 
 # --- !Ups
 
-create table `company_role_permission` (`company_role_permission_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_role_Id` BIGINT NOT NULL,`company_subscription_Id` BIGINT NOT NULL,`permission_Id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
-create unique index `idx_company_role_permission_on_comp_id_sub_id_perm_id` on `company_role_permission` (`company_role_Id`,`company_subscription_Id`,`permission_Id`);
-create table `company_role` (`company_role_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_Id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`description` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
-create unique index `idx_company_role_on_company_id_name` on `company_role` (`company_Id`,`name`);
-create table `company_subscription` (`company_subscription_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_Id` BIGINT NOT NULL,`subscription_Id` BIGINT NOT NULL,`status` INTEGER NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
-create unique index `idx_company_subscription_on_company_id_subscription_id` on `company_subscription` (`company_Id`,`subscription_Id`);
-create table `company_user_role` (`company_user_role_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_user_Id` BIGINT NOT NULL,`company_role_Id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
-create unique index `idx_company_user_role_on_company_user_id_company_role_id` on `company_user_role` (`company_user_Id`,`company_role_Id`);
+create table `company_role_permission` (`company_role_permission_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_role_id` BIGINT NOT NULL,`company_subscription_id` BIGINT NOT NULL,`permission_id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create unique index `idx_company_role_permission_on_comp_id_sub_id_perm_id` on `company_role_permission` (`company_role_id`,`company_subscription_id`,`permission_id`);
+create table `company_role` (`company_role_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`description` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create unique index `idx_company_role_on_company_id_name` on `company_role` (`company_id`,`name`);
+create table `company_subscription` (`company_subscription_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_id` BIGINT NOT NULL,`subscription_id` BIGINT NOT NULL,`status` INTEGER NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create unique index `idx_company_subscription_on_company_id_subscription_id` on `company_subscription` (`company_id`,`subscription_id`);
+create table `company_user_role` (`company_user_role_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`company_user_id` BIGINT NOT NULL,`company_role_id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create unique index `idx_company_user_role_on_company_user_id_company_role_id` on `company_user_role` (`company_user_id`,`company_role_id`);
 create table `company_user` (`company_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(254) NOT NULL,`middle_name` VARCHAR(254),`last_name` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`status` INTEGER NOT NULL,`user_type` INTEGER NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create unique index `idx_company_user_on_email` on `company_user` (`company_id`,`email`);
 create table `company` (`company_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(254) NOT NULL,`status` INTEGER NOT NULL,`address` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`overview` TEXT NOT NULL,`website` VARCHAR(254),`telephone` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
@@ -48,8 +48,8 @@ create table `skill` (`skill_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`ind
 create unique index `idx_skill_on_name` on `skill` (`name`);
 create table `state` (`state_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`code` VARCHAR(254) NOT NULL,`name` VARCHAR(254) NOT NULL,`country_id` BIGINT NOT NULL);
 create unique index `idx_state_on_code` on `state` (`country_id`,`code`);
-create table `subscription_permission` (`subscription_Id` BIGINT NOT NULL,`permission_Id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
-alter table `subscription_permission` add constraint `pk_on_subscription_permission` primary key(`subscription_Id`,`permission_Id`);
+create table `subscription_permission` (`subscription_id` BIGINT NOT NULL,`permission_id` BIGINT NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+alter table `subscription_permission` add constraint `pk_on_subscription_permission` primary key(`subscription_id`,`permission_id`);
 create table `subscription` (`subscription_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(254) NOT NULL,`description` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create unique index `idx_subscription_on_name` on `subscription` (`name`);
 create table `user_document_folder` (`user_document_folder_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`document_folder_id` BIGINT NOT NULL,`user_id` BIGINT NOT NULL,`ownership_type` INTEGER NOT NULL,`can_copy` BOOLEAN DEFAULT true NOT NULL,`can_share` BOOLEAN DEFAULT true NOT NULL,`can_view` BOOLEAN DEFAULT true NOT NULL,`is_limited_share` BOOLEAN DEFAULT false NOT NULL,`share_until_eod` TIMESTAMP NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
@@ -61,19 +61,19 @@ alter table `user_message` add constraint `pk_on_user_message` primary key(`user
 create table `user_profile_personal` (`user_profile_personal_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`xray_terms` VARCHAR(254) NOT NULL,`aboutMe` VARCHAR(254),`picture_file` VARCHAR(254),`physical_file` VARCHAR(254),`mobile` VARCHAR(254),`alternate_email` VARCHAR(254),`gender` INTEGER,`marital_status` INTEGER,`birth_year` INTEGER,`birth_day` INTEGER,`birth_month` INTEGER,`created_at` TIMESTAMP NOT NULL,`updated_at` TIMESTAMP NULL);
 create table `user_skill` (`user_id` BIGINT NOT NULL,`skill_id` BIGINT NOT NULL,`skill_level` INTEGER NOT NULL,`description_short` VARCHAR(254),`description_long` VARCHAR(254),`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 alter table `user_skill` add constraint `pk_on_user_skill` primary key(`user_id`,`skill_id`);
-create table `user_tag` (`user_tag_Id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
+create table `user_tag` (`user_tag_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`created_user_id` BIGINT NOT NULL,`created_at` TIMESTAMP NOT NULL,`updated_user_id` BIGINT,`updated_at` TIMESTAMP NULL);
 create table `user` (`user_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`first_name` VARCHAR(254) NOT NULL,`middle_name` VARCHAR(254),`last_name` VARCHAR(254) NOT NULL,`email` VARCHAR(254) NOT NULL,`second_email` VARCHAR(254),`password` VARCHAR(254) NOT NULL,`country_id` BIGINT NOT NULL,`activationToken` VARCHAR(254) NOT NULL,`verified` BOOLEAN NOT NULL,`last_logon` TIMESTAMP NOT NULL,`status` INTEGER NOT NULL,`user_profile_personal_id` BIGINT,`otp` VARCHAR(254),`otp_expired_at` TIMESTAMP NULL,`created_at` TIMESTAMP NOT NULL,`updated_at` TIMESTAMP NULL);
 create unique index `idx_user_on_email` on `user` (`email`);
-alter table `company_role_permission` add constraint `fk_company_role_permission_on_company_role_id` foreign key(`company_role_Id`) references `company_role`(`company_role_id`) on update NO ACTION on delete NO ACTION;
+alter table `company_role_permission` add constraint `fk_company_role_permission_on_company_role_id` foreign key(`company_role_id`) references `company_role`(`company_role_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_role_permission` add constraint `fk_company_role_permission_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_role_permission` add constraint `fk_company_role_permission_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
-alter table `company_role` add constraint `fk_company_role_on_company_id` foreign key(`company_Id`) references `company`(`company_id`) on update NO ACTION on delete NO ACTION;
+alter table `company_role` add constraint `fk_company_role_on_company_id` foreign key(`company_id`) references `company`(`company_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_role` add constraint `fk_company_role_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_role` add constraint `fk_company_role_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_subscription` add constraint `fk_company_subscription_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_subscription` add constraint `fk_company_subscription_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
-alter table `company_user_role` add constraint `fk_company_user_role_on_company_role_id` foreign key(`company_role_Id`) references `company_role`(`company_role_id`) on update NO ACTION on delete NO ACTION;
-alter table `company_user_role` add constraint `fk_company_user_role_on_company_user_id` foreign key(`company_user_Id`) references `company_user`(`company_id`) on update NO ACTION on delete NO ACTION;
+alter table `company_user_role` add constraint `fk_company_user_role_on_company_role_id` foreign key(`company_role_id`) references `company_role`(`company_role_id`) on update NO ACTION on delete NO ACTION;
+alter table `company_user_role` add constraint `fk_company_user_role_on_company_user_id` foreign key(`company_user_id`) references `company_user`(`company_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_user_role` add constraint `fk_company_user_role_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_user_role` add constraint `fk_company_user_role_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `company_user` add constraint `fk_company_user_on_company_id` foreign key(`company_id`) references `company`(`company_id`) on update NO ACTION on delete NO ACTION;
@@ -88,7 +88,7 @@ alter table `document_folder` add constraint `fk_document_folder_on_created_user
 alter table `document_folder` add constraint `fk_document_folder_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_document_tag_on_created_user_id` foreign key(`created_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_document_tag_on_document_id` foreign key(`document_id`) references `document`(`document_id`) on update NO ACTION on delete NO ACTION;
-alter table `document_tag` add constraint `fk_document_tag_on_tag_id` foreign key(`user_tag_id`) references `user_tag`(`user_tag_Id`) on update NO ACTION on delete NO ACTION;
+alter table `document_tag` add constraint `fk_document_tag_on_tag_id` foreign key(`user_tag_id`) references `user_tag`(`user_tag_id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_document_tag_on_updated_user_id` foreign key(`updated_user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_document_tag_on_user_document_id` foreign key(`user_document_id`) references `user_document`(`user_document_id`) on update NO ACTION on delete NO ACTION;
 alter table `document_tag` add constraint `fk_document_tag_on_user_id` foreign key(`user_id`) references `user`(`user_id`) on update NO ACTION on delete NO ACTION;

@@ -43,7 +43,7 @@ class JobRequirementCtrl
             ,
             (error) =>
               @ErrorService.error
-              @$log.error "Unable to get fetch JobRequirements: #{error}"
+              @$log.error "Unable to fetch JobRequirements: #{error}"
           )
 
     refresh: () ->

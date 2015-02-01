@@ -18,7 +18,7 @@ import org.joda.time.DateTime
 
 class UserTags(tag: Tag) extends Table[UserTag](tag, "user_tag") {
 
-  def userTagId = column[Long]("user_tag_Id", O.PrimaryKey, O.AutoInc)
+  def userTagId = column[Long]("user_tag_id", O.PrimaryKey, O.AutoInc)
   
   def userId = column[Long]("user_id")
   
