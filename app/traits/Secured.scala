@@ -61,15 +61,16 @@ trait Secured extends DeadboltActions with GlobalConstnts {
   
   def onUnauthorized(request: RequestHeader) = {
     // check if the session has userId
-    val id = request.session.get(PARAM_USER_ID)
-    id match {
-      case Some(value) =>
-        // user have timeout, send unauthorized response
-        Results.Unauthorized
-      case None =>
-        // user hasn't logged in, redirect to login page
-        Results.Redirect(routes.AuthController.login).withSession(PARAM_PATH -> request.path)
-    } 
+    //val id = request.session.get(PARAM_USER_ID)
+    //id match {
+    //  case Some(value) =>
+    //    // user has timeout, send unauthorized response
+    //    Results.Unauthorized
+    //  case None =>
+    //    // user hasn't logged in, redirect to login page
+    //    Results.Redirect(routes.AuthController.login).withSession(PARAM_PATH -> request.path)
+    //} 
+    Results.Unauthorized
   }
 
   def IsAuthenticated(f: => String => Request[AnyContent] => Result) = {

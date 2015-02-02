@@ -22,6 +22,13 @@ dependencies = [
 
 app = angular.module('myApp', dependencies)
 
+angular.element(document).ready( () ->
+                $.get('/userPermission', (data) => 
+                        console.log("Document Ready #{data}")
+                        angular.bootstrap(document, ['myApp']);
+                      )
+      )
+
 angular.module('myApp.routeConfig', ['ui.router'])
     .config ($stateProvider, $urlRouterProvider, $httpProvider) ->
        $httpProvider.interceptors.push(['$log', '$rootScope', '$q', '$location', 'ErrorService', ($log, $rootScope, $q, $location, ErrorService) ->

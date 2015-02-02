@@ -7,16 +7,16 @@ class UserPermissionService
     constructor: (@$log, @$http, @$q) ->
         @$log.debug "constructing UserPermissionService"
         @permissions
-        @loadUserPermissions() if (!@permissions)
-
-    loadUserPermissions: () ->
-        @$log.debug "UserPermissionService.loadUserPermissions()"
-        @$http.get("/userPermission")
-              .success((data, status, headers) =>
-                    @$log.info("Successfully fetched permissions - status #{status}")
+    
+    initUserPermissions: () ->
+        @$log.debug "UserPermissionService.initUserPermissions()"
+        if (!@permissions)
+          @$http.get("/userPermission")
+              .success((data, status, headers, config) =>
+                    @$log.info("Successfully fetched permissions - status #{status} data #{angular.toJson(data)}")
                     @permissions = data
                   )
-               .error((data, status, headers) =>
+               .error((data, status, headers, config) =>
                     @$log.error("Failed to fetch permissions - status #{status}")
                   )
 

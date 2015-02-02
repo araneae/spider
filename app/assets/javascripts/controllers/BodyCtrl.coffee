@@ -4,6 +4,7 @@ class BodyCtrl
     constructor: (@$log, @$scope, @$rootScope, @$state, @$window,
                           @MenuBarService, @UserPermissionService, @ErrorService, @$location) ->
         @$log.debug "constructing BodyCtrl"
+        @userPermissions = []
         
         # removing the background image for now
         # background: "url(/assets/images/california-mountain.jpg) no-repeat center center fixed",
@@ -23,7 +24,7 @@ class BodyCtrl
                   @ErrorService.error("Not authorized to access!")
                   @$state.go(fromState.name, toParams)
           )
-  
+        
         @window = angular.element($window)
         @gotoTopButton = angular.element('#idScrollToTop')
         
@@ -34,6 +35,9 @@ class BodyCtrl
                        else
                           @gotoTopButton.fadeOut() if @gotoTopButton
             )
+
+        # fetch data from server
+        @UserPermissionService.initUserPermissions()
         
     goToTop: () ->
         @$log.debug "BodyCtrl.goToTop()"
