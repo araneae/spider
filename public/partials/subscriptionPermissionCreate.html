@@ -1,0 +1,39 @@
+<div ng-controller="SubscriptionCreateCtrl as ctrl">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-8">
+      <div alert-bar message="ctrl.ErrorService.message" type="ctrl.ErrorService.type"></div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+       <div class="panel-title">Create Subscription</div>
+    </div>
+    <div class="panel-body">
+      <form novalidate id="idCreateSubscriptionForm" name="CreateSubscriptionForm" class="form-horizontal" role="form"
+            ng-submit="ctrl.save()">
+        <div class="form-group">
+          <label id="lblName" for="name" class="col-md-2 control-label">Name</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" name="name" id="idName" placeholder="Enter name"
+                   ng-model="ctrl.subscription.name" required>
+          </div>
+        </div> 
+        <div class="form-group">
+          <label id="lblDescription" for="description" class="col-md-2 control-label">Description</label>
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="description" id="idDescription" placeholder="Enter description"
+                   ng-model="ctrl.subscription.description" required>
+          </div>
+        </div>
+    <!-- <pre>{{ ctrl.subscription | json }}</pre> -->
+        <div class="form-group">
+          <div class="col-md-offset-1 col-md-8">
+            <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+            <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CreateSubscriptionForm.$valid'>Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
