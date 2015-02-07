@@ -93,7 +93,7 @@ class DatabaseShareCtrl
     
     cancel: () ->
       @$log.debug "DatabaseShareCtrl.cancel()"
-      @$state.go('databaseManageShares')
+      @$state.go('databaseManageShares', {documentId : @documentId})
       #@UtilityService.goBack('FolderDocumentCtrl', 'folder.documents')
 
 controllersModule.controller('DatabaseShareCtrl', DatabaseShareCtrl)

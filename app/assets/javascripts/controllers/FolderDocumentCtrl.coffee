@@ -82,6 +82,14 @@ class FolderDocumentCtrl
         @$log.debug "FolderDocumentCtrl.goToView(#{documentId})"
         @$state.go("databaseDocumentView", {documentId: documentId})
 
+    goToShareFolder: () ->
+        @$log.debug "FolderDocumentCtrl.goToShareFolder()"
+        @$state.go("folder.shareFolder")
+
+    goToUpload: () ->
+        @$log.debug "FolderDocumentCtrl.goToUpload()"
+        @$state.go("databaseUpload")
+
     isAllowDragDrop: (document) ->
         @$log.debug "FolderDocumentCtrl.isAllowDragDrp(#{document})"
         document.ownershipType is 'OWNED' 

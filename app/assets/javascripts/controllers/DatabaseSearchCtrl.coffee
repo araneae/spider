@@ -15,7 +15,7 @@ class DatabaseSearchCtrl
         )
         # load data from server
         @listSavedSearchTexts()
-        @listDocuments()
+        #@listDocuments()
 
     listSavedSearchTexts: () ->
         @$log.debug "DatabaseSearchCtrl.listSavedSearchTexts()"
@@ -45,7 +45,7 @@ class DatabaseSearchCtrl
     search: () ->
         @$log.debug "DatabaseSearchCtrl.search()"
         if (@UtilityService.isStringEmpty(@searchText))
-          @listDocuments()
+          #@listDocuments()
         else
           @searchResults = []
           @FolderService.search(@searchText).then(

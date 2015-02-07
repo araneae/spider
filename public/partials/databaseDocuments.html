@@ -7,7 +7,8 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="panel-title clearfix">{{ctrl.title}}
-        <div class="col-md-8 pull-right">
+        <div class="col-md-9 pull-right">
+          <div class="col-md-9">
           <form name="FormDatabaseDocument" ng-submit="ctrl.search()">
             <div class="input-group">
               <div class="input-group-btn" data-placement="left" title="Clear search text">
@@ -21,6 +22,9 @@
               </div>
             </div>
           </form>
+          </div>
+          <button type="button" class="btn btn-success" ng-hide="ctrl.folder.shared" ng-click="ctrl.goToUpload()">Upload</button>
+          <button type="button" class="btn btn-success" ng-hide="ctrl.folder.shared" ng-click="ctrl.goToShareFolder()">Share</button>
         </div>
       </div>
     </div>

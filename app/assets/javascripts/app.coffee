@@ -904,9 +904,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                 'viewMenuBar': {
                    templateUrl: '/assets/partials/menuBar.html'
                 },
-                'viewGlobalSearch@databaseSearch': {
-                    templateUrl: '/assets/partials/globalSearch.html'
-                },
                 'viewMain': {
                     templateUrl: '/assets/partials/databaseSearch.html'
                 }
