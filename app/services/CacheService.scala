@@ -21,7 +21,7 @@ object CacheService extends GlobalConstnts {
      val optUsername = getUsername(request)
      optUsername match {
        case Some(username) =>
-                 val cacheKey = getCacheKey(USER_DATA_CACHE_TYPE, DEADBOLT_USER_CACHE_KEY)
+                 val cacheKey = getCacheKey(USER_DATA_CACHE_TYPE, DEADBOLT_USER_CACHE_KEY, username)
                  val user = Cache.getOrElse[DeadboltUser](cacheKey, 
                                            new Callable[DeadboltUser] {
                                               def call() = {
@@ -35,7 +35,7 @@ object CacheService extends GlobalConstnts {
      }
    }
    
-   def getCacheKey(keyType: String, keyValue: String) = s"${keyType}.${keyValue}"
+   def getCacheKey(keyType: String, keyValue: String, username: String) = s"${keyType}.${keyValue}.${username}"
 
    def getUsername(request: Request[Any]): Option[String] = {
      val optValue = request.session.get(Security.username)

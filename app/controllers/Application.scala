@@ -46,7 +46,7 @@ object Application extends Controller with Secured with AkkaActor {
   }
   
   def home = IsAuthenticated { username => implicit request =>
-    Ok(views.html.home(Configuration.applicationTitle)(s"Welcome back ${name}"))
+    Ok(views.html.home(Configuration.applicationTitle)(s"Araneae"))
   }
   
   def signup = Action { implicit request =>

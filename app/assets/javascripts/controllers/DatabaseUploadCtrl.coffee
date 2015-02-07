@@ -27,9 +27,9 @@ class DatabaseUploadCtrl
         @DocumentFolder.query().$promise.then(
           (data) =>
               @$log.debug "Promise returned #{data} folder"
-              @folders = data
-              if (data && data.length > 0)
-                @folder =  data[0]
+              @folders = data.filter( (item) => item.shared is false)
+              if (@folders && @folders.length > 0)
+                @folder =  @folders[0]
           ,
           (error) =>
               @$log.error "Unable to fetch folder: #{error}"

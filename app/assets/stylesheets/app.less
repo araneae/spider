@@ -4,7 +4,15 @@
 body, input, div, button, select, option, textarea, a {
   font-size: 12pt;
 }
-   
+
+.body {
+   background: rgb(242, 234, 221);
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+}
+
 .header {
     background-color: @headerBackground;
     color: @headerColor;
@@ -34,7 +42,6 @@ body, input, div, button, select, option, textarea, a {
     position: fixed;
     z-index: 1000;
 }
-
 
 .message-header {
    font-family: Georgia;
@@ -258,11 +265,24 @@ table.table-fixed td {
   background: #428bca;
 }
 
-/* overrides bootstrap styles */
-.navbar{
-    margin-bottom: 10px !important;
+.generate-margin-tops(10);
+
+.generate-margin-tops(@n, @i: 1) when (@i =< @n) {
+  .margin-top-@{i} {
+    margin-top: (1px * @i);
+  }
+  .generate-margin-tops(@n, (@i + 1));
 }
 
-.breadcrumb{
-    margin-bottom: 10px !important;
+/* overrides bootstrap styles */
+.navbar {
+    margin-bottom: 8px !important;
+}
+
+.breadcrumb {
+    margin-bottom: 8px !important;
+}
+
+panel {
+  margin-left: 4px !important;
 }

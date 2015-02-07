@@ -2,7 +2,7 @@
 @(title: String)(message: String)(countries: Seq[Country])(signupForm: Form[(String, Option[String], String, String, String, String, String)])(implicit flash: Flash)
 
 @contentsSingnIn = {
-   <form class="form-inline" method="POST" action="/login">
+   <form class="form-inline margin-top-5" method="POST" action="/login">
      <div class="form-group">
            <label class="sr-only" for="idInputLoginEmail">Email address</label>
            <input type="email" name="email" class="form-control" required id="idInputLoginEmail" placeholder="Enter email">

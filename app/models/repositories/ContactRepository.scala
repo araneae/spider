@@ -132,7 +132,7 @@ object ContactRepository {
         val q = for {
           (c, d) <- contactQuery leftJoin userDocumentFolderQuery on ((c, d) =>
                                           c.friendId === d.userId &&
-                                          d.documentFolderId === documentFolderId) if c.userId === userId
+                                          d.documentFolderId === documentFolderId) if (c.userId === userId) && (c.status === ContactStatus.CONNECTED)
           u <- c.contact
         } yield (u, d.?)
         

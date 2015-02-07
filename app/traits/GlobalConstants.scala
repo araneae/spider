@@ -32,6 +32,6 @@ trait GlobalConstnts {
   // cache management
   final val USER_DATA_CACHE_TYPE = "user"
   final val DEADBOLT_USER_CACHE_KEY = "deadbolt"
-  final val USER_DATA_CACHE_TIMEOUT_IN_SECS = 20 * 60 
+  final val USER_DATA_CACHE_TIMEOUT_IN_SECS = 10 * 60 
  
 }
