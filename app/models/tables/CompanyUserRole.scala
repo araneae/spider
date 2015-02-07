@@ -14,9 +14,9 @@ class CompanyUserRoles(tag: Tag) extends Table[CompanyUserRole](tag, "company_us
 
   def companyUserRoleId = column[Long]("company_user_role_id", O.PrimaryKey, O.AutoInc)
   
-  def companyUserId = column[Long]("company_user_Id")
+  def companyUserId = column[Long]("company_user_id")
   
-  def companyRoleId = column[Long]("company_role_Id")
+  def companyRoleId = column[Long]("company_role_id")
   
   def createdUserId = column[Long]("created_user_id")
   

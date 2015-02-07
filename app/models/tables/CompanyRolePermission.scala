@@ -14,11 +14,11 @@ class CompanyRolePermissions(tag: Tag) extends Table[CompanyRolePermission](tag,
 
   def companyRolePermissionId = column[Long]("company_role_permission_id", O.PrimaryKey, O.AutoInc)
   
-  def companyRoleId = column[Long]("company_role_Id")
+  def companyRoleId = column[Long]("company_role_id")
   
-  def companySubscriptionId = column[Long]("company_subscription_Id")
+  def companySubscriptionId = column[Long]("company_subscription_id")
   
-  def permissionId = column[Long]("permission_Id")
+  def permissionId = column[Long]("permission_id")
   
   def createdUserId = column[Long]("created_user_id")
   

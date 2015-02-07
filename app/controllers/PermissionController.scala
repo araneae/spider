@@ -16,7 +16,7 @@ object PermissionController extends Controller with Secured {
   
   //private final val logger: Logger = LoggerFactory.getLogger(classOf[Application])
   
-  def create = IsAuthorized(parse.json)("job.create") { username => implicit request =>
+  def create = IsAuthorized(parse.json)("site.admin") { username => implicit request =>
       //logger.info("in PermissionController.create")
       println("in PermissionController.create")
       val json = request.body.asInstanceOf[JsObject]
@@ -31,7 +31,7 @@ object PermissionController extends Controller with Secured {
       )
   }
   
-  def update(permissionId: Long) = IsAuthorized(parse.json)("job.update"){ username => implicit request =>
+  def update(permissionId: Long) = IsAuthorized(parse.json)("site.admin"){ username => implicit request =>
       //logger.info("in PermissionController.update(${permissionId})")
       println("in PermissionController.update(${permissionId})")
       val json = request.body.asInstanceOf[JsObject]
@@ -54,7 +54,7 @@ object PermissionController extends Controller with Secured {
       )
   }
   
-  def delete(permissionId: Long) = IsAuthorized("job.delete"){ username => implicit request =>
+  def delete(permissionId: Long) = IsAuthorized("site.admin"){ username => implicit request =>
       //logger.info("in PermissionController.delete(${permissionId})")
       println("in PermissionController.delete(${permissionId})")
       PermissionRepository.delete(permissionId);

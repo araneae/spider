@@ -74,6 +74,9 @@ DELETE /companyUser/:companyUserId                              controllers.Comp
 # Admin specific routes
 GET    /admin                                                   controllers.AdminController.admin
 
+# UserPermission specific routes
+GET    /userPermission                                          controllers.UserPermissionController.getAll
+
 # Permission specific routes
 POST   /permission                                              controllers.PermissionController.create
 

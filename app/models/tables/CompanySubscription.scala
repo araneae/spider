@@ -15,9 +15,9 @@ class CompanySubscriptions(tag: Tag) extends Table[CompanySubscription](tag, "co
 
   def companySubscriptionId = column[Long]("company_subscription_id", O.PrimaryKey, O.AutoInc)
   
-  def companyId = column[Long]("company_Id")
+  def companyId = column[Long]("company_id")
   
-  def subscriptionId = column[Long]("subscription_Id")
+  def subscriptionId = column[Long]("subscription_id")
   
   def status = column[CompanySubscriptionStatusType]("status")
   

@@ -14,7 +14,7 @@ class CompanyRoles(tag: Tag) extends Table[CompanyRole](tag, "company_role") {
 
   def companyRoleId = column[Long]("company_role_id", O.PrimaryKey, O.AutoInc)
   
-  def companyId = column[Long]("company_Id")
+  def companyId = column[Long]("company_id")
   
   def name = column[String]("name")
   

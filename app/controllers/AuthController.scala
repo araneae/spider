@@ -84,14 +84,14 @@ object AuthController extends Controller with Secured {
                       } 
                       else {
                         UserRepository.updateLastLogon(user.userId.get)
-                        if (path.isEmpty())
+                        //if (path.isEmpty())
                           Redirect(routes.Application.home).withSession(Security.username -> userName, 
                                                                         "userId" -> userId,
                                                                         "name" -> firstName)
-                        else
-                          Redirect(path).withSession(Security.username -> userName, 
-                                                     "userId" -> userId,
-                                                     "name" -> firstName)
+                        //else
+                        //  Redirect(path).withSession(Security.username -> userName, 
+                        //                             "userId" -> userId,
+                        //                             "name" -> firstName)
                       }
                     }
                     else {

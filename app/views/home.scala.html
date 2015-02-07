@@ -1,20 +1,252 @@
-@(title: String)(message: String)(implicit flash: Flash)
+@(title: String)(message: String)
 
-@contentsSingnIn = {
-  <div ui-view="viewHeaderBar"></div>
-}
-@contentsLeft = {
-  <div ui-view="viewLeftBar"></div>
-}
-@contentsMain = {
-  <div ui-view="viewMenuBar"></div>
-  
-  <div ui-view="viewMain"></div> 
-}
+<!DOCTYPE html>
 
-@contentsRight = {
-  <div ui-view="viewRightBar"></div> 
-}
+<!--  <html lang="en" ng-app="myApp"> -->
+<html lang="en">
+    <head>
+        <title>@title</title>
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- jquery -->
+        <script src='@routes.Assets.at("third/jquery/1.11.1/jquery-1.11.1.js")' type="text/javascript"></script>
 
-@main(title)(message)(contentsSingnIn)(contentsLeft)(contentsMain)(contentsRight)
+        <!-- bootstrap -->
+        <link rel="stylesheet" media="screen" href='@routes.Assets.at("third/bootstrap/3.1.1/css/bootstrap.min.css")'>
+        <link rel="stylesheet" media="screen" href='@routes.Assets.at("third/bootstrap/3.1.1/css/bootstrap-theme.min.css")'>
+        <link rel="stylesheet" media="screen" href='@routes.Assets.at("third/select2-3.5.1/select2.css")'>
+        <link rel="stylesheet" media="screen" href='@routes.Assets.at("third/select2-3.5.1/select2-bootstrap.css")'>
+        
+        <!--
+          <script src='@routes.Assets.at("third/bootstrap/3.1.1/js/bootstrap.min.js")' type="text/javascript"></script>  
+        -->
+        
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+        
+        <script src='@routes.Assets.at("third/angular-file-upload/1.4.0/angular-file-upload-shim.js")' type="text/javascript"></script>
+        <!-- angularjs -->
+        <script src='@routes.Assets.at("third/select2-3.5.1/select2.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/1.2.16/angular.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angular-ui-select2/angular-select2.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/1.2.16/angular-route.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/ui-router-2.0/angular-ui-router.min.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/1.2.16/angular-resource.min.js")' type="text/javascript"></script>
+   <!-- script src='@routes.Assets.at("third/angularjs/1.2.16/ui-bootstrap-0.11.0.min.js")' type="text/javascript"></script>  -->
+        <script src='@routes.Assets.at("third/angularjs/1.2.16/ui-bootstrap-tpls-0.11.0.min.js")' type="text/javascript"></script> 
+        <script src='@routes.Assets.at("third/angularjs/sanitize/angular-sanitize.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angular-file-upload/1.4.0/angular-file-upload.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/smart-table/smart-table.min.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/ng-draggable/ngDraggable.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/ui-router-extras/ct-ui-router-extras.min.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("third/angularjs/angular-breadcrumb/angular-breadcrumb.min.js")' type="text/javascript"></script>
+        
+        
+        <!-- src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"> -->
 
+        <!-- application specific -->
+
+        <link rel="stylesheet" media="screen" href='@routes.Assets.at("stylesheets/main.css")'>
+        <link rel="stylesheet" media="screen" href='@routes.Assets.at("stylesheets/app.css")'>
+
+        <link rel="shortcut icon" type="image/png" href='@routes.Assets.at("images/favicon.png")'>
+
+        <script tyee="text/javascript" src='@routes.Assets.at("javascripts/main.js")' type="text/javascript"></script>
+        
+        <!-- Coffee script compiled resources-->
+        <script src='@routes.Assets.at("javascripts/app.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/common/Config.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/AppVersion.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/RequiredMultiple.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/FileDownload.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/AlertBar.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/MessageBar.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/HtmlBar.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/SelectYear.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/SelectMonth.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/SelectMonthDay.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/GooglePlaces.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/directives/HasPermission.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/filters/Newline2BR.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/filters/TimeAgo.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/ErrorService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/services/EnumService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/services/ConfigService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/services/UserPermissionService.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/controllers/BodyCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/ContextMenuCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/RightBarService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/RightBarCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/MenuBarService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/MenuBarCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/IndustryService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/IndustryCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/IndustryCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/IndustryEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/SubscriptionService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SubscriptionCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SubscriptionCreateCtrl.js")' type="text/javascript"></script>
+
+        <script src='@routes.Assets.at("javascripts/services/PermissionService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/PermissionCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/PermissionCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/PermissionEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/SkillService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SkillCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/DomainService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DomainCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DomainCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DomainEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/JobTitleService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobTitleCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobTitleCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobTitleEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/JobRequirementService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementEditCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementPreviewCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/JobRequirementViewCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/controllers/JobApplicationCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/controllers/JobSearchCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/UserSkillService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserSkillCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserSkillCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserSkillEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/ContactService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/ContactCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/ContactInviteCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/AdviserService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/AdviserCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/ConnectionService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/services/DatabaseService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseUploadCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseSearchCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseEditCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseXRayCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseViewCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseShareCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseManageShareCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/SharedRepositoryService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedRepositoryCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedDocumentViewCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedDocumentXRayCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedDocumentShareCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/SharedDocumentManageShareCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/UserTagService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserTagCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserTagCreateCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/FolderService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/FolderCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/FolderCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/FolderDocumentCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/FolderShareCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/ManageFolderCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/UtilityService.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/DatabaseTagService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseTagCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/DatabaseSearchService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/DatabaseSearchCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/CompanyService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyViewCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/CompanyUserService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyUserCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyUserCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyUserViewCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/CompanyUserEditCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/UserProfileSettingService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/UserProfileSettingCtrl.js")' type="text/javascript"></script>
+        
+        <script src='@routes.Assets.at("javascripts/services/MessageService.js")' type="text/javascript"></script>
+
+        <script src='@routes.Assets.at("javascripts/controllers/MessageCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/services/MessageBoxService.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/MessageBoxCreateCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/MessageBoxCtrl.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("javascripts/controllers/GlobalSearchCtrl.js")' type="text/javascript"></script>
+    </head>
+    <body id="index" ng-controller="BodyCtrl as ctrl" ng-style="ctrl.bodyStyle" scroll-to-top>
+      <div ui-view></div>
+      <div id="header" class="container-fluid header">
+         <div class="row-fluid">
+            <div class="col-lg-1"></div>
+
+            <div class="col-lg-10 clearfix">
+              <div class="row">
+                <div class="pull-left col-md-6 ellipsis message-header">@message</div>
+                <div class="pull-right col-md-6">
+                    <div ui-view="viewHeaderBar"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div><!-- /.row -->
+      </div><!-- /.container header -->
+      <div id ="content" class="container-fluid">
+        <div class="row-fluid main">
+          <div class="col-lg-1">
+            <div ui-view="viewLeftBar"></div>
+          </div> <!-- middle section -->
+          <div class="col-lg-10">
+            <div ui-view="viewMenuBar"></div>
+            <div ui-view="viewMain"></div>
+          </div> <!-- middle section -->
+          <div class="col-lg-1">
+            <div ui-view="viewRightBar"></div>
+          </div> <!-- /right column -->
+        </div> <!-- /.row main-->
+      </div><!-- /container-fluid -->
+      <br/>
+      <br/>
+      <div id="footer" class="container-fluid footer">
+         <div class="row-fluid">
+           <div class="col-lg-1"></div>
+           <div class="col-lg-10">
+             <div class="collapse navbar-collapse">
+               <ul class="nav navbar-nav navbar-left">
+                  <li><button type="button" class="btn btn-link" href="#">About</button></li>
+                  <li><button type="button" class="btn btn-link" href="#">Contact Us</button></li>
+                  <li><button type="button" class="btn btn-link" href="#">Privacy</button></li>
+                  <li><button type="button" class="btn btn-link" href="#">Help</button></li>
+               </ul>
+             </div><!-- /.navbar-collapse -->
+         </div>
+         <div class="col-lg-1"></div>
+        </div><!-- /.row-fluid -->
+      </div><!-- /.container footer -->
+      <div id="idScrollToTop" class="goto-top">
+        <i class="glyphicon glyphicon-plane" data-placement="left" title="Goto Top" ng-click="ctrl.goToTop()"></i>
+      </div>
+    </body>
+</html>

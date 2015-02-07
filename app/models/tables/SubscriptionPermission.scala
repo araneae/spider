@@ -12,9 +12,9 @@ import org.joda.time.DateTime
 
 class SubscriptionPermissions(tag: Tag) extends Table[SubscriptionPermission](tag, "subscription_permission") {
 
-  def subscriptionId = column[Long]("subscription_Id")
+  def subscriptionId = column[Long]("subscription_id")
   
-  def permissionId = column[Long]("permission_Id")
+  def permissionId = column[Long]("permission_id")
   
   def createdUserId = column[Long]("created_user_id")
   

@@ -7,11 +7,6 @@ class SubscriptionService
     constructor: (@$log, @$http, @$q) ->
         @$log.debug "constructing SubscriptionService"
 
-    deletePermission: (subscriptionId) ->
-        @$log.debug "SubscriptionService.delete #{subscriptionId}"
-        @$http.delete("/subscription/#{subscriptionId}")
-
-
 servicesModule.service('SubscriptionService', SubscriptionService)
 
 # define the factories
