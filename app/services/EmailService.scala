@@ -26,7 +26,17 @@ object EmailService {
      mail.setSubject(s"Hello ${receiver.firstName}")
      mail.setRecipient(receiver.email)
      mail.setFrom("Araneae Team <noreply@araneae.com>")
-//       mail.sendHtml(content.body)
+     mail.sendHtml(content.body)
+   }
+   
+   def sendSignupInviteEmail(receiverEmail: String, senderName:String) = {
+     println("in EmailService.inviteContact... ")
+     val content = views.html.email.inviteSignup(senderName)(Configuration.applicationBaseUrl)
+     val mail = use[MailerPlugin].email
+     mail.setSubject(s"Hello, ${senderName} inviting you to join Araneae")
+     mail.setRecipient(receiverEmail)
+     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.sendHtml(content.body)
    }
    
    def sendWelcomeEmail(receiver: User) = {

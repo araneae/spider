@@ -219,4 +219,29 @@ object ContactController extends Controller with Secured with AkkaActor {
           Ok(HttpResponseUtil.error("Contact not found!"))
     }
   }
+  
+  def sendSignupInviteEmail = IsAuthenticated(parse.json){ username => implicit request =>
+    //logger.info("in ContactController.sendSignupInviteEmail()")
+    println(s"in ContactController.sendSignupInviteEmail()")
+    val jsonObj = request.body.asInstanceOf[JsObject]
+    jsonObj.validate[EmailSignupDTO].fold(
+        valid = { emailSignupDTO =>
+                  val token = TokenGenerator.token
+                   // check if the user already exist
+                  val optExistingUser = UserRepository.findByEmail(emailSignupDTO.email)
+                  optExistingUser match {
+                    // email exists in the database
+                    case Some(existingUser) =>
+                        Conflict(HttpResponseUtil.error(s"You friend (${existingUser.email}) has already signed up!"))
+                    case None =>
+                        // email doesn't exist in the database
+                        EmailService.sendSignupInviteEmail(emailSignupDTO.email, name)
+                        Ok(HttpResponseUtil.success(s"Successfully sent email to ${emailSignupDTO.email}!"))
+                  }
+        }
+        ,invalid = { errors => 
+             Ok(HttpResponseUtil.error("Unable to parse payload"))
+          }
+        )
+  }
 }

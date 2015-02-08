@@ -780,6 +780,10 @@ angular.module('myApp.routeConfig', ['ui.router'])
                'viewMain': {
                     templateUrl: '/assets/partials/contactInvite.html'
                 }
+              },
+              ncyBreadcrumb: {
+                    parent: 'contact',
+                    label: 'Invite Friend'
               }
           })
           .state('adviser', {
