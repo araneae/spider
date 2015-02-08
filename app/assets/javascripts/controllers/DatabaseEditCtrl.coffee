@@ -23,7 +23,7 @@ class DatabaseEditCtrl
 
     cancel: () ->
       @$log.debug "DatabaseEditCtrl.cancel()"
-      @$state.go('database.documents')
+      @$state.go('folder.documents')
 
     save: () ->
       @$log.debug "DatabaseEditCtrl.save()"
@@ -31,7 +31,7 @@ class DatabaseEditCtrl
         (data) =>
           @$log.debug "Successfully updated document!"
           @ErrorService.success("Successfully updated document!")
-          @$state.go('database.documents')
+          @$state.go('folder.documents')
         ,
         (error) =>
           @$log.error "Unable to update document: #{error}"

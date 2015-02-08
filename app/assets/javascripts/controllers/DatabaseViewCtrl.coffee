@@ -14,7 +14,6 @@ class DatabaseViewCtrl
 
     loadDocument: (documentId) ->
         @$log.debug "DatabaseViewCtrl.loadDocument(#{documentId})"
-        #delay = @$q.defer()
         @Document.get({documentId: documentId}).$promise.then(
           (data) =>
               @$log.debug "Promise returned #{data} document"

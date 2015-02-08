@@ -6,7 +6,10 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title clearfix">Contacts
+      <div class="panel-title clearfix">
+        <div class="col-md-5">
+          <div ncy-breadcrumb></div>
+        </div>
         <div class="col-md-7 pull-right">
           <form name="FormContact" ng-submit="ctrl.search()">
             <div class="input-group">
@@ -41,7 +44,7 @@
             </form>
           </div>
         </div>
-      <div>
+      </div>
       <table class="table table-striped" ng-show="ctrl.contacts.length > 0">
         <tr ng-repeat="contact in ctrl.contacts">
           <td class="col-md-2"></td>
