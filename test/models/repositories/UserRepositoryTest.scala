@@ -9,7 +9,9 @@ import play.api.db.slick.DB
 import models._
 import models.dtos._
 import models.repositories._
+import org.joda.time.DateTime
 import play.api.db.slick.Config.driver.simple._
+import enums._
 
 class UserRepositoryTest extends Specification {
 
@@ -22,7 +24,8 @@ class UserRepositoryTest extends Specification {
               val country = Country(None, "usa", "USA", true)
               val countryId = CountryRepository.create(country)
               
-              val user = User(None, "Krzysztof", "Nowak", "test@email.com", "assa", countryId, "token", true)
+              val user = User(None, "Krzysztof", None, "Nowak", "test@email.com", None, "assa", countryId, "token", true,
+                                 new DateTime, UserStatusType.ACTIVE, None)
               val userId = UserRepository create user
               val userOpt = UserRepository findByEmail "test@email.com"
     

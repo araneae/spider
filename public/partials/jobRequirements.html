@@ -12,8 +12,11 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title clearfix">Job Requirements
-        <div class="pull-right">
+      <div class="panel-title clearfix">
+        <div class="col-md-10 ellipsis">
+          <div ncy-breadcrumb></div>
+        </div>
+        <div class="pull-right" has-permission="job.create">
           <button type="button" class="btn btn-primary" ng-click="ctrl.goToCreate()">Create</button>
         </div>
       <!--  <div class="col-md-6 pull-right">
@@ -48,8 +51,8 @@
           <td>{{jobRequirement.code}}</td>
           <td>{{jobRequirement.refNumber}}</td>
           <td>
-            <button type="button" class="btn btn-success" data-placement="left" title="Preview" ng-click="ctrl.preview(jobRequirement)">Preview</button>
-            <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.showDeleteAlert(jobRequirement)"></button>
+            <button type="button" has-permission="job.preview" class="btn btn-success" data-placement="left" title="Preview" ng-click="ctrl.preview(jobRequirement)">Preview</button>
+            <button type="button" has-permission="job.delete" class="btn btn-danger glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.showDeleteAlert(jobRequirement)"></button>
           </td>
         </tr>
       </table>

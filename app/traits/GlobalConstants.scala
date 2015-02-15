@@ -25,9 +25,12 @@ trait GlobalConstnts {
   final val PARAM_USER_ID = "userId"
   final val PARAM_NAME = "name"
   final val PARAM_PATH = "path"
+  final val PARAM_PERMISSIONS = "permissions"
   final val EMPTY = ""
   final val INVALID_USER_ID = "0"
   final val ROLE_SITE_ADMIN = "site.admin"
+  final val ROLE_COMPANY_ADMIN = "company.admin"
+  final val SEP_COMMA = ","
   
   // cache management
   final val USER_DATA_CACHE_TYPE = "user"

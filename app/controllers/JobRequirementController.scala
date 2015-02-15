@@ -54,7 +54,7 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
       }
   }
   
-  def update(jobRequirementId: Long) = IsAuthenticated(parse.json){ username => implicit request =>
+  def update(jobRequirementId: Long) = IsAuthorized(parse.json)("job.edit"){ username => implicit request =>
       //logger.info("in JobRequirementController.update...")
       println(s"in JobRequirementController.update(${jobRequirementId})")
       val jsonObj = request.body.asInstanceOf[JsObject]
@@ -103,7 +103,7 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
       )
   }
   
-  def post(jobRequirementId: Long) = IsAuthenticated{ username => implicit request =>
+  def post(jobRequirementId: Long) = IsAuthorized("job.post"){ username => implicit request =>
       //logger.info(s"in JobRequirementController.post(${jobRequirementId})")
       println(s"in JobRequirementController.post(${jobRequirementId})")
 
@@ -126,7 +126,7 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
       }
   }
   
-  def makeDraft(jobRequirementId: Long) = IsAuthenticated{ username => implicit request =>
+  def makeDraft(jobRequirementId: Long) = IsAuthorized("job.edit"){ username => implicit request =>
       //logger.info(s"in JobRequirementController.makeDraft(${jobRequirementId})")
       println(s"in JobRequirementController.makeDraft(${jobRequirementId})")
 
@@ -149,7 +149,7 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
       }
   }
   
-  def delete(jobRequirementId: Long) = IsAuthenticated{ username => implicit request =>
+  def delete(jobRequirementId: Long) = IsAuthorized("job.delete"){ username => implicit request =>
       //logger.info("in JobRequirementController.delete...")
       println(s"in JobRequirementController.delete(${jobRequirementId})")
       var optJobRequirement = JobRequirementRepository.find(jobRequirementId)
@@ -185,7 +185,7 @@ object JobRequirementController extends Controller with Secured with AkkaActor {
       Ok(data).as(JSON)
   }
   
-  def preview(jobRequirementId: Long) = IsAuthenticated{ username => implicit request =>
+  def preview(jobRequirementId: Long) = IsAuthorized("job.preview"){ username => implicit request =>
       //logger.info(s"in JobRequirementController.preview(${jobRequirementId})")
       println(s"in JobRequirementController.preview(${jobRequirementId})")
       var optJobDTO = JobRequirementRepository.getJobDTOByRequirementId(jobRequirementId)

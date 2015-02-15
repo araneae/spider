@@ -12,7 +12,14 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title">{{ctrl.company.name}} Users</div>
+      <div class="panel-title clearfix">
+        <div class="col-md-10 ellipsis">
+          <div ncy-breadcrumb></div>
+        </div>
+        <div class="btn-group pull-right">
+          <button type="button" class="btn btn-primary" ng-click="ctrl.goToAddUser()">Add User</button>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <table class="table table-striped table-fixed">

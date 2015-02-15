@@ -1,13 +1,15 @@
 package lucene
 
-import org.apache.lucene.document._
+//import org.apache.lucene.document._
 import org.junit.Test
 import org.junit.Before
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import _root_.utils.FileUtil
+import org.joda.time.DateTime
 import lucene.helper._
+import enums._
 import org.junit.Assert.fail
 import models.dtos._
 
@@ -24,25 +26,31 @@ class LuceneSearcherTest extends LuceneConsts {
     // add first text document 
     val docId = 10
     val text = "Java Oracle Mobile Hadoop"
-    val doc = LuceneDocumentService.getTextDocument(docId, text)
+    val document = Document(Some(docId), 1, "Test Document", DocumentType.TEXT,
+                   FileType.DOC, "Test Document", "6118268", "This is a test document", "signature", 1)
+    val doc = LuceneDocumentService.getTextDocument(document, text)
     writer.addOrUpdateDocument(DOC_TYPE_TEXT, docId, doc)
     
     // add second text document
     val docId2 = 20
     val text2 = "Software Engineer"
-    val doc2 = LuceneDocumentService.getTextDocument(docId2, text2)
+    val document2 = Document(Some(docId2), 1, "Test Document", DocumentType.TEXT,
+                   FileType.DOC, "Test Document", "6118268", "This is a test document", "signature", 1)
+    val doc2 = LuceneDocumentService.getTextDocument(document2, text2)
     writer.addOrUpdateDocument(DOC_TYPE_TEXT, docId2, doc2)
     
     // add first user document
     val userId = 10
     val countryId = 1
-    val user = User(Some(userId), "John", "Brown", "john@abc.com", "abc", countryId, "token", false)
+    val user = User(Some(userId), "John", None, "Brown", "john@abc.com", None, "abc", countryId, "token",
+                             false, new DateTime, UserStatusType.ACTIVE, None)
     val userDoc = LuceneDocumentService.getUserDocument(docId, user)
     writer.addOrUpdateDocument(DOC_TYPE_USER, userId, userDoc)
     
     // add second user document
     val userId2 = 20
-    val user2 = User(Some(userId), "Jenny", "Brown", "jenny@abc.com", "abc", countryId, "token", false)
+    val user2 = User(Some(userId), "Jenny", None, "Brown", "jenny@abc.com", None, "abc", countryId, "token",
+                              false, new DateTime, UserStatusType.ACTIVE, None)
     val userDoc2 = LuceneDocumentService.getUserDocument(docId2, user2)
     writer.addOrUpdateDocument(DOC_TYPE_USER, userId2, userDoc2)
     

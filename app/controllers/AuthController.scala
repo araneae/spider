@@ -84,14 +84,17 @@ object AuthController extends Controller with Secured {
                       } 
                       else {
                         UserRepository.updateLastLogon(user.userId.get)
+                        val userPermissions = getUserPermissions(user.userId.get, userName)
+                        println(s"userPermissions=${userPermissions}")
                         //if (path.isEmpty())
                           Redirect(routes.Application.home).withSession(Security.username -> userName, 
-                                                                        "userId" -> userId,
-                                                                        "name" -> firstName)
+                                                                        PARAM_USER_ID -> userId,
+                                                                        PARAM_NAME -> firstName,
+                                                                        PARAM_PERMISSIONS -> userPermissions)
                         //else
                         //  Redirect(path).withSession(Security.username -> userName, 
-                        //                             "userId" -> userId,
-                        //                             "name" -> firstName)
+                        //                             PARAM_USER_ID -> userId,
+                        //                             PARAM_NAME -> firstName)
                       }
                     }
                     else {
@@ -256,5 +259,18 @@ object AuthController extends Controller with Secured {
     Redirect(routes.AuthController.login).withNewSession.flashing(
       "success" -> "You are now logged out."
     )
+  }
+  
+  def getUserPermissions(userId: Long, username: String): String = {
+      def isCompanyAdmin = {
+        val optCompany = CompanyRepository.findByUserId(userId)
+        optCompany.isDefined
+      }
+      
+      def isSiteAdmin = {
+        Configuration.isSiteAdmin(username)
+      }
+      val list = List(if(isCompanyAdmin) ROLE_COMPANY_ADMIN) ::: List(if (isSiteAdmin) ROLE_SITE_ADMIN)
+      list mkString (SEP_COMMA)
   }
 }

@@ -5,6 +5,7 @@ import models.dtos._
 
 import org.specs2.mutable.Specification
 import play.api.test.WithApplication
+import org.joda.time.DateTime
 import play.api.db.slick.DB
 import models._
 import play.api.db.slick.Config.driver.simple._
@@ -19,17 +20,18 @@ class UserSkillRepositoryTest extends Specification {
           implicit session: Session =>
             session.withTransaction{ 
               // create an industry
-              val industry = Industry(None, "Software", "-software-", Some("This is for Software Industry"), 1)
+              val industry = Industry(None, "Software", "This is for Software Industry", 1)
               val industryId = IndustryRepository.create(industry)
               val country = Country(None, "usa", "usa", true)
               val countryId = CountryRepository.create(country)
               
               // create a skill
-              val skill = Skill(None, industryId, "Software", "-software-", Some("This is for Software Industry"), 1)
+              val skill = Skill(None, industryId, "Software", "This is for Software Industry", 1)
               val skillId = SkillRepository.create(skill)
               
               // create a user
-              val user = User(None, "Krzysztof", "Nowak", "test@email.com", "assa", countryId, "token", true)
+              val user = User(None, "Krzysztof", None, "Nowak", "test@email.com", None, "assa", countryId, "token", true,
+                                      new DateTime, UserStatusType.ACTIVE, None)
               val userId = UserRepository create user
               
               
