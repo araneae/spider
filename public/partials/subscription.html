@@ -23,8 +23,10 @@
         <tr ng-repeat="subscription in ctrl.subscriptions">
           <td><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(subscription)">{{subscription.name}}</a></td>  
           <td>{{subscription.description}}</td>
-          <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(subscription)"></a></td>
-          <td><a href="" class="glyphicon glyphicon-edit" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(subscription)"></a></td>
+          <td><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(subscription)"></a>
+          <a href="" class="glyphicon glyphicon-edit" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(subscription)"></a>
+          <button type="button" class="btn btn-primary" ng-click="ctrl.goToAddPermission(subscription)">Add Permission</button>
+          </td>
         </tr>
       </table>
     </div>
