@@ -25,7 +25,7 @@ object CacheService extends GlobalConstnts {
                  val user = Cache.getOrElse[DeadboltUser](cacheKey, 
                                            new Callable[DeadboltUser] {
                                               def call() = {
-                                                 val userRoles = if (Configuration.isSiteAdmin(username)) List(ROLE_SITE_ADMIN) else List()
+                                                 val userRoles = getUserPermissions(request)
                                                  val deadboltUser = new DeadboltUser(username, userRoles)
                                                  deadboltUser
                                               }
@@ -40,5 +40,13 @@ object CacheService extends GlobalConstnts {
    def getUsername(request: Request[Any]): Option[String] = {
      val optValue = request.session.get(Security.username)
      optValue
+   }
+   
+   def getUserPermissions(request: Request[Any]): List[String] = {
+     val optValue = request.session.get(PARAM_PERMISSIONS)
+     optValue match {
+       case Some(value) => value.split(SEP_COMMA).toList
+       case None => List()
+     }
    }
 }

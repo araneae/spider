@@ -56,7 +56,8 @@ libraryDependencies ++= Seq(
     "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % "test",
     "org.apache.tika" % "tika-core" % tikkaVersion,
     "org.apache.tika" % "tika-parsers" % tikkaVersion,
-    "be.objectify" %% "deadbolt-scala" % deadboltVersion
+    "be.objectify" %% "deadbolt-scala" % deadboltVersion,
+    "edu.stanford.nlp" % "stanford-corenlp" % "3.4.1"
   )
   
 resolvers += Resolver.url("Objectify Play Repository", url("http://deadbolt.ws/releases/"))(Resolver.ivyStylePatterns)

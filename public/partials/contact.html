@@ -6,7 +6,10 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <div class="panel-title clearfix">Contacts
+      <div class="panel-title clearfix">
+        <div class="col-md-5">
+          <div ncy-breadcrumb></div>
+        </div>
         <div class="col-md-7 pull-right">
           <form name="FormContact" ng-submit="ctrl.search()">
             <div class="input-group">
@@ -25,7 +28,24 @@
       </div>
     </div>
     <div class="panel-body">
-      <table class="table table-striped">
+      <div ng-hide="ctrl.contacts.length > 0">
+        <form class="form-inline" role="form" ng-hide="ctrl.showInviteEmailSection">
+          <div class="col-md-9">
+            <div class="text-color-blue">{{ctrl.message}}</div>
+          </div>
+          <button type="button" class="btn btn-success" ng-show="ctrl.showEmalYesButton" ng-click="ctrl.showInviteEmail()">Yes</button>
+        </form>
+        <div class="clearfix" ng-show="ctrl.showInviteEmailSection">
+          <div class="pull-right">
+            <form class="form-inline" id="idInviteEmailForm" name="InviteEmailForm" role="form">
+              <input type="email" class="form-control" ng-model="ctrl.inviteSignup.email" dataplacement="left" title="Enter your friend's email address"
+                      placeholder="Enter your friend's email address" required></input>
+              <button type="button" class="btn btn-success" ng-click="ctrl.sendSignupInviteEmail()" ng-disabled="!InviteEmailForm.$valid">Send Email</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped" ng-show="ctrl.contacts.length > 0">
         <tr ng-repeat="contact in ctrl.contacts">
           <td class="col-md-2"></td>
           <td class="col-md-1">

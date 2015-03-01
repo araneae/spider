@@ -10,7 +10,6 @@ class CompanyUserCtrl
         @$scope.$on('contextMenu', (event, data) =>
                                     @$log.debug "received message contextMenu(#{data.menuItem})"
                                     @refresh() if data.menuItem is "refresh"
-                                    @goToAddUser() if data.menuItem is "addUser"
         )
         
         # load list of companyUsers from server

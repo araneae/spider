@@ -83,6 +83,21 @@ class ContactService
             )
         deferred.promise
 
+    sendSignupInviteEmail: (inviteSignup) ->
+        @$log.debug "ContactService.sendSignupInviteEmail (#{inviteSignup})"
+        deferred = @$q.defer()
+
+        @$http.post("/contact/invite/signup/email", inviteSignup)
+          .success((data, status, headers) =>
+                @$log.info("Successfully sent invite email - status #{status}")
+                deferred.resolve(data)
+            )
+          .error((data, status, headers) =>
+                @$log.error("Failed to send invite email - status #{status}")
+                deferred.reject(data);
+            )
+        deferred.promise
+
 servicesModule.service('ContactService', ContactService)
 
 # define the factories

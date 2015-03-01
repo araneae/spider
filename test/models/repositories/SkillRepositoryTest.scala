@@ -17,17 +17,16 @@ class SkillRepositoryTest extends Specification {
       DB.withSession {
           implicit session: Session =>
             session.withTransaction{
-              val industry = Industry(None, "Software", "-software-", Some("This is for Software Industry"), 1)
+              val industry = Industry(None, "Software", "This is for Software Industry", 1)
               val industryId = IndustryRepository.create(industry)
               
-              val skill = Skill(None, industryId, "Software", "-software-", Some("This is for Software Industry"), 1)
+              val skill = Skill(None, industryId, "Software", "This is for Software Industry", 1)
               
               val skillId = SkillRepository.create(skill)
               val skillOpt = SkillRepository find skillId
     
               skillOpt.map(_.industryId) must beSome(skill.industryId)
               skillOpt.map(_.name) must beSome(skill.name)
-              skillOpt.map(_.code) must beSome(skill.code)
               skillOpt.map(_.description) must beSome(skill.description)
               skillOpt.map(_.skillId) must not be_=== None
               

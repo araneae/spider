@@ -5,6 +5,10 @@ class ContactCtrl
         @$log.debug "constructing ContactCtrl"
         @profileImageUrl = "/assets/images/default_user.jpg"
         @contacts = []
+        @message = @getDefaultMessage()
+        @showEmalYesButton = false
+        @showInviteEmailSection = false
+        @inviteSignup = {}
         @searchText
 
         @$scope.$on('contextMenu', (event, data) =>
@@ -33,9 +37,20 @@ class ContactCtrl
     clearSearchText: () ->
       @searchText = ""
       @search()
+      @message = @getDefaultMessage()
+      @showEmalYesButton = false
+      @showInviteEmailSection = false
+
+    getDefaultMessage: () ->
+      "Enter your friend's first name or last name in the search box and click search button or press enter button!"
+    
+    getNoSearchResultMessage: () ->
+      "Sorry, we are unable to find your friend by name \"#{@searchText}\"! Would you like to invite your friend to join Araneae?"
 
     search: () ->
       @$log.debug "ContactCtrl.search()"
+      @showEmalYesButton = false
+      @showInviteEmailSection = false
       if @UtilityService.isEmpty(@searchText)
           @listContacts()
       else 
@@ -43,6 +58,9 @@ class ContactCtrl
           (data) =>
               @$log.debug "Successfully returned search result #{data}"
               @contacts = data
+              if (@contacts.length is 0)
+                @message = @getNoSearchResultMessage()
+                @showEmalYesButton = true
           ,
           (error) =>
               @ErrorService.error("Oops, something wrong! Unable to search #{searchText}.")
@@ -103,5 +121,22 @@ class ContactCtrl
     goToInvite: (contact) ->
       @$log.debug "ContactCtrl.goToInvite(#{contact.contactId})"
       @$state.go("contactInvite", {contactId: contact.contactId})
+   
+    showInviteEmail: () ->
+      @$log.debug "ContactCtrl.showInviteEmail()"
+      @showEmalYesButton = false
+      @showInviteEmailSection = true
+
+    sendSignupInviteEmail: () ->
+      @$log.debug "ContactCtrl.sendSignupInviteEmail()"
+      @ContactService.sendSignupInviteEmail(@inviteSignup).then(
+          (data) =>
+            @ErrorService.success(data.message)
+            @$log.debug "Successfully accepted invitation #{data}"
+         ,
+         (error) =>
+            @ErrorService.error("Oops, something wrong! Unable to send email.")
+            @$log.error "Unable to send email"
+      )
 
 controllersModule.controller('ContactCtrl', ContactCtrl)

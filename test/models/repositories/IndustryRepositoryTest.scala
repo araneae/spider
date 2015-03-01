@@ -17,13 +17,12 @@ class IndustryRepositoryTest extends Specification {
       DB.withSession {
           implicit session: Session =>
             session.withTransaction{
-              val industry = Industry(None, "Software", "-software-", Some("This is for Software Industry"), 1)
+              val industry = Industry(None, "Software", "This is for Software Industry", 1)
               val industryId = IndustryRepository.create(industry)
               
               val industryOpt = IndustryRepository find industryId
     
               industryOpt.map(_.name) must beSome(industry.name)
-              industryOpt.map(_.code) must beSome(industry.code)
               industryOpt.map(_.description) must beSome(industry.description)
               industryOpt.map(_.industryId) must not be_=== None
               

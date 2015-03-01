@@ -204,6 +204,8 @@ POST   /contact/invite/:friendId/accept                         controllers.Cont
 
 POST   /contact/invite/:friendId/reject                         controllers.ContactController.rejectInvitation(friendId: Long)
 
+POST   /contact/invite/signup/email                             controllers.ContactController.sendSignupInviteEmail
+
 # Follower specific routes
 POST   /adviser/:adviserUserId                                  controllers.FollowerController.create(adviserUserId: Long)
 

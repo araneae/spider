@@ -15,18 +15,17 @@ class DomainRepositoryTest extends Specification {
     "save and query Domain" in new WithApplication {
       DB.withSession{
           implicit session: Session =>
-            session.withTransaction{
-              val industry = Industry(None, "Software", "-software-", Some("This is for Software Industry"), 1)
+            session.withTransaction {
+              val industry = Industry(None, "Software", "This is for Software Industry", 1)
               val industryId = IndustryRepository.create(industry)
               
-              val domain = Domain(None, industryId, "Software", "-software-", Some("This is for Software Industry"), 1)
+              val domain = Domain(None, industryId, "Software", "This is for Software Industry", 1)
               
               val domainId = DomainRepository.create(domain)
               val domainOpt = DomainRepository find domainId
     
               domainOpt.map(_.industryId) must beSome(domain.industryId)
               domainOpt.map(_.name) must beSome(domain.name)
-              domainOpt.map(_.code) must beSome(domain.code)
               domainOpt.map(_.description) must beSome(domain.description)
               domainOpt.map(_.domainId) must not be_=== None
               
