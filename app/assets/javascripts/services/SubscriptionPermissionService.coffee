@@ -27,4 +27,4 @@ servicesModule.service('SubscriptionPermissionService', SubscriptionPermissionSe
 # define the factories
 #
 servicesModule.factory('SubscriptionPermission', ['$resource', ($resource) -> 
-              $resource('/subscriptionPermission/:subscriptionId/permission/:permissionId', {subscriptionId: '@subscriptionId', permissionId: '@permisionId'}, {'update': {method: 'PUT'}})])
+              $resource('/subscriptionPermission/:subscriptionId/permission/:permissionId', {subscriptionId: '@subscriptionId', permissionId: '@permissionId'}, {'update': {method: 'PUT'}})])

@@ -10,7 +10,7 @@ class SubscriptionPermissionCtrl
                                     @goToCreate() if data.menuItem is "create"
         )
         # fetch data from server
-        @listSubscriptionPermissions()
+        #@listSubscriptionPermissions()
         
     listSubscriptionPermissions: () ->
         @$log.debug "SubscriptionPermissionCtrl.listSubscriptionPermissions()"

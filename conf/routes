@@ -90,15 +90,12 @@ DELETE /permission/:permissionId                                controllers.Perm
 
 
 # Subscription permission specific routes
-#POST   /subscriptionPermission                                  controllers.SubscriptionPermissionController.create
 
-#GET    /subscriptionPermission                                  controllers.SubscriptionPermissionController.getAll
+POST   /subscriptionPermission/:subscriptionId/permission/:permissionId   controllers.SubscriptionPermissionController.create(subscriptionId: Long, permissionId: Long)
 
-#GET    /subscriptionPermission/:subscriptionId/:permissionId                  controllers.SubscriptionPermissionController.get(subscriptionId: Long)
+GET    /subscriptionPermission/:subscriptionId/permission   controllers.SubscriptionPermissionController.getAll(subscriptionId: Long)
 
-#PUT    /subscriptionPermission/:subscriptionId                  controllers.SubscriptionPermissionController.update(subscriptionId: Long)
-
-#DELETE /subscriptionPermission/:subscriptionId                  controllers.SubscriptionPermissionController.delete(subscriptionId: Long)
+DELETE /subscriptionPermission/:subscriptionId/permission/:permissionId   controllers.SubscriptionPermissionController.delete(subscriptionId: Long, permissionId: Long)
 
 
 # Subscription specific routes

@@ -150,7 +150,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     label: 'Subscriptions'
               }
           })
-          
           .state('subscriptionCreate', {
               url: '/admin/subscription/create'
               views: {
@@ -194,7 +193,6 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     label: 'Edit Subscription'
               }
           })
-          
           .state('subscriptionPermissions', {
               url: '/admin/subscriptionPermission',
               views: {
@@ -218,8 +216,8 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     label: 'Subscription Permissions'
               }
           })
-          .state('subscriptionPermissionCreate', {
-              url: '/admin/subscriptionPermission/create'
+          .state('subscriptionAddPermission', {
+              url: '/admin/subscription/:subscriptionId/permission/add'
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'
@@ -228,15 +226,15 @@ angular.module('myApp.routeConfig', ['ui.router'])
                    templateUrl: '/assets/partials/menuBar.html'
                 },
                 'viewMain': {
-                    templateUrl: '/assets/partials/subscriptionPermissionCreate.html'
+                    templateUrl: '/assets/partials/subscriptionAddPermission.html'
                 }
               },
               permission: {
                 name: 'site.admin'
               },
               ncyBreadcrumb: {
-                    parent: 'subscriptionPermissions',
-                    label: 'Create Subscription Permission'
+                    parent: 'subscriptions',
+                    label: 'Add Permission'
               }
           })
           .state('permissions', {
