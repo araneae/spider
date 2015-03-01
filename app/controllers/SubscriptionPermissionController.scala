@@ -26,7 +26,7 @@ object SubscriptionPermissionController extends Controller with DeadboltActions 
   
   def delete(subscriptionId: Long, permissionId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in SubscriptionPermissionController.delete(${subscriptionId,permissionId})")
-      println(s"in SubscriptionPermissionController.delete(${subscriptionId,permissionId})")
+      println(s"in SubscriptionPermissionController.delete(${subscriptionId},${permissionId})")
       SubscriptionPermissionRepository.delete(subscriptionId,permissionId);
       Ok(HttpResponseUtil.success("Successfully deleted subscription permission mapping!"))
   }
