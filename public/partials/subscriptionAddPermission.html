@@ -14,8 +14,7 @@
         <div class="form-group">
           <label id="lblName" for="name" class="col-md-2 control-label">Subscription Name</label>
           <div class="col-md-4">
-            <input type="text" class="form-control" name="name" id="idName" placeholder="Enter name"
-                   ng-model="ctrl.subscription.name" required>
+          <label class="form-control">{{ctrl.subscription.name}}</label>
           </div>
         </div> 
         <div class="form-group">
@@ -26,7 +25,7 @@
         </div>
       <!-- <pre>{{ ctrl.subscription | json }}</pre> -->
         <div class="form-group">
-          <div class="col-md-offset-1 col-md-2">
+          <div class="col-md-offset-2 col-md-4">
             <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
             <button type="submit" class="btn btn-success" id="btnSave" ng-disabled='!CreateSubscriptionForm.$valid'>Save</button>
           </div>

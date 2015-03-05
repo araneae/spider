@@ -93,7 +93,9 @@ DELETE /permission/:permissionId                                controllers.Perm
 
 POST   /subscriptionPermission/:subscriptionId/permission/:permissionId   controllers.SubscriptionPermissionController.create(subscriptionId: Long, permissionId: Long)
 
-GET    /subscriptionPermission/:subscriptionId/permission   controllers.SubscriptionPermissionController.getAll(subscriptionId: Long)
+GET    /subscriptionPermission/:subscriptionId/permission     controllers.SubscriptionPermissionController.get(subscriptionId: Long)
+
+GET    /subscriptionPermission/permission                     controllers.SubscriptionPermissionController.getAll
 
 DELETE /subscriptionPermission/:subscriptionId/permission/:permissionId   controllers.SubscriptionPermissionController.delete(subscriptionId: Long, permissionId: Long)
 

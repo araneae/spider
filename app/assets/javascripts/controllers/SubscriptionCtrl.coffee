@@ -38,7 +38,7 @@ class SubscriptionCtrl
     
     goToEdit: (subscription) ->
         @$log.debug "SubscriptionCtrl.goToEdit(#{subscription})"
-        @$state.go("subscriptionEdit", {subscriptionId: subscription.subscriptionId})
+        @$state.go("subscriptionEdit",{subscriptionId: subscription.subscriptionId})
         
     goToAddPermission: (subscription) ->
         @$log.debug "SubscriptionCtrl.goToAddPermission(#{subscription})"

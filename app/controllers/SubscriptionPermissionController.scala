@@ -31,10 +31,18 @@ object SubscriptionPermissionController extends Controller with DeadboltActions 
       Ok(HttpResponseUtil.success("Successfully deleted subscription permission mapping!"))
   }
   
-  def getAll(subscriptionId: Long) = IsAuthenticated{ username => implicit request =>
+  def get(subscriptionId: Long) = IsAuthenticated{ username => implicit request =>
       //logger.info("in SubscriptionPermissionController.get(${subscriptionId})")
-      println(s"in SubscriptionPermissionController.getAll(${subscriptionId})")
-      var optSubscription = SubscriptionPermissionRepository.getAll(subscriptionId)
+      println(s"in SubscriptionPermissionController.get(${subscriptionId})")
+      var optSubscription = SubscriptionPermissionRepository.get(subscriptionId)
+      val data = Json.toJson(optSubscription)
+      Ok(data).as(JSON)
+  }
+  
+  def getAll = IsAuthenticated{ username => implicit request =>
+      //logger.info("in SubscriptionPermissionController.get())
+      println(s"in SubscriptionPermissionController.getAll()")
+      var optSubscription = SubscriptionPermissionRepository.getAll()
       val data = Json.toJson(optSubscription)
       Ok(data).as(JSON)
   }

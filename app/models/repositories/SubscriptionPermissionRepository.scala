@@ -11,10 +11,17 @@ object SubscriptionPermissionRepository {
   
   val query = TableQuery[SubscriptionPermissions]
   
-  def getAll(subscriptionId: Long): Seq[SubscriptionPermissionDTO] = {
+  def get(subscriptionId: Long): Seq[SubscriptionPermissionDTO] = {
     DB.withSession {
        implicit session: Session =>
         query.filter(s => s.subscriptionId === subscriptionId).list map {x => SubscriptionPermissionDTO(x)}
+    }
+  }
+  
+  def getAll(): Seq[SubscriptionPermissionDTO] = {
+    DB.withSession {
+       implicit session: Session =>
+        query.list map {x => SubscriptionPermissionDTO(x)}
     }
   } 
   

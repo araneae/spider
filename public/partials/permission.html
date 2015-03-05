@@ -25,11 +25,12 @@
         </tr>
         <tr ng-repeat="permission in ctrl.permissions">
           <td has-permission='site.admin'><a href="" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(permission)">{{permission.name}}</a></td>
-          <td has-permission='!site.admin'>{{permission.name}}</td>
           <td>{{permission.code}}</td>
           <td>{{permission.description}}</td>
-          <td has-permission='site.admin'><a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(permission)"></a></td>
-          <td has-permission='!site.admin'></td>
+          <td has-permission='site.admin'>
+            <a href="" class="glyphicon glyphicon-edit" data-placement="left" title="Edit" ng-click="ctrl.goToEdit(permission)"></a>
+            <a href="" class="glyphicon glyphicon-remove" data-placement="left" title="Remove" ng-click="ctrl.delete(permission)"></a>
+          </td>
         </tr>
       </table>
     </div>
