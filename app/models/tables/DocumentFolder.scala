@@ -22,6 +22,8 @@ class DocumentFolders(tag: Tag) extends Table[DocumentFolder](tag, "document_fol
   
   def default = column[Boolean]("default")
   
+  def parentId = column[Option[Long]]("parent_id")
+  
   def createdUserId = column[Long]("created_user_id")
   
   def createdAt = column[DateTime]("created_at")
@@ -30,7 +32,7 @@ class DocumentFolders(tag: Tag) extends Table[DocumentFolder](tag, "document_fol
   
   def updatedAt = column[Option[DateTime]]("updated_at")
   
-  override def * = (documentFolderId.?, name, default, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentFolder.tupled, DocumentFolder.unapply)
+  override def * = (documentFolderId.?, name, default, parentId, createdUserId, createdAt, updatedUserId, updatedAt) <> (DocumentFolder.tupled, DocumentFolder.unapply)
   
   // foreign keys and indexes
   

@@ -1,26 +1,29 @@
 
 class DatabaseUploadCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @Document, @ErrorService, @DocumentFolder, @UtilityService) ->
+    constructor: (@$log, @$state, @DatabaseService, @Document, @ErrorService, @DocumentFolder, @UtilityService, @ConfigService) ->
         @$log.debug "constructing DatabaseUploadCtrl"
         @folders = []
         @folder
-        @document = {}
         @fileUpload = {}
-        @selectedFile
+        @selectedFiles = []
         
         # load data from server
         @loadFolders()
 
     onFileSelect: ($files) ->
       @$log.debug "DatabaseUploadCtrl.onFileSelect()"
+      @selectedFiles = []
       for file in $files
         name = @UtilityService.getFileName(file.name)
-        @document.fileName = file.name
-        @document.name = name
-        @document.description = name 
-        @selectedFile = file
-        break
+        fileObj = {
+                      fileName: file.name,
+                      name: name,
+                      status: "Ready",
+                      file: file
+                    } 
+        @selectedFiles.push(fileObj)
+        break if @selectedFiles.length is @ConfigService.multiFileUploadLimit
 
     loadFolders: () ->
         @$log.debug "DatabaseUploadCtrl.loadFolders()"
@@ -38,25 +41,49 @@ class DatabaseUploadCtrl
 
     save: () ->
         @$log.debug "DatabaseUploadCtrl.save()"
-        @UtilityService.uploadFile('/database/upload', 'application/text', @selectedFile, @onUploadSuccess, @onUploadError)
+        for obj in @selectedFiles
+          (() =>
+              fileObj = obj
+              @UtilityService.uploadFile('/database/upload',
+                                  'application/text',
+                                  fileObj.file,
+                                  (data, status, headers, config) =>
+                                      @onUploadSuccess(data, fileObj)
+                                  ,
+                                  (error) =>
+                                      @onUploadError(error, fileObj)
+                                  ,
+                                  (percent) =>
+                                      @progressFn(percent, fileObj))
+          )()
 
-    onUploadSuccess: (data, status, headers, config) =>
+    onUploadSuccess: (data, fileObj) =>
         @$log.debug "DatabaseUploadCtrl.onUploadSuccess()"
-        @document.documentFolderId = @folder.documentFolderId
-        @Document.save(@document).$promise.then(
+        document = {
+                      fileName: fileObj.fileName,
+                      name: fileObj.name,
+                      description: fileObj.name,
+                      documentFolderId: @folder.documentFolderId
+                    }
+        @Document.save(document).$promise.then(
             (data) =>
                 @ErrorService.success("Successfully uploaded document!")
                 @$log.debug "Promise returned #{data} document"
-                @UtilityService.goBack('folder.documents')
+                #@UtilityService.goBack('folder.documents')
+                fileObj.status = "Uploaded"
             ,
             (error) =>
-                @ErrorService.error("Failed to upload document!")
+                #@ErrorService.error("Failed to upload document!")
                 @$log.error "Unable to save document: #{error.data.message}"
+                fileObj.status = "Failed to upload"
             )
 
-    onUploadError : (error) =>
-      @ErrorService.error("Failed to upload document!")
+    onUploadError : (error, fileObj) =>
       @$log.debug "DatabaseUploadCtrl.onUploadError(#{error})"
+      fileObj.status = "Upload failed"
+    
+    progressFn : (percent, fileObj) =>
+      fileObj.status = percent
 
     cancel: () ->
         @$log.debug "DatabaseUploadCtrl.cancel()"

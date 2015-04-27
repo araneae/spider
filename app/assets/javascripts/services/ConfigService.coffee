@@ -8,6 +8,7 @@ class ConfigService
         @$log.debug "constructing ConfigService"
         @documentTablePageSize = 12
         @messageTablePageSize = 12
+        @multiFileUploadLimit = 25
 
 servicesModule.service('ConfigService', ConfigService)
 

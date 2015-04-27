@@ -97,7 +97,7 @@ object Application extends Controller with Secured with AkkaActor {
                           }
                           // create default message boxes
                           MessageBoxRepository.createDefaults(userId, userId)
-                          val documentFolderId = DocumentFolderRepository.create(DocumentFolder(None, "Documents", true, userId))
+                          val documentFolderId = DocumentFolderRepository.create(DocumentFolder(None, "Documents", true, None, userId))
                           UserDocumentFolderRepository.create(UserDocumentFolder(None, documentFolderId, userId, OwnershipType.OWNED, true, true, true, false, None, userId))
                           Redirect(routes.AuthController.login).flashing(Flash(formData.data) + ("success" -> "Activation email has been sent."))
                         case None =>

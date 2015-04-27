@@ -85,8 +85,9 @@ class UtilityService
             # formDataAppender: function(formData, key, val){}
         })
         .progress( (evt) =>
-           @$log.debug "percent: #{parseInt(100.0 * evt.loaded / evt.total)}"
-           progressFn(evt) if progressFn
+           percent = parseInt(100.0 * evt.loaded / evt.total)
+           @$log.debug "percent: #{percent}"
+           progressFn(percent) if progressFn
         )
         .success( (data, status, headers, config) =>
             # file is uploaded successfully

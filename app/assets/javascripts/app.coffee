@@ -8,6 +8,7 @@ dependencies = [
     'ui.select2',
     'ct.ui.router.extras',
     'angularFileUpload',
+    'ngFileUpload',
     'smart-table',
     'ngDraggable',
     'ncy-angular-breadcrumb',

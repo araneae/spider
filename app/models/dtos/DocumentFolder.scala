@@ -12,6 +12,7 @@ case class DocumentFolder(
                    documentFolderId: Option[Long],
                    name: String,
                    default: Boolean,
+                   parentId: Option[Long],
                    createdUserId: Long,
                    createdAt: DateTime = new DateTime(),
                    updatedUserId: Option[Long] = None,
@@ -24,6 +25,7 @@ case class DocumentFolder(
       this(documentFolderDTO.documentFolderId,
            documentFolderDTO.name,
            documentFolderDTO.default,
+           None,
            createdUserId,
            createdAt,
            updatedUserId,
@@ -38,6 +40,7 @@ case class DocumentFolder(
       this(folderDTO.documentFolderId,
            folderDTO.name,
            folderDTO.default,
+           None,
            createdUserId,
            createdAt,
            updatedUserId,
@@ -45,12 +48,13 @@ case class DocumentFolder(
   }
 }
 
-object DocumentFolder extends Function7[Option[Long], String, Boolean, Long, DateTime, Option[Long], Option[DateTime], DocumentFolder]
+object DocumentFolder extends Function8[Option[Long], String, Boolean, Option[Long], Long, DateTime, Option[Long], Option[DateTime], DocumentFolder]
 {
     implicit val documentFolderWrites : Writes[DocumentFolder] = (
             (JsPath \ "documentFolderId").write[Option[Long]] and
             (JsPath \ "name").write[String] and
             (JsPath \ "default").write[Boolean] and
+            (JsPath \ "parentId").write[Option[Long]] and
             (JsPath \ "createdUserId").write[Long] and
             (JsPath \ "createdAt").write[DateTime] and
             (JsPath \ "updatedUserId").write[Option[Long]] and
@@ -61,6 +65,7 @@ object DocumentFolder extends Function7[Option[Long], String, Boolean, Long, Dat
           (JsPath \ "documentFolderId").readNullable[Long] and
           (JsPath \ "name").read[String] and
           (JsPath \ "default").read[Boolean] and
+          (JsPath \ "parentId").readNullable[Long] and
           (JsPath \ "createdUserId").read[Long] and
           (JsPath \ "createdAt").read[DateTime] and
           (JsPath \ "updatedUserId").readNullable[Long] and
