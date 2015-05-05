@@ -994,7 +994,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               }
           })
           .state('databaseDocumentView', {
-              url: '/document/:documentId/view',
+              url: '/document/folder/:documentFolderId/document/:documentId',
               views: {
                 'viewHeaderBar': {
                   templateUrl: '/assets/partials/headerBarHome.html'

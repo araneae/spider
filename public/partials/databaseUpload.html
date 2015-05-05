@@ -27,13 +27,11 @@
           <div class="col-sm-8">
             <table class="table table-striped">
               <tr>
-                <th class="col-md-2">File Name</th>
-                <th class="col-md-2">Descriptive Name</th>
-                <th class="col-md-1">Status</th>
+                <th class="col-sm-4">File Name</th>
+                <th class="col-sm-2">Status</th>
               </tr>
               <tr ng-repeat="fileObj in ctrl.selectedFiles">
                 <td>{{fileObj.fileName}}</td>
-                <td>{{fileObj.name}}</td>
                 <td>{{fileObj.status}}</td>
               </tr>
             </table>

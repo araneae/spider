@@ -80,7 +80,7 @@ class FolderDocumentCtrl
     
     goToView: (documentId) ->
         @$log.debug "FolderDocumentCtrl.goToView(#{documentId})"
-        @$state.go("databaseDocumentView", {documentId: documentId})
+        @$state.go("databaseDocumentView", {documentFolderId: @documentFolderId, documentId: documentId})
 
     goToShareFolder: () ->
         @$log.debug "FolderDocumentCtrl.goToShareFolder()"
@@ -149,7 +149,7 @@ class FolderDocumentCtrl
             ,
             (error) =>
                 @ErrorService.error("Oops! Unable to search.")
-                @$log.error "Unable to search #{searchText}"
+                @$log.error "Unable to search #{@searchText}"
             )
         else
           @listDocuments()

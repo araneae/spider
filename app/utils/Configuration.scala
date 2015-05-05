@@ -16,6 +16,7 @@ object Configuration {
   private val xrayTerms: String = Play.current.configuration.getString("default.xray.terms").getOrElse("")
   private val defaultPictureUrl = Play.current.configuration.getString("default.profile.picture.url").getOrElse("")
   private val profilePictureUrl = Play.current.configuration.getString("profile.picture.url").getOrElse("")
+  private val mailerSmtpFrom = Play.current.configuration.getString("smtp.from").getOrElse("")
   private val siteAdminUserIds = {
                    val optList = Play.current.configuration.getStringList("site.admin.usernames")
                    optList match {
@@ -56,4 +57,6 @@ object Configuration {
   def userProfilePictureUrl(fileName: String) = s"${profilePictureUrl}/${fileName}"
   
   def isSiteAdmin(username: String) = if (siteAdminUserIds.contains(username)) true else false
+  
+  def smtpFrom = mailerSmtpFrom
 }

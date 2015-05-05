@@ -15,7 +15,7 @@ object EmailService {
      val mail = use[MailerPlugin].email
      mail.setSubject(s"Hello ${receiver.firstName}")
      mail.setRecipient(receiver.email)
-     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.setFrom(Configuration.smtpFrom)
      mail.sendHtml(content.body)
    }
    
@@ -25,7 +25,7 @@ object EmailService {
      val mail = use[MailerPlugin].email
      mail.setSubject(s"Hello ${receiver.firstName}")
      mail.setRecipient(receiver.email)
-     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.setFrom(Configuration.smtpFrom)
      mail.sendHtml(content.body)
    }
    
@@ -35,7 +35,7 @@ object EmailService {
      val mail = use[MailerPlugin].email
      mail.setSubject(s"Hello, ${senderName} inviting you to join Araneae")
      mail.setRecipient(receiverEmail)
-     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.setFrom(Configuration.smtpFrom)
      mail.sendHtml(content.body)
    }
    
@@ -45,7 +45,7 @@ object EmailService {
      val mail = use[MailerPlugin].email
      mail.setSubject(s"${receiver.firstName}, activate your account now")
      mail.setRecipient(receiver.email)
-     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.setFrom(Configuration.smtpFrom)
      mail.sendHtml(content.body)
    }
    
@@ -55,7 +55,7 @@ object EmailService {
      val mail = use[MailerPlugin].email
      mail.setSubject(s"${receiver.firstName}, your one time password")
      mail.setRecipient(receiver.email)
-     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.setFrom(Configuration.smtpFrom)
      mail.sendHtml(content.body)
    }
    
@@ -65,7 +65,7 @@ object EmailService {
      val mail = use[MailerPlugin].email
      mail.setSubject(s"${name}, your one time password")
      mail.setRecipient(email)
-     mail.setFrom("Araneae Team <noreply@araneae.com>")
+     mail.setFrom(Configuration.smtpFrom)
      mail.sendHtml(content.body)
    }
 }

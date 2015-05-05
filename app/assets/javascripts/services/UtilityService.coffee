@@ -18,7 +18,7 @@ class UtilityService
        for obj in list
            index = index + 1
            return index if obj[prop] is value
-       index
+       -1
 
     isStringEmpty: (obj) ->
       if (obj)

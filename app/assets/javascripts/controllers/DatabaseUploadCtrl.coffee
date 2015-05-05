@@ -5,8 +5,9 @@ class DatabaseUploadCtrl
         @$log.debug "constructing DatabaseUploadCtrl"
         @folders = []
         @folder
-        @fileUpload = {}
         @selectedFiles = []
+        @statusUploaded = "Uploaded"
+        @statusUploadFailed = "Upload Failed"
         
         # load data from server
         @loadFolders()
@@ -57,7 +58,7 @@ class DatabaseUploadCtrl
                                       @progressFn(percent, fileObj))
           )()
 
-    onUploadSuccess: (data, fileObj) =>
+    onUploadSuccess: (data, fileObj) ->
         @$log.debug "DatabaseUploadCtrl.onUploadSuccess()"
         document = {
                       fileName: fileObj.fileName,
@@ -69,20 +70,25 @@ class DatabaseUploadCtrl
             (data) =>
                 @ErrorService.success("Successfully uploaded document!")
                 @$log.debug "Promise returned #{data} document"
-                #@UtilityService.goBack('folder.documents')
-                fileObj.status = "Uploaded"
+                fileObj.status = @statusUploaded
+                @UtilityService.goBack('folder.documents') if @hasUploadedAll()
             ,
             (error) =>
                 #@ErrorService.error("Failed to upload document!")
                 @$log.error "Unable to save document: #{error.data.message}"
-                fileObj.status = "Failed to upload"
+                fileObj.status = @statusUploadFailed
             )
 
-    onUploadError : (error, fileObj) =>
+    onUploadError : (error, fileObj) ->
       @$log.debug "DatabaseUploadCtrl.onUploadError(#{error})"
       fileObj.status = "Upload failed"
+
+    hasUploadedAll: () ->
+      for obj in @selectedFiles
+        return false if obj.status isnt @statusUploaded
+      return true
     
-    progressFn : (percent, fileObj) =>
+    progressFn : (percent, fileObj) ->
       fileObj.status = percent
 
     cancel: () ->
