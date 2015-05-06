@@ -952,7 +952,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'folder.documents',
-                    label: 'Edit Document of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
           .state('databaseDocumentXRay', {
@@ -971,7 +971,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'folder.documents',
-                    label: 'XRay Document of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
           .state('sharedDocumentXRay', {
@@ -990,7 +990,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'sharedRepositories',
-                    label: 'XRay Document of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
           .state('databaseDocumentView', {
@@ -1009,7 +1009,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'folder.documents',
-                    label: 'View Document of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
           .state('sharedDocumentView', {
@@ -1025,7 +1025,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'sharedRepositories',
-                    label: 'View Document of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
           .state('databaseDocumentShare', {
@@ -1044,7 +1044,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'databaseManageShares',
-                    label: 'Share Document of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
           .state('sharedDocumentShare', {
@@ -1082,7 +1082,7 @@ angular.module('myApp.routeConfig', ['ui.router'])
               },
               ncyBreadcrumb: {
                     parent: 'folder.documents',
-                    label: 'Manage Shares of {{ctrl.document.name}}'
+                    label: '{{ctrl.document.name}}'
               }
           })
            .state('sharedDocumentManageShares', {

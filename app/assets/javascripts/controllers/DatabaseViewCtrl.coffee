@@ -13,6 +13,7 @@ class DatabaseViewCtrl
         @lastDocument = {}
         @documents = []
         @contents = ""
+        @index = 0
 
         # load objects from server
         #@loadDocument(@documentId)
@@ -57,11 +58,11 @@ class DatabaseViewCtrl
                 #@documents.sort((a, b) =>
                 #                        a.documentId > b.documentId
                 #  )
-                index = @UtilityService.findIndexByProperty(@documents, "documentId", @documentId)
-                @document = @documents[index] if index > -1
+                @index = @UtilityService.findIndexByProperty(@documents, "documentId", @documentId)
+                @document = @documents[@index] if @index > -1
                 @firstDocument = @documents[0]
-                @previousDocument = @documents[index - 1] if index > 0
-                @nextDocument = @documents[index + 1] if index < (@documents.length - 1)
+                @previousDocument = @documents[@index - 1] if @index > 0
+                @nextDocument = @documents[@index + 1] if @index < (@documents.length - 1)
                 @lastDocument = @documents[@documents.length - 1]
           ,
           (error) =>
@@ -99,6 +100,6 @@ class DatabaseViewCtrl
 
     done: () ->
       @$log.debug "DatabaseViewCtrl.done()"
-      @UtilityService.goBack('folder.documents')
+      @$state.go('folder.documents', {documentFolderId: @documentFolderId})
 
 controllersModule.controller('DatabaseViewCtrl', DatabaseViewCtrl)

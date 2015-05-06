@@ -16,15 +16,15 @@
       </div>
       <div class="row">
         <div class="text-center">
-          <a href="" class="glyphicon glyphicon-fast-backward" data-placement="left" title="First - {{ctrl.firstDocument.name}}" 
-              ng-click="ctrl.first()" ng-show="ctrl.showFirst()"></a>
-          <a href="" class="glyphicon glyphicon-backward" data-placement="left" title="Previous - {{ctrl.previousDocument.name}}" 
-              ng-click="ctrl.previous()" ng-show="ctrl.showPrevious()"></a>
-          <span class="col-md-offset-1"></span>
-          <a href="" class="glyphicon glyphicon-forward" data-placement="right" title="Next - {{ctrl.nextDocument.name}}" 
-              ng-click="ctrl.next()" ng-show="ctrl.showNext()"></a>
-          <a href="" class="glyphicon glyphicon-fast-forward" data-placement="right" title="Last - {{ctrl.lastDocument.name}}" 
-              ng-click="ctrl.last()" ng-show="ctrl.showLast()"></a>
+          <a href="" class="glyphicon glyphicon-step-backward" data-placement="left" title="First - {{ctrl.firstDocument.name}}" 
+              ng-click="ctrl.first()"></a>
+          <a href="" class="glyphicon glyphicon-chevron-left" data-placement="left" title="Previous - {{ctrl.previousDocument.name}}" 
+              ng-click="ctrl.previous()"></a>
+          <span>{{  ctrl.index + 1}} of {{ctrl.documents.length  }}</span>
+          <a href="" class="glyphicon glyphicon-chevron-right" data-placement="right" title="Next - {{ctrl.nextDocument.name}}" 
+              ng-click="ctrl.next()"></a>
+          <a href="" class="glyphicon glyphicon-step-forward" data-placement="right" title="Last - {{ctrl.lastDocument.name}}" 
+              ng-click="ctrl.last()"></a>
         </div>
       </div>
     </div>
