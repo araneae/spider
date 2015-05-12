@@ -73,6 +73,9 @@ class FolderShareCtrl
       event.stopPropagation()
       @datePickerOpenedFlag[contact.id] = true
    
+    editable: (contact) ->
+       contact.ownershipType isnt 'OWNED'
+   
     cancel: () ->
       @$log.debug "FolderShareCtrl.cancel()"
       @$state.go("folder.documents")

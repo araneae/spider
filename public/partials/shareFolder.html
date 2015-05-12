@@ -8,32 +8,41 @@
         <tr>
           <th class="col-md-1">Shared</th>
           <th>Name</th>
-          <th class="col-md-2">Copy</th>
-          <th class="col-md-2">View</th>
-          <!-- <th class="col-md-1">Share</th> 
-          <th class="col-md-2">Limited Share</th>
+          <th class="col-md-1">Ownership</th>
+          <th class="col-md-1">Copy</th>
+          <th class="col-md-1">View</th>
+          <th class="col-md-1">Share</th> 
+          <!-- <th class="col-md-2">Limited Share</th>
           <th class="col-md-3">Limited Share Until</th> -->
         </tr>
         <tr ng-repeat="contact in ctrl.sharedContacts">
           <td>
             <div class="checkbox-inline">
               <label>
-                <input type="checkbox" ng-model="contact.shared">
+                <input type="checkbox" ng-disabled="!ctrl.editable(contact)" ng-model="contact.shared">
               </label>
             </div>
           </td>
           <td>{{contact.text}}</td>
+          <td>{{contact.ownershipType}}</td>
           <td>
             <div class="checkbox-inline">
               <label>
-                <input type="checkbox" ng-model="contact.canCopy">
+                <input type="checkbox" ng-disabled="!ctrl.editable(contact)" ng-model="contact.canCopy">
               </label>
             </div>
           </td>
           <td>
             <div class="checkbox-inline">
               <label>
-                <input type="checkbox" ng-model="contact.canView">
+                <input type="checkbox" ng-disabled="!ctrl.editable(contact)" ng-model="contact.canView">
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="checkbox-inline">
+              <label>
+                <input type="checkbox" ng-disabled="!ctrl.editable(contact)" ng-model="contact.canShare">
               </label>
             </div>
           </td>
@@ -41,14 +50,7 @@
           <td>
             <div class="checkbox-inline">
               <label>
-                <input type="checkbox" ng-disabled="contact.isLimitedShare" ng-model="contact.canShare">
-              </label>
-            </div>
-          </td>
-          <td>
-            <div class="checkbox-inline">
-              <label>
-                <input type="checkbox" ng-model="contact.isLimitedShare">
+                <input type="checkbox" ng-disabled="!ctrl.editable(contact)" ng-model="contact.isLimitedShare">
               </label>
             </div>
           </td>

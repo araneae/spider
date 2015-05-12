@@ -10,7 +10,17 @@ case class UserDTO(userId: Option[Long],
                 lastName: String,
                 email: String,
                 password: String,
-                countryId: Long)
+                countryId: Long) {
+  def this(user: User) {
+       this(user.userId,
+            user.firstName,
+            user.middleName,
+            user.lastName,
+            "dummy",
+            "dummy",
+            user.countryId)
+   }
+}
 
 object UserDTO extends Function7[Option[Long], String, Option[String], String, String, String, Long, UserDTO]
 {
@@ -33,4 +43,6 @@ object UserDTO extends Function7[Option[Long], String, Option[String], String, S
           (JsPath \ "password").read[String] and
           (JsPath \ "countryId").read[Long]
     )(UserDTO)
+    
+    def apply(user: User) = new UserDTO(user)
 }

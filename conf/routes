@@ -40,6 +40,9 @@ GET    /rightBar/contents                                      controllers.Right
 
 GET    /menuBar/contents                                       controllers.MenuBarController.getCotents
 
+# User
+GET    /user                                                   controllers.UserController.get
+
 # Settings
 
 GET    /userProfile                                             controllers.UserProfileController.get

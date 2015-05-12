@@ -1,16 +1,17 @@
 
 class DatabaseUploadCtrl
 
-    constructor: (@$log, @$state, @DatabaseService, @Document, @ErrorService, @DocumentFolder, @UtilityService, @ConfigService) ->
+    constructor: (@$log, @$state, @$stateParams, @DatabaseService, @Document, @ErrorService, @DocumentFolder, @UtilityService, @ConfigService) ->
         @$log.debug "constructing DatabaseUploadCtrl"
-        @folders = []
         @folder
         @selectedFiles = []
         @statusUploaded = "Uploaded"
         @statusUploadFailed = "Upload Failed"
+        @documentFolderId = @$stateParams.documentFolderId
+        @title = {}
         
         # load data from server
-        @loadFolders()
+        @loadFolder(@documentFolderId)
 
     onFileSelect: ($files) ->
       @$log.debug "DatabaseUploadCtrl.onFileSelect()"
@@ -26,20 +27,19 @@ class DatabaseUploadCtrl
         @selectedFiles.push(fileObj)
         break if @selectedFiles.length is @ConfigService.multiFileUploadLimit
 
-    loadFolders: () ->
-        @$log.debug "DatabaseUploadCtrl.loadFolders()"
-        @DocumentFolder.query().$promise.then(
+    loadFolder: (documentFolderId) ->
+        @$log.debug "DatabaseUploadCtrl.loadFolder(#{documentFolderId})"
+        @DocumentFolder.get({documentFolderId: documentFolderId}).$promise.then(
           (data) =>
               @$log.debug "Promise returned #{data} folder"
-              @folders = data.filter( (item) => item.shared is false)
-              if (@folders && @folders.length > 0)
-                @folder =  @folders[0]
+              @folder = data
+              @title = "Uploading in #{data.name}"
           ,
           (error) =>
               @$log.error "Unable to fetch folder: #{error}"
               @ErrorService.error("Unable to fetch folder from server!")
           )
-
+          
     save: () ->
         @$log.debug "DatabaseUploadCtrl.save()"
         for obj in @selectedFiles

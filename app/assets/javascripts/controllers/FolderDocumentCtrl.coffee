@@ -54,13 +54,26 @@ class FolderDocumentCtrl
             )
         
     refresh: () ->
+      @loadFolder(@documentFolderId)
       @listDocuments()
+
+    showEditLink: (document) ->
+        (!@folder.shared)
+    
+    showViewLink: (document) ->
+        (document.canView and @folder.canView)
+    
+    showXRayLink: (document) ->
+        (document.canView and @folder.canView)
 
     showShareLink: (document) ->
         (document.canShare and !@folder.shared)
     
+    showCopyLink: (document) ->
+        (@folder.canCopy)
+    
     showDeleteLink: () ->
-        !@folder.shared
+        (!@folder.shared)
         
     goToDocumentTag: (documentId) ->
         @$log.debug "FolderDocumentCtrl.goToDocumentTag(#{documentId})"
@@ -88,7 +101,7 @@ class FolderDocumentCtrl
 
     goToUpload: () ->
         @$log.debug "FolderDocumentCtrl.goToUpload()"
-        @$state.go("databaseUpload")
+        @$state.go("folder.upload")
 
     isAllowDragDrop: (document) ->
         @$log.debug "FolderDocumentCtrl.isAllowDragDrp(#{document})"

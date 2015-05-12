@@ -17,12 +17,17 @@
          <div class="panel-body">
             <table class="table table-striped">
               <tr ng-repeat="folder in ctrl.folders">
-                <td ng-drop="ctrl.isAllowDragDrop(folder)" ng-drop-success="ctrl.onDropComplete($data, $event, folder)">
+                <td ng-hide="folder.shared" ng-drop="ctrl.isAllowDragDrop(folder)" ng-drop-success="ctrl.onDropComplete($data, $event, folder)">
                     <a href="" ng-click="ctrl.goToDocumentFolder(folder)">
                     <img ng-src="{{ctrl.getFolderIcon(folder)}}" with="25" height="25"/>
-                    
                     {{folder.name}}</a>
-                    <img src="/assets/images/icon-shared.png" with="20" height="20" ng-show="folder.shared"  data-placement="left" title="Shared" />
+                    <span class="fa fa-share-square" ng-show="folder.shared"  data-placement="left" title="Shared"></span>
+                </td>
+                <td ng-show="folder.shared">
+                    <a href="" ng-click="ctrl.goToDocumentFolder(folder)">
+                    <img ng-src="{{ctrl.getFolderIcon(folder)}}" with="25" height="25"/>
+                    {{folder.name}}</a>
+                    <span class="fa fa-share-square" ng-show="folder.shared"  data-placement="left" title="Shared"></span>
                 </td>
               </tr>
             </table>

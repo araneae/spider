@@ -10,7 +10,7 @@
         <div class="col-md-9 pull-right">
           <div class="col-md-9">
           <form name="FormDatabaseDocument" ng-submit="ctrl.search()">
-            <div class="input-group">
+            <div class="input-group" ng-hide="ctrl.folder.shared">
               <div class="input-group-btn" data-placement="left" title="Clear search text">
                 <button type="button" class="btn btn-default" id="idClearSearchTextBtn" ng-click="ctrl.clearSearchText()">Clear</button>
               </div>
@@ -24,7 +24,7 @@
           </form>
           </div>
           <button type="button" class="btn btn-success" ng-hide="ctrl.folder.shared" ng-click="ctrl.goToUpload()">Upload</button>
-          <button type="button" class="btn btn-success" ng-hide="ctrl.folder.shared" ng-click="ctrl.goToShareFolder()">Share</button>
+          <button type="button" class="btn btn-success" ng-show="ctrl.folder.canShare" ng-click="ctrl.goToShareFolder()">Share</button>
         </div>
       </div>
     </div>
@@ -40,15 +40,20 @@
         </thead>
         <tbody>
           <tr ng-repeat="document in ctrl.displayCollection">
-            <td ng-drag="ctrl.isAllowDragDrop(document)" ng-drag-data="{{document}}"><a href="" data-placement="left" title="{{document.name}}" ng-click="ctrl.goToDocumentEdit(document.documentId)">{{document.name}}</a></td>
+            <td ng-show="ctrl.showEditLink(document)" ng-drag="ctrl.isAllowDragDrop(document)" ng-drag-data="{{document}}">
+                <a href="" ng-show="ctrl.showEditLink(document)" data-placement="left" title="{{document.name}}" ng-click="ctrl.goToDocumentEdit(document.documentId)">{{document.name}}</a>
+            </td>
+            <td ng-hide="ctrl.showEditLink(document)">
+                <span data-placement="left" title="{{document.name}}">{{document.name}}</span>
+            </td>
             <td data-placement="left" title="{{document.description}}">{{document.description}}</td>
             <td>{{document.createdAt  | date : 'shortDate'}}</td>
             <td> 
-              <a href="" class="glyphicon glyphicon-folder-open" ng-show="document.canView" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
-              <a href="" class="glyphicon glyphicon-share" ng-show="ctrl.showShareLink(document)" data-placement="left" title="Share" ng-click="ctrl.goToShare(document.documentId)"></a>
+              <a href="" class="glyphicon glyphicon-folder-open" ng-show="ctrl.showViewLink(document)" data-placement="left" title="View" ng-click="ctrl.goToView(document.documentId)"></a>
+              <a href="" class="glyphicon glyphicon-share" ng-show="ctrl.showShareLink(document)" data-placement="left" title="Manage Share" ng-click="ctrl.goToShare(document.documentId)"></a>
             <!-- <a href="" class="glyphicon glyphicon-import" ng-show="document.canCopy" data-placement="left" title="Copy" ng-click="ctrl.copyDocument(document.documentId)"></a>  -->
-              <a class="glyphicon glyphicon-save" ng-show="document.canCopy" file-download url="ctrl.getDownloadUrl({{document.documentId}})" data-placement="left" title="Download"></a>
-              <a href="" class="glyphicon glyphicon-eye-open" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a> 
+              <a class="glyphicon glyphicon-save" ng-show="ctrl.showCopyLink(document)" file-download url="ctrl.getDownloadUrl({{document.documentId}})" data-placement="left" title="Download"></a>
+              <a href="" class="glyphicon glyphicon-eye-open" ng-show="ctrl.showXRayLink(document)" data-placement="left" title="X-Ray" ng-click="ctrl.goToXRay(document.documentId)"></a> 
             <!-- <a href="" class="glyphicon glyphicon-tags" data-placement="left" title="Tag" ng-click="ctrl.goToDocumentTag(document.documentId)"></a> -->
               <a href="" class="glyphicon glyphicon-trash" ng-show="ctrl.showDeleteLink()" data-placement="left" title="Delete" ng-click="ctrl.showRemoveAlert(document.documentId)"></a>
             </td>
@@ -56,12 +61,9 @@
         </tbody>
         <tfoot>
           <tr>
-            <td></td>
-            <td class="text-center">
+            <td colspan="4" class="text-center">
               <div st-pagination="" st-items-by-page="ctrl.ConfigService.documentTablePageSize"></div>
             </td>
-            <td></td>
-            <td></td>
           </tr>
         </tfoot>
       </table>

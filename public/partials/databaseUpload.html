@@ -7,23 +7,16 @@
   <div class="panel panel-default">
     <div class="panel-heading">
        <div class="panel-title">
-          <div ncy-breadcrumb></div>
+          <div>{{ctrl.title}}</div>
        </div>
     </div>
     <div class="panel-body">
       <form novalidate id="idDatabaseUploadForm" name="DatabaseUploadForm" class="form-horizontal" role="form"
           ng-submit="ctrl.save()">
         <div class="form-group">
-          <label id="lblFolder for="folder" class="col-md-2 control-label">Upload Folder</label>
-          <div class="col-md-4">
-            <select class="form-control" name="folder" id="idFolder" ng-options="folder.name for folder in ctrl.folders" 
-                   ng-model="ctrl.folder" required>
-              <option value="">-- choose target folder --</option>
-            </select>
-          </div>
+          <label id="lblSelectedFile" for="fileName" class="col-sm-2 control-label">Selected Files</label>
         </div>
         <div class="form-group">
-          <label id="lblSelectedFile" for="fileName" class="col-sm-2 control-label">Select Files</label>
           <div class="col-sm-8">
             <table class="table table-striped">
               <tr>
@@ -47,11 +40,10 @@
          </div>
          <!-- <pre>{{ ctrl.document | json }}</pre>  -->
          <div class="form-group">
-             <label class="col-sm-2 control-label"></label>
-             <div class="col-sm-2">
-                 <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
-                 <button type="submit" class="btn btn-success" id="btnSave" ng-disabled="!DatabaseUploadForm.$valid">Upload</button>
-             </div>
+           <div class="col-sm-6">
+             <button type="button" class="btn btn-warning" id="btnCancel" ng-click="ctrl.cancel()">Cancel</button>
+             <button type="submit" class="btn btn-success" id="btnSave" ng-disabled="!DatabaseUploadForm.$valid">Upload</button>
+           </div>
          </div>
       </form>
     </div>

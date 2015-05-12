@@ -1,8 +1,9 @@
 <form class="form-horizontal margin-top-7" role="form">
   <form class="form-inline" role="form">
    <div class="pull-right">
-    <a class="glyphicon glyphicon-cog" ui-sref="settings"></a>
-    <a ng-href="/logout">Logout</a>
+    <span class="text-color-blue">{{ctrl.message}}</span>
+    <a ui-sref="settings" class="fa fa-cog fa-fw" data-placement="left" title="Settings"></a>
+    <a ng-href="/logout" class="fa fa-sign-out" data-placement="left" title="Sign out"></a>
    </div>
    <div class="clearfix"></div>
   </form>

@@ -132,7 +132,9 @@ object ContactRepository {
         val q = for {
           (c, d) <- contactQuery leftJoin userDocumentFolderQuery on ((c, d) =>
                                           c.friendId === d.userId &&
-                                          d.documentFolderId === documentFolderId) if (c.userId === userId) && (c.status === ContactStatus.CONNECTED)
+                                          d.documentFolderId === documentFolderId) 
+                                                if (c.userId === userId) &&
+                                                    (c.status === ContactStatus.CONNECTED)
           u <- c.contact
         } yield (u, d.?)
         
@@ -146,9 +148,9 @@ object ContactRepository {
                               case Some(id) => true
                               case None => false
                             }
-                            ContactWithDocumentFolder(friendId, name, shared, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
+                            ContactWithDocumentFolder(friendId, name, shared, ownershipType, canCopy, canShare, canView, isLimitedShare, shareUntilEOD)
                           case _ =>
-                            ContactWithDocumentFolder(friendId, name, false, None, None, None, None, None)
+                            ContactWithDocumentFolder(friendId, name, false, None, None, None, None, None, None)
                         }
                    }
         }

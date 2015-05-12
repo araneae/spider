@@ -1,7 +1,7 @@
 
 class BodyCtrl
 
-    constructor: (@$log, @$scope, @$rootScope, @$state, @$window,
+    constructor: (@$log, @$scope, @$rootScope, @$state, @$window, @User,
                           @MenuBarService, @UserPermissionService, @ErrorService, @$location) ->
         @$log.debug "constructing BodyCtrl"
         @userPermissions = []
@@ -15,6 +15,8 @@ class BodyCtrl
            '-o-background-size': 'cover',
            'background-size': 'cover'
         }
+        @user = {}
+        @message
         
         @$rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) =>
             permission = toState.permission
@@ -36,9 +38,24 @@ class BodyCtrl
                           @gotoTopButton.fadeOut() if @gotoTopButton
             )
 
+        @loadUser()
+
         # fetch data from server
         @UserPermissionService.initUserPermissions()
-        
+
+    loadUser: () ->
+        @$log.debug "BodyCtrl.loadUser()"
+        @User.get().$promise.then(
+            (data) =>
+                @$log.debug "Promise returned #{data} user"
+                @user = data
+                @message = "Hello, #{data.firstName}"
+            ,
+            (error) =>
+                @ErrorService.error("Oops, something wrong! Unable to fetch data from server.")
+                @$log.error "Unable to get user: #{error}"
+            )
+
     goToTop: () ->
         @$log.debug "BodyCtrl.goToTop()"
         body = angular.element('html, body')

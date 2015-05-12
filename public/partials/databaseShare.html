@@ -32,15 +32,15 @@
       </div>
       <div class="form-group">
         <label class="col-md-3">
+          <input type="checkbox" ng-model="ctrl.share.canShare"> Allow Share</input>
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3">
           <input type="checkbox" ng-model="ctrl.share.canView"> Allow View</input>
         </label>
       </div>
       <!-- 
-      <div class="form-group">
-        <label class="col-md-3">
-          <input type="checkbox" ng-model="ctrl.share.canShare" ng-disabled="ctrl.share.isLimitedShare"> Allow Share</input>
-        </label>
-      </div>
       <div class="form-group">
         <label class="col-md-3">
           <input type="checkbox" ng-model="ctrl.share.isLimitedShare"> Limited Share Until (EOD)</input>

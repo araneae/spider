@@ -88,7 +88,7 @@ class DatabaseManageShareCtrl
                 (data) => 
                   @$log.debug "Promise returned #{data} contacts"
                   @ErrorService.success("Successfully updated shares!")
-                  @$state.go('database.documents')
+                  #@$state.go('database.documents')
                 ,
                 (error) =>
                   @$log.error "Unable to share contacts: #{error}"

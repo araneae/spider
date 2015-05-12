@@ -889,16 +889,15 @@ angular.module('myApp.routeConfig', ['ui.router'])
                     label: 'Folders'
               }
           })
-          .state('databaseUpload', {
-              url: '/document/upload',
+          .state('folder.upload', {
+              url: '/upload',
               views: {
-                'viewHeaderBar': {
-                  templateUrl: '/assets/partials/headerBarHome.html'
+                'viewGlobalSearch': {
                 },
-                'viewMenuBar': {
-                   templateUrl: '/assets/partials/menuBar.html'
+                'viewContextMenu@folder': {
+                    templateUrl: '/assets/partials/contextMenuGeneric.html'
                 },
-                'viewMain': {
+                'viewDocument': {
                     templateUrl: '/assets/partials/databaseUpload.html'
                 }
               },
