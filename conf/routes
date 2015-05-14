@@ -247,7 +247,7 @@ PUT    /database/document/:documentId/move/:documentFolderId    controllers.Data
 
 GET    /database/userTag/:userTagId/search/:searchText          controllers.DatabaseController.search(userTagId: Long, searchText: String)
 
-GET    /database/document/:documentId/search                    controllers.DatabaseController.searchDocument(documentId: Long)
+GET    /database/document/:documentId/search/:searchTerms       controllers.DatabaseController.searchDocument(documentId: Long, searchTerms: String)
 
 GET    /database/document/:documentId/contents                  controllers.DatabaseController.getContents(documentId: Long)
 
@@ -266,7 +266,7 @@ GET    /shared/repository/document/:documentId/contents         controllers.Shar
 
 GET    /shared/repository/search/:searchText                    controllers.SharedDocumentController.search(searchText: String)
 
-GET    /shared/document/:documentId/search                      controllers.SharedDocumentController.searchDocument(documentId: Long)
+GET    /shared/document/:documentId/search/:searchTerms         controllers.SharedDocumentController.searchDocument(documentId: Long, searchTerms: String)
 
 POST   /shared/document/:documentId/copy                        controllers.SharedDocumentController.copy(documentId: Long)
 

@@ -103,37 +103,30 @@ object SharedDocumentController extends Controller with Secured with AkkaActor {
     }
   }
   
-  def searchDocument(documentId: Long) = IsAuthenticated{ username => implicit request =>
-    //logger.info(s"in SharedDocumentController.search(${documentId})")
-    println(s"in SharedDocumentController.search(${documentId})")
+  def searchDocument(documentId: Long, searchTerms: String) = IsAuthenticated{ username => implicit request =>
+    //logger.info(s"in SharedDocumentController.search(${documentId}, ${searchTerms})")
+    println(s"in SharedDocumentController.search(${documentId}, ${searchTerms})")
     
-    val optUserProfile = UserRepository.findUserProfilePersonal(userId)
-    optUserProfile match {
-      case Some((user, userProfile)) =>
-        val searchText = userProfile.xrayTerms
-        if (searchText.length() > 0){
-          implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-          // send message to index searcher
-          val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchText)).mapTo[MessageSearchResultWithHighlighter]
-          val result = f.map{
-               case MessageSearchResultWithHighlighter(documentId, results) => {
-                          val data = Json.toJson(results)
-                          //println(data)
-                          Ok(data).as(JSON)
-                }
-               case _ => Ok("").as(JSON)
-    //                case Failure(failure) =>
-    //                        println(s"Failrure ${failure}")
-    //                        Ok("")
-          }
-          
-          Await.result(result, timeout.duration)
-        }
-        else {
-          Ok(HttpResponseUtil.reponseEmptyObject())
-        }
-      case None =>
-        Ok(HttpResponseUtil.reponseEmptyObject())
+    if (searchTerms.length() > 0){
+      implicit val timeout = Timeout(MESSAGE_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+      // send message to index searcher
+      val f = ask(indexSearcherActor, MessageSearchWithHighlighter(documentId, searchTerms)).mapTo[MessageSearchResultWithHighlighter]
+      val result = f.map{
+           case MessageSearchResultWithHighlighter(documentId, results) => {
+                      val data = Json.toJson(results)
+                      //println(data)
+                      Ok(data).as(JSON)
+            }
+           case _ => Ok("").as(JSON)
+//                case Failure(failure) =>
+//                        println(s"Failrure ${failure}")
+//                        Ok("")
+      }
+      
+      Await.result(result, timeout.duration)
+    }
+    else {
+      Ok(HttpResponseUtil.reponseEmptyObject())
     }
   }
     

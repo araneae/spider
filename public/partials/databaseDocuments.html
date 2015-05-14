@@ -10,7 +10,7 @@
         <div class="col-md-9 pull-right">
           <div class="col-md-9">
           <form name="FormDatabaseDocument" ng-submit="ctrl.search()">
-            <div class="input-group" ng-hide="ctrl.folder.shared">
+            <div class="input-group" ng-show="ctrl.folder.canView">
               <div class="input-group-btn" data-placement="left" title="Clear search text">
                 <button type="button" class="btn btn-default" id="idClearSearchTextBtn" ng-click="ctrl.clearSearchText()">Clear</button>
               </div>

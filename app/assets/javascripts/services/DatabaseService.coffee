@@ -23,11 +23,11 @@ class DatabaseService
             )
         deferred.promise
 
-    searchDocument: (documentId) ->
-        @$log.debug "DatabaseService.searchDocument(#{documentId})"
+    searchDocument: (documentId, searchTerms) ->
+        @$log.debug "DatabaseService.searchDocument(#{documentId}, #{searchTerms})"
         deferred = @$q.defer()
 
-        @$http.get("/database/document/#{documentId}/search")
+        @$http.get("/database/document/#{documentId}/search/#{searchTerms}")
         .success((data, status, headers) =>
                 @$log.info("Successfully searched - status #{status}")
                 deferred.resolve(data)

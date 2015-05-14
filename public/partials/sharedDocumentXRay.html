@@ -5,12 +5,28 @@
 </div>
 <div class="panel panel-default">
   <div class="panel-heading">
-    <div class="panel-title clearfix">
-      <div class="col-md-10 ellipsis">
-        <div ncy-breadcrumb></div>
+    <div class="panel-title">
+      <div class="row">
+        <div class="col-md-10">
+          <div ncy-breadcrumb></div>
+        </div>
       </div>
-      <div class="btn-group pull-right">
-        <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.done()">Done</button>
+      <div class="row">
+        <div class="col-md-10 pull-right">
+          <div class="col-md-11">
+            <form name="FormXRayDocument" ng-submit="ctrl.search()">
+              <div class="input-group">
+                <input type="text" class="form-control" name="searchBox" id="idSearchBox" ng-model="ctrl.searchTerms" placeholder="Enter xray tearms" required>
+                <div class="input-group-btn" data-placement="left" title="Search">
+                  <button type="submit" class="btn btn-default" id="idSearchBtn" ng-disabled="!FormXRayDocument.$valid">
+                    <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <button type="button" class="btn btn-success" id="btnSave" ng-click="ctrl.done()">Done</button>
+        </div>
       </div>
     </div>
   </div>

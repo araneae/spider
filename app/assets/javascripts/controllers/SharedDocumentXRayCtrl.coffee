@@ -2,14 +2,15 @@
 class SharedDocumentXRayCtrl
 
     constructor: (@$log, @$scope, @$state, @$stateParams, @$q,
-                            @SharedRepositoryService, @UtilityService, @$location, @ErrorService) ->
+                            @SharedRepositoryService, @UtilityService, @$location, @ErrorService, @UserProfileSettingService) ->
         @$log.debug "constructing SharedDocumentXRayCtrl"
         @documentId = parseInt(@$stateParams.documentId)
         @document = {}
+        @searchTerms = ""
         @results = []
         # load objects from server
+        @loadUserProfile()
         @loadDocument(@documentId)
-        @searchDocument(@documentId)
 
     loadDocument: (documentId) ->
         @$log.debug "SharedDocumentXRayCtrl.loadDocument(#{documentId})"
@@ -24,10 +25,24 @@ class SharedDocumentXRayCtrl
               @$log.error "Unable to get document: #{error}"
           )
 
-    searchDocument: (documentId) ->
-        @$log.debug "SharedDocumentXRayCtrl.searchDocument(#{documentId})"
+    loadUserProfile: () ->
+        @$log.debug "DatabaseXRayCtrl.loadUserProfile()"
+        @UserProfileSettingService.getUserProfile().then(
+          (data) =>
+              @$log.debug "Promise returned user profile"
+              #@userProfile = data
+              @searchTerms = data.xrayTerms
+              @search()
+          ,
+          (error) =>
+              @$log.error "Unable to get user profile: #{error}"
+              @ErrorService.error("Unable to fetch data from server!")
+          )
+
+    search: () ->
+        @$log.debug "SharedDocumentXRayCtrl.search()"
         #delay = @$q.defer()
-        @SharedRepositoryService.searchDocument(documentId).then(
+        @SharedRepositoryService.searchDocument(@documentId, @searchTerms).then(
           (data) =>
               @$log.debug "Promise returned #{data} search results"
               @results = data
